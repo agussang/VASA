@@ -1,0 +1,68 @@
+<h2>SDM Kapal Baru</h2>
+<form name="sdmkapalForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nip"><span class="text-danger">* </span>NIP :</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" name="nip" ng-model="mastersdmkapal.nip" required>
+          <span class="has-error" ng-show="sdmkapalForm.nip.$touched && sdmkapalForm.nip.$invalid">
+            Isi nip dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!mastersdmkapal.nip == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama"><span class="text-danger">* </span>Nama :</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="100" class="form-control" name="nama" ng-model="mastersdmkapal.nama" required>
+          <span class="has-error" ng-show="sdmkapalForm.nama.$touched && sdmkapalForm.nama.$invalid">
+            Isi nama dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!mastersdmkapal.nama == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="id"><span class="text-danger">* </span>ID :</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" nmaxlength="30" me="idNumber" ng-model="mastersdmkapal.idNumber" required>
+          <span class="has-error" ng-show="sdmkapalForm.idNumber.$touched && sdmkapalForm.idNumber.$invalid">
+            Isi ID dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!mastersdmkapal.idNumber == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="jabatan"><span class="text-danger">* </span>Jabatan :</label>
+      <div class="col-sm-3">
+          <input type="text" maxlength="100" class="form-control" name="jabatan1" ng-model="mastersdmkapal.jabatan1" required>
+          <span class="has-error" ng-show="sdmkapalForm.jabatan1.$touched && sdmkapalForm.jabatan1.$invalid">
+            Isi jabatan dibutuhkan.
+          </span>
+      </div>
+      <div class="col-sm-4">
+          <input type="text" maxlength="100" class="form-control" ng-model="mastersdmkapal.jabatan2">
+      </div>
+        <a ng-if="!mastersdmkapal.jabatan2 == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="kode"><span class="text-danger">* </span>Kode :</label>
+      <div class="col-sm-7">
+          <input type="text" class="form-control" name="kode" ng-model="mastersdmkapal.kode" required>
+          <span class="has-error" ng-show="sdmkapalForm.kode.$touched && sdmkapalForm.kode.$invalid">
+            Isi kode dibutuhkan.
+          </span>
+      </div>
+          <a ng-if="!mastersdmkapal.kode == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">* </span>Aktif :</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="mastersdmkapal.aktif" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg" ng-disabled="sdmkapalForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="sdmkapalForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>

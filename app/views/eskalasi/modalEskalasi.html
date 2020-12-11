@@ -1,0 +1,74 @@
+<!-- Form Eskalasi -->
+<div class="modal" ng-controller="EskalasiCtrl" id="escalationForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="toast-pf modalNotification-alert alert alert-{{modalNotification.type}} alert-dismissable {{modalNotification.status}}">
+        <span class="pficon pficon-error-circle-o"></span>
+        <p ng-bind-html="modalNotification.message"></p>
+    </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                   <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Autentikasi Eskalasi - {{notification.dataEsc.escTypeCode}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="border-content-modal">
+                    <i class="pficon pficon-info"></i> <span ng-bind-html="notification.dataEsc.valDesc"></span>
+                </div><br>
+                <form class="form-horizontal" name="eskalasiForm">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Pemberi Otorisasi</label>
+                        <label class="col-sm-5">{{userApprover.nama?userApprover.nama:' - '}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">NIPP</label>
+                        <label class="col-sm-5">{{userApprover.username}}</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">*</span>Password</label>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="{{inputTypePassword}}" class="form-control" ng-model="notification.dataEsc.password" placeholder="password pemberi otorisasi" required>
+                                <span class="input-group-addon btn btn-default" ng-controller="LoginCtrl" ng-click="hideShowPassword()" title="{{inputTypePassword!=='password'?'Sembunyikan Password':'Tampilkan Password'}}"><span class="fa {{inputTypePassword!=='password'?'fa-eye':'fa-eye-slash'}}"></span></span>
+                            </div>
+                            <span class="has-error" ng-show="notification.dataEsc.password.$touched && notification.dataEsc.password.$invalid">Isi Password dibutuhkan.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">*</span>Keterangan</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control textarea-notresize monitoring-scrool-revisi" id="eskalasiKeterangan" ng-model="notification.dataEsc.keterangan" rows="7" placeholder="alasan otorisasi diberikan" ng-trim="true" maxlength="250" required></textarea>
+                            <span class="has-error" ng-show="notification.dataEsc.keterangan.$touched && notification.dataEsc.keterangan.$invalid">Isi Password dibutuhkan.</span>
+                            <span class="pull-right"><b>{{250 - notification.dataEsc.keterangan.length}}</b></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button ng-disabled="eskalasiForm.$invalid;" ng-controller="EskalasiCtrl" type="button" class="btn btn-primary pull-right" ng-click="submitEsc()">Proses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Eskalasi -->
+<div class="modal" ng-controller="EskalasiCtrl" id="escalationConfirm" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Konfirmasi Eskalasi</h4>
+            </div>
+            <div class="modal-body">
+                <p>Apakah anda ingin melakukan eskalasi <b>{{notification.dataEsc.escCode}}</b> ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-controller="EskalasiCtrl" ng-click="confirmEscalation()">Ya</button>
+            </div>
+        </div>
+    </div>
+</div>

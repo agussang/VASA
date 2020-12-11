@@ -1,0 +1,88 @@
+<h2>Monitoring Tambat</h2>
+
+
+<form class="form-horizontal" name="monitoringForm">
+<div class="form-group">
+  <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Dermaga</label>
+  <div class="col-sm-3" style="display:inline-flex;">
+      <input type="text" name="dermaga" class="form-control" ng-model="monitoring.dermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(monitoring.dermaga)" ng-blur="validationLookupLokasiLabuh()" required>
+  </div>
+  <span class="has-error" ng-show="monitoringForm.dermaga.$touched && monitoringForm.dermaga.$invalid">
+     Isi dermaga dibutuhkan.
+ </span>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-2 control-label"><span class="text-danger">*</span>Tanggal Tambat</label>
+    <div class="col-sm-3" style="display:inline-flex;">
+      <span id="date-monitoring" class="input-group date" style="width:150px;">
+        <input type="text" ng-model="search.tglLaporanHarian" date="tglLaporan" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+      </span>
+    </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-2 text-center">
+     <div class="row">
+         <button class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="monitoringForm.$invalid">Tampilkan</button>
+     </div>
+   </div>
+ </div>
+
+</form>
+
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr>
+        <td colspan="13">
+            <span>Show : </span>
+            <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+            <input type="button" value="Petugas Pandu Baru" class="btn-list btn btn-default pull-right"/>
+        </td>
+    </tr>
+    <tr>
+      <th class="label-center">Nama Dermaga</th>
+      <th class="label-center">Kade Awal</th>
+      <th class="label-center">Kade Akhir</th>
+      <th class="label-center">Nama Kapal</th>
+      <th class="label-center">Mulai Tambat</th>
+      <th class="label-center">Rencana Akhir Tambat</th>
+      <th class="label-center">Total Bongkar</th>
+      <th class="label-center">Current Bongkar</th>
+      <th class="label-center">Total Muat</th>
+      <th class="label-center">Current Muat</th>
+      <th class="label-center">Kapal Pengganti</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in items">
+      <td>{{item.namaDermaga}}</td>
+      <td>{{item.kadeAwal}}</td>
+      <td>{{item.kadeAkhir}}</td>
+      <td>{{item.namaKapal}}</td>
+      <td>{{item.mulaiTambat | date: dd-MM-yyyy}}</td>
+      <td>{{item.selesaiTambat | date: dd-MM-yyyy}}</td>
+      <td>{{item.jumlahTotalBongkar}}</td>
+      <td>{{item.currentBongkar}}</td>
+      <td>{{item.totalMuat}}</td>
+      <td>{{item.currentMuat}}</td>
+      <td>{{item.namaKapalPengganti}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+
+<script>
+  $('#date-monitoring').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+  });
+</script>

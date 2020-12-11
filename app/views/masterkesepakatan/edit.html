@@ -1,0 +1,738 @@
+<h2>Parameter Kesepakatan Edit</h2>
+<form name="paramKesepakatanNewForm" class="form-horizontal">
+	<div class="row">
+		<div class="col-md-6">
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Custom</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isCustom == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isCustom == 0">Tidak</span>
+				</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Dermaga</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isDermaga == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isDermaga == 0">Tidak</span>
+				</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan GT</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isGt == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isGt == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Gerakan Pandu</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisGerakanPandu == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisGerakanPandu == false">Tidak</span>
+			  	</div>
+		  	</div>
+		 	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Kapal</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisKapal == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisKapal == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Pandu</label>
+				<div class="col-sm-7">
+				  	<span class="label label-primary" ng-if="prmkspkt.isJenisPandu == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisPandu == false">Tidak</span>
+		  		</div>
+		  	</div>
+			<div class="form-group">
+				<label class="col-sm-5" for="aktif"> </span>Menggunakan Jenis Pelayaran</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isJenisPelayaran == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isJenisPelayaran == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kapal Negara</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isKapalNegara == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKapalNegara == false">Tidak</span>
+			 	</div>
+		  	</div> 
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kapal Tunda</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isKapalTunda == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKapalTunda == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kode Kapal</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isKodeKapal == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKodeKapal == 0">Tidak</span>
+			  	</div>
+		  	</div>	
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="col-sm-5"></label>
+			  	<div class="col-sm-7"></div>
+			</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan LOA</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isLoa == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLoa == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Lokasi Awal</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isLokasiAwal == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLokasiAwal == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Lokasi Tujuan</label>
+			  	<div class="col-sm-7">
+			 		<span class="label label-primary" ng-if="prmkspkt.isLokasiTujuan == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLokasiTujuan == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Min. Utility</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isMinUtility == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isMinUtility == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kode Pelanggan</label>
+			  	<div class="col-sm-7">
+			 		<span class="label label-primary" ng-if="prmkspkt.isPelanggan == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isPelanggan == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Valuta</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isValuta == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isValuta == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Bendera</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isBendera == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isBendera == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Sifat Kunjungan</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isSifatKunjungan == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isSifatKunjungan == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Jenis Tunda</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisTunda == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isJenisTunda == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		</div>
+	</div>
+	<hr>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="aktif"></span>Jasa</label>
+		  	<div class="col-sm-7">
+			  	<span>{{prmkspkt.jasaText}}</span>
+		  	</div>
+	  	</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="aktif">Berlaku di </label>
+		  	<div class="col-sm-7">
+	        	<select pf-select ng-model="prmkspkt.berlakuDi" name="jasa">
+	        		<option value="">Semua</option>
+	        		<option value="1">EPB</option>
+	        		<option value="2">Pranota</option>
+	        	</select>
+		  	</div>
+		</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Kode Kesepakatan</label>
+			<div class="col-sm-7">
+		  		<span>{{prmkspkt.kodeKesepakatan}}</span>
+			</div>
+	  	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label"><span class="text-danger">*</span>Tgl. Mulai</label>
+		  	<div class="col-sm-5">
+				<div pf-datepicker id="tglMulai" options="options" data-date-format="dd-mm-yyyy" date="tglMulai" required></div>
+		  	</div>
+	 	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label"><span class="text-danger">*</span>Tgl. Selesai</label>
+		  	<div class="col-sm-5">
+				<div pf-datepicker id="tglSelesai" options="options" data-date-format="dd-mm-yyyy" date="tglSelesai" required></div>
+		  	</div>
+	  	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Keterangan</label>
+		  	<div class="col-sm-7">
+				<textarea class="form-control" rows="4" cols="50" ng-model="prmkspkt.keterangan"></textarea>
+		  	</div>
+	  	</div>
+  <div>
+	<div style="display:inline-flex;">
+	  <h5 class="pull-left"><strong>Rincian</strong></h5>
+	  </div>
+	  <h5 class="" style="float:right;"><strong><a style="cursor:pointer" data-toggle="modal" data-target="#parameterModal" ng-click="openAdd()">Tambah</a></strong></h5>
+	  <div style="max-width: 990px; overflow-x: scroll;padding: 10px;">
+		  <table class="datatable table table-striped table-bordered">
+		  <thead>
+			  <tr>
+			  	<th class="table-col-full text-center">Dermaga</th>
+				<th class="table-col-full text-center">GT Min.</th>
+				<th class="table-col-full text-center">GT Max.</th>
+				<th class="table-col-full text-center">Jenis Gerakan Pandu</th>
+				<th class="table-col-full text-center">Jenis Kapal</th>
+				<th class="table-col-full text-center">Jenis Pandu</th>
+				<th class="table-col-full text-center">Jenis Pelayaran</th>						
+				<th class="table-col-full text-center">Kapal Tunda</th>						
+				<th class="table-col-full text-center">Kode Kapal</th>				
+				<th class="table-col-full text-center">LOA Min.</th>
+				<th class="table-col-full text-center">LOA Max.</th>
+				<th class="table-col-full text-center">Lokasi Awal</th>
+				<th class="table-col-full text-center">Lokasi Tujuan</th>
+				<th class="table-col-full text-center">Min. Utility</th>
+				<th class="table-col-full text-center">Kode Pelanggan</th>
+				<th class="table-col-full text-center">Valuta</th>						
+				<th class="table-col-full text-center">Bendera</th>
+				<th class="table-col-full text-center">Sifat Kunjungan</th>
+				<th class="table-col-full text-center">Jenis Tunda</th>
+				<th class="table-col-full text-center">% Biaya</th>
+				<th class="table-col-full text-center">% Masa</th>
+				<th class="table-col-full text-center">Sifat Kesepakatan</th>
+				<th class="table-col-full text-center">Rounding Jam Tunda</th>
+				<th class="table-col-full text-center">Mob de Mob</th>
+				<th class="table-col-full text-center">Bebas Denda</th>
+				<th class="table-col-full text-center">Valuta Tarif</th>
+				<th class="table-col-full text-center">Batas Masa</th>
+				<th class="table-col-full text-center">Tarif Tetap</th>
+				<th class="table-col-full text-center">Tarif Variabel</th>
+				<th class="table-col-full text-center">Total</th>				
+				<th class="table-col-full text-center">Action</th>
+			  </tr>
+		  </thead>
+		  <tbody>
+			  	<tr ng-repeat="item in paramKesepakatanArray">
+					<td>{{item.dermagaText}}</td>
+			  		<td>{{item.gtMin}}</td>
+			  		<td>{{item.gtMax}}</td>
+			  		<td>{{item.jenisGerakanPanduText}}</td>
+			  		<td>{{item.jenisKapalText}}</td>
+			  		<td>{{item.jenisPanduText}}</td>
+			  		<td>{{item.jenisPelayaranText}}</td>
+			  		<td>{{item.kapalTundaText}}</td>			  		
+			  		<td>{{item.kodeKapal}}</td>
+			  		<td>{{item.loaMin}}</td>
+			  		<td>{{item.loaMax}}</td>			  		
+			  		<td>{{item.lokasiAwalText}}</td>
+			  		<td>{{item.lokasiTujuanText}}</td>
+			  		<td>{{item.minUtility}}</td>			  		
+			  		<td>{{item.pelangganText}}</td>
+			  		<td>{{item.valuta}}</td>
+			  		<td>{{item.bendera==1?'ASING':item.bendera==0?'INDONESIA':''}}</td>
+			  		<td>{{item.sifatKunjungan==1?'KPLNIAGA':item.sifatKunjungan==2?'KPLNONIAGA':item.sifatKunjungan==3?'DOCKING':''}}</td>
+			  		<td>{{item.jenisTunda==1?'NORMAL':item.jenisTunda==2?'TUNDA DORONG/GANDENG':item.jenisTunda==3?'TUNDA LUAR BIASA':item.jenisTunda==4?'TUNDA GENDONG':''}}</td>  
+			  		<td>{{item.prosenBiaya}}</td>
+			  		<td>{{item.prosenMasa}}</td>
+			  		<td>{{item.sifatText}}</td>
+			  		<td>{{item.roundingJamTunda=='null'?'':item.roundingJamTunda}}</td>
+			  		<td>{{item.mobDeMob}}</td>
+			  		<td>{{item.bebasDenda==1?'YA':item.bebasDenda==0?'TIDAK':''}}</td>
+			  		<td>{{item.valutaTarif}}</td>
+					<td>{{item.batasMasa}}</td>
+			  		<td>{{item.tarifTetap}}</td>
+			  		<td>{{item.tarifVariable}}</td>
+			  		<td>{{item.total}}</td>			  		
+			  		<td class="text-center">
+			            <a data-toggle="modal" data-target="#editDetailParamModal" ng-click="updateParameterDetail(item.id)" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+			            <a ng-click="deleteParameterDetailView($index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="item.id == null"><span class="fa fa-times"></span></a>
+			            <a ng-click="deleteParameterDetail(item.id,$index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="item.id != null"><span class="fa fa-times"></span></a>
+			  		</td>
+			  	</tr>
+		  </tbody>
+		  </table>
+	  </div>
+  </div>
+
+  <div class="form-group pull-right" style="margin-top: 20px;">
+  	<div class="col-md-3">
+  		<button type="button" class="btn btn-default btn-lg" ng-disabled="masatambatForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button> 	
+  	</div>
+  	<div class="col-md-3">
+  		<button type="button" class="btn btn-primary btn-lg" ng-click="submit();showLoader=true;buttonDisabled=true" ng-disabled="paramKesepakatanNewForm.$invalid || tglSelesai==null || tglMulai == null"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> SImpan </button> 
+  	</div>
+  	<div class="col-md-4">
+		<button type="button" class="btn btn-primary btn-lg" ng-click="submitApproval();showLoader=true;buttonDisabled=true" ng-disabled="paramKesepakatanNewForm.$invalid || tglSelesai==null || tglMulai == null"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Approval </button> 			
+  	</div>
+  </div>
+</form>
+<!-- modal detail new-->
+<div class="modal" id="parameterModal" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog" style="width: 950px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Rincian Parameter Kesepakatan Baru</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="RincianParamNew">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isDermaga == 0" class="text-danger">*</span>Dermaga</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.dermaga)" ng-disabled="prmkspkt.isDermaga == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isDermaga">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isGt == 0" class="text-danger">*</span>GT Min.</label>
+								<div class="col-md-6">
+								  	<input type="number" only-num maxlength="12" max="{{prmkspktdetail.gtmax}}" min="0" ng-disabled="prmkspkt.isGt == 0" class="form-control" name="gtMin" ng-model="prmkspktdetail.gtMin" ng-required="prmkspkt.isGt">
+									<span class="has-error" ng-show="RincianParamNew.gtMin.$touched && RincianParamNew.gtMin.$invalid">Isi GT Min dibutuhkan.</span>
+								</div>
+								<div class="col-sm-2" ng-hide="RincianParamNew.gtMin.$valid" >
+									<small class="error" ng-show="RincianParamNew.gtMin.$error.max">
+									  	<a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Max harus lebih besar dari GT Min</span>
+									</small>
+								  </div>
+							</div>	
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isGt == 0" class="text-danger">*</span>GT Max.</label>
+								<div class="col-md-6">
+									<input type="number" only-num maxlength="12" min="0" ng-disabled="prmkspkt.isGt == 0" class="form-control" name="gtMax" ng-model="prmkspktdetail.gtMax" ng-required="prmkspkt.isGt">
+									<span class="has-error" ng-show="RincianParamNew.gtMax.$touched && RincianParamNew.gtMax.$invalid">Isi GT Max dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisGerakanPandu == 0" class="text-danger">*</span>Jenis Gerakan</label>
+								<div class="col-md-6">
+									<select pf-select ng-model="prmkspktdetail.jenisGerakanPandu" ng-options='option.value as option.caption for option in jenisGerakanOption' id="jenisGerakan" ng-required="prmkspkt.isJenisGerakanPandu" ng-disabled="prmkspkt.isJenisGerakanPandu == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisKapal == 0" class="text-danger">*</span>Jenis Kapal</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisKapal" ng-options='option.value as option.caption for option in jenisKapalOption' ng-required="prmkspkt.isJenisKapal" ng-disabled="prmkspkt.isJenisKapal == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisPandu == 0" class="text-danger">*</span>Jenis Pandu</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisPandu" ng-options='option.value as option.caption for option in jenisPanduOption' ng-required="prmkspkt.isJenisPandu" ng-disabled="prmkspkt.isJenisPandu == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="tetap-7"><span ng-hide="prmkspkt.isJenisPelayaran == 0" class="text-danger">*</span>Jenis Pelayaran</label>
+								<div class="col-sm-7">
+									<select pf-select ng-model="prmkspktdetail.jenisPelayaran" name="jenisPelayaran" ng-disabled="prmkspkt.isJenisPelayaran == 0" ng-change="getJenisPelayaran(prmkspktdetail.jenisPelayaran)" ng-options='option.value as option.caption for option in jenisPelayaran' ng-required="prmkspkt.isJenisPelayaran"></select>
+									<input type="hidden" ng-model="jenisPelayaranText">
+									<span class="has-error" ng-show="RincianParamNew.jenisPelayaran.$touched && RincianParamNew.jenisPelayaran.$invalid">Isi jenis pelayaran dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isKapalTunda == 0" class="text-danger">*</span>Kapal Tunda</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="namaKapalTunda" ng-model="prmkspktdetail.kapalTunda" bs-typeahead bs-options="alatapung.nama for alatapung in getListOfAlatApungTunda($viewValue)" ng-focus="checkValue(prmkspktdetail.kapalTunda)" ng-blur="validationLookupKapalTunda()" ng-required="prmkspkt.isKapalTunda" ng-disabled="prmkspkt.isKapalTunda == 0">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isKodeKapal == 0" class="text-danger">*</span>Kapal</label>
+								<div class="col-md-6">
+									<input type="text" id="no-3" class="form-control" ng-model="prmkspktdetail.kapal" ng-disabled="prmkspkt.isKodeKapal == 0" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" data-limit="10" ng-focus="checkValue(kapal)" ng-blur="validationLookupKapal()" ng-required="prmkspkt.isKodeKapal">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLoa == 0" class="text-danger">*</span>LOA Min.</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isLoa == 0" class="form-control" name="loaMin" ng-model="prmkspktdetail.loaMin" ng-required="prmkspkt.isLoa">
+								</div>
+							</div>						
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLoa == 0" class="text-danger">*</span> LOA Max.</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isLoa == 0" class="form-control" name="loaMax" ng-model="prmkspktdetail.loaMax" ng-required="prmkspkt.isLoa">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLokasiAwal == 0" class="text-danger">*</span>Lokasi Awal</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.lokasiAwal" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.lokasiAwal)" ng-disabled="prmkspkt.isLokasiAwal == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isLokasiAwal">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLokasiTujuan == 0" class="text-danger">*</span>Lokasi Tujuan</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.lokasiTujuan" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.lokasiTujuan)" ng-disabled="prmkspkt.isLokasiTujuan == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isLokasiTujuan">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isMinUtility == 0" class="text-danger">*</span>Min. Utility</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isMinUtility == 0" class="form-control" name="minUtility" ng-model="prmkspktdetail.minUtility" ng-required="prmkspkt.isMinUtility">
+									<span class="has-error" ng-show="RincianParamNew.minUtility.$touched && RincianParamNew.minUtility.$invalid">Isi Min. Utility dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isPelanggan == 0" class="text-danger">*</span>Pelanggan</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" ng-model="prmkspktdetail.pelanggan" bs-typeahead bs-options="agenKapal.mplgNamaKode for agenKapal in getListOfAgenKapal($viewValue)" data-limit="10"  ng-focus="checkValue(prmkspktdetail.pelanggan)" ng-disabled="prmkspkt.isPelanggan == 0" ng-blur="validationLookupAgen()" ng-required="prmkspkt.isPelanggan">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span class="text-danger" ng-hide="prmkspkt.isValuta == 0">*</span>Valuta</label>
+								<div class="col-sm-7">
+									<select pf-select ng-model="prmkspktdetail.valuta" name="valuta" ng-options='option.value as option.caption for option in valuta' ng-required="prmkspkt.isValuta" ng-disabled="prmkspkt.isValuta == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span class="text-danger" ng-hide="prmkspkt.isBendera == 0">*</span>Bendera</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.bendera" ng-options='option.value as option.caption for option in jenisNegaraOption' ng-required="prmkspkt.isBendera" ng-disabled="prmkspkt.isBendera == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isSifatKunjungan == 0" class="text-danger">*</span>Sifat Kunjungan</label>
+								<div class="col-sm-6">
+									<select pf-select ng-model="prmkspktdetail.sifatKunjungan" ng-options='option.value as option.caption for option in sifatKunjunganOption' ng-required="prmkspkt.isSifatKunjungan" ng-disabled="prmkspkt.isSifatKunjungan == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisTunda == 0" class="text-danger">*</span>Jenis Tunda</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisTunda" ng-options='option.value as option.caption for option in jenisTundaOption' ng-required="prmkspkt.isJenisTunda" ng-disabled="prmkspkt.isJenisTunda == 0">
+									 </select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr>
+			  		<div class="form-group">
+						<label class="col-md-3 control-label"><span class="text-danger">*</span>Sifat Kesepakatan</label> {{prmkspktdetail.sifat}}
+						<div class="col-sm-6">
+				  			<select pf-select ng-model="prmkspktdetail.sifat" ng-options='option.value as option.caption for option in sifatKesepakatanOption' ng-change="changeValue(prmkspktdetail.sifat)" required></select>
+						</div>
+			  		</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Rounding Jam Tunda</label>
+						<div class="col-sm-6">
+				  			<select ng-model="prmkspktdetail.roundingJamTunda" class="form-control" name="roundingJamTunda">
+								<option value="30">30</option>
+								<option value="60">60</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Mob de Mob</label>
+						<div class="col-md-6">
+							<input type="number" decimal-number min="0" class="form-control" name="mobdemob" ng-model="prmkspktdetail.mobDeMob" step="0.01" ng-disabled="prmkspkt.jasa != '5'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Bebas Denda</label>
+						<div class="col-md-6">
+							<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="prmkspktdetail.bebasDenda" switch-active="{{isActive}}" ng-true-value="1" ng-false-value="0" switch-readonly="{{prmkspktdetail.sifat != '5'?true:false}}">
+						</div>
+					</div>
+					<div class="form-group">
+					    <label class="col-md-3 control-label">Valuta Tarif</label>
+					    <div class="col-sm-7">
+					        <select pf-select ng-model="prmkspktdetail.valutaTarif" name="valutaTarif" ng-disabled="(prmkspktdetail.sifat == '3' || prmkspktdetail.sifat == '2') ? false : true">
+					        	<option value="IDR"> IDR </option>
+					        	<option value="USD"> USD </option>
+					        </select>
+					    </div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Batas Masa</label>
+						<div class="col-md-6">
+							<input type="number" decimal-number maxlength="8" class="form-control" name="biaya" ng-model="prmkspktdetail.batasMasa" step="0.01" ng-disabled="prmkspkt.jasa != '2'">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">% Biaya</label>
+					  	<div class="col-md-6">
+							<input type="number" only-num min="0" class="form-control" name="biaya" ng-model="prmkspktdetail.prosenBiaya" ng-disabled="prmkspktdetail.sifat != '1'">
+					  	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">% Masa</label>
+				  		<div class="col-md-6">
+							<input type="number" only-num min="0" class="form-control" name="masa" ng-model="prmkspktdetail.prosenMasa" ng-disabled="prmkspktdetail.sifat != '1'">
+				  		</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Tarif Tetap</label>
+					  	<div class="col-md-6">
+							<input type="number" only-num min="0" class="form-control" name="tariftetap" ng-model="prmkspktdetail.tarifTetap" ng-disabled="prmkspktdetail.sifat != '2'">
+					  	</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label">Tarif Variable</label>
+					  	<div class="col-md-6">
+							<input type="number" only-num min="0" class="form-control" name="tarifvariabel" ng-model="prmkspktdetail.tarifVariable" ng-disabled="prmkspktdetail.sifat != '2'">
+					  	</div>
+					</div>
+			  		<div class="form-group">
+						<label class="col-md-3 control-label">Total</label>
+						<div class="col-md-6">
+							<input type="number" only-num min="0" class="form-control" name="total" ng-model="prmkspktdetail.total" ng-disabled="prmkspktdetail.sifat != '3' && prmkspktdetail.sifat != '6'">
+						</div>
+			  		</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="RincianParamNew.$invalid" ng-click="submitKesepakatanDetail()">Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- modal detail edit -->
+<div class="modal" id="editDetailParamModal" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog" style="width: 950px;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Rincian Parameter Kesepakatan Baru {{$index}}</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" name="RincianParamEdit">
+					<div class="row">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isDermaga == 0" class="text-danger">*</span>Dermaga</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.dermaga" ng-value="prmkspktdetail.dermagaText" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.dermaga)" ng-disabled="prmkspkt.isDermaga == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isDermaga">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isGt == 0" class="text-danger">*</span>GT Min</label>
+								<div class="col-md-6">
+								  	<input type="number" only-num maxlength="12" max="{{prmkspktdetail.gtmax}}" min="0" ng-disabled="prmkspkt.isGt == 0" class="form-control" name="gtMin" ng-model="prmkspktdetail.gtMin" ng-required="prmkspkt.isGt">
+									<span class="has-error" ng-show="RincianParamNew.gtMin.$touched && RincianParamNew.gtMin.$invalid">Isi GT Min dibutuhkan.</span>
+								</div>
+								<div class="col-sm-2" ng-hide="RincianParamNew.gtMin.$valid" >
+									<small class="error" ng-show="RincianParamNew.gtMin.$error.max">
+									  	<a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Max harus lebih besar dari GT Min</span>
+									</small>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isGt == 0" class="text-danger">*</span>GT Max</label>
+								<div class="col-md-6">
+									<input type="number" only-num maxlength="12" min="0" ng-disabled="prmkspkt.isGt == 0" class="form-control" name="gtMax" ng-model="prmkspktdetail.gtMax" ng-required="prmkspkt.isGt">
+									<span class="has-error" ng-show="RincianParamNew.gtMax.$touched && RincianParamNew.gtMax.$invalid">Isi GT Max dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisGerakanPandu == 0" class="text-danger">*</span>Jenis Gerakan</label>
+								<div class="col-md-6">
+									<select pf-select ng-model="prmkspktdetail.jenisGerakanPandu" ng-options='option.value as option.caption for option in jenisGerakanOption' id="jenisGerakan" ng-required="prmkspkt.isJenisGerakanPandu" ng-disabled="prmkspkt.isJenisGerakanPandu == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisKapal == 0" class="text-danger">*</span>Jenis Kapal</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisKapal" ng-options='option.value as option.caption for option in jenisKapalOption' ng-required="prmkspkt.isJenisKapal" ng-disabled="prmkspkt.isJenisKapal == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisPandu == 0" class="text-danger">*</span>Jenis Pandu</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisPandu" ng-options='option.value as option.caption for option in jenisPanduOption' ng-required="prmkspkt.isJenisPandu" ng-disabled="prmkspkt.isJenisPandu == 0">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="tetap-7"><span ng-hide="prmkspkt.isJenisPelayaran == 0" class="text-danger">*</span>Jenis Pelayaran</label>
+								<div class="col-sm-7">
+									<select pf-select ng-model="prmkspktdetail.jenisPelayaran" name="jenisPelayaran" ng-disabled="prmkspkt.isJenisPelayaran == 0" ng-change="getJenisPelayaran(prmkspktdetail.jenisPelayaran)" ng-options='option.value as option.caption for option in jenisPelayaran' ng-required="prmkspkt.isJenisPelayaran"></select>
+									<input type="hidden" ng-model="jenisPelayaranText">
+									<span class="has-error" ng-show="RincianParamNew.jenisPelayaran.$touched && RincianParamNew.jenisPelayaran.$invalid">Isi jenis pelayaran dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isKapalTunda == 0" class="text-danger">*</span>Kapal Tunda</label>
+								<div class="col-md-7">
+									<input type="text" class="form-control" name="namaKapalTunda" ng-model="prmkspktdetail.kapalTunda" bs-typeahead bs-options="alatapung.nama for alatapung in getListOfAlatApungTunda($viewValue)" ng-focus="checkValue(prmkspktdetail.kapalTunda)" ng-blur="validationLookupKapalTunda()" ng-required="prmkspkt.isKapalTunda" ng-disabled="prmkspkt.isKapalTunda == 0">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isKodeKapal == 0" class="text-danger">*</span>Kapal</label>
+								<div class="col-md-6">
+								  	<input type="text" id="no-3" class="form-control" ng-model="prmkspktdetail.kapal" ng-disabled="prmkspkt.isKodeKapal == 0" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" data-limit="10" ng-focus="checkValue(kapal)" ng-blur="validationLookupKapal()" ng-required="prmkspkt.isKodeKapal">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLoa == 0" class="text-danger">*</span>LOA Min.</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isLoa == 0" class="form-control" name="loaMin" ng-model="prmkspktdetail.loaMin" ng-required="prmkspkt.isLoa">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLoa == 0" class="text-danger">*</span> LOA Max.</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isLoa == 0" class="form-control" name="loaMax" ng-model="prmkspktdetail.loaMax" ng-required="prmkspkt.isLoa">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLokasiAwal == 0" class="text-danger">*</span>Lokasi Awal</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.lokasiAwal" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.lokasiAwal)" ng-disabled="prmkspkt.isLokasiAwal == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isLokasiAwal">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isLokasiTujuan == 0" class="text-danger">*</span>Lokasi Tujuan</label>
+								<div class="col-md-6">
+								  	<input type="text" class="form-control" ng-model="prmkspktdetail.lokasiTujuan" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(prmkspktdetail.lokasiTujuan)" ng-disabled="prmkspkt.isLokasiTujuan == 0" ng-blur="validationLookupDermaga()" ng-required="prmkspkt.isLokasiTujuan">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="no-3"><span ng-hide="prmkspkt.isMinUtility == 0" class="text-danger">*</span>Min. Utility</label>
+								<div class="col-md-6">
+									<input type="number" only-num min="0" ng-disabled="prmkspkt.isMinUtility == 0" class="form-control" name="minUtility" ng-model="prmkspktdetail.minUtility" ng-required="prmkspkt.isMinUtility">
+									<span class="has-error" ng-show="RincianParamNew.minUtility.$touched && RincianParamNew.minUtility.$invalid">Isi Min. Utility dibutuhkan.</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isPelanggan == 0" class="text-danger">*</span>Pelanggan</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" ng-model="prmkspktdetail.pelanggan" bs-typeahead bs-options="agenKapal.mplgNamaKode for agenKapal in getListOfAgenKapal($viewValue)" data-limit="10"  ng-focus="checkValue(prmkspktdetail.pelanggan)" ng-disabled="prmkspkt.isPelanggan == 0" ng-blur="validationLookupAgen()" ng-required="prmkspkt.isPelanggan">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span class="text-danger" ng-hide="prmkspkt.isValuta == 0">*</span>Valuta</label>
+								<div class="col-sm-7">
+									<select pf-select ng-model="prmkspktdetail.valuta" name="valuta" ng-options='option.value as option.caption for option in valuta' ng-required="prmkspkt.isValuta" ng-disabled="prmkspkt.isValuta == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span class="text-danger" ng-hide="prmkspkt.isBendera == 0">*</span>Bendera</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.bendera" ng-options='option.value as option.caption for option in jenisNegaraOption' ng-required="prmkspkt.isBendera" ng-disabled="prmkspkt.isBendera == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isSifatKunjungan == 0" class="text-danger">*</span>Sifat Kunjungan</label>
+								<div class="col-sm-6">
+									<select pf-select ng-model="prmkspktdetail.sifatKunjungan" ng-options='option.value as option.caption for option in sifatKunjunganOption' ng-required="prmkspkt.isSifatKunjungan" ng-disabled="prmkspkt.isSifatKunjungan == 0"></select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label"><span ng-hide="prmkspkt.isJenisTunda == 0" class="text-danger">*</span>Jenis Tunda</label>
+								<div class="col-sm-6">
+								  	<select pf-select ng-model="prmkspktdetail.jenisTunda" ng-options='option.value as option.caption for option in jenisTundaOption' ng-required="prmkspkt.isJenisTunda" ng-disabled="prmkspkt.isJenisTunda == 0">
+									</select>
+								</div>
+							</div>		
+						</div>
+					</div>
+					<hr>
+			  	<div class="form-group">
+					<label class="col-md-3 control-label"><span class="text-danger">*</span>Sifat Kesepakatan</label>
+					<div class="col-sm-6">
+				  		<select pf-select ng-model="prmkspktdetail.sifat" ng-options='option.value as option.caption for option in sifatKesepakatanOption'  ng-change="changeValue(prmkspktdetail.sifat)" required></select>
+					</div>
+			  	</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Rounding Jam Tunda</label>
+					<div class="col-sm-6">
+				  		<select ng-model="prmkspktdetail.roundingJamTunda" class="form-control" name="roundingJamTunda">
+							<option value="30">30</option>
+							<option value="60">60</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Mob de Mob</label>
+					<div class="col-md-6">
+						<input type="number" decimal-number min="0" class="form-control" name="mobdemob" ng-model="prmkspktdetail.mobDeMob" step="0.01" ng-disabled="prmkspkt.jasa != '5'">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Bebas Denda</label>
+					<div class="col-md-6">
+						<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="prmkspktdetail.bebasDenda" switch-active="{{isActive}}" ng-true-value="1" ng-false-value="0" switch-readonly="{{prmkspktdetail.sifat != '5'?true:false}}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Valuta Tarif</label>
+					<div class="col-sm-7">
+					    <select pf-select ng-model="prmkspktdetail.valutaTarif" name="valutaTarif" ng-disabled="(prmkspktdetail.sifat == '3' || prmkspktdetail.sifat == '2') ? false : true">
+					       	<option value="IDR"> IDR </option>
+					        <option value="USD"> USD </option>
+					    </select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Batas Masa</label>
+					<div class="col-md-6">
+						<input type="number" decimal-number maxlength="8" class="form-control" name="biaya" ng-model="prmkspktdetail.batasMasa" step="0.01" ng-disabled="prmkspkt.jasa != '2'">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">% Biaya</label>
+				  	<div class="col-md-6">
+						<input type="number" only-num min="0" class="form-control" name="biaya" ng-model="prmkspktdetail.prosenBiaya" ng-disabled="prmkspktdetail.sifat != '1'">
+				  	</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">% Masa</label>
+				  	<div class="col-md-6">
+						<input type="number" only-num min="0" class="form-control" name="masa" ng-model="prmkspktdetail.prosenMasa" ng-disabled="prmkspktdetail.sifat != '1'">
+				  	</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Tarif Tetap</label>
+				  	<div class="col-md-6">
+						<input type="number" only-num min="0" class="form-control" name="tariftetap" ng-model="prmkspktdetail.tarifTetap" ng-disabled="prmkspktdetail.sifat != '2'">
+				 	</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label">Tarif Variable</label>
+				  	<div class="col-md-6">
+						<input type="number" only-num min="0" class="form-control" name="tarifvariabel" ng-model="prmkspktdetail.tarifVariable" ng-disabled="prmkspktdetail.sifat != '2'">
+				  	</div>
+				</div>
+			  	<div class="form-group">
+					<label class="col-md-3 control-label">Total</label>
+					<div class="col-md-6">
+						<input type="number" only-num min="0" class="form-control" name="total" ng-model="prmkspktdetail.total" ng-disabled="prmkspktdetail.sifat != '3' && prmkspktdetail.sifat != '6'">
+					</div>
+			  	</div>
+			</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" ng-disabled="RincianParamEdit.$invalid || prmkspktdetail.sifat == 'null'" data-dismiss="modal" ng-click="submitKesepakatanDetailEdit()"> Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>

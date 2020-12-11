@@ -1,0 +1,22 @@
+<h2>Aturan Gerak Pandu Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama Lokasi</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAturangerakpandu.namaLokasi}} ({{contentAturangerakpandu.kodeLokasi}})</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Status</label>
+  		<div class="col-sm-4">
+  			<span>:</span>
+  			<span class="view-detail">{{contentAturangerakpandu.flagAktif}}</span>
+  		</div>
+  	</div>
+  	<div class="form-group">
+ 	    <div class="col-sm-9">
+        <button class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>
+      </div>
+    </div>
+</form>

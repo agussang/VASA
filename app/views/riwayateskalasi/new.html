@@ -1,0 +1,94 @@
+<h2>Tarif Labuh Baru</h2>
+<form name="labuhNew" class="form-horizontal" onsubmit="return Validate(this);">
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nomorSk"><span class="text-danger">*</span>Nomor SK</label>
+      <div class="col-sm-7">
+          <input type="text" name="nomorSk" maxlength="30" class="form-control" ng-model="labuh.nomorSk" required>
+          <span class="has-error" ng-show="labuhNew.nomorSk.$touched && labuhNew.nomorSk.$invalid">
+                Isi Nomor SK dibutuhkan.
+          </span>
+
+      </div>
+      <a ng-if="!labuh.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tglMulaiBerlaku"><span class="text-danger">*</span>Tgl. Berlaku</label>
+      <div class="col-sm-7">
+      		  <div pf-datepicker  options="options" id="IdtglBerlaku" name="tglMulaiBerlaku" data-date-format="dd-mm-yyyy" date="tglBerlaku" required></div>
+             <span class="has-error" ng-show="labuhNew.tglMulaiBerlaku.$touched && labuhNew.tglMulaiBerlaku.$invalid">
+                Isi Tgl. Berlaku dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="jenisPelayaran"><span class="text-danger">*</span>Jenis Pelayaran</label>
+      <div class="col-sm-7">
+         <select pf-select ng-model="labuh.jenisPelayaran" name="jenisPelayaran" ng-options='option.value as option.caption for option in jnsPelayaran' id="jns-1" required></select>
+          <span class="has-error" ng-show="labuhNew.jenisPelayaran.$touched && labuhNew.jenisPelayaran.$invalid">
+            Isi Jenis Pelayaran dibutuhkan.
+          </span>
+
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="kelasPelabuhan"><span class="text-danger">*</span>Kelas Pelabuhan</label>
+      <div class="col-sm-7">
+          <!-- <input type="text" id="kls-1" class="form-control" ng-model="labuh.kelasPelabuhan"> -->
+          <select pf-select ng-model="labuh.kelasPelabuhan" name="kelasPelabuhan" ng-options='option.value as option.caption for option in klsPelabuhan' id="jns-1" required></select>
+          <span class="has-error" ng-show="labuhNew.kelasPelabuhan.$touched && labuhNew.kelasPelabuhan.$invalid">
+            Isi Kelas Pelabuhan dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="kunjungan"><span class="text-danger">*</span>Kunjungan</label>
+      <div class="col-sm-7">
+          <!-- <input type="text" id="knjng-1" class="form-control" ng-model="labuh.kunjungan"> -->
+          <select pf-select ng-model="labuh.kunjungan" name="kunjungan" ng-options='option.value as option.caption for option in kunjungan' id="jns-1" required></select>
+          <span class="has-error" ng-show="labuhNew.kunjungan.$touched && labuhNew.kunjungan.$invalid">
+            Isi Kelas Pelabuhan dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nilaiTarif"><span class="text-danger">*</span>Tarif Dasar</label>
+      <div class="col-sm-7">
+          <input type="number" decimal-number maxlength="15" class="form-control" min="0" ng-model="labuh.nilaiTarif" name="nilaiTarif" id="nilaiTarif" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001" required>
+          <span class="has-error" ng-show="labuhNew.nilaiTarif.$touched && labuhNew.nilaiTarif.$invalid">
+            Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="valuta"><span class="text-danger">*</span>Valuta</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="labuh.valuta" name="valuta" ng-options='option.value as option.caption for option in valuta' id="jns-1" required></select>
+          <span class="has-error" ng-show="labuhNew.valuta.$touched && labuhNew.valuta.$invalid">
+            Isi Valuta dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="file"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" id="file" class="form-control" file-input="uploadFile" accept=".jpg,.pdf" ng-model="labuhNew.file" valid-file ng-required="true"/>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button class="btn btn-default btn-lg" onclick="location.href='#/labuh/list';" >Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="labuhNew.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Buat Baru</button>
+      </div>
+    </div>
+
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-1').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>

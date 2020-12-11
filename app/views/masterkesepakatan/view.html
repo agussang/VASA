@@ -1,0 +1,285 @@
+<h2>Parameter Kesepakatan View</h2>
+<form name="paramKesepakatanNewForm" class="form-horizontal">
+	<div class="row">
+		<div class="col-md-6">
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Custom</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isCustom == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isCustom == 0">Tidak</span>
+				</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Dermaga</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isDermaga == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isDermaga == 0">Tidak</span>
+				</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan GT</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isGt == 1">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isGt == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Gerakan Pandu</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisGerakanPandu == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisGerakanPandu == false">Tidak</span>
+			  	</div>
+		  	</div>
+		 	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Kapal</label>
+				<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisKapal == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisKapal == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif"> Menggunakan Jenis Pandu</label>
+				<div class="col-sm-7">
+				  	<span class="label label-primary" ng-if="prmkspkt.isJenisPandu == true">Ya</span>
+			  		<span class="label label-danger" ng-if="prmkspkt.isJenisPandu == false">Tidak</span>
+		  		</div>
+		  	</div>
+			<div class="form-group">
+				<label class="col-sm-5" for="aktif"> </span>Menggunakan Jenis Pelayaran</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isJenisPelayaran == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isJenisPelayaran == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kapal Negara</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isKapalNegara == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKapalNegara == false">Tidak</span>
+			 	</div>
+		  	</div> 
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kapal Tunda</label>
+			  	<div class="col-sm-7">
+					<span class="label label-primary" ng-if="prmkspkt.isKapalTunda == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKapalTunda == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kode Kapal</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isKodeKapal == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isKodeKapal == 0">Tidak</span>
+			  	</div>
+		  	</div>	
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label class="col-sm-5"></label>
+			  	<div class="col-sm-7"></div>
+			</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan LOA</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isLoa == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLoa == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Lokasi Awal</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isLokasiAwal == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLokasiAwal == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Lokasi Tujuan</label>
+			  	<div class="col-sm-7">
+			 		<span class="label label-primary" ng-if="prmkspkt.isLokasiTujuan == true">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isLokasiTujuan == false">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Min. Utility</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isMinUtility == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isMinUtility == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Kode Pelanggan</label>
+			  	<div class="col-sm-7">
+			 		<span class="label label-primary" ng-if="prmkspkt.isPelanggan == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isPelanggan == 0">Tidak</span>
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Valuta</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isValuta == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isValuta == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Bendera</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isBendera == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isBendera == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Sifat Kunjungan</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isSifatKunjungan == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isSifatKunjungan == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan Jenis Tunda</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isJenisTunda == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isJenisTunda == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan No. PPK1</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isNoPpk1 == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isNoPpk1 == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		  	<div class="form-group">
+				<label class="col-sm-5" for="aktif">Menggunakan No. PPKJasa</label>
+			  	<div class="col-sm-7">
+			  		<span class="label label-primary" ng-if="prmkspkt.isNoPpkJasa == 1">Ya</span>
+					<span class="label label-danger" ng-if="prmkspkt.isNoPpkJasa == 0">Tidak</span>	
+			  	</div>
+		  	</div>
+		</div>
+	</div>
+	<hr> 
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="aktif"></span>Jasa</label>
+		  	<div class="col-sm-7">
+			  	<span>{{prmkspkt.jasaText}}</span>
+		  	</div>
+	  	</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="aktif">Berlaku di </label>
+		  	<div class="col-sm-7">
+		  		<span>{{prmkspkt.berlakuDi==''?'Semua':prmkspkt.berlakuDi=='1'?'EPB':'Pranota'}}</span>
+		  	</div>
+		</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Kode Kesepakatan</label>
+			<div class="col-sm-7">
+		  		<span>{{prmkspkt.kodeKesepakatan}}</span>
+			</div>
+	  	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Tgl. Mulai</label>
+		  	<div class="col-sm-5">
+		  		<span>{{tglMulai | date: "dd-MM-yyyy"}}</span>
+		  	</div>
+	 	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Tgl. Selesai</label>
+		  	<div class="col-sm-5">
+		  		<span>{{tglSelesai | date: "dd-MM-yyyy"}}</span>
+		  	</div>
+	  	</div>
+	  	<div class="form-group">
+			<label class="col-sm-3 control-label">Keterangan</label>
+		  	<div class="col-sm-7">
+				<Span>{{prmkspkt.keterangan}}</Span>
+		  	</div>
+	  	</div>
+  <div>
+	<div style="display:inline-flex;">
+	  	<h5 class="pull-left"><strong>Rincian</strong></h5>
+	</div>
+	<div style="max-width: 990px; overflow-x: scroll;padding: 10px;">
+		<table class="datatable table table-striped table-bordered">
+		  	<thead>
+			  <tr>
+			  	<th class="table-col-full text-center">No PPK1</th>
+			  	<th class="table-col-full text-center">No PPKJasa</th>
+			  	<th class="table-col-full text-center">Dermaga</th>
+				<th class="table-col-full text-center">GT Min.</th>
+				<th class="table-col-full text-center">GT Max.</th>
+				<th class="table-col-full text-center">Jenis Gerakan Pandu</th>
+				<th class="table-col-full text-center">Jenis Kapal</th>
+				<th class="table-col-full text-center">Jenis Pandu</th>
+				<th class="table-col-full text-center">Jenis Pelayaran</th>						
+				<th class="table-col-full text-center">Kapal Tunda</th>						
+				<th class="table-col-full text-center">Kode Kapal</th>
+				<th class="table-col-full text-center">LOA Min.</th>
+				<th class="table-col-full text-center">LOA Max.</th>				
+				<th class="table-col-full text-center">Lokasi Awal</th>
+				<th class="table-col-full text-center">Lokasi Tujuan</th>
+				<th class="table-col-full text-center">Min. Utility</th>
+				<th class="table-col-full text-center">Kode Pelanggan</th>
+				<th class="table-col-full text-center">Valuta</th>						
+				<th class="table-col-full text-center">Bendera</th>
+				<th class="table-col-full text-center">Sifat Kunjungan</th>
+				<th class="table-col-full text-center">Jenis Tunda</th>
+				<th class="table-col-full text-center">% Biaya</th>
+				<th class="table-col-full text-center">% Masa</th>
+				<th class="table-col-full text-center">Sifat Kesepakatan</th>
+				<th class="table-col-full text-center">Rounding Jam Tunda</th>
+				<th class="table-col-full text-center">Mob de Mob</th>
+				<th class="table-col-full text-center">Bebas Denda</th>
+				<th class="table-col-full text-center">Valuta Tarif</th>
+				<th class="table-col-full text-center">Batas Masa</th>
+				<th class="table-col-full text-center">Tarif Tetap</th>
+				<th class="table-col-full text-center">Tarif Variabel</th>
+				<th class="table-col-full text-center">Total</th>	
+			  </tr>
+		  </thead>
+		  <tbody>
+			  	<tr ng-repeat="item in paramKesepakatanArray">
+			  		<td>{{item.noPpk1}}</td>
+			  		<td>{{item.noPpkJasa}}</td>
+					<td>{{item.dermagaText}}</td>
+			  		<td>{{item.gtMin}}</td>
+			  		<td>{{item.gtMax}}</td>
+			  		<td>{{item.jenisGerakanPanduText}}</td>
+			  		<td>{{item.jenisKapalText}}</td>
+			  		<td>{{item.jenisPanduText}}</td>
+			  		<td>{{item.jenisPelayaranText}}</td>
+			  		<td>{{item.kapalTundaText}}</td>			  		
+			  		<td>{{item.kodeKapal}}</td>
+			  		<td>{{item.loaMin}}</td>
+			  		<td>{{item.loaMax}}</td>			  		
+			  		<td>{{item.lokasiAwalText}}</td>
+			  		<td>{{item.lokasiTujuanText}}</td>
+			  		<td>{{item.minUtility}}</td>			  		
+			  		<td>{{item.pelangganText}}</td>
+			  		<td>{{item.valuta}}</td>
+			  		<td>{{item.bendera==1?'ASING':item.bendera==0?'INDONESIA':''}}</td>
+			  		<td>{{item.sifatKunjungan==1?'KPLNIAGA':item.sifatKunjungan==2?'KPLNONIAGA':item.sifatKunjungan==3?'DOCKING':''}}</td>
+			  		<td>{{item.jenisTunda==1?'NORMAL':item.jenisTunda==2?'TUNDA DORONG/GANDENG':item.jenisTunda==3?'TUNDA LUAR BIASA':item.jenisTunda==4?'TUNDA GENDONG':''}}</td>  
+			  		<td>{{item.prosenBiaya}}</td>
+			  		<td>{{item.prosenMasa}}</td>
+			  		<td>{{item.sifatText}}</td>
+			  		<td>{{item.roundingJamTunda=='null'?'':item.roundingJamTunda}}</td>
+			  		<td>{{item.mobDeMob}}</td>
+			  		<td>{{item.bebasDenda==1?'YA':item.bebasDenda==0?'TIDAK':''}}</td>
+			  		<td>{{item.valutaTarif}}</td>
+						<td>{{item.batasMasa}}</td>
+			  		<td>{{item.tarifTetap}}</td>
+			  		<td>{{item.tarifVariable}}</td>
+			  		<td>{{item.total}}</td>	
+			  	</tr>
+		  	</tbody>
+		  </table>
+	  </div>
+	  <div class="modal-footer">
+	    <div class="form-group pull-right">
+		    <div class="col-md-6">
+		        <button type="button" class="btn btn-primary btn-lg" ng-disabled="masatambatForm.$invalid;buttonDisabled" ng-click="close()">Tutup</button>     
+		    </div>
+		</div>	  	
+	  </div>
+  </div>
+</form>

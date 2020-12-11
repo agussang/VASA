@@ -1,0 +1,124 @@
+ <div class="tab-content">
+  <div id="participant" role="tabpanel" class="tab-pane">
+    <div class="form-group">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="generateMeetingParticipant()">Generate Participant</button>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAddParticipant" ng-click="resetParticipantForm()"></span>Tambah Participant</button>
+        <button type="button" class="btn btn-primary btn-lg pull-right" ng-click="sendNumberRoomToEmail()" ng-disabled="!disabledBtnSendEmail">Kirim Undangan ke Email</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <table class="datatable table table-striped table-bordered table-col-accordion">
+      <thead>
+        <tr>
+          <th class="col-sm-3" ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+            <div class="pull-left">Username</div>
+          </th>
+          <th class="col-sm-1 " ng-click="sortBy='kelasPelabuhan'; sortDesc = !sortDesc; getMeetingParticipant();">
+            <div class="pull-left">Role</div>
+            <!-- <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kelasPelabuhan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kelasPelabuhan' && sortDesc)}"></span></div>  --> 
+          </th>
+          <th class="col-sm-2" ng-click="sortBy='noPpk1'; sortDesc = !sortDesc; getMeetingParticipant();">
+            <div class="pull-left">No. PPK1</div>
+            <!-- <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpk1' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpk1' && sortDesc)}"></span></div> -->
+          </th>
+          <th class="col-sm-2" ng-click="sortBy='noPpkJasa'; sortDesc = !sortDesc; getMeetingParticipant();">
+            <div class="pull-left">No. Ppkjasa</div>
+            <!-- <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpkJasa' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpkJasa' && sortDesc)}"></span></div> -->
+          </th>
+          <th class="col-sm-1">
+            <div class="text-center">Kirim Email</div>
+          </th>
+          <th class="col-sm-1"></th>
+        </tr>
+      </thead>
+      <thead>
+        <tr>
+          <th class="col-sm-10" colspan="6">
+            <div class="pull-right">
+              <input type="checkbox" class="cursor-pointer" title="Tandai semua untuk Kirim Email" ng-click="setCheckAllSendEmail(checkAllEmail);" ng-model="checkAllEmail"> Tandai semua untuk <b>Kirim Email</b>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in itemParticipants | orderBy:'item.id'">
+          <td>{{item.username?item.username:' - '}}</td>
+          <td>{{item.userRole}}</td>
+          <td>{{item.noPpk1?item.noPpk1:' - '}}</td>
+          <td>{{item.noPpkJasa?item.noPpkJasa:' - '}} </td>
+          <td class="text-center"><input type="checkbox" class="cursor-pointer" ng-model="item.sendEmail" ng-disabled="!item.username" title="{{!item.username?'Username tidak tersedia':''}}" ng-click="setDisabledSendEmail();"></td>
+          <td class="text-center">
+            <!-- <a ng-click="editMeetingParticipant(item.id)" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a> -->
+            <a ng-click="deleteMeetingParticipant(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <div><paging class="small" page="currentPage" page-size="pageSize"
+        total="totalItems" adjacent="2" dots="..." scroll-top="true"
+        hide-if-empty="false" ul-class="pagination" active-class="active"
+        disabled-class="disabled" show-prev-next="true"
+        style="cursor: pointer;" paging-action="pageChanged(page)">
+    </paging></div>
+  </div>
+</div>
+
+<!-- modal Add Participant -->
+<div class="modal" id="modalAddParticipant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+           <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title" id="epbLabel">Tambah Participant</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <!-- <div class="form-group">
+            <div class="col-md-12">
+              <label class="col-md-3 control-label">Role</label>
+              <div class="col-md-6">
+                <select name="userRole" pf-select ng-options='option.value as option.caption for option in userRole' ng-model="participant.userRole" required></select>
+              </div>
+           </div>
+          </div> -->
+          <div class="form-group">
+            <div class="col-md-12">
+              <label class="col-md-3 control-label"><span class="text-danger">*</span>Username</label>
+              <div class="col-md-6">
+                <!-- <input class="form-control" ng-model="participant.username"></input> -->
+                <input type="text" name="pemilik" class="form-control" ng-model="participant.user" bs-typeahead bs-options="userMeeting.username for userMeeting in getListOfUserMeeting($viewValue)" data-limit="10" ng-focus="checkValue(dataAlatApung.pemilikText)" ng-blur="validationLookupPemilik()" required>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" ng-show="participant.user.userRole">
+            <div class="col-md-12">
+              <label class="col-md-3 control-label">Role</label>
+              <div class="col-md-6">
+                <input type="text" class="form-control" ng-model="participant.user.userRole" disabled>
+                <!-- <label>{{participant.user.userRole}}</label> -->
+              </div>
+           </div>
+          </div>
+          <div class="form-group" ng-show="participant.user.userRole==='AGEN'">
+            <div class="col-md-12">
+              <label class="col-md-3 control-label">No. Ppk1</label>
+              <div class="col-md-6">
+                <input class="form-control" ng-model="participant.noPpk1"></input>
+              </div>
+           </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" ng-click="saveParticipant()">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>

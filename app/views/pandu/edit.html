@@ -1,0 +1,102 @@
+<h2>Tarif Pandu Edit</h2>
+<form class="form-horizontal" name="panduEdit">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-8"><span class="text-danger">*</span>Nomor SK</label>{{nomorSk}}
+    	<div class="col-sm-7">
+          <!-- <div class="form-control">{{dataPandu.nomorSk}}</div> -->
+      		<input type="text" name="nomorSk" class="form-control" ng-model="dataPandu.nomorSk" required>
+          <span class="has-error" ng-show="panduEdit.nomorSk.$touched && panduEdit.nomorSk.$invalid">
+                Isi Nomor SK dibutuhkan.
+          </span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+    <label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Tgl. Berlaku</label>
+      <div class="col-sm-7">
+           <div pf-datepicker id="IdtglBerlaku" options="options" name="tglBerlaku" data-date-format="dd-mm-yyyy" date="dataPandu.tglBerlaku" ng-model="dataPandu.tglBerlaku" required></div>
+           <span class="has-error" ng-show="panduEdit.tglBerlaku.$touched && panduEdit.tglBerlaku.$invalid">
+                Isi Tgl. Berlaku dibutuhkan.
+          </span>
+      </div>
+    </div>
+  	<div class="form-group">
+    <label class="col-sm-2 control-label" for="jns-2"><span class="text-danger">*</span>Jenis Pelayaran</label>
+      <div class="col-sm-7">
+          <select name="jnsPelayaran" pf-select ng-options='option.value as option.caption for option in jnsPelayaran' ng-model="dataPandu.jenisPelayaran" required></select>
+           <span class="has-error" ng-show="panduEdit.jnsPelayaran.$touched && panduEdit.jnsPelayaran.$invalid">
+                Isi Jenis Pelayaran dibutuhkan.
+          </span>
+      </div>
+    </div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tetap-8"><span class="text-danger">*</span>Tarif Tetap</label>
+    	<div class="col-sm-7">
+      		<input type="number" maxlength="15" decimal-number min="0" name="tarifTetap" class="form-control" ng-model="dataPandu.tarifTetap" id="tetap-8" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001" required>
+           <span class="has-error" ng-show="panduEdit.tarifTetap.$touched && panduEdit.tarifTetap.$invalid">
+                  Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+          </span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="variabel-8"><span class="text-danger">*</span>Tarif Variabel</label>
+    	<div class="col-sm-7">
+      		<input type="number" maxlength="15" decimal-number min="0" name ="trfVariabel" min="0" id="variabel-8" class="form-control"  id="variabel-8" ng-model="dataPandu.tarifVariabel" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001" required>
+          <span class="has-error" ng-show="panduEdit.trfVariabel.$touched && panduEdit.trfVariabel.$invalid">
+                  Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+          </span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="valuta-8"><span class="text-danger">*</span>Valuta</label>
+    	 <div class="col-sm-7">
+          <select name="Valuta" pf-select ng-options='option.value as option.caption for option in valuta' ng-model="dataPandu.valuta" required></select>
+          <span class="has-error" ng-show="panduEdit.Valuta.$touched && panduEdit.Valuta.$invalid">
+                Isi Tarif Valuta dibutuhkan.
+          </span>
+      </div>
+  	</div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="valuta-8"><span class="text-danger">*</span>Jenis Negara</label>
+       <div class="col-sm-7">
+          <select name="jenisNegara" pf-select ng-options='option.value as option.caption for option in jenisNegara' ng-model="dataPandu.jenisNegara" required></select>
+          <span class="has-error" ng-show="panduEdit.jenisNegara.$touched && panduEdit.jenisNegara.$invalid">
+                Isi Jenis Negara dibutuhkan.
+          </span>
+      </div>
+    </div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="file-8"><span class="text-danger">*</span>Dok. Pendukung</label>
+    	<div class="col-sm-7">
+      		<input type="file" name="dokPendukung" ng-model="dataPandu.dokPendukung" class="form-control" file-input="uploadFile" onchange="checkExt();" accept=".pdf,.jpg" accept=".pdf,.jpg" >
+        <!--  <span class="has-error" ng-show="panduEdit.dokPendukung.$touched && panduEdit.dokPendukung.$invalid">
+                Isi Dok. Pendukung dibutuhkan.
+          </span> -->
+           <a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="dataPandu.dokumen"></i> {{dataPandu.dokumen}}</a>
+    	</div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+  	</div>
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+	      	<button class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+          <button type="button" ng-disabled="panduEdit.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true" class="btn btn-primary btn-lg"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+          <button type="button" ng-disabled="panduEdit.$invalid;" ng-click="submitApproval();showLoader=true;buttonDisabled=true" class="btn btn-primary btn-lg"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Approval</button>
+	    </div>
+  	</div>
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-8').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>
+<script>
+  var checkExt = function() {
+    if(document.mainForm.myfile.value.lastIndexOf(".pdf")==-1) {
+       alert("file harus format PDF");
+       return false;
+    }
+  }
+</script>

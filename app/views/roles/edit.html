@@ -1,0 +1,194 @@
+<h2>Role Edit</h2>
+<br>
+<form name="rolesForm" class="form-horizontal">
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-4"><span class="text-danger">*</span>Kode Role</label>
+	    <div class="col-sm-4 col-xs-8">
+	      	<input type="text" class="form-control" ng-model="dataRoles.kodeRole" name="kode" maxlength="15" ng-disabled="true" required>
+	      	<span class="has-error" ng-show="rolesForm.kode.$touched && rolesForm.kode.$invalid">
+            	Isi kode role dibutuhkan.
+          	</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-4"><span class="text-danger">*</span>Nama Role</label>
+	    <div class="col-sm-4 col-xs-8">
+	      	<input type="text" class="form-control" ng-model="dataRoles.namaRole" name="nama" maxlength="30" required>
+	      	<span class="has-error" ng-show="rolesForm.nama.$touched && rolesForm.nama.$invalid">
+            	Isi nama role dibutuhkan.
+          	</span>
+	    </div>
+  	</div>
+    <div class="form-group" ng-show="isPusat == 'true'">
+        <label class="col-sm-2 col-xs-4"><span class="text-danger">*</span>Kode Cabang</label>
+      <div class="col-sm-4 col-xs-8">
+            <select pf-select  ng-options="option.kodeCabang as option.namaPelbKode for option in listCabang" ng-model="dataRoles.kodeCabang"></select>
+          <span class="has-error" ng-show="rolesForm.kodeCabang.$touched && rolesForm.kodeCabang.$invalid">
+              Isi kode cabang dibutuhkan.
+            </span>
+      </div>
+    </div>
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-4"><span class="text-danger"> </span>Keterangan</label>
+	    <div class="col-sm-4 col-xs-8">
+	      	<input type="text" class="form-control" ng-model="dataRoles.keterangan" maxlength="30" name="keterangan">
+	    </div>
+  	</div>
+  	<div class="panel-group" id="accordion-jasa">
+	  <div class="panel panel-default">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	        <a data-toggle="collapse" data-parent="#accordion-jasa" data-target="#collapseOne" class="collapsed-role collapsed" style="display:block;cursor: pointer;">
+	          Jasa
+	        </a>
+
+            <input type="checkbox" class="pull-right big-checkbox-jasa" ng-model="dataRolesJasa.checkbox" ng-click="selectJasa()" ng-true-value ="true" ng-false-value="false">
+	      </h4>
+	    </div>
+	    <div id="collapseOne" class="panel-collapse collapse in">
+	      <div class="panel-body">
+	        <table class="table table-striped table-bordered table-col-accordion">
+				<thead>
+					<tr>
+						<th class="text-center">Labuh</th>
+						<th class="text-center">Tambat</th>
+						<th class="text-center">Pandu</th>
+						<th class="text-center">Tunda</th>
+						<th class="text-center">Air Kapal</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRolesJasa.flagLabuh" ng-true-value ="true" ng-false-value="false" /></td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRolesJasa.flagTambat" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRolesJasa.flagPandu" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRolesJasa.flagTunda" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRolesJasa.flagAirKapal" ng-true-value ="true" ng-false-value="false" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- Nootifikasi -->
+	<div class="panel-group" id="accordion-notifikasi">
+		<div class="panel panel-default">
+		    <div class="panel-heading">
+		      <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion-notifikasi" data-target="#collapseNotifikasi" class="collapsed-role collapsed cursor-pointer">
+		          Notifikasi
+		        </a>
+		      </h4>
+	          <input type="checkbox" class="pull-right big-checkbox-jasa" ng-model="notifcheckbox" ng-click="selectAllNotifikasi()" ng-true-value ="true" ng-false-value="false">
+	          <div class="heading-notifikasi">User yang memiliki kode role ini, akan dikirimkan pemberitahuan berupa :</div>
+		    </div>
+		    <div id="collapseNotifikasi" class="panel-collapse collapse in">
+		      <div class="panel-body">
+		        <table class="table table-striped table-bordered table-col-accordion">
+					<thead>
+						<tr>
+							<th colspan="4" class="text-center">Nama Notifikasi</th>
+							<th class="text-center"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="4">
+								Notifikasi yang membutuhkan tindakan Penetapan
+							</td>
+							<td class="text-center">
+								<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRoles.flagNotifPenetapan" ng-true-value ="true" ng-false-value="false" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								Notifikasi yang membutuhkan tindakan Realisasi
+							</td>
+							<td class="text-center">
+								<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRoles.flagNotifRealisasi" ng-true-value ="true" ng-false-value="false" />
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">
+								Notifikasi yang membutuhkan tindakan Eskalasi
+							</td>
+							<td class="text-center">
+								<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="dataRoles.flagNotifEskalasi" ng-true-value ="true" ng-false-value="false" />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+		      </div>
+		    </div>
+	    </div>
+	</div>
+	<div class="panel-group" id="accordion-markup">
+	  <div class="panel panel-default" ng-repeat="item in dataRolesGrup">
+	    <div class="panel-heading">
+	      <h4 class="panel-title">
+	        <a data-toggle="collapse" data-parent="#accordion-markup" data-target="#collapseTwo{{item.grup}}" class="collapsed-role collapsed cursor-pointer">
+	          {{item.grupText}}
+	        </a>
+          <input type="checkbox" class="pull-right big-checkbox" ng-model="item.groupCheckbox" ng-click="selectAllGroup(item.grup)" ng-true-value ="true" ng-false-value="false">
+	      </h4>
+	    </div>
+	    <div id="collapseTwo{{item.grup}}" class="panel-collapse collapse in">
+	      <div class="panel-body">
+	        <table class="table table-striped table-bordered table-col-accordion">
+				<thead>
+					<tr>
+						<th class="text-center col-xs-1">ID Menu</th>
+						<th class="text-center">Nama Menu</th>
+            			<th style="border-left:hidden; width:30px;"></th>
+						<th class="text-center col-md-1" title="Create">C</th>
+						<th class="text-center col-md-1" title="Read">R</th>
+						<th class="text-center col-md-1" title="Update">U</th>
+						<th class="text-center col-md-1" title="Delete">D</th>
+						<th class="text-center col-md-1" title="Print">P</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="data in item.menus | orderBy: 'kodeMenu'">
+						<td>{{data.kodeMenu}}</td>
+						<td>{{data.namaMenu}}</td>
+            			<td class="text-center"  style="border-left:hidden; width:30px;">
+  							<input type="checkbox" ng-click="selectAll(item.grup,data.kodeMenu)" ng-model="data.checkbox" ng-true-value ="true" ng-false-value="false" ng-checked="master"/></td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="data.cflag" ng-true-value ="true" ng-false-value="false" /></td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="data.rflag" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="data.uflag" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="data.dflag" ng-true-value ="true" ng-false-value="false" />
+						</td>
+						<td class="text-center">
+							<input bs-switch class="roles-switch col-xs-1" type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="data.pflag" ng-true-value ="true" ng-false-value="false" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	      </div>
+	    </div>
+	  </div>
+
+	</div>
+	<div class="form-group ">
+      <div class="text-center">
+          <button type="button" class="btn btn-lg btn-default" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-lg btn-primary" ng-disabled="rolesForm.$invalid;" ng-click="submit();buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+      </div>
+    </div>
+</form>

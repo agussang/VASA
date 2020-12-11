@@ -1,0 +1,72 @@
+<h2>Permission Edit</h2>
+<br>
+<form name="permissionForm" class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-3 col-xs-4 control-label"><span class="text-danger">*</span>ID Menu</label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control" name="kodeMenu" ng-model="dataPermission.kodeMenu" ng-disabled="true" required>
+			<span class="has-error" ng-show="permissionForm.kodeMenu.$touched && permissionForm.kodeMenu.$invalid">
+            	Isi ID Menu dibutuhkan.
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 col-xs-4 control-label"><span class="text-danger">*</span>Nama Menu</label>
+		<div class="col-sm-4">
+			<input type="text" class="form-control" name="nama" ng-model="dataPermission.namaMenu" required>
+			<span class="has-error" ng-show="permissionForm.nama.$touched && permissionForm.nama.$invalid">
+            	Isi nama menu dibutuhkan.
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 col-xs-8 control-label"><span class="text-danger">*</span>Grup</label>
+		<div class="col-sm-4"> <!--{{dataPermission.grupText}} -->
+			<select pf-select ng-options='option.value as option.caption for option in grup_menu' ng-model="dataPermission.grup" ></select>
+			<span class="has-error" ng-show="permissionForm.grup.$touched && permissionForm.grup.$invalid">
+            	Isi group dibutuhkan.
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-3 col-xs-12 control-label"><span class="text-danger">*</span>Permission</label>
+		<div class="col-sm-4">
+			<div class="row">
+				<div class="col-sm-2 col-xs-2">Create</div>
+				<div class="col-sm-4">
+					<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataPermission.cflag" ng-true-value ="true" ng-false-value="false" checked />
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-2 col-xs-2">Read</div>
+				<div class="col-sm-4">
+					<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataPermission.rflag" ng-true-value ="true" ng-false-value="false" checked />
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-2 col-xs-2">Update</div>
+				<div class="col-sm-4">
+					<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataPermission.uflag" ng-true-value ="true" ng-false-value="false" checked />
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-2 col-xs-2">Delete</div>
+				<div class="col-sm-4">
+					<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataPermission.dflag" ng-true-value ="true" ng-false-value="false" checked />
+				</div>
+			</div><br>
+			<div class="row">
+				<div class="col-sm-2 col-xs-2">Print</div>
+				<div class="col-sm-4">
+					<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataPermission.pflag" ng-true-value ="true" ng-false-value="false" checked />
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sm-7">
+			<button type="button" class="btn btn-lg btn-default" ng-disabled="permissionForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          	<button type="button" class="btn btn-lg btn-primary" ng-disabled="permissionForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,94 @@
+<div class="container">
+<h2>Tarif Tunda Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nomor SK</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.nomorSk}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Berlaku</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.tglBerlaku | date: "dd-MM-yyyy"}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Pelayaran</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.jenisPelayaranText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Perairan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.jenisPerairanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Kegiatan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.jenisKegiatanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">GT Min. </label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.minGt | number:0}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">GT Max. </label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.maxGt | number:0}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Tetap</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.tarifTetap | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Variabel</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.tarifVariabel  | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.valuta}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Negara</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTundaDetails.jenisNegaraText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'><a href="" class="fa fa-file-pdf-o sm-1" aria-hidden="true"  ng-click="buildPDF()"  ng-show="contentTundaDetails.dokumen"> {{contentTundaDetails.dokumen}}</a></span>
+	    </div>
+  	</div>
+	<div class="form-group">
+ 	<div class="col-sm-9">
+    	<input type="button" onclick="location.href='#/tunda/list';" value="Tutup" class="btn btn-lg btn-primary" />
+     </div>
+   </div>
+</form>
+</div>

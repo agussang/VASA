@@ -1,0 +1,128 @@
+<h2>Pelanggan Kapal Langganan Detail</h2>
+			<form class="form-horizontal">
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Kode kapal</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.kodeKapal}}</span>
+				    </div>
+				    <label class="col-sm-2">No. SK</label>
+				    <div class="col-sm-4">
+				        <span>:</span>
+				        <span class='view-detail'>{{langgananDetail.nomorSk}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Nama Kapal</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.namaKapal}}</span>
+				    </div>
+				    <label class="col-sm-2">Tgl. Mulai Berlaku</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.tglMulaiBerlaku | date: "dd-MM-yyyy"}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Kode Pelanggan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.kodePelanggan}}</span>
+				    </div>
+				    <label class="col-sm-2">Tgl. Selesai Berlaku</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.tglSelesaiBerlaku | date: "dd-MM-yyyy"}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Nama Pelanggan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.namaPelanggan}}</span>
+				    </div>
+				    <label class="col-sm-2">Tgl. Sepakat</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.tglSepakat | date: "dd-MM-yyyy"}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Jasa</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.jasaText}}</span>
+				    </div>
+				    <label class="col-sm-2">Persetujuan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.persetujuanText}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Dermaga</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.namaDermaga}}</span>
+				    </div>
+						<label class="col-sm-2">Nama Pejabat Pelindo</label>
+						<div class="col-sm-4">
+								<span>:</span>
+								<span class='view-detail'>{{langgananDetail.pejabatPelabuhan}}</span>
+						</div>
+			  	</div>			
+			  	<div class="form-group">
+			    	<label class="col-sm-2">Tagihan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      <span class='view-detail'>{{langgananDetail.tagihanText}}</span>
+				    </div>
+						<label class="col-sm-2">Nama PIC Pelanggan</label>
+						<div class="col-sm-4">
+								<span>:</span>
+								<span class='view-detail'>{{langgananDetail.pelangganPelabuhan}}</span>
+						</div>
+			  	</div>
+			  	<div class="form-group" ng-hide="langgananDetail.tagihan==1">
+			    	<label class="col-sm-2">Nilai</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.nilai | currency:"":0}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group" ng-hide="langgananDetail.tagihan==1">
+			    	<label class="col-sm-2">Valuta</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      <span class='view-detail'>{{langgananDetail.valuta}}</span>
+				    </div>
+				    <label class="col-sm-2">Dok. Pendukung</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>
+									<a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="langgananDetail.dokumen"></i> {{langgananDetail.dokumen}}</a>
+									</span>
+						</div>
+			  	</div>
+			  	<div class="form-group" ng-hide="langgananDetail.tagihan==0">
+			    	<label class="col-sm-2">Pelabuhan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.pelabuhan}}</span>
+				    </div>
+			  	</div>
+			  	<div class="form-group" ng-hide="langgananDetail.tagihan==0">
+			    	<label class="col-sm-2">Pelanggan</label>
+				    <div class="col-sm-4">
+				      	<span>:</span>
+				      	<span class='view-detail'>{{langgananDetail.pelanggan}}</span>
+				    </div>
+			  	</div>
+			</form>
+		</div>
+	</div>
+
+<div class="col-xs-4 col-md-2">
+	<button class="btn btn-lg btn-primary" ng-click="cancel()">Tutup</button>
+</div>

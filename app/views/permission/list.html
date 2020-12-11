@@ -1,0 +1,65 @@
+<h2>Permissions</h2>
+
+<div pf-filter config="filterConfig"></div>
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="10">
+            	Show :
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/permission/new';" value="Permission Baru" class=" btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th>No</th>
+			<th  class="col-xs-1" ng-click="sortBy='kodeMenu'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">ID Menu</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kode' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kode' && sortDesc)}"></span></div>
+			</th>
+			<th class="col-xs-2" ng-click="sortBy='namaMenu'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Nama Menu</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nama' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nama' && sortDesc)}"></span></div>
+			</th>
+			<th class="col-xs"ng-click="sortBy='namaMenu'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Group</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'z' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nama' && sortDesc)}"></span></div>
+			</th>
+			<th class="text-center col-xs-1">C</th>
+			<th class="text-center col-xs-1">R</th>
+			<th class="text-center col-xs-1">U</th>
+			<th class="text-center col-xs-1">D</th>
+			<th class="text-center col-xs-1">P</th>
+			<th class="text-center col-xs-1">Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items">
+			<td>{{noIndex+$index +1}}</td>
+			<td>{{item.kodeMenu}}</td>
+			<td>{{item.namaMenu}}</td>
+			<td>{{item.grupText}}</td>
+			<!-- <td>{{(item.flagAktif === 1 ? 'AKTIF' : 'TIDAK AKTIF')}}</td> -->
+			<td class="text-center"><i ng-class="item.cflag" aria-hidden="true"></i></td>
+			<td class="text-center"><i ng-class="item.rflag" aria-hidden="true"></i></td>
+			<td class="text-center"><i ng-class="item.uflag" aria-hidden="true"></i></td>
+			<td class="text-center"><i ng-class="item.dflag" aria-hidden="true"></i></td>
+			<td class="text-center"><i ng-class="item.pflag" aria-hidden="true"></i></td>
+			<td  class="col-xs-2 text-center">
+				<a ng-show="userRole.rflag" href="#/permission/detail/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+        <a ng-show="userRole.uflag" href="#/permission/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+        <a ng-show="userRole.dflag" ng-click="deletePermission(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div>
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>

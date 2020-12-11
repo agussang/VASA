@@ -1,0 +1,80 @@
+<h2 >Master Alat Apung</h2>
+
+<div pf-filter config="filterConfig"></div>
+
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr>
+        <td colspan="10">
+          <div class="form-group">
+             <span>Show : </span>
+              <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+              <input type="button"  ng-show="userRole.cflag" onclick="location.href='#/alatapung/new';" value="Alat Apung Baru" class="btn-list btn btn-default pull-right" style="margin-left:20px;"/>
+          </div>
+        </td>
+    </tr>
+    <tr>
+      <td colspan="10" class="text-center">{{pagingText}}</td>
+    </tr>
+    <tr>
+      <th >No</th>
+      <th ng-click="sortBy='noRegistrasi'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">No. Reg</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noRegistrasi' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noRegistrasi' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='nama'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Nama Alat</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nama' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nama' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='jenis'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Jenis</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenis' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenis' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='kelas'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Kelas</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kelas' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kelas' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='pemilik'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Pemilik</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'pemilik' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'pemilik' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='kondisi'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Kondisi</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kondisi' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kondisi' && sortDesc)}"></span></div>
+      </th>
+      <th class="table-col-full text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="item in items">
+      <td class="col-sm-1">{{noIndex+$index +1}}</td>
+      <td class="col-sm-2">{{item.noRegistrasi}}</td>
+  		<td class="col-sm-2">{{item.nama}}</td>
+  		<td class="col-sm-2">{{item.jenisText}}</td>
+  		<td class="col-sm-1">{{item.kelasText}}</td>
+      <td class="col-sm-1">{{item.pemilikText}}</td>
+      <td class="col-sm-1">{{item.kondisiText}}</td>
+      {{item}}
+      <td class="text-center">
+        <a  ng-show="userRole.rflag" href="#/alatapung/view/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+        <a  ng-show="userRole.uflag" href="#/alatapung/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+        <a  ng-show="userRole.dflag" ng-click="deleteAlatApung(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+
+      </td>
+    </tr>
+  </tbody>
+
+</table>
+<div><paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+</paging></div>
+<script>
+
+//Initialize select picker
+$('.selectpicker').selectpicker();
+
+
+</script>

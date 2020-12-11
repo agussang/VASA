@@ -1,0 +1,153 @@
+<h2>Daftar Realisasi Air Kapal</h2>
+<div class="row">
+	<div class="col-md-6" ng-show="showAction">
+		<form name="formSearch" ng-submit="pageChanged(0)">
+			<div class="input-group">
+				<select pf-select ng-init="selectionSearch = filterConfig[0]"  ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+				<input type="text" ng-disabled="isClicked" class="form-control" name="search" ng-model="searchText" ng-minlength="filterMinLength" maxlength="30" placeholder="{{filterPlaceholder}}" capitalize>
+				<span class="input-group-addon btn btn-default" ng-click="isClicked || resetSearch()" ng-disabled="isClicked" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+				<span class="input-group-addon btn btn-default" ng-click="isClicked || pageChanged(0)" ng-disabled="isClicked" title="Search"><span class="fa fa-search"></span></span>
+			</div>
+			<label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+		</form>
+	</div>
+	<div class="col-md-6" ng-hide="showAction">
+		<button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+	</div>
+	<div class="col-md-6">
+		<div class="pull-right icon-legenda">
+			<span class="fa fa-square square"> </span> Jasa belum dilakukan Realisasi<br>
+			<span class="fa fa-square"> </span> Jasa sudah dilakukan Realisasi
+		</div>
+	</div>
+</div>
+
+<span ng-show="informasiLengthItem===0 && contentSearch"><b>Hasil Pencarian : </b>{{searchSelectedResponse}} <b>{{searchTextItem}}</b> tidak ditemukan.<br></span>
+<span ng-show="contentSearch"><b>Total Hasil Pencarian : </b>{{informasiLengthItem}}</b> data</span>
+
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="9">
+            	Show :
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <select ng-options='option.value as option.name for option in options.filter' ng-model="option	.value" ng-change="pageChanged(0)" style="height:26px; margin-right:5px;"></select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th>No</th>
+			<th ng-click="sortBy='noPpk1'; sortDesc = !sortDesc; pageChanged(0);" style="width:150px">
+				<div class="pull-left">No. PPK1</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpk1' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpk1' && sortDesc)}"></span></div>
+			</th>
+			<th>
+				<div class="pull-left">Kapal</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th>
+				<div class="pull-left">Asal</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th style="width:130px;">
+				<div>Tujuan</div>
+
+			</th>
+			<th>
+				<div class="pull-left">Agen</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th>
+				<div class="pull-left" style="min-width:100px;">Tgl. Verifikasi</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th class="text-center"></th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items" ng-class="{'text-disabled': item.flagJasa == false}">
+			<td style="color: #000">{{noIndex+$index +1}}</td>
+			<td>
+				<span><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a></span>
+				<span class="cursor-pointer" ng-mouseover="getDataJasa(item)" ng-show="item.showToolTip">
+					<a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{dataToolTipJasa}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+				</span>
+				<br>
+				<h6 ng-repeat="(key, value) in item.listNamaJasa" ng-class="value.status == true ? 'list-after' : (value.status == false ? 'list-before' : 'list-before')">{{value.nama}}&nbsp;{{$last ? '' : '-'}}&nbsp;</h6>
+			</td>
+			<td>
+				<span>{{item.namaKapal}}</span><br>
+				<span>({{item.kodeKapal}})</span><br>
+				<span class="detail-daftar">GT:{{item.gtKapal | currency:"":0}}&nbsp;LOA:{{item.loa}}</span>
+			</td>
+			<td>
+				<span>{{item.namaPelabuhanAsal}}</span><br>
+				<span>({{item.kodePelabuhanAsal}})</span>
+			</td>
+			<td>
+				<span>{{item.namaPelabuhanTujuan}}</span><br>
+				<span>({{item.kodePelabuhanTujuan}})</span>
+			</td>
+			<td>
+				<span>{{item.namaAgen}}</span><br>
+				<span>({{item.kodeAgen}})</span>
+			</td>
+			<td>
+			<span>{{item.tanggalKonfirmasi}}</span><br>
+			<span class="detail-daftar">{{item.jamKonfirmasi}}</span>
+
+			</td>
+			<td class="text-center" style="width:150px;">
+				<button type="button" ng-show="userRole.cflag" class="btn btn-default btn-sm" title="Realisasi Baru" ng-disabled="item.disableBtnRea || item.flagJasa == false || item.permohonan.flagDone == 2" ng-click="realisasiBaru(item.noPpk1,item.urutanPermohonan)" style="font-family: 'FontAwesome', sans-serif;margin-right:5px;">&#xf091;&nbsp;</button>
+				<button type="button" ng-show="userRole.uflag" class="btn btn-default btn-sm" ng-if="item.status === 'R'" ng-click="cekPranota(item.noPpk1,item.urutanPermohonan)" title="Cek Pranota" style="font-family: 'FontAwesome', sans-serif;margin-right:5px;">&#xf1ec;&nbsp;</button>
+				<button type="button" ng-show="userRole.rflag" class="btn btn-default btn-sm" ng-if="item.status === 'T'" ng-click="setPranota(item.noPpk1,item.urutanPermohonan)" title="Pranota" style="font-family: 'FontAwesome', sans-serif;margin-right:5px;">&#xf0d6;&nbsp;</button>
+		        <div class="dropdown"  style="font-family: 'FontAwesome', sans-serif; display: inline;">
+		        	<button ng-show="userRole.uflag" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="item.flagJasa == false || item.status =='D' || item.status =='C' || item.status =='N'|| item.status =='P'" title="Edit Jasa" type="button" id="dropdownMenuButton" data-toggle="dropdown" style="height:30px;margin-right:5px;">&#xf040;&nbsp;<span class="caret"></span>
+		          	</button>
+		            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+		              	<li class="list-daftar-penetapan cursor-pointer">
+		                	<a ng-class="{'avoidclick': item.status != 'R'}" ng-click="updateRealisasi(item.noPpk1,item.urutanPermohonan)">Transaksi</a>
+		              	</li>
+		              	<li class="list-daftar-penetapan cursor-pointer">
+							<a ng-class="{'avoidclick': item.status != 'R'}" ng-click="showModalValidasiDataUmum(item)">Data Umum</a>
+		              	</li>
+		            </ul>
+		        </div>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div ng-show="showAction">
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>
+<!-- modal Edit Data Umum -->
+<div class="modal" id="modalValidasiEditDataUmum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi Data Umum</h4>
+         </div>
+         <div class="modal-body">
+            Data umum yang berisi Nama Kapal, Agen, Pelabuhan, Sifat Kunjungan dan Jenis Kemasan tidak dapat diubah di fase Realisasi.
+            <br><br>Kode validasi: <b>VALREA-024</b>
+         </div>
+         <div class="modal-footer">
+            <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+                  <i class="fa fa-level-up "></i> 
+               <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+            </div>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>

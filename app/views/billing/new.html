@@ -1,0 +1,61 @@
+<h2>Formula Baru</h2>
+<br>
+<form class="form-horizontal" name="billingForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">* </span>Kode Formula :</label>
+		<div class="col-sm-7">
+			<input type="text" class="form-control" ng-model="dataBilling.kode" name="kode" required>
+			<span class="has-error" ng-show="billingForm.kode.$touched && billingForm.kode.$invalid">
+				Isi kode formula dibutuhkan.
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">* </span>Nama Formula :</label>
+		<div class="col-sm-7">
+			<input type="text" class="form-control" ng-model="dataBilling.nama" name="nama" required>
+			<span class="has-error" ng-show="billingForm.nama.$touched && billingForm.nama.$invalid">
+				Isi nama formula dibutuhkan.
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">* </span>Tgl. Berlaku :</label>
+		<div class="col-sm-3">
+			<div pf-datepicker data-date-format="dd-mm-yyyy" date="tglBerlaku" required></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">* </span>Status :</label>
+		<div class="col-sm-7">
+			<input bs-switch type="checkbox" switch-on-text="Aktif" switch-off-text="Tidak Aktif" ng-model="dataBilling.status" ng-true-value ="true" ng-false-value="false" name="status"/>
+			<span class="has-error" ng-show="billingForm.status.$touched && billingForm.status.$invalid">
+				Isi nama formula dibutuhkan.
+			</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">* </span>Formula :</label>
+		<div class="col-sm-7">
+			<div ui-codemirror="{ onLoad : codemirrorLoaded }" ui-codemirror-opts="editorOptions" class="script-area" ng-model="dataBilling.sourceCode"></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				    <h3 class="panel-title">Avaliable Fields</h3>
+				</div>
+				<div class="panel-body">
+				    <a ng-click="insf(field.name)" class="p3-list list-group-item" ng-repeat="field in fields" title="{{field.desc}}" style="cursor:pointer">
+				    	{{field.name}}
+				  	</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+	        <button type="button" class="btn btn-default btn-lg">Batal</button>
+	        <button type="button" class="btn btn-primary btn-lg" ng-disabled="billingForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+	</div>
+</form>

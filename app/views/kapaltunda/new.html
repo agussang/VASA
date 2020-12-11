@@ -1,0 +1,109 @@
+<h2>Master Denda</h2>
+<form class="form-horizontal" name="masterDendaForm">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" ><span class="text-danger">*</span>Kode Denda</label>
+    	<div class="col-sm-7">
+      		<input type="text"  maxlength="15" class="form-control" name="nip" ng-model="masterDenda.kodeDenda" required>
+          <span class="has-error" ng-show="masterDendaForm.nip.$touched && masterDendaForm.nip.$invalid">
+            Isi kode denda dibutuhkan.
+          </span>
+    	</div>
+       <a ng-if="!masterDenda.kodeDenda == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+  	</div>
+
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Jenis Jasa</label>
+    	<div class="col-sm-4">
+      		 	<select pf-select ng-model="masterDenda.jenisJasa" name="jenis" ng-options='option.value as option.caption for option in jenisJasa' id="jns-1" required></select>
+            <span class="has-error" ng-show="masterDendaForm.jenisJasa.$touched && masterDendaForm.jenisJasa.$invalid">
+              Isi jenis jasa dibutuhkan.
+            </span>
+    	</div>
+  	</div>
+
+    <div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Jenis Denda</label>
+    <div class="col-sm-4">
+       <select pf-select ng-model="masterDenda.jenisDenda" name="jenis" ng-options='option.value as option.caption for option in jenisDenda' id="jns-1" required></select>
+      <span class="has-error" ng-show="masterDendaForm.jenis.$touched && masterDendaForm.jenis.$invalid">
+        Isi jenis denda dibutuhkan.
+      </span>
+    </div>
+  	</div>
+
+    <div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Kena Denda</label>
+      <div class="col-sm-7">
+        <input  bs-switch type="checkbox" switch-on-text="YA" switch-off-text="TIDAK" ng-model="masterDenda.flagDenda" ng-true-value ="1" ng-false-value="0" checked>
+        <span class="has-error" ng-show="masterDendaForm.flagDenda.$touched && masterDendaForm.flagDenda.$invalid">
+          Isi kena denda dibutuhkan.
+        </span>
+      </div>
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger"></span>Dermaga</label>
+      <div class="col-sm-7" style="display:inline-flex;">
+          <input type="text" name="dermaga" class="form-control" ng-model="masterDenda.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+           ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()">
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Aktif</label>
+      <div class="col-sm-7">
+        <input  bs-switch type="checkbox" switch-on-text="YA" switch-off-text="TIDAK" ng-model="masterDenda.flagAktif" ng-true-value ="1" ng-false-value="0" checked>
+        <span class="has-error" ng-show="masterDendaForm.flagAktif.$touched && masterDendaForm.flagAktif.$invalid">
+          Isi aktif dibutuhkan.
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Sifat</label>
+      <div class="col-sm-4">
+         <select pf-select ng-model="masterDenda.sifatDenda" name="sifatDenda" ng-options='option.value as option.caption for option in sifatDenda' id="jns-1"  required></select>
+        <span class="has-error" ng-show="masterDendaForm.sifatDenda.$touched && masterDendaForm.sifatDenda.$invalid">
+          Isi sifat dibutuhkan.
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Nilai</label>
+        <div class="col-sm-7">
+
+            <input type="number" maxlength="14" only-num min="0" class="form-control" name="value" ng-model="masterDenda.value" placeholder="{{(masterDenda.sifatDenda==2)? '%' : ''}}" required>
+            <span class="has-error" ng-show="masterDendaForm.value.$touched && masterDendaForm.value.$invalid">
+              Isi nilai dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Keterangan</label>
+        <div class="col-sm-7">
+            <input type="text"  class="form-control" name="keterangan" ng-model="masterDenda.keterangan" required>
+            <span class="has-error" ng-show="masterDendaForm.keterangan.$touched && masterDendaForm.keterangan.$invalid">
+              Isi keterangan dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="masterDendaForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+    $("[name='status-checkbox']").bootstrapSwitch();
+</script>

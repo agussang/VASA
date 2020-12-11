@@ -1,0 +1,114 @@
+<h2>Petugas Pandu Baru</h2>
+
+  <form class="form-horizontal" name="petugasPanduForm">
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Nama</label>
+      <div class="col-sm-7">
+          <input type="text"  class="form-control" ng-model="pandu" bs-typeahead bs-options="sdmkapal.mpegNamaNip for sdmkapal in getListOfSDMKapal($viewValue)" data-limit="10" ng-focus="checkValue(petugasPandu.petugas)"ng-readonly="rightReadOnly">
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>NIPP</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" ng-model="petugasPandu.nipPandu" name="nip" required>
+          <span class="has-error" ng-show="petugasPanduForm.nip.$touched && petugasPanduForm.nip.$invalid">
+              Isi nip dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Kode</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="9" class="form-control" ng-model="petugasPandu.kode" name="kode" required>
+          <span class="has-error" ng-show="petugasPanduForm.kode.$touched && petugasPanduForm.kode.$invalid">
+              Isi kode dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Username</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" ng-model="petugasPandu.username" name="username" required>
+          <span class="has-error" ng-show="petugasPanduForm.username.$touched && petugasPanduForm.username.$invalid">
+              Isi username dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Email</label>
+      <div class="col-sm-7">
+          <input type="email" maxlength="30" class="form-control" ng-model="petugasPandu.emailPetugas" name="email" required>
+          <span class="has-error" ng-show="petugasPanduForm.email.$touched && petugasPanduForm.email.$invalid">
+              Isi email dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Handphone</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="15" only-num class="form-control" ng-model="petugasPandu.hp" name="handphone" required>
+          <span class="has-error" ng-show="petugasPanduForm.handphone.$touched && petugasPanduForm.handphone.$invalid">
+              Isi hp dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="file-8"><span class="text-danger">*</span>Foto</label>
+      <div class="col-sm-7">
+          <input type="file" id="file" name="file" class="form-control" class="form-control" file-input="uploadFile" accept=".jpeg,.jpg" ng-model="petugasPandu.file" valid-file ng-required="true" required>
+          <span class="has-error" ng-show="petugasPanduForm.file.$touched && petugasPanduForm.file.$invalid">
+            Isi Foto Petugas dibutuhkan.
+          </span>
+          <span class="has-error" ng-show="errorMessageUploadFile">
+            {{errorMessageUploadFile}}
+          </span>
+      </div>
+    </div>
+    <!-- <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Cabang Pandu</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="petugasPandu.idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1"required></select>
+            <span class="has-error" ng-show="petugasPanduForm.idKawasan.$touched && petugasPanduForm.idKawasan.$invalid">
+              Isi kawasan dibutuhkan.
+            </span>
+        </div>
+    </div> -->
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Stasiun Pandu</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="petugasPandu.idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1"required></select>
+            <span class="has-error" ng-show="petugasPanduForm.idKawasan.$touched && petugasPanduForm.idKawasan.$invalid">
+              Isi kawasan dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Grup</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="petugasPandu.groupId" name="kodegrup" ng-options='option.id as option.namaGroup  for option in group' id="jns-1" ng-disabled="petugasPandu.idKawasan==undefined" required></select>
+            <span class="has-error" ng-show="petugasPanduForm.kodegrup.$touched && petugasPanduForm.kodegrup.$invalid">
+              Isi grup dibutuhkan.
+            </span>
+        </div>
+    </div>
+    <!-- <div class="form-group">
+    <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span>Status Pandu</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="masatambat.gt" switch-active="{{ isActive}}" ng-true-value="true" ng-false-value="false" checked />
+      </div>
+    </div> -->
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="petugasPanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+
+</form>

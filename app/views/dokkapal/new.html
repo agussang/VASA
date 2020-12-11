@@ -1,0 +1,130 @@
+<h2>Kapal Kegiatan Tetap Baru</h2>
+<form name="dokkapalForm" class="form-horizontal">
+  	<div class="form-group">
+		<label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+          <input type="text"  name="namaKapal" class="form-control" ng-model="kapal" bs-typeahead bs-options="kapal.mkplNama for kapal in getListOfKapal($viewValue)" data-limit="10"
+          ng-focus="checkValue(kapal)" ng-blur="validationLookupKapal()" required>
+         <a ng-if="!kapal.mkplKode == ''" href="#/profilkapal/{{kapal.mkplKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+         <span class="has-error" ng-show="dokkapalForm.namaKapal.$touched && dokkapalForm.namaKapal.$invalid">
+            Isi nama kapal dibutuhkan.
+          </span>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Agen</label>
+    	<div class="col-sm-7 col-xs-12" style="display: inline-flex;">
+          <input type="text" name="kodeAgen" class="form-control" ng-model="dokkapal.kodeAgen" bs-typeahead bs-options="pelanggan.mplgNamaKode for pelanggan in getListOfPelanggan($viewValue)" data-limit="10" ng-focus="checkValue(dokkapal.kodeAgen)" ng-blur="validationLookupKodeAgen()" required>
+          <a ng-if="!dokkapal.kodeAgen.mplgKode == ''" href="#/profilperusahaan/{{dokkapal.kodeAgen.mplgKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+    	</div>
+      <span class="has-error" ng-show="dokkapalForm.kodeAgen.$touched && dokkapalForm.kodeAgen.$invalid">
+            Isi nama agen dibutuhkan.
+          </span>
+  	</div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>No. Surat Keputusan</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="50" class="form-control" name="noSuratKeputusan" ng-model="dokkapal.noSuratKeputusan" required>
+          <span class="has-error" ng-show="dokkapalForm.noSuratKeputusan.$touched && dokkapalForm.noSuratKeputusan.$invalid">
+            Isi no surat keputusan dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!dokkapal.noSuratKeputusan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+  	<div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+      <div class="col-sm-5">
+           <div pf-datepicker  options="options" id="tglMulaiBerlaku" name="tglMulaiBerlaku" data-date-format="dd-mm-yyyy" date="dokkapal.tglMulaiBerlaku" required></div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+      <div class="col-sm-5">
+        <div pf-datepicker id="tglSelesaiBerlaku" data-date-format="dd-mm-yyyy" options="options" date="dokkapal.tglSelesaiBerlaku" required></div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Ditetapkan</label>
+      <div class="col-sm-5">
+          <div pf-datepicker id="tglDitetapkan" data-date-format="dd-mm-yyyy" options="options" date="dokkapal.tglDitetapkan" required></div>
+      </div>
+    </div>
+  	<div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Pejabat</label>
+      <div class="col-sm-7">
+          <input type="text"  name="pejabat" class="form-control" ng-model="dokkapal.pejabat" bs-typeahead bs-options="sdmPejabat.nama for sdmPejabat in getListOfPejabat($viewValue)" data-limit="10"
+          ng-focus="checkValue(dokkapal.pejabat)" ng-blur="validationLookupPejabat()" required>
+          <span class="has-error" ng-show="dokkapalForm.pejabat.$touched && dokkapalForm.pejabat.$invalid">
+            Isi pejabat dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!dokkapal.pejabat == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group" ng-hide="true">
+		<label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Pelanggan</label>
+    	<div class="col-sm-7">
+          <input type="text" name="pelanggan" class="form-control" ng-model="dokkapal.pelanggan" bs-typeahead bs-options="mdmPelanggan.mplgNamaKode for mdmPelanggan in getListOfPelanggan($viewValue)" data-limit="10" ng-focus="checkValue(dokkapal.pelanggan)" ng-blur="validationLookupPelanggan()">
+          <span class="has-error" ng-show="dokkapalForm.pelanggan.$touched && dokkapalForm.pelanggan.$invalid">
+            Isi pelanggan dibutuhkan.
+          </span>
+    	</div>
+      <a ng-if="!dokkapal.pelanggan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+  	</div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Status </label>
+      <div class="col-sm-7">
+          <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-true-value ="1" ng-false-value="0" ng-model="dokkapal.status" checked >
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="file-8"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" id="file" name="file" class="form-control" class="form-control" file-input="uploadFile" accept="
+          .pdf,.jpg" ng-model="dokKapal.file" valid-file ng-required="true" required>
+          <span class="has-error" ng-show="dokkapalForm.file.$touched && dokkapalForm.file.$invalid">
+            Isi Dokumen Pendukung dibutuhkan.
+          </span>
+          <span class="has-error" ng-show="errorMessageUploadFile">
+            {{errorMessageUploadFile}}
+          </span>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+  	<div class="form-group">
+	    <div class="col-sm-offset-3 col-sm-7">
+	      	<button type="button" class="btn btn-default btn-lg" ng-disabled="dokkapalForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="dokkapalForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>
+
+<script>
+    // $('#startdate').datepicker('setDate', new Date());
+    // $('#enddate').datepicker('setDate', new Date());
+    $("#startdate").datepicker({
+        defaultDate: "11/1/2013",
+        todayBtn:  1,
+        autoclose: true,
+    }).on('changeDate', function (selected) {
+        var minDate = new Date(selected.date.valueOf());
+        $('#enddate').datepicker('setStartDate', minDate);
+    });
+
+    $("#enddate").datepicker({
+        defaultDate: "11/1/2013",
+        todayBtn:  1,
+        autoclose: true,
+    }).on('changeDate', function (selected) {
+        var minDate = new Date(selected.date.valueOf());
+        $('#startdate').datepicker('setDate', new Date());
+        $('#startdate').datepicker('setEndDate', minDate);
+    });
+
+    var setDisableDate = function(){
+      $('#tglSelesaiBerlaku').datepicker('setStartDate',$scope.tglMulaiBerlaku);
+      $('#tglMulaiBerlaku').mask('99-99-9999');
+      $('#tglSelesaiBerlaku').mask('99-99-9999');
+      $('#tglSetuju').mask('99-99-9999');
+    };
+</script>

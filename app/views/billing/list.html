@@ -1,0 +1,48 @@
+<h2>Formula Billing</h2>
+<div pf-filter config="filterConfig"></div> 
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="8">
+            	Show : 
+            	<select class="col-lg-1" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" onclick="location.href='#/billing/new';" value="Formula Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th>No</th>
+			<th ng-click="sortBy='kode'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Kode Formula</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kode' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kode' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='nama'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Nama Formula</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nama' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nama' && sortDesc)}"></span></div>
+			</th>
+			<th>Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items">
+			<td>{{noIndex+$index +1}}</td>
+			<td>{{item.kode}}</td>
+			<td>{{item.nama}}</td>
+			<td>
+				<a href="#/billing/detail/{{item.id}}" type="button" class="btn btn-default btn-xs" aria-hidden="true" style="margin-right:5px;"><span class="fa fa-eye"></span></a>
+				<a href="#/billing/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" aria-hidden="true" style="margin-right:5px;"><span class="fa fa-pencil-square-o"></span></a>
+				<a type="button" class="btn btn-danger btn-xs" ng-click="deleteBilling(item.id)" aria-hidden="true"><span class="fa fa-times"></span></a>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div>
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>

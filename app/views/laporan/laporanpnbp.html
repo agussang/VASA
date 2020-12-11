@@ -1,0 +1,122 @@
+<h2>Laporan PNBP</h2>
+
+<hr>
+<form class="form-horizontal" name="PerencanaanNew">
+  <div class="form-group">
+    <label class="col-sm-offset-3 col-sm-2 control-label">Bulan Laporan</label>
+    <div class="col-sm-2">
+      <span id="pnbp" class="input-group date" style="width:150px;">
+        <input type="text" ng-model="search.tglFilter" date="search.tglFilter" ng-change="loadLaporanPnbp()" class="form-control bootstrap-datepicker"
+          options="options" readonly>
+        <span class="input-group-addon">
+          <span class="fa fa-calendar"></span>
+        </span>
+      </span>
+    </div>
+    <div class="col-sm-2">
+      <label style="padding-top: 5px;">{{currentMonth}}</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-8">
+      <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+      </button> -->
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- <div id="laporan-pnbp" class="col-sm-12" style="display:inline-flex; width:100%">
+  <table class="table table-bordered table-report">
+    <thead>
+      <tr ng-hide="true">
+        <th colspan="10">
+            <label>LAPORAN PNBP PT PELABUHAN INDONESIA III
+            <span>{{currentCabang}}
+              <span></label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th colspan="10">
+          <label>BULAN
+          <span>{{currentMonth}}</span></label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th colspan="10">
+
+        </th>
+      </tr>
+          <tr>
+            <th>No</th>
+            <th>Area</th>
+            <th>Bendera</th>
+            <th>DWT</th>
+            <th>GT Kapal</th>
+            <th>Jumlah Tunda</th>
+            <th>Lama Pelayanan</th>
+            <th>LOA</th>
+            <th>Nama Agen</th>
+            <th>Nama Kapal</th>
+            <th>No PKK</th>
+            <th>No PPK1</th>
+            <th>Pendapatan Pandu</th>
+            <th>Pendapatan Tunda</th>
+            <th>PNPB Pandu</th>
+            <th>PNPB Tunda</th>
+            <th>Surcharge</th>
+            <th>Tgl. Keluar</th>
+            <th>Tgl. Masuk</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{$index+1}}</td>
+            <td>{{item.area}}</td>
+            <td>{{item.bendera}}</td>
+            <td>{{item.dwt}}</td>
+            <td>{{item.gtKapal}}</td>
+            <td>{{item.jumlahTunda}}</td>
+            <td>{{item.lamaPelayanan}}</td>
+            <td>{{item.loa}}</td>
+            <td>{{item.namaAgen}}</td>
+            <td>{{item.namaKapal}}</td> 
+            <td>{{item.noPkk}}</td>
+            <td>{{item.noPpk1}}</td>
+            <td>{{item.pendPandu}}</td>
+            <td>{{item.pendTunda}}</td>
+            <td>{{item.pnpbPandu}}</td>
+            <td>{{item.pnpbTunda}}</td>
+            <td>{{item.surcharge}}</td>
+            <td>{{item.tglKeluar}}</td>
+            <td>{{item.tglMasuk}}</td>
+        </tr>
+    </tbody>
+  </table>
+
+  </div> -->
+
+  <hr>
+
+  <!-- <div class="form-group">
+  <div class="col-sm-offset-4 col-sm-8">
+    <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+    </button>
+    <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+      <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+    </button>
+  </div>
+</div> -->
+<script>
+  $('#pnbp').datepicker({
+    autoclose: true,
+    format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    language: 'id'
+  });
+</script>

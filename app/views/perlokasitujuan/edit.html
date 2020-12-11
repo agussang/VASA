@@ -1,0 +1,215 @@
+<h2>Pelanggan Perlokasi Tujuan Edit</h2>
+<br>
+<form class="form-horizontal" name="perlokasiForm" novalidate>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Jasa</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="perlokasi.jasa" name="jasa" ng-options='option.value as option.caption for option in jasa' required></select>
+      </div>
+
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Dermaga</label>
+      <div class="col-sm-7" style="display:inline-flex;">
+        <input type="hidden"  class="form-control" style="width:100px; margin-right:5px;" ng-model="perlokasi.dermaga" disabled>
+        <input type="text" class="form-control" ng-model="perlokasi.dermagaText" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(perlokasi.dermagaText)" ng-blur="validationLookupDermaga()" required>
+      </div>
+      <a ng-if="!perlokasi.dermagaText == ''" class="fa fa-check fa-lg" aria-hidden="true"></a>
+       <span class="has-error" ng-show="perlokasiForm.dermaga.$touched && perlokasiForm.dermaga.$invalid">
+            Isi Dermaga dibutuhkan.
+       </span>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Pelanggan</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+          <input type="text" name="namaPelanggan" class="form-control" ng-model="perlokasi.kodePelangganText" bs-typeahead bs-options="pelanggan.mplgNamaKode for pelanggan in getListOfPelanggan($viewValue)" ng-change="changePelanggan(perlokasi.kodePelangganText)" data-limit="10" ng-focus="checkValue(perlokasi.kodePelangganText)" ng-blur="validationLookupPelanggan()"  required>
+          <input type="hidden" ng-model="perlokasi.kodePelanggan">
+          <a ng-if="!perlokasi.kodePelangganText == ''" href="#/profilagen/{{perlokasi.kodePelanggan}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+      <span class="has-error" ng-show="perlokasiForm.namaPelanggan.$touched && perlokasiForm.namaPelanggan.$invalid">
+        Nama Pelanggan harus diisi.
+      </span>
+    </div>
+
+    <span><hr></span>
+
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>No. SK</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" id="no-1" class="form-control" name="nomorSk" ng-model="perlokasi.nomorSk" required>
+          <span class="has-error" ng-show="perlokasiForm.nomorSk.$touched && perlokasiForm.nomorSk.$invalid">
+            Isi Nomor SK dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!perlokasi.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglMulaiBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options" date="perlokasi.tglMulaiBerlaku" required></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglSelesaiBerlaku" data-date-format="dd-mm-yyyy" options="options" date="perlokasi.tglSelesaiBerlaku" required></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Sepakat</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglSepakat" data-date-format="dd-mm-yyyy" options="options" date="perlokasi.tglSepakat" required></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="file-1"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" id="file-1" class="form-control" file-input="uploadFile" onchange="checkExt();" accept="
+          .pdf,.jpg">
+          <a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="perlokasi.dokumen"></i> {{perlokasi.dokumen}}</a>
+          <p ng-show="">Bukan file PDF.</p>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+
+    <span><hr></span>
+
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Tagihan</label>
+      <div class="col-sm-7" >
+        <label class="radio-inline">
+        <input name="optradio2" type="radio" ng-model="perlokasi.nilaiTagihan" value="0">Penuh
+      </label>
+      <label class="radio-inline">
+        <input name="optradio2" type="radio" ng-model="perlokasi.nilaiTagihan" value="1">Kesepakatan
+      </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div ng-hide="perlokasi.nilaiTagihan==1">
+        <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Nilai</label>
+          <div class="col-sm-2">
+              <input type="number" only-num min="0.01" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" ng-disabled="perlokasi.nilaiTagihan==1" class="form-control" ng-model="perlokasi.nilai" name="nilai" ng-required="perlokasi.nilaiTagihan==0">
+              <span class="has-error" ng-show="perlokasiForm.nilai.$touched && perlokasiForm.nilai.$invalid">
+                Isi nilai dibutuhkan.
+              </span>
+          </div>
+      </div>
+
+      <div ng-hide="perlokasi.nilaiTagihan==1">
+          <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Valuta</label>
+          <div class="col-sm-2">
+             <select pf-select ng-model="perlokasi.valuta" name="valuta" ng-disabled="perlokasi.nilaiTagihan==1" ng-options='option.value as option.caption for option in valuta' id="jns-1" ng-required="perlokasi.nilaiTagihan==0"></select>
+              <span class="has-error" ng-show="perlokasiForm.valuta.$dirty && perlokasiForm.valuta.$invalid">
+                Isi valuta dibutuhkan.
+              </span>
+          </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div ng-hide="perlokasi.nilaiTagihan==0">
+        <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Pelabuhan</label>
+          <div class="col-sm-2">
+              <input type="number" only-num min="0.01" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="form-control" ng-disabled="perlokasi.nilaiTagihan==0" ng-model="perlokasi.nilaiPelabuhan" placeholder="%" name="nilaiPelabuhan" ng-required="perlokasi.nilaiTagihan==1">
+              <span class="has-error" ng-show="perlokasiForm.nilaiPelabuhan.$touched && perlokasiForm.nilaiPelabuhan.$invalid">
+                Isi nilai pelabuhan dibutuhkan.
+              </span>
+          </div>
+      </div>
+
+      <div ng-hide="perlokasi.nilaiTagihan==0">
+        <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Pelanggan</label>
+          <div class="col-sm-2">
+              <input type="number" only-num min="0.01" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" class="form-control" ng-disabled="perlokasi.nilaiTagihan==0" ng-model="perlokasi.nilaiPelanggan" placeholder="%" name="nilaiPelanggan" ng-required="perlokasi.nilaiTagihan==1">
+              <span class="has-error" ng-show="perlokasiForm.nilaiPelanggan.$touched && perlokasiForm.nilaiPelanggan.$invalid">
+                Isi nilai pelanggan dibutuhkan.
+              </span>
+          </div>
+      </div>
+    </div>
+
+     <span><hr></span>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nama Pejabat Pelindo</label>
+      <div class="col-sm-7">
+          <input type="text" name="sdmPejabat" class="form-control" ng-model="perlokasi.pejabat" bs-typeahead bs-options="sdmPejabat.nama for sdmPejabat in getListOfPejabat($viewValue)" data-limit="10" ng-focus="checkValue(perlokasi.pejabat)" ng-blur="validationLookupPejabat()" required>
+
+          <span class="has-error" ng-show="perlokasiForm.sdmPejabat.$touched && perlokasiForm.sdmPejabat.$invalid">
+            Isi Pejabat dibutuhkan.
+          </span>
+
+      </div>
+      <a ng-if="!perlokasi.pejabat == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Nama PIC Pelanggan</label>
+      <div class="col-sm-7">
+          <input type="text" name="sdmPelanggan" class="form-control" ng-model="perlokasi.pelanggan" required>
+          <span class="has-error" ng-show="perlokasiForm.sdmPelanggan.$touched && perlokasiForm.sdmPelanggan.$invalid">
+            Isi Pelanggan dibutuhkan.
+          </span>
+      </div>
+       <a ng-if="!perlokasi.pelanggan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+    <div class="form-group">
+       <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+        <div class="col-sm-7">
+          <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="perlokasi.status" ng-true-value ="1" ng-false-value="0" />
+
+        </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn  btn-lg btn-default" ng-click="cancel()">Batal</button>
+           <button type="button" class="btn  btn-lg btn-primary" ng-disabled="perlokasiForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+      </div>
+    </div>
+</form>
+<script>
+  $('#date-2').datepicker({
+    autoclose: true,
+    orientation: "top auto",
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+  $('#date-3').datepicker({
+    autoclose: true,
+    orientation: "top auto",
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+  $('#date-4').datepicker({
+    autoclose: true,
+    orientation: "top auto",
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>
+
+<script>
+  jQuery(".bootstrap-switch").bootstrapSwitch();
+</script>
+<script>
+  var checkExt = function() {
+    if(document.mainForm.myfile.value.lastIndexOf(".pdf")==-1) {
+       alert("file harus format PDF");
+       return false;
+    }
+  }
+</script>

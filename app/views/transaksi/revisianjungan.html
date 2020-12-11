@@ -1,0 +1,195 @@
+<h2>Daftar Permohonan Revisi Anjungan</h2>
+<div class="row">
+  <div class="col-md-6" ng-show="showAction">
+    <form name="formSearch" ng-submit="pageChanged(0)">
+      <div class="input-group">
+        <select pf-select ng-init="selectionSearch = filterConfig[0]"  ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+        <input type="text" class="form-control" name="search" ng-model="searchText" ng-minlength="filterMinLength" maxlength="30" placeholder="{{filterPlaceholder}}" capitalize>
+        <span class="input-group-addon btn btn-default" ng-click="resetSearch()" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+        <span class="input-group-addon btn btn-default" ng-click="pageChanged(0)" title="Search"><span class="fa fa-search"></span></span>
+      </div>
+      <label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+    </form>
+  </div>
+  <div class="col-md-6" ng-hide="showAction">
+    <button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+  </div>
+</div>
+
+<span ng-show="informasiLengthItem===0 && contentSearch"><b>Hasil Pencarian : </b>{{searchSelectedResponse}} <b>{{searchTextItem}}</b> tidak ditemukan.<br></span>
+<span ng-show="contentSearch"><b>Total Hasil Pencarian : </b>{{informasiLengthItem}}</b> data</span>
+<br>
+<table class="datatable table table-condensed table-bordered">
+  	<thead>
+		<tr ng-show="showAction">
+        <td colspan="10">
+          Show :
+          <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+          <select ng-init="option.name='Menunggu Review'" ng-options='option.value as option.name group by option.groupBy for option in options.filter' ng-model="option.value" ng-change="pageChanged(0)" style="height:26px; margin-right:5px;"></select>
+        </td>
+    </tr>
+    <tr>
+			<td colspan="10" class="text-center">{{pagingText}}</td>
+    </tr>
+    <tr>
+      <th></th>
+    	<th style="width:130px;">Tgl. Pengajuan</th>
+      <th ng-click="sortBy='noPpk1'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">No. PPK1</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpk1' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpk1' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='noPpkJasa'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">No. PPK Jasa</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpkJasa' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpkJasa' && sortDesc)}"></span></div>
+      </th>
+      <th>Kapal</th>
+      <th>Asal</th>
+      <th>Tujuan</th>
+      <th>Agen</th>
+      <th style="width:90px;"></th>
+    </tr>
+	</thead>
+	<tbody>
+    <tr ng-repeat-start="item in items">
+      <td> 
+        {{noIndex+$index +1}}
+          <!-- <a class="btn btn-link" ng-click="expanded = !expanded">
+              <span class="glyphicon glyphicon-plus-sign" ng-if="!expanded"></span>
+              <span class="glyphicon glyphicon-minus-sign" ng-if="expanded"></span>
+          </a> -->
+      </td>
+      <td>{{item.created | date : "dd-MM-yyyy hh:mm"}}<br>
+        <a ng-click="showModalPermohonanRevisi(item)" class="cursor-pointer" style="font-size:9.5px;">{{item.jenisRevisiText}} - {{item.kodeJasaText}}</a>
+      </td>
+      <td><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a></td>
+      <td>{{item.noPpkJasa}}</td>
+      <td>{{item.namaKapal}} ({{item.kodeKapal}})</td>
+      <td>{{item.lokasiAsalText}} ({{item.lokasiAsal}})</td>
+      <td>{{item.lokasiTujuanText}} ({{item.lokasiTujuan}})</td>
+      <td>{{item.namaAgen}} ({{item.kodeAgen}})</td>
+      <td align="center">
+        <!-- {{item.status}} -->
+        <div ng-show="item.status==='' || item.status===null">
+          <button type="submit" class="btn btn-default btn-sm" ng-click="showModalKonfirmasiPersetuajanRevisi(item)" title="Menyetujui">
+            <span class="fa fa-check-circle" style="color:#3f9c35;font-size: 13px;"></span>
+          </button>&nbsp;&nbsp;
+          <button type="submit" class="btn btn-default btn-sm" ng-click="showModalKonfirmasiPenolakanRevisi(item)" title="Menolak">
+            <span class="fa fa-times-circle" style="color:#cc0000;font-size: 13px;"></span>
+          </button>
+        </div>
+        <div ng-show="item.status || item.status===0">
+          <b>
+            <span ng-show="item.status===1" style="color:{{item.fontColor}};">{{item.statusPengajuanText}}</span>
+            <span ng-show="item.status===0" class="large info-tooltip cursor-pointer" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{item.infoTooltip}}" data-placement="left" style="color:{{item.fontColor}};" bs-tooltip>{{item.statusPengajuanText}}</span>
+          </b>
+        </div>
+      </td>
+    </tr>
+    <tr ng-repeat-end ng-repeat="data in item.items" ng-show="expanded">
+      <td ng-hide="data.noPpk1 == null"></td>
+      <td ng-hide="data.noPpk1 == null"><b>No. PPK1 : </b>  <span><a href="#/transaksi/listmonitoring/{{data.noPpk1}}">{{data.noPpk1}}</a></span></td>
+      <td ng-hide="data.noPpk1 == null"><b>Kode Kapal : </b> {{data.kodeKapal}}</td>
+      <td ng-hide="data.noPpk1 == null"> <b>Nama Kapal : </b> {{data.namaKapal}}</td>
+      <td ng-hide="data.noPpk1 == null" colspan="2"><b>Agen : </b> {{data.namaAgen}}</td>
+    </tr>
+	</tbody>
+</table>
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+
+<!-- modal Permohonan Revisi -->
+<div class="modal" id="modalPermohonanRevisi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Permohonan Revisi - {{itemDetailRevisi.jenisRevisiText}} {{itemDetailRevisi.kodeJasaText}}</h4>
+         </div>
+         <div class="modal-body">   
+            <table class="datatable table table-striped table-bordered table-col-accordion">
+              <tbody>
+                <tr>
+                  <th class="col-sm-3">Lokasi Asal</th>
+                  <th>
+                    <i class="fa fa-map-marker" style="color: #fb8d00;"></i>
+                    <span>{{itemDetailRevisi.lokasiAsalText}} ({{itemDetailRevisi.lokasiAsal}})</span>
+                  </th>
+                </tr>
+                <tr>
+                  <th>Lokasi Tujuan</th>
+                  <th>
+                    <i class="fa fa-map-marker" style="color: #0058ff;"></i>
+                    <span>{{itemDetailRevisi.lokasiTujuanText}} ({{itemDetailRevisi.lokasiTujuan}})</span>
+                  </th>
+                </tr>
+                <tr>
+                  <th>Tgl. Selesai</th>
+                  <th>
+                    <span>{{itemDetailRevisi.created | date : "dd-MM-yyyy hh:mm"}}</span>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal Konfirmasi Persetujuan Revisi -->
+<div class="modal" id="modalKonfirmasiPersetuajanRevisi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Konfirmasi Persetujuan Permohonan Revisi</h4>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menyutujui permohonan revisi ini?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateRevisiAnjungan(1)">Ya</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal Konfirmasi Penolakan Revisi -->
+<div class="modal" id="modalKonfirmasiPenolakanRevisi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Konfirmasi Penolakan Permohonan Revisi</h4>
+            </div>
+            <div class="modal-body">
+                <span class="text-danger">*</span>Kemukakan alasan mengapa permohonan revisi yang diajukan ditolak.
+                <div class="col-sm-15">
+                    <form class="form-horizontal" name="TolakRevisi">
+                      <textarea class="form-control textarea-notresize monitoring-scrool-revisi" ng-model="itemTolakRevisi.alasanTolak" rows="5" ng-trim="true" maxlength="250" required></textarea>
+                      <span class="pull-right"><b>{{250 - itemTolakRevisi.length}}</b></span>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateRevisiAnjungan(0)" ng-disabled="TolakRevisi.$invalid;">Proses</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<h2>Master Masa Tambat Detail</h2>
+<form class="form-horizontal">
+  <div class="masatambat-custom-tbl">
+    <div class="form-group">
+      <label class="col-md-4">Menggunakan GT</label>
+      <div class="col-md-4">  
+          <span>:</span>
+          <span class="view-detail">{{masaTambat.flagGt}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4">Menggunakan Jenis Pelayaran</label>
+      <div class="col-md-4">  
+          <span>:</span>
+          <span class="view-detail">{{masaTambat.flagPelayaran}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4">Menggunakan Jenis Kemasan</label>
+      <div class="col-md-4">
+          <span>:</span>
+          <span class="view-detail">{{masaTambat.flagKemasan}}</span>  
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-4">Menggunakan Jenis Kapal</label>
+      <div class="col-md-4">
+          <span>:</span>
+          <span class="view-detail">{{masaTambat.flagJenisKapal}}</span>  
+      </div>
+    </div>
+  </div>
+  <div class="masatambat-custom-tbl">
+    <div style="display:inline-flex;">
+       <h5 class="pull-left"><strong>Rincian</strong></h5>
+    </div>
+    <table class="datatable table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th class="table-col-full text-center">GT Min</th>
+          <th class="table-col-full text-center">GT Max</th>
+          <th class="table-col-full text-center">Jenis Pelayaran</th>
+          <th class="table-col-full text-center">Jenis Kemasan</th>
+          <th class="table-col-full text-center">Jenis Kapal</th>
+          <th class="table-col-full text-center">Masa Tambat</th>
+         
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr ng-repeat="item in itemMasaTambat">
+          <td>{{item.gtMin}}</td>
+          <td>{{item.gtMax}}</td>
+          <td>{{item.jenisPelayaranText}}</td>
+          <td>{{item.jenisKemasanText}}</td>
+          <td>{{item.jenisKapalText}}</td>
+          <td>{{item.masaTambat}}</td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="form-group pull-right">
+    <div class="" style="margin-top:20px; margin-right:315px;">
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="masatambatForm.$invalid;buttonDisabled" ng-click="close()">Tutup</button>
+        
+    </div>
+  </div>
+</form>
+

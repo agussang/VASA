@@ -1,0 +1,137 @@
+<div class="container">
+<h2>Kapal Kegiatan Tetap Detail</h2>
+<!-- {{dokKapalContent}} -->
+<br>
+<form class="form-horizontal">
+	<div class="form-group">
+		<div class="row">
+			<label class="col-sm-2">Kode Kapal</label>
+			<div class="col-sm-4">
+			    <span>:</span>
+			    <span class="view-detail">{{dokKapalContent.kode}}</span>
+			</div>
+			<label class="col-sm-2">Kode Agen</label>
+			<div class="col-sm-4">
+			    <span>:</span>
+			    <span class="view-detail">{{dokKapalContent.kodeAgen}}</span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Nama Kapal</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.nama}}</span>
+		  </div>
+		  <label class="col-sm-2">Nama Agen</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.kodeAgenText}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Bendera</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.benderaText}}</span>
+		  </div>
+		  <label class="col-sm-2">Badan Usaha</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.mplgBadanUsaha}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Jenis Kapal</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.jenisKapalText}}</span>
+		  </div>
+		  <label class="col-sm-2">Alamat</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.mplgAlamat}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Jenis Pelayaran</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.jenisPelayaranText}}</span>
+		  </div>
+		  <label class="col-sm-2">Kota</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.mplgKota}}</span>
+		  </div>
+		</div>
+	</div>
+	<br><br>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Tgl. Mulai Berlaku</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.tglMulaiBerlaku}}</span>
+		  </div>
+		  <label class="col-sm-2">Pejabat</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.pejabat}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Tgl. Selesai Berlaku</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.tglSelesaiBerlaku}}</span>
+		  </div>
+		  <label class="col-sm-2">Pelanggan</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.pelanggan}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2">Tgl. Ditetapkan</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.tglDitetapkan}}</span>
+		  </div>
+		  <label class="col-sm-2">Status</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">{{dokKapalContent.status}}</span>
+		  </div>
+		</div>
+	</div>
+	<div class="form-group">
+	  	<div class="row">
+		  <label class="col-sm-2"></label>
+		  <div class="col-sm-4">
+		      <span></span>
+		      <span class="view-detail"></span>
+		  </div>
+		  <label class="col-sm-2">Dok. Pendukung</label>
+		  <div class="col-sm-4">
+		      <span>:</span>
+		      <span class="view-detail">
+				<a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="dokKapalContent.dokumen"></i> {{dokKapalContent.dokumen}}</a>
+				</span>
+		  </div>
+		</div>
+	</div>
+	<button class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>
+</form>
+</div>

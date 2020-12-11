@@ -1,0 +1,79 @@
+<h2>Master Siklus</h2>
+<div pf-filter config="filterConfig"></div> 
+
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="11">
+            	<span>Show :</span> 
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/siklus/new';" value="Siklus Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="11" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th width="30">No</th>
+			<th ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Pelayaran</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisPelayaran' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisPelayaran' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='jenisKapal'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Jenis Kapal</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisKapal' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisKapal' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kodeKegiatan'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Kode Kegiatan</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kodeKegiatan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kodeKegiatan' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kriteriaLabuh'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Labuh</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kriteriaLabuh' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kriteriaLabuh' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kriteriaTambat'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Tambat</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kriteriaTambat' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kriteriaTambat' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kriteriaAirKapal'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Air Kapal</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kriteriaAirKapal' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kriteriaAirKapal' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kriteriaPanduMasuk'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Pandu Masuk</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kriteriaPanduMasuk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kriteriaPanduMasuk' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='kriteriaPanduKeluar'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Pandu Keluar</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kriteriaPanduKeluar' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kriteriaPanduKeluar' && sortDesc)}"></span></div>
+			</th>
+			<th class="table-col-full text-center">Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items">
+			 <td>{{noIndex+$index +1}}</td>
+			<td>{{item.jenisPelayaranText}}</td>
+			<td>{{item.jenisKapalText}}</td>
+			<td>{{item.kodeKegiatanText}}</td>
+			<td>{{item.kriteriaLabuh}}</td>
+			<td>{{item.kriteriaTambat}}</td>
+			<td>{{item.kriteriaAirKapal}}</td>
+			<td>{{item.kriteriaPanduMasuk}}</td>
+			<td>{{item.kriteriaPanduKeluar}}</td>		
+			<td class="text-center">
+				<a href="#/siklus/view/{{item.id}}" type="button" ng-show="userRole.rflag" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+                <a href="#/siklus/edit/{{item.id}}" type="button" ng-show="userRole.uflag" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+                <a ng-click="deleteSiklus(item.id)" type="button" ng-show="userRole.dflag" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div>
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>

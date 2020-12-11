@@ -1,0 +1,85 @@
+<div class="tab-content">
+<div id="meeting" role="tabpanel" class="tab-pane active">
+  <!-- <div style="display:inline-flex; width:200%"> -->
+  <div>
+    <div class="col-xs-6">
+      <!-- <button type="button" class="btn btn-primary btn-lg" ng-click="testMqtt()"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Test MQTT</button> -->
+
+      <form class="form-horizontal" name="meetingForm">
+      	<div class="form-group" ng-show="meeting.id">
+  		    <label class="col-sm-4 control-label" for="no-2">No. Ruang</label>
+    	    <div class="col-sm-5">
+            <input type="text" name="nomor" class="form-control" ng-model="meeting.id">
+          </div>
+        </div>
+
+        <div class="form-group">
+    		  <label class="col-sm-4 control-label" for="no-2"><span class="text-danger">*</span>Deskripsi</label>
+        	<div class="col-sm-5">
+          		<input type="text" maxlength="30" name="deskripsi" class="form-control" ng-model="meeting.deskripsi" required>
+              <span class="has-error" ng-show="meetingForm.deskripsi.$touched && meetingForm.deskripsi.$invalid">Isi deskripsi dibutuhkan.</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="no-2"><span class="text-danger">*</span>Dermaga</label>
+          <div class="col-sm-5">
+            <input type="hidden" maxlength="30" name="dermaga" class="form-control" ng-model="meeting.kodeDermaga">
+  					<input type="text" name="dermaga" class="form-control" ng-model="meeting.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+  					 ng-focus="checkValue(meeting.dermaga)" ng-blur="validationLookupDermaga()" ng-disabled="disabledInput">
+            <span class="has-error" ng-show="meetingForm.dermaga.$touched && meetingForm.dermaga.$invalid">Isi dermaga dibutuhkan.</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="no-2"><span class="text-danger">*</span>Pembagi Utama</label>
+          <div class="col-sm-5">
+            <select pf-select ng-model="meeting.pembagiUtama" name="pembagiUtama" ng-options='option.id as option.nama for option in pembagi' id="jns-1" ng-disabled="disabledInput" required></select>
+            <span class="has-error" ng-show="meetingForm.pembagiUtama.$touched && meetingForm.pembagiUtama.$invalid">Isi pembagi utama dibutuhkan.</span>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-xs-6">
+      <form class="form-horizontal" name="meetingForm2">
+				<!-- <div class="form-group">
+					<label class="col-sm-4 control-label" for="tglPrameeting"><span class="text-danger">*</span>Tgl. Pra Meeting</label>
+					<div class="col-sm-5">
+						<div pf-datepicker id="tglPrameeting" options="options" data-date-format="dd-mm-yyyy" date="tglPrameeting" name="tglPrameeting" required></div>
+					</div>
+				</div> -->
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="tglMeeting"><span class="text-danger">*</span>Tgl. Meeting Online</label>
+          <div class="col-sm-5">
+                <div pf-datepicker options="options" id="tglMeeting" data-date-format="dd-mm-yyyy" date="meeting.tglMeeting" name="tglMeeting" required></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" id="tglMeeting" for="tglPenetapan"><span class="text-danger">*</span>Tgl. Penetapan</label>
+          <div class="col-sm-5">
+            <div pf-datepicker options="options" id="tglPenetapan" data-date-format="dd-mm-yyyy" date="meeting.tglPenetapan" class="{{meeting.id?'dateReadonly':''}}" ng-disabled="disabledInput" name="tglPenetapan" required></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label" for="no-2"><span class="text-danger" ng-show="muatan.length > 0">*</span>Muatan</label>
+          <div class="col-sm-5">
+            <select pf-select ng-model="meeting.muatan" name="muatan" ng-options='option.id as option.nama for option in muatan' id="jns-1" ng-required="muatan.length >0" ng-disabled="disabledInput"></select>
+            <span class="has-error" ng-show="meetingForm.muatan.$touched && meetingForm.muatan.$invalid">Isi muatan dibutuhkan.</span>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+    <br>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-2"></label>
+      <div class="col-sm-7">
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="meetingForm.$invalid || meetingForm2.$invalid;" ng-click="submit();buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<h2>Surcharge Pandu Edit</h2>
+<br>
+<form class="form-horizontal" name="mspanduForm">
+     <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Tgl. Berlaku</label>
+        <div class="col-sm-7">
+
+           <div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="msPandu.tglBerlaku" required></div>
+            <span class="has-error" ng-show="mspanduForm.tglBerlaku.$touched && mspanduForm.tglBerlaku.$invalid">
+            Isi Tgl. Berlaku dibutuhkan.
+          </span>
+      </div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nomor</label>
+      <div class="col-sm-7">
+          <input type="text" only-num maxlength="30" id="no-1" class="form-control" ng-model="msPandu.nomor" name="nomor" required>
+          <span class="has-error" ng-show="mspanduForm.nomor.$touched && mspanduForm.nomor.$invalid">
+            Isi Nomor dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Harga Min.</label>
+      <div class="col-sm-7">
+          <input type="number" maxlength="14" only-num min="1" id="no-1" max="{{msPandu.hargaMax}}" class="form-control" ng-model="msPandu.hargaMin" name="hargaMin" required>
+          <span class="has-error" ng-show="mspanduForm.hargaMin.$touched && mspanduForm.hargaMin.$invalid">
+            Isi Harga Min. dibutuhkan.
+          </span>
+      </div>
+       <div class="col-sm-2" ng-hide="mspanduForm.hargaMin.$valid" >
+        <small class="error" ng-show="mspanduForm.hargaMin.$error.max">
+        <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>Harga Min. harus lebih besar dari Harga Min.</span></small>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Harga Max.</label>
+      <div class="col-sm-7">
+         <input type="number" maxlength="14" only-num min="1" id="no-1" class="form-control" ng-model="msPandu.hargaMax" name="hargaMax" required>
+         <span class="has-error" ng-show="mspanduForm.hargaMax.$touched && mspanduForm.hargaMax.$invalid">
+            Isi Harga Max. dibutuhkan.
+          </span>
+      </div>
+
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Area Pelayanan</label>
+      <div class="col-sm-7">
+          <!-- <input type="text" id="no-3" class="form-control" ng-model="langganan.jasa"> -->
+          <select pf-select ng-model="msPandu.areaPelayanan" name="areaPelayanan" ng-options='option.value as option.caption for option in areaPelayanan' required></select>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Fuel Surcharge</label>
+      <div class="col-sm-7">
+          <input type="number" maxlength="14" only-num min="1" id="no-1" class="form-control"  ng-model="msPandu.surcharge" name="surcharge" required>
+          <span class="has-error" ng-show="mspanduForm.surcharge.$touched && mspanduForm.surcharge.$invalid">
+            Isi Fuel Surcharge dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Keterangan</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" id="no-1" class="form-control" ng-model="msPandu.keterangan" name="keterangan" required>
+          <span class="has-error" ng-show="mspanduForm.keterangan.$touched && mspanduForm.keterangan.$invalid">
+            Isi Keterangan dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+       <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+        <div class="col-sm-7">
+          <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="NON AKTIF" ng-model="msPandu.status" ng-true-value ="true" ng-false-value="false" checked />
+        </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn btn-lg btn-default" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-lg btn-primary" ng-disabled="mspanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+      </div>
+    </div>
+</form>
+
+<script>
+  $('#date-2').datepicker({
+    autoclose: true,
+    orientation: "top auto",
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>
+<script>
+  jQuery(".bootstrap-switch").bootstrapSwitch();
+</script>

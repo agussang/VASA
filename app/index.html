@@ -1,0 +1,507 @@
+<!doctype html>
+<html class="layout-pf layout-pf-fixed">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="no-cache">
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<!-- build:css(.) styles/vendor.css -->
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap-touchspin/src/jquery.bootstrap-touchspin.css" />
+	<link rel="stylesheet" href="bower_components/c3/c3.css" />
+	<link rel="stylesheet" href="bower_components/datatables/media/css/jquery.dataTables.css" />
+	<link rel="stylesheet" href="bower_components/datatables-colvis/css/dataTables.colVis.css" />
+	<link rel="stylesheet" href="bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+	<link rel="stylesheet" href="bower_components/google-code-prettify/bin/prettify.min.css" />
+	<link rel="stylesheet" href="bower_components/patternfly-bootstrap-combobox/css/bootstrap-combobox.css" />
+	<link rel="stylesheet" href="bower_components/patternfly/dist/css/patternfly.css" />
+	<link rel="stylesheet" href="bower_components/patternfly/dist/css/patternfly-additions.css" />
+	<link rel="stylesheet" href="bower_components/angular-patternfly/dist/styles/angular-patternfly.css" />
+	<link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.css" />
+	<link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css" />
+	<link rel="stylesheet" href="bower_components/codemirror/addon/hint/show-hint.css" />
+	<link rel="stylesheet" href="bower_components/codemirror/addon/lint/lint.css" />
+	<link rel="stylesheet" href="bower_components/please-wait/build/please-wait.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap-combobox/css/bootstrap-combobox.css" />
+	<link rel="stylesheet" href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css" />
+	<!-- endbower -->
+	<!-- endbuild -->
+	<!-- build:css(.tmp) styles/main.css -->
+	<link rel="stylesheet" href="styles/main.css">
+	<link rel="stylesheet" href="styles/realisasi.css">
+	<link rel="stylesheet" href="styles/sidebar.css">
+	<!-- endbuild -->
+</head>
+<body ng-app="vasaApp" ng-style="RouteData.get('bodyStyle')">
+	<!--[if lte IE 8]>
+	  <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+	  <![endif]-->
+
+	  <!-- Add your site or application content here -->
+	  <div ng-include="header" ng-hide="logged"></div>
+		<div class="inner"></div>
+	  <div class="wrapper container-fluid container-cards-pf container-pf-nav-pf-vertical" ng-if="logged === false">
+	  	<div>
+	  		<div class="main">
+	  			<div class="{{notification.class}} alert alert-{{notification.type}} alert-dismissable {{notification.status}} notification-alert">
+	  				<span class="pficon {{notification.icon}}"></span>
+					<button type="button" ng-show="notification.hasEsc && userEskalasiApprover!==''" class="close" ng-controller="EskalasiCtrl" ng-click="closeNotifEsc()">
+					    <span class="pficon pficon-close"></span>
+					</button>
+					<p ng-bind-html="notification.message"></p>
+					<div ng-show="notification.hasEsc && userEskalasiApprover!==''" class="notifEsc pull-right toast-pf-action hide">
+						<br>
+						<i class="fa fa-level-up "></i> <a ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+					</div>
+	  			</div>
+	  			<div ng-view="" id="view-app"></div>
+	  		</div>
+	  	</div>
+	  </div>
+	  <div ng-if="logged === true">
+	  <div class="row row-cards-pf">
+	  		<div class="main">
+	  			<div class="{{notification.class}} alert alert-{{notification.type}} alert-dismissable {{notification.status}} notification-alert">
+	  				<span class="pficon {{notification.icon}}"></span>
+	  				<p ng-bind-html="notification.message"></p>
+	  			</div>
+	  			<div ng-view="" id="view-app"></div>
+	  		</div>
+	  	</div>
+	  	<!-- <div ng-view="" id="view-app"></div> -->
+	  </div>
+
+	  <div ng-include src = "'views/eskalasi/modalEskalasi.html'"></div>
+	  <!-- <div ng-include="footer"></div>   -->
+
+	  <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+	  <!--script>
+	  	!function(A,n,g,u,l,a,r){A.GoogleAnalyticsObject=l,A[l]=A[l]||function(){
+	  		(A[l].q=A[l].q||[]).push(arguments)},A[l].l=+new Date,a=n.createElement(g),
+	  		r=n.getElementsByTagName(g)[0],a.src=u,r.parentNode.insertBefore(a,r)
+	  	}(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+	  	ga('create', 'UA-XXXXX-X');
+	  	ga('send', 'pageview');
+	  </script-->
+
+	  <!-- build:js(.) scripts/vendor.js -->
+	  <!-- bower:js -->
+	  <script src="bower_components/jquery/dist/jquery.js"></script>
+	  <script src="bower_components/angular/angular.js"></script>
+	  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+	  <script src="bower_components/angular-animate/angular-animate.js"></script>
+	  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+	  <script src="bower_components/angular-resource/angular-resource.js"></script>
+	  <script src="bower_components/angular-route/angular-route.js"></script>
+	  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+	  <script src="bower_components/angular-touch/angular-touch.js"></script>
+	  <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js"></script>
+	  <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+	  <script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+	  <script src="bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+	  <script src="bower_components/bootstrap-touchspin/src/jquery.bootstrap-touchspin.js"></script>
+	  <script src="bower_components/d3/d3.js"></script>
+	  <script src="bower_components/c3/c3.js"></script>
+	  <script src="bower_components/datatables/media/js/jquery.dataTables.js"></script>
+	  <script src="bower_components/datatables-colreorder/js/dataTables.colReorder.js"></script>
+	  <script src="bower_components/datatables-colvis/js/dataTables.colVis.js"></script>
+	  <script src="bower_components/moment/moment.js"></script>
+	  <script src="bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	  <script src="bower_components/google-code-prettify/bin/prettify.min.js"></script>
+	  <script src="bower_components/matchHeight/dist/jquery.matchHeight.js"></script>
+	  <script src="bower_components/patternfly-bootstrap-combobox/js/bootstrap-combobox.js"></script>
+	  <script src="bower_components/patternfly-bootstrap-treeview/dist/bootstrap-treeview.js"></script>
+	  <script src="bower_components/patternfly/dist/js/patternfly.js"></script>
+	  <script src="bower_components/angular-drag-and-drop-lists/angular-drag-and-drop-lists.js"></script>
+	  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	  <script src="bower_components/lodash/lodash.js"></script>
+	  <script src="bower_components/angular-patternfly/dist/angular-patternfly.js"></script>
+	  <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+	  <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+	  <script src="bower_components/codemirror/lib/codemirror.js"></script>
+	  <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
+	  <script src="bower_components/codemirror/addon/hint/show-hint.js"></script>
+	  <script src="bower_components/codemirror/addon/hint/javascript-hint.js"></script>
+	  <script src="bower_components/codemirror/addon/lint/lint.js"></script>
+	  <script src="bower_components/codemirror/addon/lint/javascript-lint.js"></script>
+	  <script src="bower_components/codemirror/addon/edit/closebrackets.js"></script>
+	  <script src="bower_components/codemirror/addon/edit/matchbrackets.js"></script>
+	  <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+	  <script src="bower_components/jshint/dist/jshint.js"></script>
+	  <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+	  <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+	  <script src="bower_components/jquery.maskedinput/dist/jquery.maskedinput.js"></script>
+	  <script src="bower_components/angular-filter/dist/angular-filter.js"></script>
+	  <script src="bower_components/html2canvas/build/html2canvas.js"></script>
+	  <script src="bower_components/please-wait/build/please-wait.js"></script>
+	  <script src="bower_components/highcharts-ng/dist/highcharts-ng.js"></script>
+	  <script src="bower_components/highcharts/highcharts.js"></script>
+	  <script src="bower_components/fabric.js/dist/fabric.min.js"></script>
+	  <script src="bower_components/paho-mqtt-js/mqttws31.js"></script>
+	  <script src="bower_components/bootstrap-combobox/js/bootstrap-combobox.js"></script>
+	  <script src="bower_components/simple-web-notification/web-notification.js"></script>
+	  <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+	  <script src="bower_components/angular-base64/angular-base64.js"></script>
+	  <script src="bower_components/angular-base64-upload/src/angular-base64-upload.js"></script>
+	  <script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
+	  <!-- endbower -->
+	  <!-- endbuild -->
+
+
+		<!-- build:js({.tmp,app}) scripts/scripts.js -->
+		<script src="scripts/app.js"></script>
+		<script src="scripts/directives/upload.js"></script>
+		<script src="scripts/directives/bsSwitch.js"></script>
+		<script src="scripts/directives/myTable.js"></script>
+		<script src="scripts/directives/paging.js"></script>
+		<script src="scripts/directives/validFile.js"></script>
+		<script src="scripts/directives/onlyNum.js"></script>
+		<script src="scripts/directives/expandTable.js"></script>
+		<!-- <script src="library/pdfmake/build/pdfmake.js"></script>
+		<script src="library/pdfmake/build/vfs_fonts.js"></script> -->
+		<script src="library/canvas2image-master/canvas2image.js"></script>
+		<script src="scripts/controllers/main.js"></script>
+		<script src="scripts/controllers/about.js"></script>
+		<script src="scripts/controllers/login.js"></script>
+		<script src="scripts/controllers/mqtt.js"></script>
+		<script src="scripts/controllers/eskalasi/eskalasi.js"></script>
+		<script src="scripts/controllers/mastersdmkapal/view.js"></script>
+		<script src="scripts/controllers/mastersdmkapal/list.js"></script>
+		<script src="scripts/controllers/mastersdmkapal/edit.js"></script>
+		<script src="scripts/controllers/mastersdmkapal/new.js"></script>
+		<script src="scripts/controllers/mastersurchargetunda/list.js"></script>
+		<script src="scripts/controllers/mastersurchargetunda/view.js"></script>
+		<script src="scripts/controllers/mastersurchargetunda/edit.js"></script>
+		<script src="scripts/controllers/mastersurchargetunda/new.js"></script>
+		<script src="scripts/controllers/tambat/list.js"></script>
+		<script src="scripts/controllers/tambat/new.js"></script>
+		<script src="scripts/controllers/tambat/edit.js"></script>
+		<script src="scripts/controllers/tambat/view.js"></script>
+		<script src="scripts/controllers/airkapal/view.js"></script>
+		<script src="scripts/controllers/airkapal/list.js"></script>
+		<script src="scripts/controllers/airkapal/edit.js"></script>
+		<script src="scripts/controllers/airkapal/new.js"></script>
+		<script src="scripts/controllers/pandu/list.js"></script>
+		<script src="scripts/controllers/pandu/edit.js"></script>
+		<script src="scripts/controllers/pandu/new.js"></script>
+		<script src="scripts/controllers/pandu/view.js"></script>
+		<script src="scripts/controllers/tunda/list.js"></script>
+		<script src="scripts/controllers/tunda/view.js"></script>
+		<script src="scripts/controllers/tunda/new.js"></script>
+		<script src="scripts/controllers/tunda/edit.js"></script>
+		<script src="scripts/controllers/transaksi/list.js"></script>
+		<script src="scripts/controllers/transaksi/layanannew.js"></script>
+		<script src="scripts/controllers/transaksi/permohonannew.js"></script>
+		<script src="scripts/controllers/transaksi/putusvaluta.js"></script>
+		<script src="scripts/controllers/transaksi/realisasi.js"></script>
+		<script src="scripts/controllers/transaksi/suratperintahairkapal.js"></script>
+		<script src="scripts/controllers/login.js"></script>
+		<script src="scripts/controllers/labuh/view.js"></script>
+		<script src="scripts/controllers/labuh/list.js"></script>
+		<script src="scripts/controllers/labuh/edit.js"></script>
+		<script src="scripts/controllers/labuh/new.js"></script>
+		<script src="scripts/controllers/tambat/list.js"></script>
+		<script src="scripts/controllers/tambat/new.js"></script>
+		<script src="scripts/controllers/tambat/edit.js"></script>
+		<script src="scripts/controllers/tambat/view.js"></script>
+		<script src="scripts/controllers/airkapal/view.js"></script>
+		<script src="scripts/controllers/airkapal/list.js"></script>
+		<script src="scripts/controllers/airkapal/edit.js"></script>
+		<script src="scripts/controllers/airkapal/new.js"></script>
+		<script src="scripts/controllers/pandu/list.js"></script>
+		<script src="scripts/controllers/pandu/edit.js"></script>
+		<script src="scripts/controllers/pandu/new.js"></script>
+		<script src="scripts/controllers/pandu/view.js"></script>
+		<script src="scripts/controllers/tunda/list.js"></script>
+		<script src="scripts/controllers/tunda/view.js"></script>
+		<script src="scripts/controllers/tunda/new.js"></script>
+		<script src="scripts/controllers/tunda/edit.js"></script>
+		<script src="scripts/controllers/kapalkepil/list.js"></script>
+		<script src="scripts/controllers/kapalkepil/view.js"></script>
+		<script src="scripts/controllers/kapalkepil/new.js"></script>
+		<script src="scripts/controllers/kapalkepil/edit.js"></script>
+		<script src="scripts/controllers/transaksi/list.js"></script>
+		<script src="scripts/controllers/transaksi/layanannew.js"></script>
+		<script src="scripts/controllers/transaksi/permohonannew.js"></script>
+		<script src="scripts/controllers/transaksi/penetapannew.js"></script>
+		<script src="scripts/controllers/kapalcharter/list.js"></script>
+		<script src="scripts/controllers/kapalcharter/view.js"></script>
+		<script src="scripts/controllers/kapalcharter/edit.js"></script>
+		<script src="scripts/controllers/kapalcharter/new.js"></script>
+		<script src="scripts/controllers/alatapung/list.js"></script>
+		<script src="scripts/controllers/alatapung/view.js"></script>
+		<script src="scripts/controllers/alatapung/edit.js"></script>
+		<script src="scripts/controllers/alatapung/new.js"></script>
+		<script src="scripts/controllers/pejabat/list.js"></script>
+		<script src="scripts/controllers/pejabat/view.js"></script>
+		<script src="scripts/controllers/pejabat/edit.js"></script>
+		<script src="scripts/controllers/pejabat/new.js"></script>
+		<script src="scripts/controllers/parameter/list.js"></script>
+		<script src="scripts/controllers/parameter/view.js"></script>
+		<script src="scripts/controllers/parameter/new.js"></script>
+		<script src="scripts/controllers/parameter/edit.js"></script>
+		<script src="scripts/controllers/parameteraplikasi/list.js"></script>
+		<script src="scripts/controllers/parameteraplikasi/view.js"></script>
+		<script src="scripts/controllers/parameteraplikasi/new.js"></script>
+		<script src="scripts/controllers/parameteraplikasi/edit.js"></script>
+		<script src="scripts/controllers/pelanggan/list.js"></script>
+		<script src="scripts/controllers/pelanggan/view.js"></script>
+		<script src="scripts/controllers/pelanggan/edit.js"></script>
+		<script src="scripts/controllers/pelanggan/new.js"></script>
+		<script src="scripts/services/vasaapp.js"></script>
+		<script src="scripts/services/otherservice.js"></script>
+		<script src="scripts/filters/otherfilter.js"></script>
+		<script src="scripts/controllers/other/profilkapal.js"></script>
+		<script src="scripts/controllers/other/profilagen.js"></script>
+		<script src="scripts/controllers/other/profilperusahaan.js"></script>
+		<script src="scripts/controllers/masterhargabbm/list.js"></script>
+		<script src="scripts/controllers/kapallangganan/list.js"></script>
+		<script src="scripts/controllers/perlokasitujuan/list.js"></script>
+		<script src="scripts/controllers/perlokasitujuan/view.js"></script>
+		<script src="scripts/controllers/perlokasitujuan/edit.js"></script>
+		<script src="scripts/controllers/perlokasitujuan/new.js"></script>
+		<script src="scripts/controllers/kapallangganan/new.js"></script>
+		<script src="scripts/controllers/dokkapal/list.js"></script>
+		<script src="scripts/controllers/dokkapal/view.js"></script>
+		<script src="scripts/controllers/dokkapal/edit.js"></script>
+		<script src="scripts/controllers/dokkapal/new.js"></script>
+		<script src="scripts/controllers/siklus/list.js"></script>
+		<script src="scripts/controllers/siklus/view.js"></script>
+		<script src="scripts/controllers/siklus/edit.js"></script>
+		<script src="scripts/controllers/siklus/new.js"></script>
+		<script src="scripts/controllers/mastermasatambat/list.js"></script>
+		<script src="scripts/controllers/mastermasatambat/view.js"></script>
+		<script src="scripts/controllers/mastermasatambat/edit.js"></script>
+		<script src="scripts/controllers/mastermasatambat/new.js"></script>
+		<script src="scripts/controllers/masterdenda/list.js"></script>
+		<script src="scripts/controllers/masterdenda/view.js"></script>
+		<script src="scripts/controllers/masterdenda/edit.js"></script>
+		<script src="scripts/controllers/masterdenda/new.js"></script>
+		<script src="scripts/controllers/kapallangganan/view.js"></script>
+		<script src="scripts/controllers/transaksi/penetapantunda.js"></script>
+		<script src="scripts/controllers/transaksi/penetapantambat.js"></script>
+		<script src="scripts/controllers/transaksi/penetapanlabuh.js"></script>
+		<script src="scripts/controllers/transaksi/penetapanpandu.js"></script>
+		<script src="scripts/controllers/transaksi/penetapanairkapal.js"></script>
+		<script src="scripts/controllers/transaksi/realisasilabuh.js"></script>
+		<script src="scripts/controllers/transaksi/realisasitambat.js"></script>
+		<script src="scripts/controllers/transaksi/realisasipandu.js"></script>
+		<script src="scripts/controllers/transaksi/realisasiairkapal.js"></script>
+		<script src="scripts/controllers/transaksi/alatisiair.js"></script>
+		<script src="scripts/controllers/transaksi/realisasitunda.js"></script>
+		<script src="scripts/controllers/kapallangganan/edit.js"></script>
+		<script src="scripts/controllers/mastersurchargepandu/list.js"></script>
+		<script src="scripts/controllers/mastersurchargepandu/view.js"></script>
+		<script src="scripts/controllers/mastersurchargepandu/new.js"></script>
+		<script src="scripts/controllers/mastersurchargepandu/edit.js"></script>
+		<script src="scripts/controllers/masterhargabbm/view.js"></script>
+		<script src="scripts/controllers/masterhargabbm/edit.js"></script>
+		<script src="scripts/controllers/masterhargabbm/add.js"></script>
+		<script src="scripts/controllers/cabang/list.js"></script>
+		<script src="scripts/controllers/cabang/new.js"></script>
+		<script src="scripts/controllers/cabang/edit.js"></script>
+		<script src="scripts/controllers/cabang/view.js"></script>
+		<script src="scripts/controllers/roles/list.js"></script>
+		<script src="scripts/controllers/roles/detail.js"></script>
+		<script src="scripts/controllers/roles/edit.js"></script>
+		<script src="scripts/controllers/roles/new.js"></script>
+		<script src="scripts/controllers/permission/list.js"></script>
+		<script src="scripts/controllers/permission/detail.js"></script>
+		<script src="scripts/controllers/permission/edit.js"></script>
+		<script src="scripts/controllers/permission/new.js"></script>
+		<script src="scripts/controllers/billing/list.js"></script>
+		<script src="scripts/controllers/billing/new.js"></script>
+		<script src="bower_components/angular-i18n/angular-locale_id.js"></script>
+		<script src="bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.id.js"></script>
+
+		<script src="scripts/controllers/transaksi/verifikasi.js"></script>
+		<script src="scripts/controllers/transaksi/pranota.js"></script>
+		<script src="scripts/controllers/transaksi/pranotapublic.js"></script>
+		<script src="scripts/controllers/transaksi/estimasiperhitunganbiaya.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalan.js"></script>
+		<script src="scripts/controllers/simulasi.js"></script>
+		<script src="scripts/controllers/transaksi/mutasi.js"></script>
+		<script src="scripts/controllers/aturangerakpandu/list.js"></script>
+		<script src="scripts/controllers/aturangerakpandu/view.js"></script>
+		<script src="scripts/controllers/aturangerakpandu/new.js"></script>
+		<script src="scripts/controllers/aturangerakpandu/edit.js"></script>
+		<script src="scripts/controllers/components/header.js"></script>
+		<script src="scripts/controllers/transaksi/listmonitoring.js"></script>
+		<!-- <script src="scripts/controllers/components/sidebar.js"></script> -->
+		<script src="scripts/controllers/components/jquery.nanoscroller.min.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalanlabuh.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalantunda.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalantambat.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalanpandu.js"></script>
+		<script src="scripts/controllers/transaksi/pembatalanairkapal.js"></script>
+		<script src="scripts/controllers/transaksi/daftarpenetapan.js"></script>
+		<script src="scripts/controllers/transaksi/daftarpermohonan.js"></script>
+		<script src="scripts/controllers/transaksi/daftarrealisasi.js"></script>
+		<script src="scripts/controllers/daftarairkapal/penetapan.js"></script>
+		<script src="scripts/controllers/daftarairkapal/permohonan.js"></script>
+		<script src="scripts/controllers/daftarairkapal/realisasi.js"></script>
+		<script src="scripts/controllers/revisi/perpanjangan.js"></script>
+		<script src="scripts/controllers/revisi/perpendekan.js"></script>
+		<script src="scripts/controllers/revisi/perubahan.js"></script>
+		<script src="scripts/controllers/revisi/perubahantambat.js"></script>
+		<script src="scripts/controllers/revisi/perubahanpandu.js"></script>
+		<script src="scripts/controllers/revisi/perubahantunda.js"></script>
+		<script src="scripts/controllers/revisi/perubahanairkapal.js"></script>
+		<script src="scripts/controllers/laporan/daftarkegiatankapal.js"></script>
+		<script src="scripts/controllers/laporan/laporanharian.js"></script>
+		<script src="scripts/controllers/laporan/pivotoperasi.js"></script>
+		<script src="scripts/controllers/laporan/pivotokeuangan.js"></script>
+		<script src="scripts/controllers/laporan/laporanpemanduan.js"></script>
+		<script src="scripts/controllers/laporan/laporanharianpandu.js"></script>
+		<script src="scripts/controllers/laporan/rekapitulasikinerja.js"></script>
+		<script src="scripts/controllers/laporan/laporanairkapal.js"></script>
+		<script src="scripts/controllers/masterdermagakepil/list.js"></script>
+		<script src="scripts/controllers/masterdermagakepil/new.js"></script>
+		<script src="scripts/controllers/masterdermagakepil/edit.js"></script>
+		<script src="scripts/controllers/masterdermagakepil/view.js"></script>
+		<script src="scripts/controllers/transaksi/revisianjungan.js"></script>
+		<script src="scripts/controllers/transaksi/kapalkegiatantetap.js"></script>
+		<script src="scripts/controllers/transaksi/revisianjungan.js"></script>
+		<script src="scripts/controllers/transaksi/kapalkegiatantetapcrud.js"></script>
+		<script src="scripts/controllers/transaksi/kapalkegiatantetapdeleted.js"></script>
+		<script src="scripts/controllers/transaksi/realisasitanpapermohonan.js"></script>
+		<script src="scripts/controllers/transaksi/kapalgeser.js"></script>
+		<script src="scripts/controllers/meetinguser/new.js"></script>
+		<script src="scripts/controllers/meetinguser/list.js"></script>
+		<script src="scripts/controllers/meetinguser/edit.js"></script>
+		<script src="scripts/controllers/meetinguser/view.js"></script>
+		<script src="scripts/controllers/meetingonline/list.js"></script>
+		<script src="scripts/controllers/meetingonline/edit.js"></script>
+		<script src="scripts/controllers/meetingonline/view.js"></script>
+		<script src="scripts/controllers/403/403.js"></script>
+		<script src="scripts/controllers/perencanaan/perencanaan.js"></script>
+		<script src="scripts/controllers/perencanaan/perencanaanpublic.js"></script>
+		<script src="scripts/controllers/cluster/clusterutama.js"></script>
+		<script src="scripts/controllers/cluster/clustermuatan.js"></script>
+		<script src="scripts/controllers/kademeter/kedalaman.js"></script>
+		<script src="scripts/controllers/masterkesepakatan/list.js"></script>
+		<script src="scripts/controllers/masterkesepakatan/view.js"></script>
+		<script src="scripts/controllers/masterkesepakatan/edit.js"></script>
+		<script src="scripts/controllers/masterkesepakatan/new.js"></script>
+		<script src="scripts/controllers/kademeter/kademeterdermaga.js"></script>
+		<script src="scripts/controllers/perencanaan/perencanaannew.js"></script>
+		<script src="scripts/controllers/perencanaan/penetapanmeeting.js"></script>
+		<script src="scripts/controllers/perencanaan/laporanmeeting.js"></script>
+		<script src="scripts/controllers/perencanaan/laporanprameeting.js"></script>
+		<script src="scripts/controllers/riwayateskalasi/list.js"></script>
+		<script src="scripts/controllers/cluster/clusteringkapal.js"></script>
+		<script src="scripts/controllers/manajementunda/perencanaan.js"></script>
+		<script src="scripts/controllers/aturankapaltunda/list.js"></script>
+		<script src="scripts/controllers/aturankapaltunda/edit.js"></script>
+		<script src="scripts/controllers/aturankapaltunda/view.js"></script>
+		<script src="scripts/controllers/aturankapaltunda/new.js"></script>
+		<script src="scripts/controllers/tipeeskalasi/list.js"></script>
+		<script src="scripts/controllers/tipeeskalasi/edit.js"></script>
+		<script src="scripts/controllers/tipeeskalasi/view.js"></script>
+		<script src="scripts/controllers/tipeeskalasi/new.js"></script>
+		<script src="scripts/controllers/manajementunda/listkapaltunda.js"></script>
+		<script src="scripts/controllers/manajementunda/historikapaltunda.js"></script>
+		<script src="scripts/controllers/manajementunda/laporankapaltunda.js"></script>
+		<script src="scripts/controllers/manajementunda/realisasitunda.js"></script>
+		<script src="scripts/controllers/manajemenpandu/perencanaan.js"></script>
+		<script src="scripts/controllers/manajemenpandu/perencanaanbaru.js"></script>
+		<script src="scripts/controllers/manajemenpandu/perencanaantanpatambat.js"></script>
+		<script src="scripts/controllers/manajemenpandu/monitoring.js"></script>
+		<script src="scripts/controllers/manajemenpandu/monitoringpandu.js"></script>
+		<script src="scripts/controllers/manajemenpandu/offlinespkpandu.js"></script>
+		<script src="scripts/controllers/manajemenpandu/kesediaanpandu.js"></script>
+		<script src="scripts/controllers/manajemenpandu/dashboard.js"></script>
+		<script src="scripts/controllers/manajemenpandu/jadwalpandu.js"></script>
+		<script src="scripts/controllers/manajementambat/monitoring.js"></script>
+		<script src="scripts/controllers/manajementambat/jadwaltambat.js"></script>
+		<script src="scripts/controllers/gruppandu/list.js"></script>
+		<script src="scripts/controllers/gruppandu/new.js"></script>
+		<script src="scripts/controllers/gruppandu/edit.js"></script>
+		<script src="scripts/controllers/gruptambat/list.js"></script>
+		<script src="scripts/controllers/gruptambat/new.js"></script>
+		<script src="scripts/controllers/gruptambat/edit.js"></script>
+		<script src="scripts/controllers/grupdermagatambat/list.js"></script>
+		<script src="scripts/controllers/grupdermagatambat/new.js"></script>
+		<script src="scripts/controllers/grupdermagatambat/edit.js"></script>
+		<script src="scripts/controllers/jamkerjapandu/list.js"></script>
+		<script src="scripts/controllers/jamkerjapandu/new.js"></script>
+		<script src="scripts/controllers/jamkerjapandu/edit.js"></script>
+		<script src="scripts/controllers/jamkerjatambat/list.js"></script>
+		<script src="scripts/controllers/jamkerjatambat/new.js"></script>
+		<script src="scripts/controllers/jamkerjatambat/edit.js"></script>
+		<script src="scripts/controllers/petugaspandu/list.js"></script>
+		<script src="scripts/controllers/petugaspandu/new.js"></script>
+		<script src="scripts/controllers/petugaspandu/edit.js"></script>
+		<script src="scripts/controllers/petugaspandu/view.js"></script>
+		<script src="scripts/controllers/petugastambat/list.js"></script>
+		<script src="scripts/controllers/petugastambat/new.js"></script>
+		<script src="scripts/controllers/petugastambat/edit.js"></script>
+		<script src="scripts/controllers/masterpilot/list.js"></script>
+		<script src="scripts/controllers/masterpilot/new.js"></script>
+		<script src="scripts/controllers/masterpilot/edit.js"></script>
+		<script src="scripts/controllers/kawasanpandu/list.js"></script>
+		<script src="scripts/controllers/kawasanpandu/new.js"></script>
+		<script src="scripts/controllers/kawasanpandu/edit.js"></script>
+		<script src="scripts/controllers/dermagapandu/list.js"></script>
+		<script src="scripts/controllers/dermagapandu/new.js"></script>
+		<script src="scripts/controllers/dermagapandu/edit.js"></script>
+		<script src="scripts/controllers/manajementunda/monitoring.js"></script>
+		<script src="scripts/controllers/dermagatambat/list.js"></script>
+		<script src="scripts/controllers/dermagatambat/edit.js"></script>
+		<script src="scripts/controllers/dermagatambat/new.js"></script>
+		<script src="scripts/controllers/perencanaan/lists.js"></script>
+		<script src="scripts/controllers/perencanaan/prioritaskapal.js"></script>
+		<script src="scripts/controllers/perencanaan/persiapanprameeting.js"></script>
+		<script src="scripts/controllers/perencanaan/penetapan.js"></script>
+		<script src="scripts/controllers/perencanaan/reportmeeting.js"></script>
+		<script src="scripts/controllers/kademeter/informasidermaga.js"></script>
+		<script src="scripts/controllers/tagihanmin/list.js"></script>
+		<script src="scripts/controllers/tagihanmin/new.js"></script>
+		<script src="scripts/controllers/tagihanmin/edit.js"></script>
+		<script src="scripts/controllers/tagihanmin/view.js"></script>
+		<script src="scripts/controllers/kademeter/kademeterdermaga.js"></script>
+		<script src="scripts/controllers/perencanaan/preprameeting.js"></script>
+		<script src="scripts/controllers/perencanaan/tambahkapal.js"></script>
+		<script src="scripts/controllers/perencanaan/pasangsurut.js"></script>
+		<script src="scripts/controllers/perencanaan/tambahkapalmeeting.js"></script>
+		<script src="scripts/controllers/transaksi/permohonanedit.js"></script>
+		<script src="scripts/controllers/cabang_min_kt/list.js"></script>
+		<script src="scripts/controllers/cabang_min_kt/new.js"></script>
+		<script src="scripts/controllers/cabang_min_kt/edit.js"></script>
+		<script src="scripts/controllers/kapalbebaspt/list.js"></script>
+		<script src="scripts/controllers/kapalbebaspt/new.js"></script>
+		<script src="scripts/controllers/kapalbebaspt/edit.js"></script>
+		<script src="scripts/controllers/kapalbebaspt/view.js"></script>
+		<script src="scripts/controllers/dirops/perencanaan.js"></script>
+		<script src="scripts/controllers/dirops/monitoringpandu.js"></script>
+		<script src="scripts/controllers/dirops/monitoringtunda.js"></script>
+		<script src="scripts/controllers/perencanaan/preprameetingmenu.js"></script>
+		<script src="scripts/controllers/perencanaan/reportantrian.js"></script>
+		<script src="scripts/controllers/kedatangankapal/list.js"></script>
+		<script src="scripts/controllers/kedatangankapal/add.js"></script>
+		<script src="scripts/controllers/kedatangankapal/edit.js"></script>
+		<script src="scripts/controllers/perencanaan/monitoringrpkro.js"></script>
+		<script src="scripts/controllers/other/pembatalanspk.js"></script>
+		<script src="scripts/controllers/other/silapor.js"></script>
+		<script src="scripts/controllers/kapalsandar/list.js"></script>
+		<script src="scripts/controllers/laporan/laporanpnbp.js"></script>
+		<script src="scripts/controllers/transaksi/panducomar.js"></script>
+		<script src="scripts/controllers/other/jasakapal.js"></script>
+		<script src="scripts/controllers/laporan/laporanarus.js"></script>
+		<script src="scripts/controllers/laporan/laporanproduksi.js"></script>
+		 <script src="scripts/controllers/transaksi/bataljasatanpadenda.js"></script>
+		<!-- endbuild -->
+		
+		<script src="library/socket.io/socket.io.js"></script>
+		<!-- <script src="http://vasa.pelindo.co.id:3000/socket.io/socket.io.js"></script> -->
+	</body>
+	</html>

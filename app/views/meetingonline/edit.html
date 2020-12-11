@@ -1,0 +1,67 @@
+<div class="row">
+  <div class="col-md-6">
+    <h2>Meeting Online</h2>
+  </div>
+  <div class="col-md-6">
+    <div class="stepwizard">
+      <div class="stepwizard-row setup-panel">
+        <div class="stepwizard-step">
+          <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+          <p>Permohonan</p>
+        </div>
+        <div class="stepwizard-step">
+          <a type="button" class="btn btn-sm btn-primary btn-circle">2</a>
+          <p>Perencanaan</p>
+        </div>
+        <div class="stepwizard-step">
+          <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+          <p>Penetapan</p>
+        </div>
+        <div class="stepwizard-step">
+          <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">4</a>
+          <p>Realisasi</p>
+        </div>
+        <div class="stepwizard-step">
+          <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">5</a>
+          <p>Verifikasi</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="col-sm-4 navbar-right">
+	<button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+  <button type="button" class="btn btn-primary" ng-show="meeting.id" ng-click="startMeeting()">Mulai Meeting</button>
+</div>
+<!-- <button ng-click="testMqtt()">Test Mqtt</button> -->
+<ul class="nav nav-tabs meeting-tabs" role="tablist">
+    <li role="presentation" class="menu-tab tab-labuh aktif active" kode-menu="meeting" id="meetingOnlineTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'meeting')">Meeting Online</a></li>
+    <li role="presentation" class="menu-tab tab-tambat" kode-menu="meeting" id="participantTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'participant')">Participant</a></li>
+    <li role="presentation" class="menu-tab tab-pandu" kode-menu="meeting" id="hasilMeetingTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'summary')">Hasil Meeting</a></li>
+</ul>
+  
+<div ng-include="tabEditMeetingOnline"></div>
+<div ng-include="tabEditParticipant"></div>
+<div ng-include="tabEditHasilMeeting"></div>
+<script type="text/javascript">
+  function openTab(evt, namaTab) {
+  		var i, tabcontent, tablinks;
+  		tabcontent = document.getElementsByClassName("tab-pane");
+  		for (i = 0; i < tabcontent.length; i++) {
+  			tabcontent[i].style.display = "none";
+  		}
+  		tablinks = document.getElementsByClassName("tablinks");
+  		for (i = 0; i < tablinks.length; i++) {
+  			tablinks[i].className = tablinks[i].className.replace(" active", "");
+  		}
+  		menuJasa = document.getElementsByClassName("menu-tab");
+  		for (i = 0; i < menuJasa.length; i++) {
+  			menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+  		}
+  		document.getElementById(namaTab).style.display = "block";
+  		evt.currentTarget.className += " active";
+  		$('.tab-'+namaTab).addClass("active");
+  	}
+</script>

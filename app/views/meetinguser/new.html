@@ -1,0 +1,67 @@
+<h2>User Meeting Online Baru</h2>
+
+<form name="userMeetingForm" class="form-horizontal">
+  <div class="form-group">
+		<label class="col-sm-2 control-label" for="role"><span class="text-danger">*</span>Role</label>
+      <div class="col-sm-7">
+          <select name="userRole" pf-select ng-options='option.value as option.caption for option in userRole' ng-model="meetingUser.userRole" required></select>
+      </div>
+      <span class="has-error" ng-show="userMeetingForm.userRole.$touched && userMeetingForm.userRole.$invalid">
+      Isi Role dibutuhkan.
+      </span>
+  </div>
+  <div class="form-group" ng-show="meetingUser.userRole=='AGEN'">
+    <label class="col-sm-2 control-label" for="namaAgen"><span class="text-danger">*</span>Agen</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+          <input type="text" id="no-2" name="namaPelanggan" class="form-control" ng-model="mdmPelanggan"
+                 bs-typeahead bs-options="mdmPelanggan.mplgNama for mdmPelanggan in getListOfPelanggan($viewValue)" data-limit="10"
+                ng-required="meetingUser.userRole=='AGEN'" ng-disabled="!meetingUser.userRole">
+      </div>
+      <span class="has-error" ng-show="userMeetingForm.namaAgen.$touched && userMeetingForm.namaAgen.$invalid">
+      Isi agen dibutuhkan.
+      </span>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Username</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+          <input type="email" id="no-2" name="username" class="form-control" ng-model="meetingUser.username" ng-disabled="!meetingUser.userRole"
+                required>
+      </div>
+      <span class="has-error" ng-show="userMeetingForm.username.$touched && userMeetingForm.username.$invalid">
+      Isi username dibutuhkan dan harus dengan format email.
+      </span>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="namaKapal"><span class="text-danger">*</span>Password</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+        <div class="input-group">
+          <input type="{{inputTypePassword}}" name="password" class="form-control" placeholder="" tabindex="2" ng-model="meetingUser.password" ng-disabled="!meetingUser.userRole" required>
+          <span class="input-group-addon btn btn-default" ng-click="hideShowPassword()" title="{{inputTypePassword==='password'?'Tampilkan Password':'Sembunyikan Password'}}"><span class="fa {{inputTypePassword==='password'?'fa-eye-slash':'fa-eye'}}"></span></span>
+        </div>
+        <!-- <input type="password" id="no-2" name="password" class="form-control" ng-model="meetingUser.password" required> -->
+      </div>
+      <span class="has-error" ng-show="userMeetingForm.password.$touched && userMeetingForm.password.$invalid">
+      Isi password dibutuhkan.
+      </span>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="namaKapal"><span class="text-danger">*</span>Konfirmasi Password </label>
+      <div class="col-sm-7" style="display: inline-flex;">
+        <input type="{{inputTypePassword}}" name="passwordConfirmation" class="form-control" placeholder="" tabindex="2" ng-model="meetingUser.passwordConfirmation" ng-disabled="!meetingUser.userRole" required>
+        <!-- <input type="password" id="no-2" name="passwordConfirmation" class="form-control" data-limit="10"
+          ng-model="meetingUser.passwordConfirmation" required> -->
+      </div>
+      <span class="has-error" ng-show="userMeetingForm.passwordConfirmation.$touched && userMeetingForm.passwordConfirmation.$invalid">
+      Isi password dibutuhkan.
+      </span>
+  </div>
+
+
+
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="userMeetingForm.$invalid;" ng-click="submit();buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>

@@ -1,0 +1,46 @@
+<h2>Parameter Baru</h2>
+<form class="form-horizontal" name="parameterForm" novalidate>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nama Parameter</label>
+
+    <div class="col-sm-4">
+        <input type="text" id="no-3" class="form-control" maxlength="{{parameter.maxlength}}" ng-model="parameter.nama" name="nama" bs-typeahead bs-options="param.nama for param in listOfParam" data-limit="10" required>
+        <span class="has-error" ng-show="parameterForm.nama.$touched && parameterForm.nama.$invalid">
+          Isi Nama dibutuhkan.
+        </span>
+    </div>
+      <a ng-if="!parameter.nama == ''" href="#/parameter/view/{{parameter.nama.id}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Judul</label>
+      <div class="col-sm-4">
+          <input type="text" id="no-1" class="form-control" ng-pattern="numPattern" name="caption" ng-model="parameter.caption" maxlength="30" required>
+          <span class="has-error" ng-show="parameterForm.caption.$touched && parameterForm.caption.$invalid">
+            Isi Judul dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nilai</label>
+      <div class="col-sm-4">
+          <input type="text" min="0" id="no-1" class="form-control" ng-pattern="fieldPattern" name="value" ng-model="parameter.value" maxlength="30" required>
+          <span class="has-error" ng-show="parameterForm.value.$touched && parameterForm.value.$invalid">
+            Isi Nilai dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Value berupa angka</label>
+      <div class="col-sm-4">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="parameter.isNumeric" ng-true-value ="1" ng-false-value="0">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="parameterForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>

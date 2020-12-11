@@ -1,0 +1,96 @@
+<h2>Pelanggan Kapal Langganan</h2>
+<div pf-filter config="filterConfig"></div>
+
+<table class="datatable table table-striped table-bordered">
+  	<thead>
+      <tr>
+          <td colspan="11">
+            <span>Show :</span>
+            <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+              <input type="button" ng-show="userRole.cflag" onclick="location.href='#/kapallangganan/new';" value="Pelanggan Kapal Langganan Baru" class="btn-list btn btn-default pull-right" />
+          </td>
+      </tr>
+      <tr>
+          <td colspan="11" class="text-center">{{pagingText}}</td>
+      </tr>
+			<tr>
+        <th>No</th>
+          <th ng-click="sortBy='namaKapal'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Nama Kapal</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'namaKapal' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'namaKapal' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='namaPelanggan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Pelanggan</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'namaPelanggan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'namaPelanggan' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='dermaga'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Dermaga</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'dermaga' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'dermaga' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='tglSelesaiBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Tgl. Selesai Berlaku</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglSelesaiBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglSelesaiBerlaku' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='tglSepakat'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Tgl. Sepakat</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglSepakat' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglSepakat' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='persetujuan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Persetujuan</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'persetujuan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'persetujuan' && sortDesc)}"></span></div>
+          </th>
+          <th ng-click="sortBy='status'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Status</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'status' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'status' && sortDesc)}"></span></div>
+          </th>
+	  			<th class="table-col-full text-center" style="width:800px;">Action</th>
+			</tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in items">
+          <td>{{noIndex+$index +1}}</td>
+      		<td>{{item.namaKapal}}</td>
+      		<td>{{item.namaPelanggan}}</td>
+      		<td>{{item.namaKodeDermaga}}</td>
+      		<td>{{item.tglSelesaiBerlaku | date: "dd-MM-yyyy"}}</td>
+          <td>{{item.tglSepakat | date: "dd-MM-yyyy"}}</td>
+          <td ng-class="{'text-danger':item.persetujuan === 4,'text-success':item.persetujuan === 1,'text-warning':item.persetujuan === 2,'text-primary':item.persetujuan === 3}">{{item.persetujuanText}}</td>
+          <td>{{item.status}}</td>
+      		<td class="text-center" style="width:150px;">
+            <a href="#/kapallangganan/view/{{item.id}}"  type="button" ng-show="userRole.rflag" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+            <a href="#/kapallangganan/edit/{{item.id}}" ng-show="item.persetujuan == 2" type="button" ng-show="userRole.uflag" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+            <a ng-click="deleteKapal(item.id)" type="button" ng-show="userRole.dflag" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            <a ng-click="showModal(item.id)" data-toggle="modal" data-target="#myModal" ng-show="item.persetujuan == 2 && userRole.uflag" type="button" class="btn btn-default btn-xs" title="Setuju / Tidak Setuju"><span class="fa fa-flag"></span></a>
+      		</td>
+    	</tr>
+  </tbody>
+  </table>
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+          </button>
+          <h3 class="modal-title" id="myModalLabel">Persetujuan Kesepakatan</h3>
+        </div>
+        <div class="modal-body">
+            <h4 class="control-label">Apakah anda yakin ingin menyetujui kesepakatan ini?</h4>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="disapprove()">Tidak Setuju</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="approve()">Setuju</button>
+        </div>
+      </div>
+    </div>
+  </div>

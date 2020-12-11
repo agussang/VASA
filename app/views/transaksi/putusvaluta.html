@@ -1,0 +1,221 @@
+<div class="row">
+	<div class="col-md-6">
+		<h2>Putus Valuta</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<div class="alert {{textAlert.class}}" ng-show="alertShow">
+	<span class="pficon {{textAlert.icon}}"></span>
+	<strong>{{textAlert.title}}</strong> {{textAlert.desc}}</a>.
+</div>
+
+<form class="form-horizontal" name="permohonanForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">*</span>No. PPK1</label>
+		<div class="col-sm-3">
+			<input type="text" class="form-control" placeholder="No. PPK1..." ng-model="permohonan" ng-blur="validationLookupPpk1()" bs-typeahead bs-options="listPpk1.noPpk1 for listPpk1 in getListPpk1($viewValue)" data-limit="10" ng-disabled="lockPpk1">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Nama Kapal</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="permohonan.namaKapal" disabled>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Agen Pelayaran</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="permohonan.namaAgen" disabled>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">*</span>Berangkat dari</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="permohonan.namaPelabuhanAsal" bs-typeahead bs-options="pelabuhan.mkplNamaPlb for pelabuhan in getListPelabuhan($viewValue)" data-limit="10" ng-disabled="!lockPpk1" ng-blur="validationLookupAsal()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">*</span>Tujuan</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="permohonan.namaPelabuhanTujuan" bs-typeahead bs-options="pelabuhan.mkplNamaPlb for pelabuhan in getListPelabuhan($viewValue)" data-limit="10" ng-disabled="!lockPpk1" ng-blur="validationLookupTujuan()" required>
+		</div>
+	</div>
+	<div class="form-group" ng-show="!lockPpk1">
+		<div class="col-sm-offset-2 col-sm-3">
+			<button type="button" class="btn btn-primary btn-lg" ng-click="start()" ng-disabled="!permohonanForm.$valid">Mulai Putus Valuta</button>
+		</div>
+	</div>
+</form>
+
+<div ng-show="lockPpk1">
+	<!-- Labuh -->
+	<!-- No. PPK Jasa	Lokasi Labuh	Waktu Kedatangan	Waktu Berangkat -->
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<label>Jasa Labuh</label>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">No. PPK Jasa</th>
+						<th class="text-center">Lokasi Labuh</th>
+						<th class="text-center">Waktu Kedatangan</th>
+						<th class="text-center">Waktu Berangkat</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="jasa in arrayJasa | filter: { nama: 'epb_labuh' } " ng-if="(jasa.ptpJasa.status != 9 && jasa.ptpJasa.status != 10)">
+						<td>{{jasa.noPpkJasa}}</td>
+						<td>{{jasa.basicInfo.namaLokasi}}</td>
+						<td>{{jasa.basicInfo.tglMasuk | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td>{{jasa.basicInfo.tglKeluar | date: "dd-MM-yyyy HH:mm"}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Tambat -->
+	<!-- No. PPK Jasa	Lokasi Tambat	Mulai Tambat	Selesai pada	 -->
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<label>Jasa Tambat</label>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">No. PPK Jasa</th>
+						<th class="text-center">Lokasi Tambat</th>
+						<th class="text-center">Mulai Tambat</th>
+						<th class="text-center">Selesai Pada</th>
+						<th class="text-center">Putus Jasa</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="jasa in arrayJasa | filter: { nama: 'epb_tambat' } | orderBy: 'noPpkJasa'" ng-if="(jasa.ptpJasa.status != 9 && jasa.ptpJasa.status != 10)">
+						<td>{{jasa.noPpkJasa}}</td>
+						<td>{{jasa.basicInfo.namaLokasi}}</td>
+						<td>{{jasa.basicInfo.tglMulai | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td>{{jasa.basicInfo.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td class="text-center"><input type="checkbox" ng-model="jasa.putusJasa"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Pandu -->
+	<!-- No. PPK Jasa	Waktu Pandu	Jenis Pandu	Jenis Gerakan -->
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<label>Jasa Pandu</label>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">No. PPK Jasa</th>
+						<th class="text-center">Waktu Pandu</th>
+						<th class="text-center">Jenis Pandu</th>
+						<th class="text-center">Jenis Gerakan</th>
+						<th class="text-center">Putus Jasa</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="jasa in arrayJasa | filter: { nama: 'epb_pandu' } | orderBy: 'noPpkJasa'" ng-if="(jasa.ptpJasa.status != 9 && jasa.ptpJasa.status != 10)">
+						<td>{{jasa.noPpkJasa}}</td>
+						<td>{{jasa.basicInfo.tglMulai | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td>{{jasa.basicInfo.jenisPanduText}}</td>
+						<td>{{jasa.basicInfo.jenisGerakanText}}</td>
+						<td class="text-center"><input type="checkbox" ng-model="jasa.putusJasa"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Tunda -->
+	<!-- No. PPK Jasa	Waktu Tunda	Lokasi Asal	Lokasi Tujuan -->
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<label>Jasa Tunda</label>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">No. PPK Jasa</th>
+						<th class="text-center">Waktu Tunda</th>
+						<th class="text-center">Lokasi Asal</th>
+						<th class="text-center">Lokasi Tujuan</th>
+						<th class="text-center">Putus Jasa</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="jasa in arrayJasa | filter: { nama: 'epb_tunda' } | orderBy: 'noPpkJasa'" ng-if="(jasa.ptpJasa.status != 9 && jasa.ptpJasa.status != 10)">
+						<td>{{jasa.noPpkJasa}}</td>
+						<td>{{jasa.basicInfo.tglMulai | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td>{{jasa.basicInfo.namaLokasiAsal}}</td>
+						<td>{{jasa.basicInfo.namaLokasiTujuan}}</td>
+						<td class="text-center"><input type="checkbox" ng-model="jasa.putusJasa"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Air Kapal -->
+	<!-- No. PPK Jasa	Alat Isi	Dermaga	Tgl/Jam Mulai	Volume	 -->
+	<div class="row">
+		<div class="col-sm-offset-1 col-sm-8">
+			<label>Jasa Air Kapal</label>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th class="text-center">No. PPK Jasa</th>
+						<th class="text-center">Alat Isi</th>
+						<th class="text-center">Dermaga</th>
+						<th class="text-center">Tanggal Mulai</th>
+						<th class="text-center">Volume</th>
+						<th class="text-center">Putus Jasa</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="jasa in arrayJasa | filter: { nama: 'epb_air_kapal' } | orderBy: 'noPpkJasa'" ng-if="(jasa.ptpJasa.status != 9 && jasa.ptpJasa.status != 10)">
+						<td>{{jasa.noPpkJasa}}</td>
+						<td>{{jasa.basicInfo.alatIsiText}}</td>
+						<td>{{jasa.basicInfo.namaDermaga}}</td>
+						<td>{{jasa.basicInfo.tglIsi | date: "dd-MM-yyyy HH:mm"}}</td>
+						<td>{{jasa.basicInfo.volume}} {{jasa.basicInfo.satuanVolumeText}}</td>
+						<td class="text-center"><input type="checkbox" ng-model="jasa.putusJasa"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="row" ng-show="lockPpk1">
+	<div class="col-sm-offset-1 col-sm-3">
+		<button type="button" class="btn btn-primary btn-lg" ng-click="putusValuta()" ng-disabled="!permohonanForm.$valid">Putus Valuta</button>
+	</div>
+</div>
+
+<br>

@@ -1,0 +1,75 @@
+<h2>Kapal Kegiatan Tetap</h2>
+<br>
+<!--div pf-filter config="filterConfig"></div-->
+<table class="datatable table table-condensed table-bordered">
+  	<thead>
+		<tr>
+			<td colspan="10">
+        <div class="pull-left">
+				<span>Show : </span>
+				<select ng-init="number='1'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+				<!--a class="col-xs-offset-1" href="#/kapalkegiatantetap/deleted">Riwayat Penghapusan</a-->
+        </div>
+
+      <span class="pull-left" style="padding-left:15px; padding-right:5px;">Filter :</span>
+
+        <div class="col-sm-3 pull-left">
+          <span id="date-6" class="input-group date" style="width:150px;">
+            <input type="text" ng-model="search.tglFilter" date="tglLaporan" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+          </span>
+        </div>
+          <label style="padding-top: 5px;" class="pull-left">{{currentMonth}}</label>
+				<input type="button" ng-show="userRole.cflag" onclick="location.href='#/kapalkegiatantetap/new';" value="Kapal Kegiatan Tetap Baru" class="btn-list btn btn-default pull-right" />
+			</td>
+		</tr>
+	    <tr>
+			<td colspan="10" class="text-center">{{pagingText}}</td>
+	    </tr>
+	    <tr>
+        <th></th>
+	    	<th>Tgl. Perhitungan</th>
+        <th>Lokasi Labuh</th>
+        <th>Lokasi Tambat</th>
+        <th>Masa Labuh</th>
+        <th>Etmal</th>
+	    </tr>
+	</thead>
+	<tbody>
+    <tr ng-repeat-start="item in items">
+      <td> <a class="btn btn-link" ng-click="expanded = !expanded">
+              <span class="glyphicon glyphicon-plus-sign" ng-if="!expanded"></span>
+              <span class="glyphicon glyphicon-minus-sign" ng-if="expanded"></span>
+          </a>
+      </td>
+      <td>{{item.tglBuat | date : "dd-MM-yyyy hh:mm:ss"}}</td>
+      <td>{{item.namaLokasiLabuh}}</td>
+      <td>{{item.namaLokasiTambat}}</td>
+      <td>{{item.jumlahMasaLabuh}}</td>
+      <td>{{item.jumlahEtmal}}</td>
+    </tr>
+    <tr ng-repeat-end ng-repeat="data in item.items" ng-show="expanded">
+      <td ng-hide="data.noPpk1 == null"></td>
+      <td ng-hide="data.noPpk1 == null"><b>No. PPK1 : </b>  <span><a href="#/transaksi/listmonitoring/{{data.noPpk1}}">{{data.noPpk1}}</a></span></td>
+      <td ng-hide="data.noPpk1 == null"><b>Kode Kapal : </b> {{data.kodeKapal}}</td>
+      <td ng-hide="data.noPpk1 == null"> <b>Nama Kapal : </b> {{data.namaKapal}}</td>
+      <td ng-hide="data.noPpk1 == null" colspan="2"><b>Agen : </b> {{data.namaAgen}}</td>
+    </tr>
+	</tbody>
+</table>
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+<script>
+  $('#date-6').datepicker({
+    autoclose: true,
+    viewMode: "months",
+    format: "mm-yyyy",
+    minViewMode: "months",
+    language: 'id'
+  });
+</script>

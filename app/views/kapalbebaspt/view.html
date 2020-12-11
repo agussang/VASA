@@ -1,0 +1,50 @@
+<h2>Kapal Bebas Pandu Tunda Detail</h2>
+<form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2">Nomor SK</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{contentKapalBebasPTDetails.nomorSk}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Nama Kapal</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{contentKapalBebasPTDetails.namaKapal}} ({{contentKapalBebasPTDetails.kodeKapal}})</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Jenis Bebas Pandu Tunda</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{contentKapalBebasPTDetails.jenisBebasPtText}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Tgl. Berlaku</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{contentKapalBebasPTDetails.tglBerlaku}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Dok. Pendukung</label>
+      <div class="col-sm-9">
+          <span class="valign-top">:</span>
+          <span class='view-detail'><img ng-src="{{img}}" border="0" style="height: 200px; width: 200px; border-radius: 5%;"/></span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Status</label>
+      <div class="col-sm-9">
+        <span>:</span>
+        <span class='view-detail'>{{contentKapalBebasPTDetails.flagAktif}}</span>
+        </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-9">
+      <input type="button" onclick="location.href='#/kapal_bebas_pandu_tunda/list';" value="Tutup" class="btn btn-lg btn-primary" />
+      </div>
+    </div>
+</form>

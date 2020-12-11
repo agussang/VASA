@@ -1,0 +1,60 @@
+<h2>Master Harga BBM</h2><!-- ganti judul -->
+<div pf-filter config="filterConfig"></div>
+<table class="datatable table table-striped table-bordered">
+	<!-- ganti thead sesuaikan dengan mockup -->
+	<thead>
+		<tr>
+            <td colspan="8">
+            	<span>Show :</span>
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/bbm/new';" value="Harga BBM Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th>No</th>
+			<th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Tgl. Berlaku</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglBerlaku' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='harga'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Harga BBM</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'harga' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'harga' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='keterangan'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Keterangan</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'keterangan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'keterangan' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='status'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Status</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'status' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'status' && sortDesc)}"></span></div>
+			</th>
+			<th class="table-col-full text-center">Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+	  	<!-- ganti nama item sesuai response api -->
+		<tr ng-repeat="item in items">
+			<td>{{noIndex+$index +1}}</td>
+			<td>{{item.tglBerlaku | date: "dd-MM-yyyy"}}</td>
+			<td>{{item.harga | currency:"":2}}</td>
+			<td>{{item.keterangan}}</td>
+			<td>{{item.status}}</td>
+			<td class="text-canter">
+				<a href="#/bbm/view/{{item.id}}" type="button" ng-show="userRole.rflag" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+				<a href="#/bbm/edit/{{item.id}}" type="button" ng-show="userRole.uflag" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o" ></span></a>
+				<a type="button" ng-show="userRole.dflag" class="btn btn-danger btn-xs" title="Delete" ng-click="deleteHargaBBM(item.id)"><span class="fa fa-times" ></span></a>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div>
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>

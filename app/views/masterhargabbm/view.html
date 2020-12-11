@@ -1,0 +1,32 @@
+<h2>Harga BBM Detail</h2>
+<form class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-2">Tgl. Berlaku</label>
+		<div class="col-sm-9">
+			<span>:</span>
+			<span class="view-detail">{{bbmContent.tglBerlaku}}</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Harga BBM</label>
+		<div class="col-sm-9">
+			<span>:</span>
+			<span class="view-detail">{{bbmContent.harga | currency:"":2}}</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Keterangan</label>
+		<div class="col-sm-9">
+			<span>:</span>
+			<span class="view-detail">{{bbmContent.keterangan}}</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2">Status</label>
+		<div class="col-sm-9">
+			<span>:</span>
+			<span class="view-detail">{{bbmContent.status}}</span>
+		</div>
+	</div>
+	<button class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>
+</form>

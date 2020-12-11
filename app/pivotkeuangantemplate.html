@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" href="library/bootstrap/bootstrap.css" />
+	<link rel="stylesheet" href="library/pivottable/dist/pivot.css" />
+	<script src="library/moment/moment.js"></script>
+	<script src="library/jquery/jquery.js"></script>
+	<script src="library/pivottable/dist/pivot.js"></script>
+	<script src="library/jquery-ui/jquery-ui.min.js"></script>
+</head>
+<body>
+
+	<div id="output"></div>
+
+ <script>
+		// var hostName = window.location.hostname;
+		// var isProduction = (hostName.indexOf('10.0.127.95') === 0 || hostName.indexOf('vasa.pelindo.co.id') === 0 ? true : false ) ;
+		// var isLocal = (hostName.indexOf('192') === 0) || (hostName.indexOf('127') === 0) || (hostName.indexOf('localhost') === 0 || (hostName.indexOf('0.0.0.0') === 0));
+		// var api;
+		// if (isProduction) {
+		// 		api = 'http://vasa.pelindo.co.id/api';
+		// } else {
+		// 	if(hostName && isLocal==='10.0.130.19'){
+		// 		api = 'http://10.0.130.19:8081/api';
+		// 	}else{
+		// 		api = isLocal ? 'http://10.0.130.12:8081/api': '/api';
+		// 	}
+		// }
+		var hn = window.location.hostname;
+		var localAPI;
+		if(hn==='10.0.127.95' || hn==='vasa.pelindo.co.id'){
+			localAPI = 'vasa.pelindo.co.id';
+		}else if(hn==='10.0.130.19'){
+			localAPI = '10.0.130.19:8081';
+		}else{
+			localAPI = '10.0.130.12:8081';
+		}
+
+		$.ajax({
+			type: 'GET',
+			url: 'http://'+ localAPI + '/api/permohonan/report',
+			headers: {
+				"X-Token": localStorage.token
+			}
+		}).done(function(result){
+			result.forEach(function(element) {
+				var tglFilter = moment(element.tglPandu);
+						element["bulan"] = tglFilter.format("MM");
+						element["tahun"] = tglFilter.format("YYYY");
+			});
+
+				console.log(result[0]);
+
+			$("#output").pivotUI(
+			    result,
+			    {
+			        rows: ['bulan','tahun'],
+			        cols: ['jumlahMuat']
+			    }
+			);
+		});
+
+ </script>
+
+	  <!-- endbuild -->
+		<script>
+
+
+	  </script>
+
+	</body>
+	</html>

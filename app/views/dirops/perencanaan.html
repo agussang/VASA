@@ -1,0 +1,595 @@
+<h2 style="margin-top: 0;">Monitoring Kapal Tambat</h2>
+<form class="form-horizontal">
+	<div class="row">
+	  	<div class="col-sm-6">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">Nama Cabang:</label>
+				<!-- marvin
+				<div class="col-sm-4">
+					<select pf-select ng-model="idCabang" name="idCabang" ng-options='option.kodeCabang as option.namaTerminal for option in cabang' ng-change="getDermaga(idCabang)"></select>
+				</div> --> 
+				 <div class="col-sm-4">
+					<select pf-select ng-model="idCabang" name="idCabang" ng-options='option.kodeCabang as option.namaTerminal for option in cabang' ng-change="getDermagaByJenisDmg(idCabang)"></select>
+				</div> 
+		<!--getDermagaByJenisDmg -->
+			</div>
+		</div>
+	  	<div class="col-sm-6">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">Tgl Tambat:</label>
+				<div class="col-sm-4">
+				 	<div pf-datepicker id="idTglTambat" data-date-format="dd-mm-yyyy" options="options" date="tglTambat" required></div>
+				</div>
+			</div>
+	  	</div>
+	</div>
+	<div class="row">	
+	  	<div class="col-sm-6">
+			<div class="form-group">
+				<label class="col-sm-4 control-label">Nama Dermaga:</label>
+				 <div class="col-sm-4">
+					<select pf-select ng-model="idDermaga" name="idDermaga" ng-options='option.mdmgKode as option.mdmgNama for option in dermaga' ng-change="getDermagaCluster(idDermaga)"></select>
+				</div>
+			</div> 
+	  	</div>
+	  	<div class="col-sm-6" style="color:red">
+	  		<h4 ng-if="kapalSandar.length == 0 && informationDermaga.length == 0">Data tidak tersedia</h4>
+	  	</div>
+	</div>  
+</form>
+<hr style="margin-top: 5px;margin-bottom: 5px;">
+
+<div class="containter" style="display:inline-flex;">
+	<div class="canvas-main">
+		<canvas id="canvas" style="height:500px;"></canvas>
+		<div class="information-kapal" ng-if="isKanan == false"> 
+	 		<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.kadeAwal}}px; list-style:none;">
+	 		
+	 			<li>
+	 				<a href="" data-toggle="dropdown">
+	 					<i class="fa fa-info-circle" aria-hidden="true"></i>
+	 				</a>
+	 				<div class="dropdown-menu infotip bottom-left">
+			          <div class="arrow"></div>
+			          <ul class="list-group">
+			            <li class="list-group-item">
+			              <span class="i pficon pficon-info"></span>
+			              <span class="infotip-kapal">Kapal Sandar</span><br>
+			              <span class="infotip-kapal">Nama Kapal : {{kapalSandar.namaKapal}}</span><br>
+			              <span class="infotip-kapal">LOA : {{kapalSandar.panjangKapal}}</span><br>
+			              <span class="infotip-kapal">Mulai : {{kapalSandar.mulai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+			              <span class="infotip-kapal">Selesai : {{kapalSandar.selesai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+
+			            </li>
+			          </ul>
+			      `</div>
+	 			</li>
+	 		</ul>
+	 	</div>
+	 	<div class="information-kapal" ng-if="isKanan == true"> 
+		 	<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top}}px;left:{{kapal.labelFromRight}}px; list-style:none;">
+				<li>
+					<a ng-click="infoKapalRek(kapal.id)" style="cursor: pointer;">
+						<i class="fa fa-info-circle" aria-hidden="true" title="{{kapal.noPpkJasa}}"></i>
+					</a>	
+				</li>
+			</ul>
+	 		<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.labelFromRight}}px; list-style:none;">
+	 			<li>
+	 				<a ng-click="infoKapalSandar(kapalSandar.idKapalSandar)">
+	 					<i class="fa fa-info-circle" aria-hidden="true"></i>
+	 				</a>
+	 			</li>
+	 		</ul>
+	 	</div>
+	</div>
+</div>
+
+<!-- informasi kapal sandar -->
+<div class="modal" id="infoKapalSandar" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+		<div class="modal-content">
+	  		<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+		  		<span class="pficon pficon-close"></span>
+				</button>
+			<h4 class="modal-title">Informasi Kapal Sandar</h4>
+	  	</div>
+	  	<div class="modal-body">
+			<div class="panel panel-default">
+		  		<div class="panel-heading">
+				<h3 class="panel-title">Kapal</h3>
+		  	</div>
+		  	<div class="panel-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.namaKapal}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Agen</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.namaAgen}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.panjangKapal}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.draftKapal}} M</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">No PPK1</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.noPpk1}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">No PPK Jasa</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.noPpkJasa}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Kademeter</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{informasiKapalSandar.kadeAwal}}-{{informasiKapalSandar.kadeAkhir}}</span>
+						</div>
+					</div>
+				</form>
+		  	</div>
+		  	<div class="panel-heading">
+				<h3 class="panel-title">Info TOS</h3>
+		  	</div> 
+		  	<div class="panel-body">
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar2')">Bongkar</a></li>
+					<li role="presentation" class="menu-jasa tab-muat2" kode-menu="muat" id="muatTab2"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat2')">Muat</a></li>
+				</ul>
+				<div class="tab-content">
+					<div id="bongkar2" role="tabpanel" class="tab-pane active">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Mulai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.startWork | date : 'dd-MM-yyyy'}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Selesai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.endWork | date : 'dd-MM-yyyy'}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Persentase</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.realAvgTsd}}%</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.targetTsd}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlPlan}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlProd}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.namaAgent+' / '+dataInformasiKapal.infoTosBongkar.kodeAgent}} </span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div id="muat2" role="tabpanel" class="tab-pane">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Mulai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.startWork | date : 'dd-MM-yyyy'}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Selesai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.endWork | date : 'dd-MM-yyyy'}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Persentase</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.realAvgTsd}}%</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.targetTsd}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlPlan}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlProd}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								<div class="col-sm-8">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.namaAgent+' / '+dataInformasiKapal.infoTosMuat.kodeAgent}} </span>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+		  	</div>
+		  	<div class="panel-heading">
+				<h3 class="panel-title">Tgl Permohonan</h3>
+		  	</div>
+		  	<div class="panel-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Mulai</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{pmhTambat.tglMulai == null ? '-' : pmhTambat.tglMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Selesai</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{pmhTambat.tglSelesai == null ? '-' : pmhTambat.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						</div>
+					</div>
+				</form>
+		  	</div>
+		  	<div class="panel-heading">
+				<h3 class="panel-title">Tgl Penetapan</h3>
+		  	</div>
+		  	<div class="panel-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Mulai</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{ptpTambat.tglMulai == null ? '-' : ptpTambat.tglMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Selesai</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal">{{ptpTambat.tglSelesai == null ? '-' : ptpTambat.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						</div>
+					</div>
+				</form>
+		  	</div>
+			<div class="panel-heading">
+				<h3 class="panel-title">Tgl Realisasi</h3>
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-4 infotip-kapal">Mulai</label>
+						<div class="col-sm-6">
+							<span>:</span>
+							<span class="view-detail infotip-kapal"><span class="view-detail infotip-kapal">{{reaTambat.tglMulai == null ? '-' : reaTambat.tglMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						</div>
+					</div>
+				</form>
+			</div>	  
+		</div>
+	</div>
+	<div class="modal-footer"></div>
+	</div>
+  </div>
+</div>
+<!-- informasi kapal rekomendasi -->
+<div class="modal" id="infoKapalRekomendasi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+  	<div class="modal-dialog">
+		<div class="modal-content">
+	  		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<span class="pficon pficon-close"></span>
+			</button>
+			<h4 class="modal-title">Informasi Kapal</h4>
+	  	</div>
+	  	<div class="modal-body">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Kapal</h3>
+				</div>
+				<div class="panel-body">
+					<form class="form-horizontal">
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.namaKapal}}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">Agen</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.namaAgen}}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.panjangKapal}}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.draftKapal}} M</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">No PPK1</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.noPpk1}}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">No PPK Jasa</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.noPpkJasa}}</span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 infotip-kapal">Kademeter</label>
+							<div class="col-sm-6">
+								<span>:</span>
+								<span class="view-detail infotip-kapal">{{dataInformasiKapal.kadeAwal}}-{{dataInformasiKapal.kadeAkhir}}</span>
+							</div>
+						</div>
+					</form>
+				</div>				  	
+				<div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+					<h3 class="panel-title">Info TOS</h3>
+				</div>
+				<div class="panel-body" ng-if="infoKapalSandarStatus == true">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar')">Bongkar</a></li>
+						<li role="presentation" class="menu-jasa tab-muat" kode-menu="muat" id="muatTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat')">Muat</a></li>
+						</ul> 
+						<div class="tab-content"> 
+							<div id="bongkar" role="tabpanel" class="tab-pane active">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Mulai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.startWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Selesai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.endWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Persentase</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.realAvgTsd}}%</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.targetTsd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlPlan}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlProd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.namaAgent+' / '+dataInformasiKapal.infoTosBongkar.kodeAgent}} </span>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="muat" role="tabpanel" class="tab-pane">
+								<form class="form-horizontal">
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Mulai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.startWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Selesai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.endWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Persentase</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.realAvgTsd}}%</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.targetTsd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlPlan}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlProd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+									<div class="col-sm-8">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.namaAgent+' / '+dataInformasiKapal.infoTosMuat.kodeAgent}} </span>
+									</div>
+									</div>
+								</form>
+							</div>
+						</div>
+				  	</div>
+				  	<div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+						<h3 class="panel-title">Tgl Permohonan</h3>
+				  	</div>
+				  	<div class="panel-body" ng-if="infoKapalSandarStatus == true">
+						<form class="form-horizontal">
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Mulai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{pmhTambat.tglMulai == null ? '-' : pmhTambat.tglMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						 		</div>
+							</div>
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Selesai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+								  	<span class="view-detail infotip-kapal">{{pmhTambat.tglSelesai == null ? '-' : pmhTambat.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+						</form>
+				  	</div>
+				  	<div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+						<h3 class="panel-title">Tgl Penetapan</h3>
+				  	</div>
+				  	<div class="panel-body" ng-if="infoKapalSandarStatus == true">
+						<form class="form-horizontal">
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Mulai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{ptpTambat.tglMulai == null ? '-' : ptpTambat.tglMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Selesai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+							  		<span class="view-detail infotip-kapal">{{ptpTambat.tglSelesai == null ? '-' : ptpTambat.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+						</form>
+				  	</div>
+				</div>
+		  	</div>
+		  	<div class="modal-footer"></div>
+		</div>
+  	</div>
+</div>
+<script type="text/javascript">
+  $('#collapseOne').collapse("hide");
+  $('#collapseTwo').collapse("hide");
+  $('#jamKeluarVal').mask('99:99');
+  $('#jamMasukVal').mask('99:99');
+  $('#').mask('99-99-9999');
+  $('#tambatTglSelesai').mask('99-99-9999');
+
+  function openTab(evt, jenisJasa) {
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tab-pane");
+	for (i = 0; i < tabcontent.length; i++) {
+	  tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+	  tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	menuJasa = document.getElementsByClassName("menu-jasa");
+	for (i = 0; i < menuJasa.length; i++) {
+	  menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+	}
+	document.getElementById(jenisJasa).style.display = "block";
+	evt.currentTarget.className += " active";
+	$('.tab-'+jenisJasa).addClass("active");
+  }
+
+</script>

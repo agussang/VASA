@@ -1,0 +1,32 @@
+<h2>Simulasi Formula</h2>
+<br>
+<form class="form-horizontal">
+	<div class="form-group">
+		<div class="col-sm-9">
+			<div ui-codemirror="{ onLoad : codemirrorLoaded }" ui-codemirror-opts="editorOptions" class="script-area" ng-model="sourceCode"></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+				    <h3 class="panel-title">Avaliable Fields</h3>
+				</div>
+				<div class="panel-body">
+				    <a ng-click="insf(field.name)" class="p3-list list-group-item" ng-repeat="field in fields" title="{{field.desc}}" style="cursor:pointer">
+				    	{{field.name}}
+				  	</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" ng-repeat="field in fields">
+		<label class="col-sm-2 control-label">{{field.name}}</label>
+		<div class="col-sm-7">
+				<input type="number" class="form-control" ng-model="field.val" required="">
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-1">
+			<button type="button" class="btn btn-primary btn-lg" ng-click="submit()">Simulasi</button>
+	  </div>
+	</div>
+</form>

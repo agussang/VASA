@@ -1,0 +1,138 @@
+<h2>Daftar Kegiatan Kapal</h2>
+<br>
+
+<div style="overflow:hidden;">
+  <div class="col-sm-offset-5 col-sm-4 text-center">
+      <span id="date-1" class="input-group date" style="width:150px;">
+        <input type="text" ng-model="search.tglFilter" date="tglLaporan" class="form-control bootstrap-datepicker" readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+      </span>
+  </div>
+
+  <div class="col-sm-offset-3 col-sm-6 text-center">
+    <div class="row">
+      <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+      <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      </button>
+     </div>
+  </div>
+
+ <div class="col-sm-12">
+     <hr>
+  </div>
+
+<div ng-show="search.tglFilter">
+  <div class="laporan">
+    <div class="col-xs-6 col-sm-6">
+      <form class="form-horizontal">
+        <div class="row">
+          <label class="col-sm-6">PT PELABUHAN INDONESIA III</label>
+        </div>
+        <div class="row">
+          <label class="col-sm-6"> {{currentCabang | uppercase}}</label>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="col-xs-6 col-sm-6" style="margin-left:-400px;">
+      <form class="form-horizontal">
+        <div class="row">
+          <label class="col-sm-6">DAFTAR KEGIATAN KAPAL WAJIB PANDU</label>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">LOKASI</label>
+          <div class="col-sm-4">
+              <span>:</span>
+              <label class='view-detail'>{{currentCabang | uppercase}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">BULAN</label>
+          <div class="col-sm-4">
+              <span>:</span>
+              <label class='view-detail'>{{search.tglFilter | uppercase}}</label>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="tabel-daftar-kegiatan" class="col-sm-12" style="margin-left:0px" style="display:inline-flex; width:100%">
+  <table class="table table-bordered table-report">
+    <thead>
+        <th class="valign" colspan="12">
+          <label>DAFTAR KEGIATAN KAPAL WAJIB PANDU</label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th class="valign" colspan="12">
+          <label>{{currentCabang | uppercase}}</label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th class="valign" colspan="12">
+          <label>{{search.tglFilter | uppercase}}</label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+      </tr>
+      <tr>
+        <th class="text-center valign" rowspan="2">NO</th>
+        <th class="text-center valign" rowspan="2">TANGGAL</th>
+        <th class="text-center valign" rowspan="2">NAMA KAPAL</th>
+        <th class="text-center valign" rowspan="2">BENDERA</th>
+        <th class="text-center valign" rowspan="2">NO 2 A 1</th>
+        <th class="text-center valign" colspan="3">GROSS TON</th>
+        <th class="text-center valign" rowspan="2">DARI</th>
+        <th class="text-center valign" rowspan="2">KE</th>
+        <th class="text-center valign" rowspan="2">I/O/S</th>
+      </tr>
+      <tr>
+         <th class="text-center valign">0-500</th>
+         <th class="text-center valign">500-1000</th>
+         <th class="text-center valign">>1001</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in items | filter : search">
+        <td>{{$index +1}}</td>
+        <td class="text-center">{{item.tglPandu | date : 'd'}}</td>
+        <td>{{item.namaKapal}}</td>
+        <td>{{item.bendera}}</td>
+        <td>{{item.kodeKapal}}</td>
+        <td align="right">{{item.gtKapal1}}</td>
+        <td align="right">{{item.gtKapal2}}</td>
+        <td align="right">{{item.gtKapal3}}</td>
+        <td>{{item.pelabuhanAsal}}</td>
+        <td>{{item.pelabuhanTujuan}}</td>
+        <td>{{item.jenisGerakan}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+    <div class="col-sm-offset-3 col-sm-6 text-center">
+      <div class="row">
+        <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+        <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor 
+          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor 
+          <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+      </div>
+    </div>
+</div>
+  
+</div>
+  <script>
+    $('#date-1').datepicker({
+      autoclose: true,
+      format: "MM-yyyy",
+      viewMode: "months",
+      minViewMode: "months",
+      language: 'id'
+    });
+  </script>

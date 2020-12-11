@@ -1,0 +1,22 @@
+<h2>Grup Dermaga Tambat Baru</h2>
+
+  <form class="form-horizontal" name="grupTambatForm">
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Nama</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" ng-model="grupTambat.nama" name="nama" required>
+          <span class="has-error" ng-show="grupTambatForm.nama.$touched && grupTambatForm.nama.$invalid">
+              Isi nama dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="grupTambatForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+
+</form>

@@ -1,0 +1,79 @@
+<h2>History Pembatalan SPK</h2>
+
+<div pf-filter config="filterConfig"></div>
+
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="10">
+                <div class="form-group">
+                    <span>Show : </span>
+                    <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10" class="text-center">{{pagingText}}</td>
+        </tr>
+        <tr>
+            <th>No</th>
+            <th ng-click="sortBy='idSpk'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Id Spk</div>
+                <div class="pull-right">
+                    <span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'idSpk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'idSpk' && sortDesc)}"></span>
+                </div>
+            </th>
+            <th ng-click="sortBy='jenisSPK'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Jenis SPK</div>
+                <div class="pull-right">
+                    <span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisSpk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisSpk' && sortDesc)}"></span>
+                </div>
+            </th>
+            <th colspan = "2" ng-click="sortBy='nomorSPK'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Nomor SPK</div>
+                <div class="pull-right">
+                    <span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nomorSpk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nomorSpk' && sortDesc)}"></span>
+                </div>
+            </th>
+            <th ng-click="sortBy='pemilik'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Nomor PPK1</div>
+                <div class="pull-right">
+                    <span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'pemilik' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'pemilik' && sortDesc)}"></span>
+                </div>
+            </th>
+            <th>
+                <div class="pull-left">Nomor PPK Jasa</div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{$index +1}}</td>
+            <td>{{item.idSpk}}</td>
+            <td>{{item.jenisSpk}}</td>
+            <td>{{item.nomorSpk}}</td>
+            <td> <strong> SPK Pandu : </strong> {{item.nomorSpkPandu}} <br>
+                <strong> SPK Tunda : </strong> {{item.nomorSpkTunda}} <br>
+                <strong> SPK Tambat : </strong> {{item.nomorSpkTambat}}
+            </td>
+            <td>{{item.noPpk1}}</td>
+            <td> <strong> Pandu : </strong> {{item.noPpkJasaPandu}}<br>
+                <strong> Tunda : </strong> {{item.noPpkJasaTunda}}<br>
+                <strong> Tambat : </strong> {{item.noPpkJasaTambat}}</td>
+        </tr>
+    </tbody>
+
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true"
+        hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>
+<script>
+
+    //Initialize select picker
+    $('.selectpicker').selectpicker();
+
+
+</script>

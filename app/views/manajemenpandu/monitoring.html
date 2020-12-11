@@ -1,0 +1,369 @@
+<h2>Monitoring Pandu</h2>
+
+<div class="col-sm-offset-10 col-sm-2 pull-right row" style="padding-bottom:10px">
+    <a ng-show="userRole.cflag" ng-click="openMonitoringPandu()" kode-menu="3602" type="button" class="btn btn-default btn-md" title="Mode Layar Besar"><span class="fa fa-external-link"></span></a>
+</div>
+
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="menu-jasa tab-aktivitas aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'aktivitas')">AKTIVITAS</a></li>
+	<li role="presentation" class="menu-jasa tab-petugas" kode-menu="petugas" id="petugasTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'petugas')">PETUGAS</a></li>
+</ul>
+
+<div role="tabpanel" class="tab-pane active" id="aktivitas">
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <label class="col-sm-5 control-label">Tanggal Awal :</label>
+            <div class="col-sm-4">
+                <span id="tglAwal" class="input-group date label-center" style="width:120px;">
+                <input type="text" ng-model="tglFilter" ng-change="changeTanggalAwal()" date="currentDate" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="col-sm-5 control-label">Nama Kapal </label>
+                <div class="col-sm-6" style="display:inline-flex;">
+                    <input ng-model="namaKapal" capitalize>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Pandu </label>
+                <div class="col-sm-6" style="display:inline-flex;">
+                    <input ng-model="namaPandu">
+                </div>
+                <span class="col-sm-2">
+                    <button type="button" class="btn btn-default btn" ng-click="pageChanged(0);"> Filter </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    
+
+    <table class="datatable table table-striped table-bordered" style="margin-right:25px !important;">
+        <thead>
+            <tr>
+                <td colspan="21">
+                    Show :
+                    <select ng-options="option for option in optionSizePage.availableOptions track by option" ng-model="pageSize" ng-change="pageChanged(0)"></select>
+                </td>
+            </tr>
+            <tr>
+                <th>No</th>
+                <th class="label-center" colspan="2">No. SPK</th>
+                <th class="label-center" style="min-width:75px;">Kapal</th>
+                <th class="label-center">No. PPK Jasa</th>
+                <th class="label-center" style="min-width:100px;">Tgl. Pandu</th>
+                <th class="label-center">Status</th>
+                <th class="label-center" colspan="3" style="min-width:300px;">Aktivitas Pandu</th>
+                <th class="label-center" colspan="2" style="min-width:200px;">Aktivitas Tunda</th>
+                <th class="label-center" colspan="2" style="min-width:200px;">Aktivitas Tambat</th>
+                <th class="table-col-full text-center" style="min-width:75px;">Action</th>
+                <th class="table-col-full text-center" style="min-width:100px;">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{$index+1}}</td>
+                <td style="border-right:hidden;">
+                    <i ng-show="item.flagDone == 2" class="fa fa-th-large fa-check-circle" aria-hidden="true"  style="font-size:16px;"></i>
+                    <i ng-show="item.flagDone == 1" class="fa fa-th-large fa-clock-o" aria-hidden="true"  style="font-size:16px;"></i>
+                </td>
+                <td style="min-width:150px;" >{{item.nomorSpkPandu}}
+                    <br><small class="detail-daftar detail-monitoring" style="margin-top:5px !important">No. PPK1 :<a href="/#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a></small>
+                    <br><small class="detail-daftar detail-monitoring" ng-repeat="data in item.listKapalTunda" ng-hide="item.listKapalTunda.length == 0">
+                    <i class="fa fa-ship" style="margin-right:3px !important;margin-top:3px !important;"></i>{{data.namaKapal}}</small><span class="text-warning blinking" ng-hide="item.listKapalTunda.length > 0 || item.jumlahTunda == 0 || item.status =='SPK' || item.tidakPerluTunda" style="margin-right:3px !important;margin-top:3px !important; color:red !important">
+                    <b>BELUM ASSIGN TUNDA</b></span>
+                </td>
+                <td><b>{{item.namaKapal}}</b>
+                    <br> 
+                    <small class="detail-daftar detail-monitoring" ng-hide="item.kadeAwal==null">Kade Meter: </small>
+                    <small class="detail-daftar detail-monitoring" style="margin-top:0px !important;" ng-hide="item.kadeAwal==null">
+                        <i ng-show="item.kadeAwal<item.kadeAkhir" class="fa fa-arrow-up fa-2x color-green" style="margin-right:3px !important;"></i>
+                        <i ng-show="item.kadeAwal>item.kadeAkhir" class="fa fa-arrow-down color-red" style="margin-right:3px !important;"></i> {{item.kadeAwal}} - {{item.kadeAkhir}}</small>
+                </td>
+                <td>{{item.noPpkJasa}}
+                    <br>
+                    <small class="detail-daftar detail-monitoring">{{item.asal}} → {{item.tujuan}}</small>
+                    <br>
+                    <small class="detail-daftar detail-monitoring">Gerakan : {{item.jenisGerakanText}}</small>
+                </td>
+                <td>{{item.jamPenetapanPandu | date:'dd-MM-yyyy HH:mm:ss' }} <br>
+                    <small class="detail-daftar detail-monitoring">
+                        <i class="fa fa-male" style="margin-right:3px !important; margin-top:3px !important;"> </i>{{item.namaPandu}}</small>
+                </td>
+                <td class="label-center">{{item.status}}
+                    <br style="text-align: center">
+                    <i ng-show="item.statusMonitoring == true" class="fa fa-check-circle-o fa-2x icon-report-meeting" style="color:#11c514;" aria-hidden="true" title="Connected"></i>
+                    <i ng-show="item.statusMonitoring == false" class="fa fa-times-circle fa-2x"  style="color:#cc0000;" aria-hidden="true" title="Not Connected"></i>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamPanduNaik" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" ng-disabled="item.flagDone == 2"  style="width:50px"  ng-click="editAktivitasPandu(item, item.idJamPanduNaik, 1)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Pandu Naik</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamKapalBergerak" data-time-format="HH:mm" ng-disabled="item.flagDone == 2" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" ng-click="editAktivitasPandu(item, item.idJamKapalBergerak, 2)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Kapal Bergerak</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamPanduTurun" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" ng-disabled="item.idJamPanduTurun == -1 || item.flagDone == 2" ng-click="editAktivitasPandu(item, item.idJamPanduTurun, 3)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Pandu Turun</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamIkatTunda" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1" ng-disabled="item.flagDone == 2" style="width:50px;" ng-click="editAktivitasPandu(item, item.idJamIkatTunda, 4)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Ikat Tunda</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamLepasTunda" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" ng-click="editAktivitasPandu(item, item.idJamLepasTunda, 5)" ng-disabled="item.flagDone == 2">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Lepas Tunda</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamIkatTali" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" ng-disabled="item.jenisGerakan == 'KELUAR' ||item.flagDone == 2" ng-click="editAktivitasPandu(item, item.idJamIkatTali,6)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Ikat Tali</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.jamLepasTali" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" ng-disabled="item.jenisGerakan == 'MASUK' || item.flagDone == 2" ng-click="editAktivitasPandu(item, item.idJamLepasTali, 7)">
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Lepas Tali</small></span>
+                </td>
+                <td class="text-center">
+                    <div class="row">
+                        <a ng-show="userRole.cflag"  ng-click="item.flagDone === 2 || item.idJamPanduNaik == null || item.idJamPanduTurun == null || item.idJamKapalBergerak == null || realisasiPandu(item)"  ng-disabled="item.flagDone == 2 || item.idJamPanduNaik == null || item.idJamPanduTurun == null || item.idJamKapalBergerak == null"  type="button" class="btn btn-default btn-xs" title="Submit Progress SPK"><span class="fa fa-play"></span></a> {{}}
+                        <a ng-show="userRole.dflag" ng-disabled="item.flagDone == 2" ng-click="item.flagDone === 2 || eskalasiBatalJasaPandu(item)" type="button" class="btn btn-danger btn-xs" title="Batal Jasa Pandu"><span class="fa fa-times"></span></a>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <div class="row">
+                        <a ng-show="userRole.cflag" ng-disabled="item.status == 1" href="#/transaksi/listRealisasi/{{item.noPpk1}}/{{item.urutanPermohonan}}"
+                        type="button" class="btn btn-default btn-xs" title="Realisasi">
+                            <span class="fa fa-external-link"></span>
+                        </a>
+                        <a ng-show="userRole.rflag" href="#/manajementunda/monitoring"
+                        type="button" class="btn btn-default btn-xs" title="Monitoring Tunda">
+                            <span class="fa fa-desktop"></span>
+                        </a>
+                        <a ng-show="userRole.rflag" href="#/manajementunda/perencanaan/{{item.noPpk1}}" type="button" class="btn btn-default btn-xs" title="Perencanaan Tunda">
+                            <span class="fa fa-ship"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="21" ng-show="item.length == 0">Data tidak tersedia</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div>
+        <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+            paging-action="pageChanged(page)">
+        </paging>
+    </div>
+
+    <div class="modal" id="editJam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:500px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+            </button>
+                    <h3 class="modal-title" id="myModalLabel">Edit Jam Aktivitas Pandu</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-4">
+                            <span class="text-danger">*</span>Tanggal :</label>
+                        <div class="col-sm-8">
+                            <span id="editTglAktivitas" class="input-group date label-center" style="width:120px;">
+                                <input type="text" ng-model="tglAktivitas" date="tglEdit" class="form-control bootstrap-datepicker" options="options"
+                                    readonly>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-4"><span class="text-danger">*</span>Jam {{itemAktivitas.tahapanPandu}}</label>
+                        <div class="col-sm-8">
+                            <input  id="editJamAktivitas" type="text" class="form-control" size="8" ng-model="jamAktivitas" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1" style="width:50px;">
+                        </div>
+                    </div>
+                </div>    
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateJam(itemAktivitas, jamAktivitas, tglAktivitas)">Simpan</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addJam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <form name="addForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+            </button>
+                    <h3 class="modal-title" id="myModalLabel">Add Jam Aktivitas Pandu</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-4"><span class="text-danger">*</span>Tahapan Pandu :</label>
+                        <div class="col-sm-8">
+                            <select pf-select ng-model="addJamAktivitas.idTahapanPandu" ng-options="option.id as option.nama for option in tahapanPandu"
+                        id="jns-1"  ng-disabled="true" required title="Tahapan Pandu"></select>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-4">
+                            <span class="text-danger">*</span>Tanggal :</label>
+                        <div class="col-sm-8">
+                            <span id="addTglAktivitas" class="input-group date label-center" style="width:120px;">
+                                <input type="text" ng-model="tglAktivitas" date="currentDate" class="form-control bootstrap-datepicker" options="options" readonly required>
+                                <span class="input-group-addon">
+                                    <span class="fa fa-calendar"></span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label class="col-sm-4"><span class="text-danger">*</span>Jam :</label>
+                        <div class="col-sm-8">
+                            <input  id="addJamAktivitas" type="text" class="form-control" size="8" ng-model="jamAktivitas" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" id="addJam" name="jamAktivitas" bs-timepicker data-length="1" style="width:50px;" required>
+                        </div>
+                    </div>
+                </div>    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addJam (addJamAktivitas, jamAktivitas, tglAktivitas)" ng-disabled="addForm.$invalid" >Simpan</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div class="tab-content">
+    <div id="petugas" role="tabpanel" class="tab-pane">
+        <table class="datatable table table-striped table-bordered" style="margin-bottom:20px !important;">
+            <thead>
+                <tr>
+                    <th class="label-center">No</th>
+                    <th class="label-center">Nama</th>
+                    <th class="label-center">Grup</th>
+                    <th class="label-center">Kode</th>
+                    <th class="label-center">Absen</th>
+                    <th class="label-center">Status</th>
+                    <th class="label-center">Kawasan</th>
+                    <tr>
+            </thead>
+            <tbody>
+            </tbody>
+                <tr ng-repeat="item in monitoringPandu | orderBy : '-statusAbsenText'">
+                    <td>{{$index+1}}</td>
+                    <td>{{item.petugasPandu.namaPetugas}}</td>
+                    <td>{{item.petugasPandu.groupName}}</td>
+                    <td>{{item.petugasPandu.kode}}</td>
+                    <td>{{item.statusAbsenText}}</td>
+                    <td>{{item.statusIdle}}</td>
+                    <td>{{item.petugasPandu.namaKawasan}}</td>
+                </tr>
+        </table>
+    </div>
+</div>
+
+<!-- modal VALOTH021 -->
+<div class="modal" id="modalVALOTH021" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Informasi Validasi</h4>
+            </div>
+            <div class="modal-body">
+                <p ng-bind-html="infoVALOTH021"></p>
+                <br>Kode validasi:
+                <b>VALOTH-021</b>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+                    <i class="fa fa-level-up "></i>
+                    <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+                </div>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    document.getElementById('aktivitas').style.display = "block";
+});
+
+$('#tglAwal').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+$('#addTglAktivitas').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+$('#editTglAktivitas').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+function openTab(evt, jenisJasa) {
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tab-pane");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	menuJasa = document.getElementsByClassName("menu-jasa");
+	for (i = 0; i < menuJasa.length; i++) {
+		menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+	}
+	document.getElementById(jenisJasa).style.display = "block";
+	evt.currentTarget.className += " active";
+	$('.tab-'+jenisJasa).addClass("active");
+}
+    
+$('#addJamAktivitas').mask('99:99');
+$('#editJamAktivitas').mask('99:99');
+</script>

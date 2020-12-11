@@ -1,0 +1,42 @@
+<h2>Grup Pandu Baru</h2>
+
+  <form class="form-horizontal" name="grupPanduForm">
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Kode</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="9" class="form-control" ng-model="grupPandu.kodeGroup" name="kode" required>
+          <span class="has-error" ng-show="grupPanduForm.kode.$touched && grupPanduForm.kode.$invalid">
+              Isi kode dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Nama</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" ng-model="grupPandu.namaGroup" name="nama" required>
+          <span class="has-error" ng-show="grupPanduForm.nama.$touched && grupPanduForm.nama.$invalid">
+              Isi nama dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Stasiun Pandu</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="grupPandu.idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+            <span class="has-error" ng-show="grupPanduForm.idKawasan.$touched && grupPanduForm.idKawasan.$invalid">
+              Isi kawasan dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="grupPanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+
+</form>

@@ -1,0 +1,48 @@
+<div>
+	<h2>History ON/OFF</h2>
+	<div>
+	<form class="form-horizontal" name="">
+		<div class="form-group">
+      		<label class="col-sm-2 control-label"><span class="text-danger"></span>Filter Tgl Awal</label>
+		    <div class="col-sm-2" style="display:inline-flex;">
+             <div pf-datepicker id="tanggalMulaiId" data-date-format="dd-mm-yyyy" options="options" date="tglMulai"  required></div>
+             <span style="margin:5px;">s/d</span>
+             <div pf-datepicker id="tanggalAkhirId" data-date-format="dd-mm-yyyy" options="options" date="tglAkhir"  required></div>
+             <button type="button" class="btn btn-primary btn-sm" style="height:26px;" ng-disabled="" ng-click="prosesFilter();buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Proses</button>
+		    </div>
+	    </div>
+	</form>
+	</div>
+	<table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+  		<thead>
+			<tr>
+				<th style="width:20px;">No</th>
+				<th>Tanggal Jam Awal</th>
+				<th>Tanggal Jam Akhir</th>
+				<th>Status</th>
+				<th>Keterangan</th>
+			</tr>
+  		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{noIndex+$index +1}}</td>
+				<td>{{item.tglMulai|date: "dd-MM-yyyy HH:mm"}}</td>
+				<td>{{item.tglSelesai|date: "dd-MM-yyyy HH:mm"}}</td>
+				<td>
+					<span ng-if="item.statusOn == true">ON</span>
+					<span ng-if="item.statusOn == false">OFF</span>
+				</td>
+				<td>{{item.keterangan}}</td>
+		  	</tr>
+		</tbody>
+  	</table>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging></div>
+</div>
+	
+
+

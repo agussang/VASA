@@ -1,0 +1,92 @@
+<h2>Master Denda Detail</h2>
+
+<form class="form-horizontal">
+
+  <div class="form-group">
+    <label class="col-sm-2">Kode Denda</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.kodeDenda}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Jenis Denda</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.jenisDendaText}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Jenis Jasa</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.jenisJasaText}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Kena Denda</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.flagDenda}}</span>
+    </div>
+  </div>
+
+
+
+  <div class="form-group">
+    <label class="col-sm-2">Kode Dermaga</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.kodeDermaga}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Nama Dermaga</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.namaDermaga}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Aktif</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.flagAktif}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Sifat</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.sifatDendaText}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Nilai</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.value | currency:"":0}}</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2">Keterangan</label>
+    <div class="col-sm-7">
+        <span>:</span>
+        <span class='view-detail'>{{contentMasterDendaDetails.keterangan}}</span>
+    </div>
+  </div>
+<div class="form-group">
+      <div class="col-sm-7">
+          <button class="btn btn-primary btn-lg" ng-click="close()">Tutup</button>
+      </div>
+    </div>
+    </div>
+</form>

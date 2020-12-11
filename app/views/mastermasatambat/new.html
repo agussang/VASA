@@ -1,0 +1,230 @@
+<h2>Masa Tambat Baru</h2>
+<form name="masatambatForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"> Menggunakan GT</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="masatambat.gt" switch-active="{{ isActive}}" ng-true-value="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"> </span>Menggunakan Jenis Pelayaran</label>
+      <div class="col-sm-7">
+       <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="masatambat.jnsPelayaran" switch-active="{{ isActive}}" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"></span>Menggunakan Jenis Kemasan</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="masatambat.jnsKemasan" switch-active="{{ isActive}}" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"></span>Menggunakan Jenis Kapal</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="masatambat.jnsKapal" switch-active="{{ isActive}}" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+
+    <div class="masatambat-custom-tbl">
+      <div style="display:inline-flex;">
+         <h5 class="pull-left"><strong>Rincian</strong></h5>
+      </div>
+      <h5 class="" style="float:right;"><strong><a style="cursor:pointer" data-toggle="modal" data-target="#masaTambatModal">Tambah</a></strong></h5>
+      <table class="datatable table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="table-col-full text-center">GT Min</th>
+            <th class="table-col-full text-center">GT Max</th>
+            <th class="table-col-full text-center">Jenis Pelayaran</th>
+            <th class="table-col-full text-center">Jenis Kemasan</th>
+            <th class="table-col-full text-center">Jenis Kapal</th>
+            <th class="table-col-full text-center">Masa Tambat</th>
+            <th class="table-col-full text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in masatambatDetailArray">
+            <td>{{item.gtMin}}</td>
+            <td>{{item.gtMax}}</td>
+            <td>{{item.jenisPelayaranText}}</td>
+            <td>{{item.jenisKemasanText}}</td>
+            <td>{{item.jenisKapalText}}</td>
+            <td>{{item.masaTambat}}</td>
+            <td class="text-center">
+              <a data-toggle="modal" data-target="#editDetailMasaTambatModal" ng-click="updateMasaTambatDetail($index)" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+              <a ng-click="deleteMasaTambatDetailView($index)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info" ng-show="masatambatDetailArray.length == 0">
+          <span class="pficon pficon-info"></span>
+          <strong>Klik Tambah untuk menambahkan item</strong>&nbsp;|<a style="cursor:pointer" data-toggle="modal" data-target="#masaTambatModal">Tambah</a>.
+      </div>
+    </div>
+
+    <div class="form-group pull-right">
+      <div class="" style="margin-top:20px; margin-right:315px;">
+          <button type="button" class="btn btn-default btn-lg" ng-disabled="masatambatForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>
+<div class="modal" id="masaTambatModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title">Rincian Masa Tambat Baru</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" name="RincianmsTambatNew">
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span ng-hide="masatambat.gt == false" class="text-danger">*</span>GT Min</label>
+              <div class="col-md-6">
+                  <input type="number" only-num maxlength="12" max="{{masatambatDetail.gtmax}}" min="1" id="no-3" ng-disabled="masatambat.gt == false" class="form-control" name="masaTambatGtMin" ng-model="masatambatDetail.gtmin" ng-required="masatambat.gt">
+                  <span class="has-error" ng-show="RincianmsTambatNew.masaTambatGtMin.$touched && RincianmsTambatNew.masaTambatGtMin.$invalid">
+                  Isi GT Min dibutuhkan.
+                  </span>
+              </div>
+
+              <div class="col-sm-2" ng-hide="RincianmsTambatNew.masaTambatGtMin.$valid" >
+                  <small class="error" ng-show="RincianmsTambatNew.masaTambatGtMin.$error.max">
+                  <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Max harus lebih besar dari GT Min</span></small>
+              </div>
+
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span ng-hide="masatambat.gt == false" class="text-danger">*</span>GT Max</label>
+              <div class="col-md-6">
+                  <input type="number" only-num maxlength="12" min="1" id="no-3" ng-disabled="masatambat.gt == false" class="form-control" name="masaTambatGtMax" ng-model="masatambatDetail.gtmax" ng-required="masatambat.gt">
+                  <span class="has-error" ng-show="RincianmsTambatNew.masaTambatGtMax.$touched && RincianmsTambatNew.masaTambatGtMax.$invalid">
+                  Isi GT Max dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span ng-hide="masatambat.jnsPelayaran == false" class="text-danger">*</span>Jenis Pelayaran</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetail.jenisPelayaran" name="jenisPelayaran" ng-disabled="masatambat.jnsPelayaran == false" ng-change="getJenisPelayaran(masatambatDetail.jenisPelayaran)" ng-options='option.value as option.caption for option in jenisPelayaran' ng-required="masatambat.jnsPelayaran"></select>
+                  <input type="hidden" ng-model="jenisPelayaranText">
+                  <span class="has-error" ng-show="RincianmsTambatNew.jenisPelayaran.$touched && RincianmsTambatNew.jenisPelayaran.$invalid">
+                    Isi jenis pelayaran dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span ng-hide="masatambat.jnsKemasan == false" class="text-danger">*</span>Jenis Kemasan</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetail.jenisKemasan" name="jenisKemasan" ng-disabled="masatambat.jnsKemasan == false" ng-change="getJenisKemasan(masatambatDetail.jenisKemasan)" ng-options='option.value as option.caption for option in jenisKemasan' ng-required="masatambat.jnsKemasan"></select>
+                  <input type="hidden" ng-model="jenisKemasanText">
+                  <span class="has-error" ng-show="RincianmsTambatNew.jenisKemasan.$touched && RincianmsTambatNew.jenisKemasan.$invalid">
+                    Isi jenis kemasan dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span ng-hide="masatambat.jnsKapal == false" class="text-danger">*</span>Jenis Kapal</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetail.jenisKapal" name="jenisKapal" ng-disabled="masatambat.jnsKapal == false" ng-change="getJenisKapal(masatambatDetail.jenisKapal)" ng-options='option.value as option.caption for option in jenisKapal' ng-required="masatambat.jnsKapal"></select>
+                  <input type="hidden" ng-model="jenisKapalText">
+                  <span class="has-error" ng-show="RincianmsTambatNew.jenisKapal.$touched && RincianmsTambatNew.jenisKapal.$invalid">
+                    Isi jenis kapal dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Masa Tambat</label>
+              <div class="col-md-6">
+                  <input type="number" decimal-number maxlength="6" class="form-control" min="0" ng-model="masatambatDetail.mstambatday" name="masaTambatDay" id="no-3" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.01" required>
+                  <span class="has-error" ng-show="RincianmsTambatNew.masaTambatDay.$touched && RincianmsTambatNew.masaTambatDay.$invalid">
+                  Isi Masa Tambat dibutuhkan.Maksimal 6 karakter.
+                  </span>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal"  ng-disabled="RincianmsTambatNew.$invalid;" ng-click="submitMasatambatDetail()">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="editDetailMasaTambatModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title">Rincian Masa Tambat Baru {{$index}}</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" name="RincianmsTambatEdit">
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>GT Min </label>
+              <div class="col-md-6">
+                  <input type="number" id="no-3" max="{{masatambatDetailUpdate.gtMax}}" ng-disabled="masatambat.gt == false" class="form-control" name="masaTambatGtMin" ng-model="masatambatDetailUpdate.gtMin" ng-required="masatambat.gt">
+              </div>
+              <div class="col-sm-2" ng-hide="RincianmsTambatEdit.masaTambatGtMin.$valid" >
+                  <small class="error" ng-show="RincianmsTambatEdit.masaTambatGtMin.$error.max">
+                  <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Max harus lebih besar dari GT Min</span></small>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>GT Max</label>
+              <div class="col-md-6">
+                  <input type="number" id="no-3" ng-disabled="masatambat.gt == false" class="form-control" name="masaTambatGtMax" ng-model="masatambatDetailUpdate.gtMax" ng-required="masatambat.gt">
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Jenis Pelayaran</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetailUpdate.jenisPelayaran" name="jenisPelayaran" ng-disabled="masatambat.jnsPelayaran == false" ng-change="getJenisPelayaran(masatambatDetailUpdate.jenisPelayaran)" ng-options='option.value as option.caption for option in jenisPelayaran' ng-required="masatambat.jnsPelayaran"></select>
+                  <input type="hidden" ng-model="jenisPelayaranText">
+                  <span class="has-error" ng-show="formModalmsTambat.jenisPelayaran.$touched && formModalmsTambat.jenisPelayaran.$invalid">
+                    Isi jenis pelayaran dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Jenis Kemasan</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetailUpdate.jenisKemasan" name="jenisKemasan" ng-disabled="masatambatDetailUpdate.jnsKemasan == false" ng-options='option.value as option.caption for option in jenisKemasan' ng-required="masatambat.jnsKemasan"></select>
+                  <span class="has-error" ng-show="formModalmsTambat.jenisKemasan.$touched && formModalmsTambat.jenisKemasan.$invalid">
+                    Isi jenis kemasan dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Jenis Kapal</label>
+              <div class="col-sm-7">
+                  <select pf-select ng-model="masatambatDetailUpdate.jenisKapal" name="jenisKapal" ng-disabled="masatambat.jnsKapal == false" ng-options='option.value as option.caption for option in jenisKapal' ng-required="masatambat.jnsKapal"></select>
+                  <span class="has-error" ng-show="formModalmsTambat.jenisKapal.$touched && formModalmsTambat.jenisKapal.$invalid">
+                    Isi jenis kapal dibutuhkan.
+                  </span>
+              </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Masa Tambat</label>
+              <div class="col-md-6">
+                  <input type="number" id="no-3" class="form-control" decimal-number maxlength="6" min="0" maxlength="3" name="masaTambatDay" ng-model="masatambatDetailUpdate.masaTambat" step="0.01" required>
+                  <span class="has-error" ng-show="RincianmsTambatEdit.masaTambatDay.$touched && RincianmsTambatEdit.masaTambatDay.$invalid">
+                  Isi Masa Tambat dibutuhkan.Maksimal 6 karakter.
+                  </span>
+              </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="cancelUpdateMasaTambatDetail()">Batal</button> -->
+        <button type="button" class="btn btn-primary" ng-disabled="RincianmsTambatEdit.$invalid;" data-dismiss="modal" ng-click="saveMasaTambatDetail() ">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>

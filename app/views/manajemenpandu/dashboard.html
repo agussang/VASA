@@ -1,0 +1,58 @@
+
+<div class="row" style="margin-bottom:0px !important; margin-top:0px !important;">
+    <h2 class="col-sm-6">Dashboard Pandu</h2>
+    <h3 class="col-sm-6" align="right">{{clock}}</h3>
+</div>
+<div>
+    <div class="row row-cards-pf">
+        <div id="card" ng-repeat ="item in displayDermaga" class="col-xs-6" class="animate-switch">
+            <div class="card-pf card-pf-accented card-dermaga">
+                <div class="card-pf-heading card-pandu-heading">
+                    <h2 class="card-pf-title card-pandu-title">
+                        {{item.lokasi}}
+                    </h2>
+                </div>
+                <div class="card-pf-body card-pandu-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h4>MASUK</h4>
+                            <div ng-repeat="data in item.panduMasuk" class="row">
+                                <p ng-class="{'late-style':data.isLate == true}" align="left" class="col-sm-8">{{data.namaKapal}}</p>
+                                <p ng-class="{'late-style':data.isLate == true}" align="right" class="col-sm-4">{{data.tglMulaiPandu | date:'hh:mm'}}</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <h4>KELUAR</h4>
+                            <div ng-repeat="data in item.panduKeluar" class="row">
+                                <p ng-class="{'late-style':data.isLate == true}" align="left" class="col-sm-8">{{data.namaKapal}}</p>
+                                <p ng-class="{'late-style':data.isLate == true}" align="right" class="col-sm-4">{{data.tglMulaiPandu | date:'hh:mm'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row" style="min-height:48px;">
+                        <div class="col-sm-12 pull-right" ng-show="item.statusIdle=='SPK' || item.statusIdle=='OHN' || item.statusIdle =='On Board'">
+                            <h6 class="card-pandu-footer">{{item.suratPerintahKerjaPandus[0].namaLokasiPanduAsal}} → {{item.suratPerintahKerjaPandus[0].namaLokasiPanduTujuan}}
+                                </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p ng-show="dermagaSize" align="center" style="margin-bottom:0px;">
+        <i class="fa fa-chevron-left" aria-hidden="true" ng-click="prevPage(indexDermaga)"></i>
+        <i class="fa fa-circle" aria-hidden="true"></i>
+        <i class="fa fa-chevron-right" aria-hidden="true" ng-click="nextPage(indexDermaga)"></i>
+    </p>
+</div>
+<script>
+    if ($(".yay-hide")[0]) {
+        // Do something if class exists
+    } else {
+        // Do something if class does not exist
+        $('.yay-toggle').trigger('click');
+    }
+</script>

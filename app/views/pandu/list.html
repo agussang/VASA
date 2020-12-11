@@ -1,0 +1,72 @@
+<h2>Tarif Pandu</h2>
+<div pf-filter config="filterConfig"></div>
+	<table class="datatable table table-striped table-bordered">
+		<thead>
+		<tr>
+		 <td colspan="9">
+		  Show :
+            	<select class="" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+		<input type="button" ng-show="userRole.cflag" onclick="location.href='#/pandu/new';" value="Tarif Pandu Baru" class="btn-list btn btn-default pull-right" />
+		 </td>
+		</tr>
+			<tr>
+				<td colspan="9" class="text-center">{{pagingText}}</td>
+			</tr>
+			<tr>
+			<th>No</th>
+				<th ng-click="sortBy='nomorSk'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Nomor SK</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nomorSk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nomorSk' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Tgl. Berlaku</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglBerlaku' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Jenis Pelayaran</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisPelayaran' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisPelayaran' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='tarifTetap'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Tarif Tetap</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tarifTetap' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tarifTetap' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='tarifVariabel'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Tarif Variabel</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tarifVariabel' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tarifVariabel' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='valuta'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Valuta</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'valuta' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'valuta' && sortDesc)}"></span></div>
+				</th>
+				<th ng-click="sortBy='jenisNegara'; sortDesc = !sortDesc; pageChanged(0);">
+					<div class="pull-left">Jenis Negara</div>
+					<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisNegara' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisNegara' && sortDesc)}"></span></div>
+				</th>
+            	<th class="table-col-full text-center">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{noIndex+$index +1}}</td>
+				<td>{{item.nomorSk}}</td>
+				<td>{{item.tglBerlaku | date: "dd-MM-yyyy"}}</td>
+				<td>{{item.jenisPelayaranText}}</td>
+				<td class="text-right">{{item.tarifTetap | currency : "" : 4}}</td>
+				<td class="text-right">{{item.tarifVariabel | currency : "" : 4}}</td>
+				<td>{{item.valuta}}</td>
+				<td>{{item.jenisNegaraText}}</td>
+				<td class="text-center">
+					<a ng-show="userRole.rflag" href="#/pandu/view/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+		  		<a ng-show="userRole.uflag" href="#/pandu/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o" ></span></a>
+		  		<a ng-show="userRole.dflag" ng-click="deleteIdlist(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div ><paging class="small" page="currentPage" page-size="pageSize"
+		  total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		  hide-if-empty="false" ul-class="pagination" active-class="active"
+		  disabled-class="disabled" show-prev-next="true"
+		  style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging></div>

@@ -1,0 +1,99 @@
+<h2>Monitoring Kapal Tunda</h2>
+
+<div class="row top-buffer">
+    <div class="col-sm-5">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Tgl. Tunda</label>
+            <div class="col-sm-3" style="display:inline-flex;">
+                <span id="tglTunda" class="input-group date" style="width:150px;">
+                    <input type="text" ng-model="tanggalTunda" date="tanggalTunda" class="form-control bootstrap-datepicker" options="options"
+                        ng-change="listSpk();" readonly>
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6" ng-hide="isPusat == 'false'">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Nama Cabang:</label>
+            <div class="col-sm-3">
+                <select pf-select ng-model="idCabang" name="idCabang" ng-options='option.value as option.caption for option in listCabang'
+                    ng-change="changeCabang(idCabang)"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="datatable table table-striped table-bordered top-buffer">
+    <thead>
+        <tr>
+            <th style="width:20px;">No</th>
+            <th>Nomor SPK</th>
+            <th>No. PPK1</th>
+            <th>Kapal</th>
+            <th>Tgl. Tunda</th>
+            <th colspan="2">Aktivitas Tunda</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items | orderBy :'-suratPerintahKerjaTunda.lastUpdated'">
+            <td>{{noIndex+$index +1}}</td>
+            <td>{{item.suratPerintahKerjaTunda.nomorSpkTunda}}
+                <br>
+                <small>
+                    <i class="fa fa-male" style="margin-right:3px !important;"> </i> {{item.namaPandu}}
+                </small>
+                <br>
+                <small>
+                    <i class="fa fa-ship" style="margin-right:3px !important;"> </i>{{item.namaKapalTunda}}
+                </small>
+                <br>
+            </td>
+            <td>
+                <a href="/#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.suratPerintahKerjaTunda.noPpk1}}</a>
+                <br>
+                <small>No. PPK Jasa: {{item.suratPerintahKerjaTunda.noPpkJasa}}</small>
+            </td>
+            <td>{{item.namaKapal}}
+                <br>
+                <small ng-hide="item.namaLokasiAsalTunda == 'null'">{{item.namaLokasiAsalTunda}} ({{item.kodeLokasiAsalTunda}}) → {{item.namaLokasiTujuanTunda}} ({{item.kodeLokasiTujuanTunda}})
+                    </small>
+            </td>
+            <td>{{item.tglTunda | date : 'dd-MM-yyyy hh:mm' }} </td>
+            <td>
+                <div class="input-group" id="jamMulai">
+                    <input type="text" class="form-control datareadonly" size="8" ng-model="item.jamTugFast" data-time-format="HH:mm" data-time-type="string"
+                        data-autoclose="1" name="jamMulai" bs-timepicker data-length="1" style="width:50px;">
+                </div>
+                <span>Tug Fast</span>
+            </td>
+            <td>
+                <div class="input-group" id="jamMulai">
+                    <input id="jamMulaiVal" type="text" class="form-control datareadonly" size="8" ng-model="item.jamTugOff" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamMulai" bs-timepicker data-length="1" style="width:50px;">
+                </div>
+                <span>Tug Off</span>
+            </td>
+        </tr>
+        <tr ng-show="items.length == 0">
+            <td colspan="9" align="center"><strong>Data Tidak Tersedia</strong></td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true"
+        hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>
+
+
+
+<script>
+    $('#tglTunda').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+</script>

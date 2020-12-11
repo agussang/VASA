@@ -1,0 +1,78 @@
+<h2>Tarif Kapal Kepil</h2>
+<form class="form-horizontal" name="kepilForm">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-8"><span class="text-danger">*</span>Nomor SK</label>
+    	<div class="col-sm-7">
+         	<input type="text" id="no-7" maxlength="30" class="form-control" ng-model="kapalkepil.nomorSk" name="nomorSK" required>
+          <span class="has-error" ng-show="kepilForm.nomorSK.$touched && kepilForm.nomorSK.$invalid">
+            Isi nomor SK dibutuhkan.
+          </span>
+    	</div>
+      <a ng-if="!kapalkepil.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tgl-8"><span class="text-danger">*</span>Tgl. Berlaku</label>
+    	<div class="col-sm-7">
+      		 <div pf-datepicker id="IdtglBerlaku" options="options" data-date-format="dd-mm-yyyy" date="tglBerlaku" name="tglBerlaku" required></div>
+           <span class="has-error" ng-show="kepilForm.tglBerlaku.$touched && kepilForm.tglBerlaku.$invalid">
+             Isi tgl berlaku dibutuhkan.
+           </span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-8"><span class="text-danger">*</span>Jenis Pelayaran</label>
+       <div class="col-sm-3">
+          <select pf-select ng-options='option.value as option.caption for option in jnsPelayaran' name="jenisPelayaran" ng-model="kapalkepil.jenisPelayaran" required></select>
+          <span class="has-error" ng-show="kepilForm.jenisPelayaran.$dirty && kepilForm.jenisPelayaran.$invalid">
+            Isi jenis pelayaran dibutuhkan.
+          </span>
+        </div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tetap-8"><span class="text-danger">*</span>Tarif Satuan Pakai</label>
+    	<div class="col-sm-7">
+      		<input type="number" maxlength="15" decimal-number min="0" id="tetap-7" class="form-control" ng-model="kapalkepil.nilaiTarif" name="nilaiTarif" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001" required>
+          <span class="has-error" ng-show="kepilForm.nilaiTarif.$touched && kepilForm.nilaiTarif.$invalid">
+              Isi tarif dibutuhkan (maksimal 2 angka di belakang koma).
+          </span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="valuta-8"><span class="text-danger">*</span>Valuta</label>
+    <div class="col-sm-3">
+          <select pf-select ng-model="kapalkepil.valuta" id="valuta" name="valuta" required>
+            <option value="IDR" ng-selected="false" selected>IDR</option>
+            <option value="USD">USD</option>
+          </select>
+          <span class="has-error" ng-show="kepilForm.valuta.$touched && kepilForm.valuta.$invalid">
+            Isi valuta dibutuhkan.
+          </span>
+        </div>
+  	</div>
+  	<div class="form-group">
+		  <label class="col-sm-2 control-label" for="file-8"><span class="text-danger">*</span>Dok. Pendukung</label>
+    	<div class="col-sm-7">
+        <input type="file" id="file-1" class="form-control" file-input="uploadFile" name="dokPendukung" ng-model="dokPendukung" accept=".jpg,.pdf" valid-file ng-required="true" >
+        <span class="has-error" ng-show="kepilForm.dokPendukung.$touched && kepilForm.dokPendukung.$invalid">
+          Isi dokumen pendukung dibutuhkan.
+        </span>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+  	</div>
+
+    <div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+	      	<button type="button" class="btn btn-default btn-lg" onclick="location.href='#/kepil/list';">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="kepilForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-8').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>

@@ -1,0 +1,100 @@
+<h2>Surcharge Tunda Baru</h2>
+<form name="surchargetundaForm" class="form-horizontal">
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+      <div class="col-sm-7">
+           <div pf-datepicker id="IdtglBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options" date="tglBerlaku" required></div>
+      </div>
+    </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>Nomor</label>
+    <div class="col-sm-7">
+        <input type="text" only-num maxlength="30" class="form-control" name="nomor" ng-model="mastersurchargetunda.nomor" required/>
+        <span class="has-error" ng-show="surchargetundaForm.nomor.$touched && surchargetundaForm.nomor.$invalid">
+          Isi Nomor dibutuhkan.
+        </span>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>Harga Min.</label>
+    <div class="col-sm-7">
+        <input type="number" maxlength="14" only-num min="1" max="{{mastersurchargetunda.hargaMax}}" class="form-control" name="hargaMin" ng-model="mastersurchargetunda.hargaMin"/ required>
+        <span class="has-error" ng-show="surchargetundaForm.hargaMin.$touched && surchargetundaForm.hargaMin.$invalid">
+          Isi Harga Min. dibutuhkan.
+        </span>
+    </div>
+    <div class="col-sm-2" ng-hide="surchargetundaForm.hargaMin.$valid" >
+        <small class="error" ng-show="surchargetundaForm.hargaMin.$error.max">
+        <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>Harga Max. harus lebih besar dari Harga Min.</span></small>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>Harga Max.</label>
+    <div class="col-sm-7">
+        <input type="number" maxlength="14" only-num min="1" class="form-control" name="hargaMax" ng-model="mastersurchargetunda.hargaMax" required/>
+        <span class="has-error" ng-show="surchargetundaForm.hargaMax.$touched && surchargetundaForm.hargaMax.$invalid">
+          Isi Harga Max. dibutuhkan.
+        </span>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>GT Min.</label>
+    <div class="col-sm-7">
+        <input type="number" maxlength="12" only-num min="1" max="{{mastersurchargetunda.gtMax}}" class="form-control" name="gtMin" ng-model="mastersurchargetunda.gtMin" required/>
+        <span class="has-error" ng-show="surchargetundaForm.gtMin.$touched && surchargetundaForm.gtMin.$invalid">
+          Isi GT Min. dibutuhkan.
+        </span>
+    </div>
+    <div class="col-sm-2" ng-hide="surchargetundaForm.gtMin.$valid" >
+        <small class="error" ng-show="surchargetundaForm.gtMin.$error.max">
+        <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Max. harus lebih besar dari GT Min.</span></small>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>GT Max.</label>
+    <div class="col-sm-7">
+        <input type="number" maxlength="12" only-num min="1" class="form-control" name="gtMax" ng-model="mastersurchargetunda.gtMax" required/>
+        <span class="has-error" ng-show="surchargetundaForm.gtMax.$touched && surchargetundaForm.gtMax.$invalid">
+          Isi GT max. dibutuhkan.
+        </span>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="message"><span class="text-danger">*</span>Fuel Surcharge</label>
+    <div class="col-sm-7">
+        <input type="number" maxlength="14" only-num min="1" class="form-control" name="surcharge" ng-model="mastersurchargetunda.surcharge" required/>
+        <span class="has-error" ng-show="surchargetundaForm.surcharge.$touched && surchargetundaForm.surcharge.$invalid">
+          Isi Fuel Surcharge dibutuhkan.
+        </span>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label" for="kode"><span class="text-danger">*</span>Keterangan</label>
+    <div class="col-sm-7">
+        <input type="text" maxlength="30" class="form-control" name="keterangan" ng-model="mastersurchargetunda.keterangan" required>
+        <span class="has-error" ng-show="surchargetundaForm.keterangan.$touched && surchargetundaForm.keterangan.$invalid">
+          Isi Keterangan dibutuhkan.
+        </span>
+    </div>
+  </div>
+  <div class="form-group">
+  <label class="col-sm-3 control-label"><span class="text-danger">*</span>Status</label>
+    <div class="col-sm-7">
+      <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="mastersurchargetunda.status" ng-true-value ="true" ng-false-value="false" checked />
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-7">
+        <button type="button" class="btn btn-lg btn-default" ng-disabled="surchargetundaForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-lg btn-primary" ng-disabled="surchargetundaForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+    </div>
+  </div>
+</form>
+<script>
+  $('#date-2').datepicker({
+    autoclose: true,
+    orientation: "top auto",
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>

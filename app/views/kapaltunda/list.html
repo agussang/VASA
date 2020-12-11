@@ -1,0 +1,24 @@
+<div>
+	<h2>Aturan Kapal Tunda</h2>
+	<table class="datatable table table-striped table-bordered">
+  		<thead>
+			<tr>
+				<th style="width:20px;">No</th>
+				<th>Panjang Kapal</th>
+				<th>Jumlah Kapal Tunda</th>
+				<th>Total Horse Power Kapal Tunda</th>
+			</tr>
+  		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{noIndex+$index +1}}</td>
+				<td>{{item.panjangKapalMax}}</td>
+				<td>{{item.jumlahKapalTunda}}</td>
+				<td>{{item.totalHorsePower}}</td>
+		  	</tr>
+		</tbody>
+  	</table>
+</div>
+	
+
+

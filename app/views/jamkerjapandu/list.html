@@ -1,0 +1,45 @@
+<h2>Jam Kerja Petugas Pandu</h2>
+
+<div class="form-group dropdown-kawasan">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Stasiun Pandu  :</label>
+    <div class="col-sm-4">
+        <select ng-show="userRole.cflag" pf-select ng-model="idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+    </div>
+</div>
+
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="3">
+                <span>Show : </span>
+                <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" onclick="location.href='#/jamkerjapandu/new';" value="Jam Kerja Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <div class="pull-left">Jam Mulai</div>
+            </th>
+            <th>
+                <div class="pull-left">Jam Akhir</div>
+            </th>
+            <th class="table-col-full text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in jamKerjaList" ng-show="showTable">
+            <td>{{item.jamMulai | date : 'HH:mm' }}</td>
+            <td>{{item.jamAkhir | date : 'HH:mm' }}</td>
+            <td class="text-center">
+                <a ng-show="userRole.uflag" href="#/jamkerjapandu/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+                <a ng-show="userRole.dflag" ng-click="deleteJamKerjaPandu(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>

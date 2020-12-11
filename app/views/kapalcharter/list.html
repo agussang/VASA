@@ -1,0 +1,75 @@
+<h2>Master Kapal Charter</h2>
+
+<div pf-filter config="filterConfig"></div>
+
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr>
+        <td colspan="10">
+             <span>Show : </span>
+              <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+
+             <input type="button"  ng-show="userRole.cflag" onclick="location.href='#/kapalcharter/new';" value="Kapal Charter Baru" class="btn-list btn btn-default pull-right" />
+        </td>
+    </tr>
+    <tr>
+      <td colspan="10" class="text-center">{{pagingText}}</td>
+    </tr>
+    <tr>
+      <th>No</th>
+      <th ng-click="sortBy='kodeKapal'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Kode Kapal</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kodeKapal' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kodeKapal' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='namaKapal'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Nama Kapal</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'namaKapal' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'namaKapal' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='kantorId'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Perusahaan</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kantorId' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kantorId' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='tglMulaiBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Tgl. Mulai Berlaku</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglMulaiBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglMulaiBerlaku' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='tglSelesaiBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Tgl. Selesai Berlaku</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglSelesaiBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglSelesaiBerlaku' && sortDesc)}"></span></div>
+      </th>
+      <th ng-click="sortBy='status'; sortDesc = !sortDesc; pageChanged(0);">
+        <div class="pull-left">Status</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'status' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'status' && sortDesc)}"></span></div>
+      </th>
+      <th class="table-col-full text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in items">
+      <td>{{noIndex+$index +1}}</td>
+      <td>{{item.kodeKapal}}</td>
+  		<td>{{item.namaKapal}}</td>
+  		<td>{{item.kantorIdText}}</td>
+  		<td>{{item.tglMulaiBerlaku | date: "dd-MM-yyyy"}}</td>
+      <td>{{item.tglSelesaiBerlaku | date: "dd-MM-yyyy"}}</td>
+      <td>{{item.status}}</td>
+      <td class="text-center">
+        <a   ng-show="userRole.rflag" href="#/kapalcharter/view/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+        <a   ng-show="userRole.uflag" href="#/kapalcharter/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+        <a   ng-show="userRole.dflag" ng-click="deleteKapalCharter(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+<script>
+// Initialize Datatables
+
+</script>

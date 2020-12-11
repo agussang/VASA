@@ -1,0 +1,105 @@
+
+<h2>Kapal Charter Detail</h2>
+<br>
+<form class="form-horizontal">
+  <div class="form-group">
+    
+    <label class="col-sm-2">Kode Kapal</label>
+    <div class="col-sm-4">
+        <span>:</span>
+        <span class='view-detail'>{{contentKapalCharterDetails.kodeKapal}}</span>
+    </div>
+    <label class="col-sm-2">Kode Perusahaan</label>
+    <div class="col-sm-4">
+        <span>:</span>
+        <span class='view-detail'>{{contentKapalCharterDetails.kantorId}}</span>
+    </div>
+  
+</div>
+<div class="form-group">
+  <label class="col-sm-2">Nama Kapal</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentKapalCharterDetails.namaKapal}}</span>
+  </div>
+  <label class="col-sm-2">Nama Perusahaan</label>
+  <div class="col-sm-4">
+      <span>:</span>
+
+      <span class='view-detail'>{{contentOfmdmPelanggan.mplgNama}}</span>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2">Bendera</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmKapal.mkplBendera}}</span>
+  </div>
+  <label class="col-sm-2">Badan Usaha</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmPelanggan.mplgBadanUsaha}}</span>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2">Jenis Kapal</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmKapal.mkplJenis}}</span>
+  </div>
+  <label class="col-sm-2">Alamat</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmPelanggan.mplgAlamat}}</span>
+  </div>
+</div>
+<div class="form-group">
+  <label class="col-sm-2">Jenis Pelayaran</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmKapal.mkplJnsPelayaran}}</span>
+  </div>
+  <label class="col-sm-2">Kota</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentOfmdmPelanggan.mplgKota}}</span>
+  </div>
+</div>
+<br>
+<br>
+<div class="form-group">
+  <label class="col-sm-2">Tgl Mulai Berlaku</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentKapalCharterDetails.tglMulaiBerlaku | date: "dd MMM yyyy"}}</span>
+  </div>
+  <label class="col-sm-2">Dok. Charter</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <!--<span class='view-detail'>{{contentKapalCharterDetails.dokCharter}}</span>-->
+      
+          <span class='view-detail' ng-hide="noDocument"><a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o"></i> {{contentKapalCharterDetails.dokCharter}}</a></span>
+          <span class='view-detail' ng-show="noDocument">Tidak ada dokumen</span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label class="col-sm-2">Tgl Selesai Berlaku</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentKapalCharterDetails.tglSelesaiBerlaku | date: "dd MMM yyyy"}}</span>
+  </div>
+  <label class="col-sm-2">Status</label>
+  <div class="col-sm-4">
+      <span>:</span>
+      <span class='view-detail'>{{contentKapalCharterDetails.status}}</span>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="col-sm-1">
+      <button class="btn btn-primary btn-lg" ng-click="close()">Tutup</button>
+  </div>
+</div>
+
+</form>

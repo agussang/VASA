@@ -1,0 +1,837 @@
+<br>
+<div class="row">
+	<div class="col-md-6"></div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<h2>Verifikasi Realisasi</h2>
+<div class="col-sm-3 navbar-right">
+	<button class="btn btn-default" ng-click="cancel()">Batal</button>
+	<button class="btn btn-success" ng-click="cetakPranota()">Cetak Pranota</button>
+</div>
+<br>
+<ul class="nav nav-tabs" role="tablist" >
+	<li role="presentation" class="active"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'permohonan')">DATA UMUM REALISASI</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'labuh')" ng-show="dataUmum.tabLabuh">LABUH</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tambat')" ng-show="dataUmum.tabTambat">TAMBAT</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'pandu')" ng-show="dataUmum.tabPandu">PANDU</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tunda')" ng-show="dataUmum.tabTunda">TUNDA</a></li>
+	<li role="presentation"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'airkapal')" ng-show="dataUmum.tabAir">AIR KAPAL</a></li>
+</ul>
+<div class="tab-content">
+	<!-- tab 1 permohonan  -->
+	<div role="tabpanel" class="tab-pane active" id="permohonan">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="noppkb-permohonan">No. PPK1</label>
+				<div class="col-sm-3">
+					<input type="text" id="noppkb-permohonan" class="form-control" placeholder="No. PPK1..." ng-model="dataUmum.noPpk1" disabled>
+				</div>
+				<div class="col-sm-3">
+					<input type="text" id="no-11" class="form-control" placeholder="No.Form" ng-model="dataUmum.noForm" readonly>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-11">Nama Kapal</label >
+				<div class="col-sm-6">
+					<input type="text" id="nama-11" class="form-control" ng-model="dataUmum.namaKapal" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="agen-11">Agen Pelayaran</label>
+				<div class="col-sm-6">
+					<input type="text" id="agen-11" class="form-control" ng-model="dataUmum.namaAgen" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="brngk-11">Berangkat dari</label>
+				<div class="col-sm-6">
+					<input type="text" id="brngk-11" class="form-control" ng-model="dataUmum.namaPelabuhanAsal" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">Tujuan</label>
+				<div class="col-sm-6">
+					<input type="text" id="tjn-11" class="form-control" ng-model="dataUmum.namaPelabuhanTujuan" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label">Rencana Bongkar</label>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Kemasan:</label>
+						<div class="col-sm-3">
+							<select pf-select ng-model="dataUmum.kemasanBongkar" ng-options='option.value as option.caption for option in kemasan' disabled></select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"> Jumlah:</label>
+						<div class="col-sm-10">
+							<input type="number" class="col-sm-4" ng-model="dataUmum.jumlahBongkar" disabled>
+							<select pf-select class="col-sm-8" ng-model="dataUmum.satuanBongkar" ng-options='option.value as option.caption for option in satuan' disabled></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">Rencana Muat</label>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Kemasan:</label>
+						<div class="col-sm-3">
+							<select pf-select ng-model="dataUmum.kemasanMuat" ng-options='option.value as option.caption for option in kemasan' disabled></select>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="col-sm-2 control-label"> Jumlah:</label>
+						<div class="col-sm-10">
+							<input type="number" class="col-sm-4" ng-model="dataUmum.jumlahMuat" disabled>
+							<select pf-select class="col-sm-8" ng-model="dataUmum.satuanMuat" ng-options='option.value as option.caption for option in satuan' disabled></select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group" id="jasaKapal">
+				<label class="col-sm-2 control-label">Jasa Kapal</label>
+				<div class="col-sm-6">
+					<div class="btn-group" data-toggle="buttons">
+						<div class="btn-group">
+							<button type="button" class="{{dataUmum.btnLabuh}}">Labuh</button>
+							<button type="button" class="{{dataUmum.btnTambat}}">Tambat</button>
+							<button type="button" class="{{dataUmum.btnPandu}}">Pandu</button>
+							<button type="button" class="{{dataUmum.btnTunda}}">Tunda</button>
+							<button type="button" class="{{dataUmum.btnAir}}">Air Kapal</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+<!-- tab labuh -->
+	<div id="labuh" role="tabpanel" class="tab-pane"  ng-controller="TransaksiRealisasiLabuhCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="items">
+						<div class="permohonan-item" ng-model="item.noPpkJasa">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Labuh</h5>
+						<div class="col-md-12" items="jasaLabuh">
+							<label>{{tempSelection.namaLokasi}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Kedatangan</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglMasuk | date : "dd-MM-yyyy"}} {{tempSelection.jamMasuk}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Keberangkatan</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglKeluar | date : "dd-MM-yyyy"}} {{tempSelection.jamKeluar}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<button class="btn btn-default labuh"><i class="fa fa-angle-double-right fa-2x labuh" aria-hidden="true"></i> </button>
+			<div class="col-pmh-right">
+				<h5>Realisasi</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Labuh</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasi}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Kedatangan</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.tglMasuk | date : "dd-MM-yyyy"}} {{rightSelection.jamMasuk}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Keberangkatan</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.tglKeluar | date : "dd-MM-yyyy"}} {{rightSelection.jamKeluar}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div> <!-- col-list -->		
+		<hr>
+		<form class="form-horizontal" name="labuhForm">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. PPK Jasa</label>
+				<div class="col-sm6">
+					<label>{{rightSelection.noPpkJasa}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. Form</label>
+				<div class="col-sm-6">
+					<label>{{realisasilabuh.noForm}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">No. Bukti Pelayanan</label>
+				<div class="col-sm-6">
+					<label>{{realisasilabuh.noPelayanan}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">Status Bukti</label>
+				<div class="col-sm-3">
+					<label>{{realisasilabuh.statusLabuhText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">Catatan</label>
+				<div class="col-sm-6">
+					<p>{{realisasilabuh.catatan}}</p>
+				</div>
+			</div>
+		</form>
+	</div>
+<!-- tab tambat-->
+	<div id="tambat" role="tabpanel" class="tab-pane" ng-controller="TransaksiRealisasiTambatCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="items">
+						<div class="permohonan-item" ng-model="item.noPpkJasa">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tambat</h5>
+						<div class="col-md-12" items="jasaLabuh">
+							<label>{{tempSelection.namaLokasi}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Mulai Tambat Pada</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglMulai | date : "dd-MM-yyyy"}} {{tempSelection.jamMulai}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Selesai Pada</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglSelesai | date : "dd-MM-yyyy"}} {{tempSelection.jamSelesai}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Kade Meter :</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.kadeAwal}} s/d {{tempSelection.kadeAkhir}}</label>
+						</div>
+					</div>
+				</form>
+			</div> 
+			<button class="btn btn-default labuh"><i class="fa fa-angle-double-right fa-2x" aria-hidden="true"></i> </button>
+			<div class="col-pmh-right">
+				<h5>Realisasi</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tambat</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasi}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Mulai Tambat Pada</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.tglMulai | date:"dd-MM-yyyy"}} {{rightSelection.jamMulai}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Selesai Pada</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.tglSelesai | date:"dd-MM-yyyy"}} {{rightSelection.jamSelesai}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Kade Meter :</h5>
+						<div class="col-md-12">
+							<label> {{rightSelection.kadeAwal}} s/d {{rightSelection.kadeAkhir}} </label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div> <!-- col-list -->
+		<hr>
+		<form class="form-horizontal" name="tambatForm">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. PPK1</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noPpkJasa}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. Form</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noForm}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">No Bukti Pelayanan</label>
+				<div class="col-sm-6">
+					<label> {{realisasitambat.noPelayanan}} </label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">Status Tambat</label>
+				<div class="col-sm-3">
+					<label>{{realisasitambat.statusTambatText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">Posisi Kapal</label>
+				<div class="col-sm-3">
+					<label>{{realisasitambat.posisiKapalText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="nama-12">Catatan</label>
+				<div class="col-sm-6">
+					<label> {{realisasitambat.catatan}} </label>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div id="pandu" role="tabpanel" class="tab-pane" ng-controller="TransaksiRealisasiPanduCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="items">
+						<div class="permohonan-item" ng-model="item.noPpkJasa">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Waktu Pandu</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglPandu | date :"dd-MM-yyyy"}} {{tempSelection.jamPandu}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Asal Pandu</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.namaLokasiAsal}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tujuan Pandu</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.namaLokasiTujuan}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Jenis Pandu</h5>
+						<div class="col-md-6">
+							<label>{{tempSelection.jenisPanduText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Jenis Gerakan</h5>
+						<div class="col-md-6">
+							<label>{{tempSelection.jenisGerakanText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Menggunakan APBS</h5>
+						<div class="col-md-6">
+							<label>{{tempSelection.flagApbs === '1' ? 'Ya':'Tidak'}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<button class="btn btn-default labuh"><i class="fa fa-angle-double-right fa-2x" aria-hidden="true"></i> </button>
+			<div class="col-pmh-right">
+				<h5>Realisasi</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Status Siklus Pandu</h5>
+						<div class="col-md-6">
+							<label>{{rightSelection.statusSiklusPanduText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Asal Pandu</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasiAsal}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tujuan Pandu</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasiTujuan}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Jenis Pandu</h5>
+						<div class="col-md-6">
+							<label>{{rightSelection.jenisPanduText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Jenis Gerakan</h5>
+						<div class="col-md-6">
+							<label>{{rightSelection.jenisGerakanText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Menggunakan APBS</h5>
+						<div class="col-md-6">
+							<label>{{rightSelection.flagApbs === '1' ? 'Ya' : 'Tidak'}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div> <!-- col-list -->
+		<hr>
+		<form class="form-horizontal" name="panduForm">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="no-12">No. PPK1</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noPpkJasa}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="no-12">No. Form</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noForm}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-13">No Bukti Pelayanan</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.noPelayanan}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Petugas</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.petugas}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Kapal Pandu</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.kapalPandu}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Jenis Kepentingan</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.jenisKepText}}</label>			
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Keterangan Kepentingan</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.keteranganKep}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Tgl/Jam Mulai Pandu</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.tglMulai | date : "dd-MM-yyyy" }} {{rightSelection.jamMulai}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Tgl/Jam Selesai Pandu</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.tglSelesai | date : "dd-MM-yyyy"}} {{rightSelection.jamSelesai}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Jam Pandu Naik</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.jamNaik}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Jam Pandu Turun</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.jamTurun}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="tjn-11">Jam Kapal Bergerak</label>
+				<div class="col-sm-6">
+					<label>{{realisasipandu.jamKapalGerak}}</label>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div id="tunda" role="tabpanel" class="tab-pane" ng-controller="TransaksiRealisasiTundaCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="items">
+						<div class="permohonan-item" ng-model="item.noPpkJasa">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Waktu Tunda</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglMulai | date:"dd-MM-yyyy"}} {{tempSelection.jamMulai}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Asal Tunda</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.namaLokasiAsal}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tujuan Tunda</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.namaLokasiTujuan}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<button class="btn btn-default labuh"><i class="fa fa-angle-double-right fa-2x" aria-hidden="true"></i> </button>
+			<div class="col-pmh-right">
+				<h5>Realisasi</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal" name="realisasiTundaForm">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Asal Tunda</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasiAsal}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Tujuan Tunda</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.namaLokasiTujuan}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div> <!-- col-list -->
+		<hr>
+		<form class="form-horizontal" name="realisasiTundaFormx">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="no-12">No. PPK1</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noPpkJasa}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="no-12">No. Form</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noForm}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">No Bukti Pelayanan</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.noPelayanan}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Status Tunda</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.statusTundaText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Jenis Kegiatan</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.jenisKegiatanText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Jam Kerja</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.jamKerjaText}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Catatan</label>
+				<div class="col-sm-6">					
+					<label>{{realisasitunda.catatan}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Tgl/Jam Mulai Tunda</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.tglMulai | date:"dd-MM-yyyy"}} {{realisasitunda.jamMulai}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="nama-12">Tgl/Jam Selesai Tunda</label>
+				<div class="col-sm-6">
+					<label>{{realisasitunda.tglSelesai}} {{realisasitunda.jamSelesai}}</label>
+				</div>
+			</div>
+		</form>
+	</div>
+<!-- tab air kapal -->
+	<div id="airkapal" role="tabpanel" class="tab-pane" ng-controller="TransaksiRealisasiairkapalCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="items">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Alat isi</h5>
+						<div class="col-sm-12">
+							<label>{{tempSelection.alatIsiText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Dermaga</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.dermaga.mdmgNama}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Tgl/Jam Mulai</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.tglIsi | date:"dd-MM-yyyy"}} {{tempSelection.jamIsi}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Volume</h5>
+						<div class="col-md-12">
+							<label>{{tempSelection.volume}} {{tempSelection.satuanVolume}}</label>		
+						</div>
+					</div>
+				</form>
+			</div>
+			<button class="btn btn-default labuh"><i class="fa fa-angle-double-right fa-2x" aria-hidden="true"></i> </button>
+			<div class="col-pmh-right">
+				<h5>Realisasi</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="penetapan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label" >Alat isi</h5>
+						<div class="col-sm-12">
+							<label>{{rightSelection.alatIsiText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Dermaga</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.dermaga.mdmgNama}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Volume</h5>
+						<div class="col-md-12">
+							<label>{{rightSelection.volume}} {{rightSelection.satuanVolume}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Jam Kerja</h5>
+						<div class="col-sm-12">
+							<label>{{realisasiairkapal.jamKerjaText}}</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Catatan</h5>
+						<div class="col-md-12">
+							<label>{{realisasiairkapal.catatan}}</label>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>	<!-- col-list -->
+		<hr>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. PPK1</label>
+				<div class="col-sm-6">
+					<label>{{rightSelection.noPpkJasa}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-12">No. Form</label>
+				<div class="col-sm-6">
+					<label>{{realisasiairkapal.noForm}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">No Penetapan</label>
+				<div class="col-md-6">
+					<label>{{realisasiairkapal.noPelayanan}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">Tgl/Jam Disetujui</label>
+				<div class="col-sm-">
+					<label>{{realisasiairkapal.tglSetuju | date : "dd-MM-yyyy"}} {{realisasiairkapal.jamSetuju}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">Tgl/Jam Mulai isi</label>
+				<div class="col-sm-6">
+					<label>{{realisasiairkapal.tglMulaiIsi | date: "dd-MM-yyyy"}} {{realisasiairkapal.jamMulaiIsi}}</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label" for="tjn-11">Tgl/Jam Selesai isi</label>
+				<div class="col-sm-6">
+					<label>{{realisasiairkapal.tglSelesaiIsi | date : "dd-MM-yyyy"}} {{realisasiairkapal.jamSelesaiIsi}}</label>
+				</div>
+			</div>
+			<hr>
+			<div class="form-group">
+				<div class="col-sm-12">
+					<div class="col-md-6">
+						<label class="control-label" for="tjn-11"><span class="text-danger"></span>Alat Isi</label>
+					</div>		
+					<table class="table table-striped table-bordered table-col-accordion">
+						<thead>
+							<tr>
+								<th>Kode Alat</th>
+								<th>Nama Alat Isi</th>
+								<th>Tgl/ Jam Mulai</th>
+								<th>Tgl/ Jam Selesai</th>
+								<th>M. Awal</th>
+								<th>M. Akhir</th>
+								<th>Volume</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in tabelAlatIsi track by $index">
+								<td>{{item.alatIsi}}</td>
+								<td>{{item.alatIsiText}}</td>
+								<td>{{item.tglMulaiIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+								<td>{{item.tglSelesaiIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+								<td>{{item.meteranAwal}}</td>
+								<td>{{item.meteranAkhir}}</td>
+								<td>{{item.volume}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12">
+					<div class="col-md-6">
+						<label class="control-label navbar-left" for="tjn-11"><span class="text-danger"></span>Kapal Penunjang</label>
+					</div>
+					<table class="table table-striped table-bordered table-col-accordion">
+						<thead>
+							<tr>
+								<th>Kode Kapal</th>
+								<th>Nama Kapal</th>
+								<th>Tgl/ Jam Mulai</th>
+								<th>Tgl/ Jam Selesai</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in tabelKapalPenunjang track by $index">
+								<td>{{item.kapal}}</td>
+								<td>{{item.kapalText}}</td>
+								<td>{{item.tglMulaiIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+								<td>{{item.tglSelesaiIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-12">
+					<button class="btn btn-default btn-lg">Reset</button>
+					<button type="submit" class="btn btn-primary btn-lg" ng-click="saveAirKapal()">Simpan</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	function openTab(evt, cityName) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tab-pane");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		document.getElementById(cityName).style.display = "block";
+		evt.currentTarget.className += " active";
+	};
+</script>

@@ -1,0 +1,195 @@
+<h2>Laporan Produksi dan Pendapatan Air Kapal</h2>
+<br>
+<form class="form-horizontal" name="laporanAirKapalForm">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Jenis</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="laporanAirKapal.periodeLaporan" ng-options='option.value as option.caption for option in periodeLaporan' id="jns-1" required></select>
+            <span class="has-error" ng-show="laporanAirKapalForm.jenis.$touched && laporanAirKapalForm.jenis.$invalid">Isi jenis dibutuhkan.
+            </span>
+        </div>
+        <label id="check5">
+    	<input type="checkbox" ng-model="laporanAirKapal.orderByTerminal"> Dikelompokkan berdasarkan "Terminal"
+    	</label>
+    </div>
+    <div class="form-group" ng-show="laporanAirKapal.periodeLaporan == 0">
+        <label class="col-sm-2 control-label"><span class="text-danger">*</span> Periode :</label>
+        <div class="col-sm-2">
+            <span id="date-6" class="input-group date" style="width:150px;">
+                <input type="text" ng-model="search.tglLaporanHarian" date="tglLaporan" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+            </span>
+        </div>
+    </div>
+    <div class="form-group" ng-show="laporanAirKapal.periodeLaporan == 1">
+        <label class="col-sm-2 control-label"><span class="text-danger">*</span> Periode :</label>
+        <div class="col-sm-2">
+            <span id="date-5" class="input-group date" style="width:150px;">
+                <input type="text" ng-model="search.tglLaporan" date="tglLaporan" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+            </span>
+        </div>
+        <div class="col-sm-2">
+            <label style="padding-top: 5px;">{{currentMonth}}</label>
+        </div>
+    </div>
+
+   <div class="form-group" ng-show="laporanAirKapal.periodeLaporan">
+        <label class="col-sm-2 control-label"> <span class="text-danger">*</span>Pembuat Daftar :</label>
+        <div class="col-sm-4">
+            <input type="text" maxlength="30" name="penyusun" class="form-control" ng-model="laporanAirKapal.penyusun" required>
+            <span class="has-error" ng-show="laporanAirKapalForm.penyusun.$touched && laporanAirKapalForm.penyusun.$invalid">
+                Isi Pembuat Daftar dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+   <div class="form-group" ng-show="laporanAirKapal.periodeLaporan">
+        <label class="col-sm-2 control-label"> <span class="text-danger">*</span>Jabatan Pembuat Daftar :</label>
+        <div class="col-sm-4">
+            <input type="text" maxlength="30" name="jbtPenyusun" class="form-control" ng-model="laporanAirKapal.jbtPenyusun" required>
+            <span class="has-error" ng-show="laporanAirKapalForm.jbtPenyusun.$touched && laporanAirKapalForm.jbtPenyusun.$invalid">
+                Isi Jabatan Pembuat Daftar dibutuhkan.
+            </span>
+        </div>
+    </div>
+</form>
+    <div class="col-sm-offset-3 col-sm-6 text-center">
+        <div class="row">
+            <button class="btn btn-default btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="reset()">Reset</button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="generatePdf()">Ekspor PDF
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="generateExcel()">Ekspor Excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    
+    <div>
+        <hr style="width: 100%;">
+    </div>
+
+    <div ng-hide="laporanAirKapalForm.$invalid">
+    
+    <div class="col-xs-12">
+        <div class="label-center"><label>LAPORAN PRODUKSI DAN PENDAPATAN AIR KAPAL</label></div>
+        <div class="label-center"><label>PERIODE  <span>{{currentMonth}}</span></label></div>
+    </div>
+
+
+    <div id="laporan-airkapal" class="col-sm-12" style="display:inline-flex; width:100%">
+        <table class="table table-bordered table-report">
+            <thead>
+                <tr>
+                    <th class="text-center valign">NO</th>
+                    <th class="text-center valign">NAMA KAPAL - NO PPK1</th>
+                    <th class="text-center valign">JENIS OPERASI</th>
+                    <th class="text-center valign">NAMA AGEN</th>
+                    <th class="text-center valign">TERMINAL</th>
+                    <th class="text-center valign">WAKTU PELAYANAN</th>
+                    <th class="text-center valign">PROD DALAM</th>
+                    <th class="text-center valign">PROD LUAR</th>
+                    <th class="text-center valign">BIAYA (RP)</th>
+                    <th class="text-center valign">BIAYA (USD)</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in items | orderBy: groupbyParameter">
+                <td class="text-center valign">{{$index +1}}</td>
+                <td class="text-center valign">{{item.namaKapal}} <br> {{item.noPpk1}}</td>
+                <td class="text-center valign">{{item.jenisOperasi}}</td>
+                <td class="text-center valign">{{item.namaAgen}}</td>
+                <td class="text-center valign">{{item.terminal}}</td>
+                <td class="text-center valign">{{item.tglMulaiIsi | date: 'dd-MM-yyyy H:mm'}} s/d {{item.tglSelesaiIsi | date: 'dd-MM-yyyy H:mm'}}</td>
+                <td class="text-right valign">{{((item.prodDalam == null ? 0 : item.prodDalam))}}</td>
+                <td class="text-right valign">{{(item.prodLuar == null ? 0 : item.prodLuar)}}</td>
+                <td class="text-right valign">{{(item.biayaRp == null ? 0 : item.biayaRp | currency:"":2)}}</td>
+                <td class="text-right valign">{{(item.biayaUsd == null ? 0 : item.biayaUsd| currency:"":2)}}</td>
+            </tr>
+            <tr>
+                <td colspan="6"></td>
+                <td class="text-right valign">{{grandTotalProdDalam}}</td>
+                <td class="text-right valign">{{grandTotalProdLuar}}</td>
+                <td class="text-right valign">{{grandTotalBiayaRp|currency:"":2}}</td>
+                <td class="text-right valign">{{grandTotalBiayaUsd|currency:"":2}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+ <div id="laporan-airkapal-regional" class="col-sm-12" style="display:inline-flex; width:100%" ng-hide="true">
+        <table class="table table-bordered table-report">
+            <thead>
+                <tr>
+                    <th class="text-center valign">NO</th>
+                    <th class="text-center valign">NAMA KAPAL - NO PPK1</th>
+                    <th class="text-center valign">JENIS OPERASI</th>
+                    <th class="text-center valign">NAMA AGEN</th>
+                    <th class="text-center valign">TERMINAL</th>
+                    <th class="text-center valign">WAKTU PELAYANAN</th>
+                    <th class="text-center valign">PROD DALAM</th>
+                    <th class="text-center valign">PROD LUAR</th>
+                    <th class="text-center valign">BIAYA (RP)</th>
+                    <th class="text-center valign">BIAYA (USD)</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in itemsRegional | orderBy: groupbyParameter">
+                <td class="text-center valign">{{$index +1}}</td>
+                <td class="text-center valign">{{item.namaKapal}} <br> {{item.noPpk1}}</td>
+                <td class="text-center valign">{{item.jenisOperasi}}</td>
+                <td class="text-center valign">{{item.namaAgen}}</td>
+                <td class="text-center valign">{{item.terminal}}</td>
+                <td class="text-center valign">{{item.tglMulaiIsi | date: 'dd-MM-yyyy H:mm'}} s/d {{item.tglSelesaiIsi | date: 'dd-MM-yyyy H:mm'}}</td>
+                <td class="text-right valign">{{((item.prodDalam == null ? 0 : item.prodDalam))}}</td>
+                <td class="text-right valign">{{(item.prodLuar == null ? 0 : item.prodLuar)}}</td>
+                <td class="text-right valign">{{(item.biayaRp == null ? 0 : item.biayaRp | currency:"":2)}}</td>
+                <td class="text-right valign">{{(item.biayaUsd == null ? 0 : item.biayaUsd| currency:"":2)}}</td>
+            </tr>
+            <tr>
+                <td colspan="6"></td>
+                <td class="text-right valign">{{grandTotalProdDalam}}</td>
+                <td class="text-right valign">{{grandTotalProdLuar}}</td>
+                <td class="text-right valign">{{grandTotalBiayaRp|currency:"":2}}</td>
+                <td class="text-right valign">{{grandTotalBiayaUsd|currency:"":2}}</td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+        <hr style="width: 100%;">
+    </div>
+
+    <div class="col-sm-offset-3 col-sm-6 text-center">
+        <div class="row">
+            <button class="btn btn-default btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="reset()">Reset</button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="generatePdf()">Ekspor PDF
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-click="generateExcel()">Ekspor Excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-primary btn-lg btn-exportPDF" ng-disabled="laporanAirKapalForm.$invalid" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+<script>
+    $('#date-5').datepicker({
+      autoclose: true,
+      viewMode: "months",
+      format: "mm-yyyy",
+      minViewMode: "months",
+      language: 'id'
+    });
+    $('#date-6').datepicker({
+      autoclose: true,
+      format: "dd-mm-yyyy",
+      language: 'id'
+    });
+</script>

@@ -1,0 +1,112 @@
+	<h2>Pasang Surut</h2>
+<div>
+	<div>
+	<form class="form-horizontal" name="">
+		<div class="form-group">
+      		<label class="col-sm-2 control-label"><span class="text-danger"></span>Tahun Bulan</label>
+		    <div class="col-sm-2" style="display:inline-flex;">
+             <div pf-datepicker id="tanggalMulaiId" data-date-format="mm-yyyy" options="options" date="tglMulai"  required></div>
+             <button type="button" class="btn btn-primary btn-sm" style="height:26px;" ng-disabled="" ng-click="prosesFilter();buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Lihat Data</button>
+		    </div>
+	    </div>
+	</form>
+	</div>
+	<table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+  		<thead>
+				<tr>
+		        <td colspan="26">
+		             <span>Show : </span>
+		              <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+		              <input type="button" ng-show="userRole.cflag" data-toggle="modal" data-target="#addPasangSurut" value="Tambah Pasang Surut" class="btn-list btn btn-default pull-right" />
+		        </td>
+		  	</tr>
+				<tr>
+					<th style="width:100px;">Tanggal</th>
+					<th>1</th>
+					<th>2</th>
+					<th>3</th>
+					<th>4</th>
+					<th>5</th>
+					<th>6</th>
+					<th>7</th>
+					<th>8</th>
+					<th>9</th>
+					<th>10</th>
+					<th>11</th>
+					<th>12</th>
+					<th>13</th>
+					<th>14</th>
+					<th>15</th>
+					<th>16</th>
+					<th>17</th>
+					<th>18</th>
+					<th>19</th>
+					<th>20</th>
+					<th>21</th>
+					<th>22</th>
+					<th>23</th>
+					<th>24</th>
+					<th>Action</th>
+				</tr>
+  		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{item.tanggalPasangSurut | date: "dd-MM-yyyy"}}</td>
+				<td ng-repeat="child in item.pasangSurut">
+					{{child.pasangSurut}}
+				</td>
+				<td>{{}}</td>
+				<td></td>
+		  	</tr>
+		</tbody>
+  	</table>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page,tglMulai)">
+	</paging></div>
+
+	<!-- modal add -->
+   <div class="modal" id="addPasangSurut" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	          <span class="pficon pficon-close"></span>
+	        </button>
+	        <h4 class="modal-title">Tambah Data</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" name="addPasangSurut">
+	          	<div class="form-group">
+		            <label class="col-md-3 control-label" for="no-3"><span class="text-danger"></span>Tanggal</label>
+	              	<div class="col-md-6">
+		               <div pf-datepicker id="tglPasangSurut" options="newOptions" data-date-format="dd-mm-yyyy" date="tglInit"  required></div>
+		            </div>	
+		        </div>
+		     	
+     			<div class="form-group" ng-repeat="key in inputData" style="display:inline-flex;">
+			        <label class="col-md-6 control-label" for="no-3"><span class="text-danger" style="padding:10px;"></span>{{key.name}}</label>
+	              	<div class="col-md-6">
+		                <input type="number" id="no-3" class="form-control" name="" ng-model="key.value" required>
+		            </div>
+			    </div>
+		     		
+		        
+			        
+		        
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="AddKademeter.$invalid;"  ng-click="newPasangSurut()"">Simpan</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('#tglPasangSurut').mask('99-99-9999');
+
+</script>

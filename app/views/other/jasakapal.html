@@ -1,0 +1,62 @@
+<h2>Laporan Jasa Kapal</h2>
+
+<div class="row top-buffer">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">
+                <span class="text-danger">*</span>Tgl. Realisasi</label>
+            <div class="col-sm-4" style="display:inline-flex;">
+                <span id="tglReaAwal" class="input-group date" style="width:120px;">
+                    <input type="text" ng-model="tglReaAwal" date="tglReaAwal" ng-change="change()" class="form-control bootstrap-datepicker"
+                        options="options" readonly>
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="col-sm-4" style="display:inline-flex;">
+                <label class="control-label" style="margin-left:-15px;margin-right:5px;">s.d.</label>
+                <span id="tglReaAkhir" class="input-group date" style="width:120px;">
+                    <input type="text" ng-model="tglReaAkhir" date="tglReaAkhir" ng-change="change()" class="form-control bootstrap-datepicker"
+                        options="options" readonly>
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-1">
+        <button class="btn btn-primary" ng-click="generateExcel()">Ekspor Excel
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <div class="col-sm-1">
+        <button class="btn btn-primary" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
+<br>
+
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true"
+        hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>
+<script>
+    $('#tglReaAwal').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+    $('#tglReaAkhir').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+</script>

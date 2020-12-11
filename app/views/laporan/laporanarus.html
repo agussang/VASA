@@ -1,0 +1,138 @@
+<h2>Laporan Arus</h2>
+
+<hr>
+
+<form class="form-horizontal" name="laporanarusNew">
+  <div class="form-group">
+    <label class="col-sm-offset-3 col-sm-2 control-label">Bln. Laporan : </label>
+    <div class="col-sm-2">
+      <span id="arus" class="input-group date" style="width:150px;">
+        <input type="text" ng-model="search.tglFilter" ng-change="laporanArus()" date="search.tglFilter"  class="form-control bootstrap-datepicker"
+          options="options" readonly>
+        <span class="input-group-addon">
+          <span class="fa fa-calendar"></span>
+        </span>
+      </span>
+    </div>
+    <div class="col-sm-2">
+      <label style="padding-top: 5px;">{{currentMonth}}</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-8">
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</form>
+
+<div ng-show="search.tglFilter">
+  <div class="laporan">
+    <div class="col-xs-6 col-sm-6">
+      <form class="form-horizontal">
+        <div class="row">
+          <label class="col-sm-6">PT PELABUHAN INDONESIA III</label>
+        </div>
+        <div class="row">
+          <label class="col-sm-6"> {{currentCabang | uppercase}}</label>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="col-xs-6 col-sm-6" style="margin-left:-400px;">
+      <form class="form-horizontal">
+        <div class="row">
+          <label class="col-sm-6">LAPORAN ARUS</label>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">LOKASI</label>
+          <div class="col-sm-4">
+              <span>:</span>
+              <label class='view-detail'>{{currentCabang | uppercase}}</label>
+          </div>
+        </div>
+        <div class="row">
+          <label class="col-sm-2">BULAN</label>
+          <div class="col-sm-4">
+              <span>:</span>
+              <label class='view-detail'>{{search.tglFilter | uppercase}}</label>
+          </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="laporan_arus" class="col-sm-12" style="display:inline-flex; width: 100%">
+  <table class="table table-bordered table-report">
+    <thead>
+      <tr ng-hide="true">
+        <th colspan="10">
+            <label>LAPORAN ARUS PT PELABUHAN INDONESIA III
+            <span>{{currentCabang}}
+              <span></label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th colspan="10">
+          <label>BULAN
+          <span>{{currentMonth}}</span></label>
+        </th>
+      </tr>
+      <tr ng-hide="true">
+        <th colspan="10">
+
+        </th>
+      </tr>
+      <tr>
+        <th class="text-center valign" rowspan="2">NO</th>
+        <th class="text-center valign" rowspan="2">KODE CABANG</th>
+        <th class="text-center valign" rowspan="2">KODE TERMINAL</th>
+        <th class="text-center valign" rowspan="2">COA ARUS</th>
+        <th class="text-center valign" rowspan="2">JUMLAH UNIT</th>
+        <th class="text-center valign" rowspan="2">JUMLAH GT</th>
+        <th class="text-center valign" rowspan="2">KETERANGAN</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-hide="true"></tr>
+      <tr ng-repeat="item in items">
+        <td class="text-center valign">{{$index +1}}</td>
+        <td class="text-center valign">{{item.kodeCabang}}</td>
+        <td class="text-center valign">{{item.kodeTerminal}}</td>
+        <td class="text-center valign">{{item.coaArus}}</td>
+        <td class="text-center valign">{{item.jumlahArus}}</td>
+        <td class="text-center valign">{{item.jumlahGt}}</td>
+        <td class="text-center valign">{{item.keterangan}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <hr>
+
+<div class="form-group">
+  <div class="col-sm-offset-4 col-sm-8">
+    <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+    </button>
+    <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+      <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+    </button>
+  </div>
+</div>
+<script>
+  $('#arus').datepicker({
+    autoclose: true,
+    format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    language: 'id'
+  });
+</script>
+
+
+

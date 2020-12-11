@@ -1,0 +1,229 @@
+<h2>Estimasi Perhitungan Biaya Jasa Kapal</h2>
+<br>
+
+<div style="border: 1px solid #d3d3d3;overflow:hidden">
+
+<div style="display:inline-flex; width:200%;overflow:hidden">
+  <div class="col-xs-6 col-sm-6">
+    <form class="form-horizontal">
+      <div class="row">
+        <label class="epb-header col-sm-6">PT PELABUHAN INDONESIA III (PERSERO)</label>
+      </div>
+      <div class="row">
+        <label class="epb-subtitle col-sm-6">CABANG {{currentCabang | uppercase}}</label>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="col-xs-6 col-sm-6" style="margin-left:-400px;">
+    <form class="form-horizontal">
+      <div class="row">
+        <label class="epb-header col-sm-4">No Permohonan : {{epb.noPpk1}}</label>
+      </div>
+      <div class="row">
+        <label class="epb-subtitle col-sm-4">Kode Bayar : {{epb.kodeBayar}}</label>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+<div style="display:inline-flex; width:200%;overflow:hidden;">
+  <div class="col-xs-6 col-sm-6">
+    <form class="form-horizontal">
+      <div class="row">
+        <h2 class="epb-subheader col-sm-8">Pengguna Jasa</h2>
+      </div>
+      <div class="row">
+        <label class="col-sm-8">{{epb.namaAgen}}</label>
+      </div>
+      <div class="row">
+        <label class="col-sm-8">ditagihkan kepada {{epb.namaAgen}}</label>
+      </div>
+      <div class="row">
+          <label class="epb-footer col-sm-8">{{alamatTitle}}</label>
+      </div>
+      <div class="row">
+          <label class="epb-footer col-sm-8">{{epb.telepon}}</label>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="col-xs-6 col-sm-6" style="margin-left:-400px;">
+    <form class="form-horizontal">
+      <div class=" row">
+        <h2 class="epb-subheader col-sm-6">Keterangan</h2>
+      </div>
+      <div class="row">
+        <label class="epb-detail col-sm-6">Kapal : {{epb.namaKapal}} </label>
+      </div>
+      <div class="row">
+        <label class="epb-detail col-sm-6">Pelabuhan Asal : {{epb.namaPelabuhanAsal}}</label>
+      </div>
+      <div class="row">
+        <label class="epb-detail col-sm-6">Pelabuhan Tujuan : {{epb.namaPelabuhanTujuan}}</label>
+      </div>
+      <div class="row">
+        <label class="epb-detail col-sm-6">ETA : {{epb.tglMulai?epb.tglMulai:' - ' | date:'dd-MM-yyyy HH:mm'}}</label>
+      </div>
+      <div class="row">
+        <label class="epb-detail col-sm-6">ETD : {{epb.tglSelesai?epb.tglSelesai:' - ' | date:'dd-MM-yyyy HH:mm'}}</label>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  <table class="table epb-table table-report">
+    <thead>
+      <tr>
+        <th class="text-center epb-table valign">#</th>
+        <th class="text-center epb-table valign">Jasa</th>
+        <th style="width:150px !important" class="text-center epb-table valign">Lokasi</th>
+        <th style="width:150px !important" class="text-center epb-table valign">Waktu</th>
+        <th class="text-center epb-table valign">Keterangan</th>
+        <th class="text-center epb-table valign" colspan="2">Tagihan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="epb-table" ng-repeat="item in listJasa track by $index">
+        <td>{{$index +1}}</td>
+        <td>{{item.namaJasa}}</td>
+        <td><small>{{item.namaDermaga}}</small></td>
+        <td>{{item.tglMulai | date:'dd-MM-yyyy HH:mm'}}<div ng-hide="item.hide || item.tglSelesai==null">{{item.tglSelesai}}</div></td>
+        <td>{{item.keterangan}}</td>
+        <td>{{epb.valutaMataUang}}</td>
+        <td class="pull-right" style="border-style: hidden;">{{item.nilaiEpb | currency:"":2}}</td>
+      </tr>
+      <tr class="epb-table">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="pull-right" style="border-style: hidden;">Subtotal Jasa :</td>
+        <td>{{epb.valutaMataUang}}</td>
+        <td class="pull-right" style="border-style: hidden;">{{epb.subtotalJasa | currency:"":2}}</td>
+      </tr>
+      <tr class="epb-table" ng-repeat="item in listJasaAirKapal track by $index">
+        <td>{{$index +1}}</td>
+        <td>{{item.namaJasa}}</td>
+        <td><small>{{item.namaDermaga}}</small></td>
+        <td>{{item.tglMulai | date:'dd-MM-yyyy HH:mm'}} {{item.tglSelesai}}<div ng-hide="item.hide || item.tglSelesai==null">{{item.tglSelesai}}</div></td>
+        <td>{{item.keterangan}}</td>
+        <td>{{epb.valutaMataUang}}</td>
+        <td class="pull-right" style="border-style: hidden;">{{item.nilaiEpb | currency:"":2}}</td>
+      </tr>
+      <tr class="epb-table" ng-show="listJasaAirKapal.length != 0">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="pull-right" style="border-style: hidden;">Subtotal Air Kapal :</td>
+        <td>{{epb.valutaMataUang}}</td>
+        <td class="pull-right" style="border-style: hidden;">{{epb.subtotalJasaAirKapal | currency:"":2}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="display:inline-flex; width:200%;overflow:hidden">
+    <div class="col-xs-4 col-sm-4">
+      <form class="form-horizontal">
+        <div class="row">
+          <label class="epb-footer col-sm-6">PT Pelabuhan Indonesia III (Persero)</label>
+        </div>
+        <div class="row">
+          <label class="epb-footer col-sm-6">Cabang {{namaCabangTitle}}</label>
+        </div>
+        <div class="row">
+          <label class="epb-footer col-sm-6">{{alamatTitleCase}}</label>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-sm-6" style="margin-left:-160px;">
+      <div class="text-right">
+        <div class="row" ng-show="epb.valuta==='USD'">
+          <div class="col-sm-2 "> <b>USD</b> <br> &nbsp;</div>
+          <div class="col-sm-4 ">
+            <span>Total :  {{epb.valutaMataUang}} {{epb.subtotal | currency:"":2}}</span><br>
+          </div>
+        </div>
+        <div class="row" ng-show="epb.valuta==='IDR'">
+          <div class="col-sm-2 "> <b>IDR</b> <br> &nbsp;</div>
+          <div class="col-sm-4 ">
+            <span>Total :  {{epb.valutaMataUang}} {{epb.subtotal | currency:"":2}}</span><br>
+          </div>
+        </div>
+        <div class="row" ng-show="epb.valuta==='USD'">
+          <div class="col-sm-2 "> <b>IDR</b> <br>
+            <span style="font-size:10px">$ 1 = Rp {{epb.kurs | currency:"":2}}</span>
+          </div>
+          <div class="col-sm-4 ">
+            <span>Jumlah IDR :  Rp {{epb.jumlahIdr | currency:"":2}}</span>
+          </div>
+        </div>
+        <div class="row" ng-show="epb.tambahan !== 0">
+          <div class="col-sm-2 "> &nbsp; </div>
+          <div class="col-sm-4 ">
+            <span>SLG of Pilot :  Rp {{epb.tambahan | currency:"":2}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 "> &nbsp; </div>
+          <div class="col-sm-4 ">
+            <span>PPN :  Rp {{epb.ppn | currency:"":2}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2 "> &nbsp; </div>
+          <div class="col-sm-4 ">
+            <span>Materai :  Rp {{epb.materai | currency:"":2}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2" > </div>
+          <div class="col-sm-4 ">
+            <span class="epb-grandtotal">Grand Total : Rp {{epb.grandtotal | currency:"":2}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <label class="label-center col-sm-6 col-sm-offset-4 footer-note" style="width: 244px; !important">BUKAN BUKTI BAYAR </label>
+  </div>
+
+  <div class="row">
+    <span class="label-center col-sm-4">* Jasa air kapal tidak dihitung dalam PPN.</span>
+  </div>
+
+</div>
+<br>
+<div class="text-center">
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="close()">Tutup</button>
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="confirm()">Ekspor  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+</div>
+
+<div class="modal" id="setStatusEpbFromInvoice" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title" id="epbLabel">Set Status EPB Perpanjangan</h4>
+      </div>
+      <div class="modal-body">
+        <p>Apakah Anda yakin ingin mengubah status menjadi telah dibayar?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="setStatusEpbFromInvoice()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>

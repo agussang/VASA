@@ -1,0 +1,103 @@
+<h2>Tarif Air Kapal Edit</h2>
+<form class="form-horizontal" name="airKapalForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-6"><span class="text-danger">*</span>Nomor SK</label>
+    	<div class="col-sm-7">
+      		<input type="text" class="form-control" ng-model="dataAirKapal.nomorSk" name="nomorSK" required>
+          	<span class="has-error" ng-show="airKapalForm.nomorSK.$touched && airKapalForm.nomorSK.$invalid">
+            	Isi nomor SK dibutuhkan.
+          	</span>
+    	</div>
+  	</div>
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Tgl. Berlaku</label>
+		<div class="col-sm-7">
+			<div pf-datepicker  id="IdtglBerlaku" options="options" data-date-format="dd-mm-yyyy" date="dataAirKapal.tglBerlaku" ng-model="dataAirKapal.tglBerlaku" name="tglBerlaku" required></div>
+		  	<span class="has-error" ng-show="airKapalForm.tglBerlaku.$touched && airKapalForm.tglBerlaku.$invalid">
+				Isi Tgl. Berlaku dibutuhkan.
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-6"><span class="text-danger">*</span>Jenis Pelayaran</label>
+		<div class="col-sm-7">
+			<select pf-select ng-model="dataAirKapal.jenisPelayaran" ng-options='option.value as option.caption for option in jnsPelayaran' id="jns-1" name="jenisPelayaran" required></select>
+		  	<span class="has-error" ng-show="airKapalForm.jenisPelayaran.$dirty && airKapalForm.jenisPelayaran.$invalid">
+				Isi jenis pelayaran dibutuhkan.
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="kls-6"><span class="text-danger">*</span>Alat Isi Air</label>
+		<div class="col-sm-7">
+		 	<select pf-select ng-model="dataAirKapal.alatIsiAir" ng-options='option.value as option.caption for option in alatIsiAir' id="jns-1" name="alatIsiAir" required></select>
+		 	<span class="has-error" ng-show="airKapalForm.alatIsiAir.$dirty && airKapalForm.alatIsiAir.$invalid">
+		   		Isi alat isi air dibutuhkan.
+		 	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="satuan-5"><span class="text-danger">*</span>Satuan</label>
+	  	<div class="col-sm-7">
+		  	<select pf-select ng-model="dataAirKapal.satuan" ng-options='option.value as option.caption for option in satuan' id="jns-1" name="satuan" required></select>
+		  	<span class="has-error" ng-show="airKapalForm.satuan.$dirty && airKapalForm.satuan.$invalid">
+				Isi satuan dibutuhkan.
+		  	</span>
+	  	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tarif-6"><span class="text-danger">*</span>Tarif Dasar</label>
+		<div class="col-sm-7">
+			<input type="number" maxlength="15" decimal-number min="0" id="tarif-5" class="form-control" ng-model="dataAirKapal.nilaiTarif" name="nilaiTarif" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001"  required>
+		 	<span class="has-error" ng-show="airKapalForm.nilaiTarif.$touched && airKapalForm.nilaiTarif.$invalid">
+				Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="valuta-6"><span class="text-danger">*</span>Valuta</label>
+		<div class="col-sm-7">
+			<select pf-select ng-model="dataAirKapal.valuta" ng-options='option.value as option.caption for option in valuta' id="jns-1" name="valuta" required></select>
+		  	<span class="has-error" ng-show="airKapalForm.valuta.$dirty && airKapalForm.valuta.$invalid">
+				Isi valuta dibutuhkan.
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jenisNegara"><span class="text-danger">*</span>Jenis Negara</label>
+		<div class="col-sm-7">
+			<select pf-select ng-model="dataAirKapal.jenisNegara" ng-options='option.value as option.caption for option in jenisNegara' id="jns-1" name="jenisNegara" required></select>
+		  	<span class="has-error" ng-show="airKapalForm.jenisNegara.$dirty && airKapalForm.jenisNegara.$invalid">
+				Isi Jenis Negara dibutuhkan.
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="file-6"><span class="text-danger">*</span>Dok. Pendukung</label>
+		<div class="col-sm-7">
+			<input type="file" id="file-1" class="form-control" file-input="uploadFile" name="dokPendukung" accept=".pdf,.jpg" ng-model="dataAirKapal.dokPendukung">
+		  	<a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="dataAirKapal.dokumen"></i> {{dataAirKapal.dokumen}}</a>
+		  	<span class="has-error" ng-show="airKapalForm.dokPendukung.$touched && airKapalForm.dokPendukung.$invalid">
+				Isi dok pendukung dibutuhkan.
+		  	</span>
+		</div>
+	  	<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+			<button type="button" class="btn btn-primary btn-lg" ng-disabled="airKapalForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+			<button type="button" class="btn btn-primary btn-lg" ng-disabled="airKapalForm.$invalid;" ng-click="submitApproval();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Approval</button>
+		</div>
+	</div>
+
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-6').datepicker({
+	autoclose: true,
+	todayBtn: "linked",
+	todayHighlight: true
+  });
+</script>

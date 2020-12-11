@@ -1,0 +1,48 @@
+<h2>Jadwal Tambat</h2>
+
+  <div class="form-group dropdown-kawasan">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Periode :</label>
+    <div class="col-sm-2">
+      <span id="date-tambat" class="input-group date" style="width:150px;">
+        <input type="text" ng-model="search.jadwalTambat" date="jadwalTambat" ng-change="change()" class="form-control bootstrap-datepicker" options="options" readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+      </span>
+    </div>
+     <div class="col-sm-2">
+      <label style="padding-top: 5px;">{{currentMonth}}</label>
+    </div>
+  </div>
+
+  <table class="datatable table table-striped table-bordered">
+  		<thead>
+      	<tr>
+          <th><div class="pull-left">Grup</div></th>
+      		<th><div class="pull-left">Nama</div></th>
+          <th><div class="pull-left">HP</div></th>
+          <th><div class="pull-left">Tambatan</div></th>
+          <th ng-repeat="i in getIndexNumber(dateNumber) track by $index" style="width:75px !important"><div class="pull-left">{{$index+1}}</div></th>
+      	</tr>
+  		</thead>
+      <tbody ng-repeat="data in jadwal">
+          <tr ng-repeat="item in data.items">
+              <td rowspan="{{data.items.length}}" ng-hide="$index>0">
+                  {{data.nama}}
+              </td>
+              <td>{{item.namaPetugas}}</td>
+              <td>{{item.hp}}</td>
+              <td>{{item.namaGroupDermagaTambat}}</td>
+              <td ng-repeat="i in getIndexNumber(dateNumber) track by $index" rowspan="{{data.items.length}}" ng-hide="$parent.$index>0">
+                  <select ng-model="shift[$index][data.id]" ng-options="option as option.kodeShift for option in shiftKerja"id="jns-1" ng-change="submit(item, $index, data.id)" class="btn-jadwal-pandu label-center pull-left" style="width:30px !important" required></select> <span style="vertical-align: middle;">{{shift[$index][data.id].kodeShift}}</span>{{shift[$index][data.id].idJadwalTambat}}
+              </td>
+          </tr>
+      </tbody>
+
+  </table>
+  <script>
+  $('#date-tambat').datepicker({
+    autoclose: true,
+    viewMode: "months",
+    format: "mm-yyyy",
+    minViewMode: "months",
+    language: 'id'
+  });
+  </script>

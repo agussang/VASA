@@ -1,0 +1,111 @@
+<h2>Monitoring RPKRO</h2>
+
+<div class="row">
+	<form class="form-horizontal" name="monitoringrpkroform">
+		<div class="col-md-6">
+			<div class="form-group">
+	            <label class="col-sm-4 control-label">Tgl Rencana Tambat</label>
+	            <div class="col-sm-5" style="display:inline-flex;">
+					<div pf-datepicker id="IdtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="rpkroTglPerencanaan"></div>					
+	            </div>           
+	            <button class="brn btn-xs btn-danger" ng-click="hapusTgl()" title="Hapus Tanggal"><i class="fa fa-times" aria-hidden="true"></i></button>	            
+	        </div>
+			<div class="form-group">
+	            <label class="col-sm-4 control-label">Nama Kapal </label>
+	            <div class="col-sm-6" style="display:inline-flex;">
+	                <input ng-model="rpkroNamaKapal" class="form-control">
+	            </div>
+	        </div>
+		</div>	
+		<div class="col-md-6">
+			<div class="form-group">
+	            <label class="col-sm-4 control-label">Dermaga</label>
+	            <div class="col-sm-6" style="display:inline-flex;">
+					<input type="text" id="jasatambat_lokasi" class="form-control" ng-model="rpkroDermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10" ng-focus="checkValue(rpkroDermaga)" ng-blur="validationLookupLokasiTambat()">
+	            </div>
+	        </div>
+			<div class="form-group">
+	            <label class="col-sm-4 control-label">No PPK1 </label>
+	            <div class="col-sm-6" style="display:inline-flex;">
+	                <input ng-model="rpkroPpk1" class="form-control">
+	            </div>
+	        </div>
+		</div>
+		<div class="col-md-12">
+			<div class="form-group"> 
+				<div class="col-md-12">					
+					<button class="btn btn-lg btn-primary pull-right" ng-click="loadMonitoring(0)" ng-disabled="rpkroPpk1==null&&rpkroNamaKapal==null&&rpkroDermaga==null&&rpkroTglPerencanaan==null"><i class="fa fa-search" aria-hidden="true" ></i> Cari</button>
+					<button class="btn btn-lg btn-warning pull-right" ng-click="reset()" style="margin-right: 20px;"><i class="fa fa-refresh" aria-hidden="true"></i> reset</button>
+				</div>			
+			</div>
+		</div>	
+	</form>
+</div>
+<table class="datatable table table-striped table-bordered" border="1" cellspacing="0">
+	<thead>
+        <tr>
+            <td colspan="16">
+                Show :
+                <select ng-options="option for option in optionSizePage.availableOptions track by option" ng-model="pageSize" ng-change="loadMonitoring(0)"></select>
+            </td>
+        </tr>
+		<tr>
+			<thead>
+				<tr>
+					<th>Tgl Rencana Tambat</th>
+					<th>No PPK Jasa</th>
+					<th>Kapal</th>
+					<th>Dermaga </th>
+					<th>Closing Time</th>
+					<th>Posisi</th>
+					<th>Status PPK</th>
+					<th>Status RKBM</th>
+					<th>Status PKK Inaportnet</th>
+					<th style="width: 97px;">Action</th>	
+					<th>Link</th>			
+				</tr>
+			</thead>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-show="dataMonitoring.length == 0" >
+			<td colspan="11">Data tidak tersedia</td>
+		</tr>
+		<tr ng-show="dataMonitoring.length > 0" ng-repeat="item in dataMonitoring | orderBy: '-tglPerencanaan' ">
+			<td>{{item.tglPerencanaan | date:'dd-MM-yyyy'}}</td>
+			<td>{{item.noPpkJasa}}</td>
+			<td><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a><br>{{item.namaKapal}} / {{item.kodeKapal}}</td>
+			<td>{{item.namaDermaga}}</td>
+			<td>{{item.tglMulai | date : 'dd/HH'}} - {{item.tglSelesai | date : 'dd/HH'}}</td>
+			<td>{{item.kadeAwal}} - {{item.kadeAkhir}}</td>
+			<td style="text-align: center">
+				<i class="fa fa-check-circle-o fa-2x" style="color:#11c514;" aria-hidden="true" ng-if="item.nomorPpkRpkro != null && item.statusPpkRpkro == true"><h6 style="color:#363636;" ng-if="item.nomorPpkRpkro != null">{{item.nomorPpkRpkro}}</h6>
+				</i>	
+				<i class="fa fa-check-circle-o fa-2x" style="color:#ec7a08;" aria-hidden="true" ng-if="item.nomorPpkRpkro == null && item.statusPpkRpkro == true">
+				<h6 style="color:#363636;" ng-if="item.nomorPpkRpkro == null">Menunggu Persetujuan OP</h6></i>
+				<i class="fa fa-times-circle fa-2x" style="color:#cc0000; float:center;" aria-hidden="true" ng-if="item.statusPpkRpkro == false" title="RPKRO Belum Dikirim"></i>
+			</td>
+			<td>{{item.statusRkbm}}</td>
+			<td style="text-align: center">
+				<i class="fa fa-check-circle-o fa-2x icon-report-meeting" style="color:#11c514;" aria-hidden="true" ng-if="item.statusPkkInaportnet == true" title="PKK Inaportnet"></i>
+				<i class="fa fa-times-circle fa-2x"  style="color:#cc0000;" aria-hidden="true" ng-if="item.statusPkkInaportnet == false" title="Bukan PKK Inaportnet"></i>
+			</td>
+			<td>
+				<button class="btn btn-primary btn-xs" type="button" ng-click="sendRPKRO(item)"  ng-disabled="item.statusPpkRpkro || item.statusPkkInaportnet == false || item.statusRkbm == null" style="margin-right:2px;">RPKRO</button>
+				<br>
+				<button class="btn btn-xs btn-warning" ng-click="resetRpkro(item)" style="margin-right: 2px;"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+				<button class="btn btn-danger btn-xs" ng-click="deleteHasilMeeting(item)" ng-disabled="item.statusPpkRpkro == false" type="button" style="margin-right:2px;"><i class="fa fa-times" aria-hidden="true"></i></button>
+			</td>
+			<td>
+				<a href="#/perencanaan/{{item.kodeDermaga}}/{{item.tglPerencanaan | date:'yyyy-MM-dd'}}" class="btn btn-default btn-xs" type="button" title="Perencanaan"><i class="fa fa-ship text-warning" aria-hidden="true"></i></a>
+				<a href="#/meeting/report/{{item.kodeDermaga}}/{{item.tglPerencanaan | date:'yyyy-MM-dd'}}" class="btn btn-default btn-xs" type="button" title="Line up"><i class="fa fa-area-chart text-info" aria-hidden="true"></i></a>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+	<paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;" paging-action="loadMonitoring(page)"></paging>
+
+<script type="text/javascript">
+	$('#IdtglPerencanaan').mask('99-99-9999');
+</script>

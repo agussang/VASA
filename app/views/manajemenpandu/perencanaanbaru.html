@@ -1,0 +1,710 @@
+<h2>Perencanaan Pandu Baru</h2>
+
+<div class="col-sm-offset-11 col-sm-1 pull-right" style="margin-bottom:20px;">
+    <button type="button" class="btn btn-default btn-lg" ng-click="openJadwalPandu()"><span></span>Jadwal Pandu</button>
+</div>
+
+<div class="row top-buffer">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">*</span>Tgl. Pandu</label>
+            <div class="col-sm-4" style="display:inline-flex;">
+                <span id="tanggalPanduAwal" class="input-group date" style="width:120px;">
+                <input type="text" ng-model="tanggalPanduAwal" date="tanggalPanduAwal" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                </span>
+            </div>
+            <div class="col-sm-" style="display:inline-flex;">
+                <label class="control-label" style="margin-left:5px; margin-right: 5px;">s.d.</label>
+                <span id="tanggalPanduAkhir" class="input-group date" style="width:120px;">
+                <input type="text" ng-model="tanggalPanduAkhir" date="tanggalPanduAkhir" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                </span>
+            </div>
+        </div>   
+    </div>
+</div>
+
+<div class="row top-buffer">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Nama Kapal </label>
+            <div class="col-sm-6" style="display:inline-flex;">
+                <input ng-model="namaKapal" capitalize>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Stasiun Pandu</label>
+            <select class="col-sm-6 pull-left" pf-select ng-model="lokasi" ng-options="option.namaKawasan as option.namaKawasan  for option in stasiunPandu" title="Stasiun Pandu"></select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Jenis Gerakan</label>
+            <select pf-select class="col-sm-6" ng-model="searchJenisGerakan" ng-change="loadData(0)" ng-options="option.value as option.caption  for option in parameterJenisGerakan" title="Jenis Gerakan"></select>
+        </div>
+    </div>    
+</div>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Area </label>
+            <div class="col-sm-6" style="display:inline-flex;">
+                <!--input ng-model="area" capitalize-->
+                <input type="text" name="dermaga" ng-model="namaDermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getDaftarDermaga($viewValue)" data-limit="10" ng-focus="checkValue(namaDermaga)">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label pull-left">Penetapan</label>
+            <select class="col-sm-6" pf-select ng-model="search.isPenetapan" ng-options="option.value as option.caption for option  in statusPenetapan" title="Status Penetapan"></select>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label class="col-sm-6 control-label">Status</label>
+            <select pf-select class="col-sm-6" ng-model="search.statusSpk" ng-options="option.value as option.caption  for option in statusPemanduan" title="Status"></select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group col-sm-2">
+            <button type="button" class="btn btn-primary" ng-click="loadData(0);buttonDisabled=true" ng-disabled="!showLoader"> Filter </button>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped table-bordered top-buffer">
+    <thead>
+        <tr>
+            <td colspan="17">
+                Show :
+                <select ng-options="option for option in optionSizePage.availableOptions track by option" ng-model="pageSize" ng-change="loadData(0)"></select>
+            </td>
+        </tr>
+        <tr>
+            <th>No</th>
+            <th style="min-width:140px !important">No PPK Jasa</th>
+            <th style="min-width:160px !important">Nama Kapal</th>
+            <th style="min-width:100px !important">Agen</th>
+            <th style="min-width:160px !important">Informasi Tambat</th>
+            <th>Asal/Tujuan</th>
+            <th>Jam Pelayanan</th>
+            <th>Tgl Penetapan</th>
+            <th>Nama</th>
+            <th>Status</th>
+            <th style="min-width:100px !important">Assign</th>
+            <th>Konfirmasi</th>
+            <th>Order</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items | filter:search">
+            <td>{{$index+1}} </td>
+            <td>{{item.noPpkJasaPandu}}<br><small>rekomendasi jumlah kapal tunda: {{item.jumlahTunda}}</small><br><small style="margin-top:20px;">No Ppk1: <a href="/#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a><small></small></td>
+            <td style="width:200px !important"><b>{{item.namaKapal}}</b>  ({{item.negaraKapal}})<br> <small>loa : {{item.loa}}</small><br><small>gt : {{item.gtKapal}}</small></td>
+            <td>{{item.namaAgen}}</td>
+            <td> <small ng-hide="item.dermagaTambat == null">Dermaga Tambat : {{item.dermagaTambat}}</small>
+                <br>
+                <small ng-hide="item.jamPenetapanTambat == null ">Jam Penetapan Tambat : {{item.jamPenetapanTambat}}</small>
+                <br>
+                <small ng-hide="item.kadeAwal == null "> 
+                    Kade Meter : 
+                    <i ng-show="item.kadeAwal<item.kadeAkhir" class="fa fa-arrow-up fa-2x color-green" style="margin-right:1px !important;"></i>
+                    <i ng-show="item.kadeAwal>item.kadeAkhir" class="fa fa-arrow-down color-red" style="margin-right:1px !important;"></i>{{item.kadeAwal}} - {{item.kadeAkhir}}</small>
+                <br>
+                <small ng-hide="item.penetapanTambatMulai == null"><b> Tgl. Tambat : {{item.penetapanTambatMulai | date :"dd-MM-yyyy HH:mm"}}</b></small>
+                <small ng-hide="item.penetapanTambatSelesai == null"><b> s/d  {{item.penetapanTambatSelesai | date :"dd-MM-yyyy HH:mm"}}</b></small>
+                <br>
+                <small ng-hide="item.noPpkRpkro == '' || item.noPpkRpkro.length == undefined">No. PPK : {{item.noPpkRpkro}}
+                </small>
+            </td>
+            <td>{{item.namaPelabuhanAsal}} → {{item.namaPelabuhanTujuan}}  <br><small class="detail-daftar detail-monitoring"> Gerakan : {{item.jenisGerakanText}}</small></td>
+            <td> {{item.jamPelayanan}}</td>
+            <td><span title="Penetapan" ng-show="item.isPenetapan" style="font-family: 'FontAwesome', sans-serif;margin-right:5px; color:#3F51B5;"> &#xf0e3;&nbsp;</span> 
+                 {{item.tglPenetapan | date :"dd-MM-yyyy HH:mm"}}<br>
+                <button type="button" class="btn btn-primary btn-xs" title="Proses" data-toggle="modal" data-target="#penetapanPanduModal" ng-click="showModalPenetapanPandu(item)" ng-disabled="item.statusSpk=='Konfirmasi'">
+                    <b ng-show="!item.isPenetapan">Penetapan</b>
+                    <b ng-show="item.isPenetapan">Edit</b>
+                </button>
+                <small ng-show="item.jenisDermagaPanduTujuan == 'DMGUMUM' && item.penetapanTambatMulai == null && item.noPpkRpkro.length == undefined"> <span class="pficon pficon-warning-triangle-o"> </span> Belum penetapan tambat</small>
+            </td>
+            <td><a ng-show="item.namaPetugas" href="/#/petugaspandu/view/{{item.petugasId}}">{{item.namaPetugas}} ({{item.namaGroup}})</a> <select pf-select dropdown-menu-pandu ng-model="item.petugasPandu" ng-options="option as option.namaStatus  for option in petugas | orderBy:'namaPetugas'" id="jns-1" ng-change="setPandu(item)" ng-hide="item.statusSpk=='Konfirmasi'" required title="Ganti Pandu"></select>
+            </td>
+            <td>{{item.statusSpk}}</td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-xs" title="Proses" ng-click="showModalSpk(item)" ng-disabled="!item.isPenetapan"><b>SPK</b></button>
+                <br>
+                <div ng-hide="item.nomorSpk == null">No.SPK : {{item.nomorSpk}}</div>
+                <button type="button" class="btn btn-primary btn-xs" title="Proses" ng-click="resendSpk(item)" ng-hide = "{{entryInaportnet == 0}}" ng-disabled="!item.isPenetapan || item.statusSpk !='SPK'">
+                <b>Kirim Ulang SPK</b>
+                </button>
+            </td>
+            <td class="text-center">
+                <button type="button" class="btn btn-primary btn-xs" title="Proses" data-toggle="modal" data-target="#ohnModal" ng-click="showModalOhn(item)" ng-disabled="item.statusSpk=='Available'" ng-hide="item.statusSpk=='Konfirmasi'"><b>Konfirmasi</b></button>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="cancelOhn(item)" title="Proses"  style="margin-top:10px !important;" ng-show="item.statusSpk == 'Konfirmasi'" ng-disabled="item.flagDone == '2'"><b>Batal Konfirmasi</b></button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-danger btn-xs" ng-click="hapusPpkJasaPandu(item)" ng-disabled="item.statusSpk=='SPK'||item.statusSpk=='Konfirmasi'">Batal</button>
+                <button type="button" class="btn btn-primary btn-xs" title="Up" ng-click="swapUp(items, $index)" ng-disabled="item.statusSpk=='SPK'||item.statusSpk=='Konfirmasi'||item.namaPetugas == null"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-primary btn-xs" title="Down" ng-click="swapDown(items, $index)" ng-disabled="item.statusSpk=='SPK'||item.statusSpk=='Konfirmasi' || item.namaPetugas == null"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="17" class="text-center" ng-show="items.length == 0">
+                <strong>Tidak ada data yang tersedia</strong>
+            </td>
+        </tr>
+        </tbody>
+    </tbody>
+</table>
+
+<div><paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="loadData(page)">
+</paging></div>
+
+
+<div class="modal" id="spkModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Surat Perintah Kerja</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Nama Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="namaPetugas" ng-model="spk.namaPetugas" readonly>
+                        </div>
+                    </div>
+                </div>
+                
+                <form class="form-horizontal top-buffer" name="formSpk">
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No SPK</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="nomorSpkPandu" ng-model="spk.nomorSpkPandu" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>PPK1</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpk1" ng-model="spk.noPpk1" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-hide="modalSpk.jenisPandu == '2' || modalSpk.jenisGerakan == '3' || modalSpk.jenisDermagaPanduTujuan == 'DMGKHUSUS' || modalSpk.jenisDermagaPanduTujuan == 'AREALABUH' || validasiPpkRpkro == ''">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No. PPK</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpkRpkro" id="noPpkRpkro" ng-model="spk.noPpkRpkro" ng-disabled="entryInaportnet=='1'" required>
+                            <span class="has-error" ng-show="formSpk.noPpkRpkro.$touched && formSpk.noPpkRpkro.$invalid">
+                                Isi no ppk rpkro dibutuhkan.
+                            </span>
+                        </div>
+                        <span class="cursor-pointer col-sm-1 pull-left" ng-mouseover="showToolTip()" ng-show="spk.noPpkRpkro == ''" style="right:30px">
+                            <a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{keterangan}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>PPK Jasa</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpkJasaPandu" ng-model="spk.noPpkJasaPandu" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Nama Kapal</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="namaKapal" ng-model="spk.namaKapal" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Asal</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermaga" class="form-control" ng-model="spk.namaDermagaAsal" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getDaftarDermaga($viewValue)" data-limit="10" ng-focus="checkValue(spk.namaPelabuhanAsal)"
+                            ng-blur="validationLookupDermaga(spk.namaPelabuhanAsal)" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tujuan</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermaga" class="form-control" ng-model="spk.namaDermagaTujuan" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getDaftarDermaga($viewValue)" data-limit="10" ng-focus="checkValue(spk.namaDermagaTujuan)"
+                            ng-blur="validationLookupDermaga(spk.namaDermagaTujuan)" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">Padis Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="padis" bs-typeahead bs-options="petugas.namaPetugas for petugas in petugas" ng-model="padisPandu" data-limit="10" ng-focus="checkValue(padisPandu)" ng-blur="validationLookup(padisPandu)">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-header" ng-show="spk.noPpkJasaTambatAsal || spk.noPpkJasaTambatTujuan">
+                <h3 class="modal-title" id="myModalLabel" >Informasi Tambat</h3>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal top-buffer" 
+                 ng-show="spk.noPpkJasaTambatAsal">
+                    <div class="form-group">
+                        <label class="col-sm-3">Asal</label>
+                    </div>
+                
+                    <div class="form-group">
+                        <label class="col-sm-3">No PPK Jasa Tambat</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpkJasaTambat" ng-model="spk.noPpkJasaTambatAsal" readonly>
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label class="col-sm-3">Lokasi Asal Tambat</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermaga" class="form-control" ng-model="spk.namaLokasiTambatAsal" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3">Tgl Mulai Tambat</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="tglMulaiTambatAsal" ng-model="tglMulaiTambatAsal" readonly>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal top-buffer" ng-show="spk.noPpkJasaTambatTujuan">
+                    <div class="form-group">
+                        <label class="col-sm-3">Tujuan</label>
+                    </div>
+                
+                    <div class="form-group">
+                        <label class="col-sm-3">No PPK Jasa Tambat</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpkJasaTambat" ng-model="spk.noPpkJasaTambatTujuan" readonly>
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <label class="col-sm-3">Lokasi Tujuan Tambat</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermaga" class="form-control" ng-model="spk.namaLokasiTambatTujuan" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">Tgl Mulai Tambat</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="tglMulaiTambatTujuan" ng-model="tglMulaiTambatTujuan" readonly>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> Tutup</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createSpk(spk)" ng-disabled="spk.namaPetugas == undefined || spk.nomorSpkPandu == null || spk.status=='Konfirmasi' || spk.idSuratPerintahKerjaPandu">Kirim SPK</button>
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-disabled="spk.idSuratPerintahKerjaPandu == null || padisPandu == null || padisPandu.length == 0" ng-click="cetakSpk(spk,padisPandu.namaPetugas)">
+                        <i class="fa fa-print" aria-hidden="true"></i> Cetak SPK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ohnModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Konfirmasi Pandu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Nama Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpk1" ng-model="dataOhn.namaPegawaiPandu" readonly>
+                        </div>
+                    </div>
+                </div>
+    
+                <form class="form-horizontal top-buffer" name="ohnForm">
+                    <div class="form-group" ng-hide="inputManualSPOG || !spogMandatory">
+                        <label class="col-sm-3"><span class="text-danger" ng-show="entryInaportnet == '1'">*</span><span ng-hide="dataOhn.jenisGerakan == '3'">No SPOG</span><span ng-hide="dataOhn.jenisGerakan != '3'">No SPB</span></label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="nomorSPOG" ng-model="dataOhn.nomorSPOG" ng-required="entryInaportnet == '1' && spogMandatory" ng-disabled="!inputManualSPOG">
+                                <span class="has-error" ng-show="ohnForm.nomorSPOG.$touched && ohnForm.nomorSPOG.$invalid">
+                                    Isi Nomor SPOG dibutuhkan.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-show ="inputManualSPOG">
+                        <label class="col-sm-3">
+                            <span class="text-danger" ng-show="entryInaportnet == '1'">*</span>
+                            <span ng-hide="dataOhn.jenisGerakan == '3'">No SPOG</span>
+                            <span ng-hide="dataOhn.jenisGerakan != '3'">No SPB</span>
+                        </label>
+                        <div class="col-sm-6">
+                        <input class="form-control" name="nomorSPOG" ng-model="dataOhn.nomorSPOG" 
+                        ng-required="inputManualSPOG && spogMandatory">
+                            <span class="has-error" ng-show="ohnForm.nomorSPOG.$touched && ohnForm.nomorSPOG.$invalid">
+                            Isi Nomor SPOG dibutuhkan.
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>PPK1</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpk1" ng-model="dataOhn.noPpk1" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>PPK Jasa</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noPpkJasaPandu" ng-model="dataOhn.noPpkJasaPandu" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Nama Kapal</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="namaKapal" ng-model="dataOhn.namaKapal" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Asal</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="namaLokasiPanduAsal" ng-model="dataOhn.namaLokasiPanduAsal" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tujuan</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="namaLokasiPanduTujuan" ng-model="dataOhn.namaLokasiPanduTujuan" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" name="tanggalPandu" ng-model="dataOhn.tanggalPandu" date="dataOhn.tanggalPandu" readonly>
+                        </div>
+                    </form>
+                </div>
+            
+                <div class="modal-header" ng-show="dataOhn.noPpkJasaTambatAsal || dataOhn.noPpkJasaTambatTujuan">
+                    <h3 class="modal-title" id="myModalLabel">Informasi Tambat</h3>
+                </div>
+                
+                <div class="modal-body">
+                    <form class="form-horizontal top-buffer" ng-show="dataOhn.noPpkJasaTambatAsal">
+                        <div class="form-group">
+                            <label class="col-sm-3">Asal</label>
+                        </div>
+                
+                        <div class="form-group">
+                            <label class="col-sm-3">No PPK Jasa Tambat</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name="noPpkJasaTambat" ng-model="dataOhn.noPpkJasaTambatAsal" readonly>
+                            </div>
+                        </div>
+                
+                        <div class="form-group">
+                            <label class="col-sm-3">Lokasi Asal Tambat</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="dermaga" class="form-control" ng-model="dataOhn.namaLokasiTambatAsal" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3">Tgl Mulai Tambat</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name="tglMulaiTambatAsal" ng-model="tglMulaiTambatAsal" readonly>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="form-horizontal top-buffer" ng-show="dataOhn.noPpkJasaTambatTujuan">
+                        <div class="form-group">
+                            <label class="col-sm-3">Tujuan</label>
+                        </div>
+                
+                        <div class="form-group">
+                            <label class="col-sm-3">No PPK Jasa Tambat</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name="noPpkJasaTambat" ng-model="dataOhn.noPpkJasaTambatTujuan" readonly>
+                            </div>
+                        </div>
+                
+                        <div class="form-group">
+                            <label class="col-sm-3">Lokasi Tujuan Tambat</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="dermaga" class="form-control" ng-model="dataOhn.namaLokasiTambatTujuan" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3">Tgl Mulai Tambat</label>
+                            <div class="col-sm-6">
+                                <input class="form-control" name="tglMulaiTambatTujuan" ng-model="tglMulaiTambatTujuan" readonly>
+                            </div>
+                        </div>
+                    </form>
+                
+                    <div class="modal-footer">
+                        <div class="row">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal" ng-click="showModalVALOTH022()" ng-show="entryInaportnet == '1'" >Eskalasi</button>
+                            <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal" ng-click="createOhn(dataOhn)" ng-disabled="ohnForm.$invalid">Proses</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="penetapanPanduModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Penetapan Pelayanan Pandu</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="formPenetapan">
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No PPK Jasa</label>
+                        <div class="col-sm-6">
+                            <input ng-model="dataPermohonan.noPpkJasaPandu" name="ppkJasa" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Petugas Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="pandu" bs-typeahead bs-options="petugas.namaPetugas for petugas in petugas" ng-model="dataPermohonan.petugasPandu"
+                            data-limit="10" ng-focus="checkValue(dataPermohonan.petugasPandu)" ng-blur="validationLookup(dataPermohonan.petugasPandu)"
+                            ng-disabled="dataPermohonan.statusSpk=='SPK'"required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Nama Kapal</label>
+                        <div class="col-sm-6">
+                            <input ng-model="dataPermohonan.namaKapal" name="namaKapal" class="form-control" type="text" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Asal</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermagaAsal" class="form-control" ng-model="dataPermohonan.namaDermagaAsal" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getDaftarDermaga($viewValue)" data-limit="10" ng-focus="checkValue(dataPermohonan.namaPelabuhanAsal)" ng-blur="validationLookupDermaga(dataPermohonan.namaPelabuhanAsal)" ng-change="changeJenisGerakan(dataPermohonan)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tujuan</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermagaTujuan" class="form-control" ng-model="dataPermohonan.namaDermagaTujuan" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getDaftarDermaga($viewValue)" data-limit="10" ng-focus="checkValue(dataPermohonan.namaPelabuhanTujuan)" ng-blur="validationLookupDermaga(dataPermohonan.namaPelabuhanTujuan)" ng-change="changeJenisGerakan(dataPermohonan)">
+                            <span class="pficon pficon-warning-triangle-o" ng-show="showErrorTujuan"> Tujuan Dermaga Pandu tidak sesuai dengan DermagaTambat</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Jenis Gerakan</label>
+                        <div class="col-sm-6">
+                            <select pf-select ng-model="dataPermohonan.jenisGerakan" ng-options='option.value as option.caption for option in jenisGerakanOption' disabled></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                        <div class="col-sm-6">
+                            <span id="tanggal-penetapan" class="input-group date" style="width:150px;">
+                                <input type="text" name="tanggalPandu" ng-model="dataPermohonan.tanggalPenetapan" date="dataPermohonan.tanggalPenetapan" ng-change="change()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Jam</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamMulai">
+                                <input id="jamMulaiVal" type="text" class="form-control" size="8" ng-model="dataPermohonan.jamPelayanan" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamMulai" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalLabel">Informasi Tambat</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="formPenetapan">
+                <div class="form-group">
+                    <label class="col-sm-3"><span class="text-danger"></span>Jasa Tambat Asal</label>
+                    <div class="col-sm-6">
+                      <select pf-select ng-model="dataPermohonan.jasaTambatAsal" ng-options="option.noPpkJasa as option.noPpkJasa+' '+option.namaLokasi for option in jasaTambatAsalOption" required></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                     <label class="col-sm-3"><span class="text-danger"></span>Jasa Tambat Tujuan</label>
+                     <div class="col-sm-6">
+                        <select pf-select ng-model="dataPermohonan.jasaTambatTujuan" ng-options="option.noPpkJasa as option.noPpkJasa+' '+option.namaLokasi for option in jasaTambatTujuanOption" required></select>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">Tutup</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="submitPenetapanPandu(dataPermohonan)" >Proses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="pindahPanduModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Pindah Pandu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3">Kode Pandu</label>
+                        <div class="col-sm-6">
+                            <span class='view-detail'>{{dataPandu.idPandu}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3">Nama Pandu</label>
+                        <div class="col-sm-6">
+                            <span class='view-detail'>{{dataPandu.namaPandu}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3">Stasiun Pandu</label>
+                        <div class="col-sm-4">
+                            <select pf-select ng-model="idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="disapprove()">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="approve()">Proses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="gantiPanduModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Ganti Pandu</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3">Petugas Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="padis" bs-typeahead bs-options="petugas.namaPetugas for petugas in petugas" ng-model="petugasPandu" data-limit="10" ng-focus="checkValue(petugasPandu)" ng-blur="validationLookup(petugasPandu)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="gantiPandu(item,petugasPandu)" ng-disabled=" petugasPandu == null || petugasPandu.length == 0 ">Proses</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal VALOTH018 -->
+<div class="modal" id="modalVALOTH018" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h4 class="modal-title">Informasi Validasi</h4>
+            </div>
+            <div class="modal-body">
+                <p ng-bind-html="infoVALOTH018"></p>
+                <br>Kode validasi: <b>VALOTH-018</b>
+            </div>
+            <div class="modal-footer">
+                <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+                    <i class="fa fa-level-up "></i> 
+                    <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+                </div>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal VALOTH022 -->
+<div class="modal" id="modalVALOTH022" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title">Informasi Validasi</h4>
+      </div>
+      <div class="modal-body">
+        <p ng-bind-html="infoVALOTH022"></p>
+        <br>Kode validasi:
+        <b>VALOTH-022</b>
+      </div>
+      <div class="modal-footer">
+        <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+          <i class="fa fa-level-up "></i>
+          <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+        </div>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<img id="imgToExport" src="../images/spk_header.png" style="display:none" />
+<script>
+    $('#tanggalPanduAwal').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+    $('#tanggalPanduAkhir').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+    $('#tanggal-penetapan').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+</script>

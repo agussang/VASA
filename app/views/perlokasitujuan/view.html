@@ -1,0 +1,123 @@
+<h2>Perlokasi Tujuan Detil</h2>
+<br>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Jasa</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.jasaText}}
+	    </div>
+  	</div>
+
+  	<div class="form-group">
+    	<label class="col-sm-2">Dermaga</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.dermagaText}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">No. SK</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.nomorSk}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Mulai Berlaku</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.tglMulaiBerlaku}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Selesai Berlaku</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.tglSelesaiBerlaku}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Sepakat </label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.tglSepakat}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Persetujuan</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.persetujuanText}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Status</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	{{item.status}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-2">
+	      	<span>:</span> <a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="item.dokumen"></i> {{item.dokumen}}</a>
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2"><h3>Prosentase/Nilai</h3></label>
+
+  	</div>
+    <div class="form-group">
+      <label class="col-sm-2">Tagihan</label>
+      <div class="col-sm-2">
+          <span>:</span>   {{item.nilaiTagihanText}}
+      </div>
+    </div>
+    <div class="form-group" ng-hide="item.nilaiTagihan==1">
+      <label class="col-sm-2">Nilai</label>
+      <div class="col-sm-2">
+          <span>:</span>   {{item.nilai | currency:"":2}}
+      </div>
+    </div>
+    <div class="form-group" ng-hide="item.nilaiTagihan==1">
+      <label class="col-sm-2">Valuta</label>
+      <div class="col-sm-2">
+          <span>:</span>   {{item.valuta}}
+      </div>
+    </div>
+  	<div class="form-group" ng-hide="item.nilaiTagihan==0">
+    	<label class="col-sm-2">Pelabuhan</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	 {{item.nilaiPelabuhan}} <span ng-show="item.nilaiPelabuhan">%</span>
+	    </div>
+
+  	</div>
+  	<div class="form-group" ng-hide="item.nilaiTagihan==0">
+    	<label class="col-sm-2">Pelanggan</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	 {{item.nilaiPelanggan}} <span ng-show="item.nilaiPelabuhan">%</span>
+	    </div>
+
+  	</div>
+
+  	<div class="form-group">
+    	<label class="col-sm-2"><h3>Pengesahan</h3></label>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama Pejabat Pelindo</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	 {{item.pejabat}}
+	    </div>
+
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama PIC Pelanggan</label>
+	    <div class="col-sm-2">
+	      	<span>:</span>	 {{item.pelanggan}}
+	    </div>
+
+  	</div>
+</form>
+	<button class="btn btn-lg btn-primary" ng-click="cancel()">Tutup</button>

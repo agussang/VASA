@@ -1,0 +1,243 @@
+<h2>Jadwal Tambat</h2>
+
+<div ng-show="!openCalendar">
+  <div class="row row-cards-pf">
+    <div ng-repeat="item in grupTambat" class="col-xs-6 col-sm-4 col-md-4">
+      <div class="card-pf card-pf-accented">
+        <div class="card-pf-heading">
+          <h2 class="card-pf-title">
+            {{item.nama}} <button  type="button" class="btn btn-primary btn-xs pull-right" title="Proses" ng-click="tampilanJadwal(item)"><b>Detail</b></button>
+          </h2>
+        </div>
+        <div class="card-pf-body">
+          <div ng-repeat="data in item.petugas">
+            <p>{{data.namaPetugas}} - {{data.namaGroupDermagaTambat}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /row -->
+</div>
+<hr>
+<div ng-show="openCalendar">
+  <div class="row">
+    <a ng-click="closeCalendar()" type="button" class="btn btn-danger btn-lg pull-right class-sm-offset-1" title="Close" style="margin-right:2.5%;"><span class="fa fa-times"></span></a>
+    <h3 class="col-sm-offset-1">Grup : {{jadwalTambat.namaGroupPetugasTambat}}</h3>
+  </div>
+    <h2 class="text-center">{{calendarTitle }}</h2>
+    <div class="row">
+
+     <div class="col-md-6 text-center">
+       <div class="btn-group">
+         <button
+           class="btn btn-primary"
+           mwl-date-modifier
+           date="viewDate"
+           decrement="calendarView"
+           ng-click="cellIsOpen = false">
+           Previous
+         </button>
+         <button
+           class="btn btn-default"
+           mwl-date-modifier
+           date="viewDate"
+           set-to-today
+           ng-click="cellIsOpen = false">
+           Today
+         </button>
+         <button
+           class="btn btn-primary"
+           mwl-date-modifier
+           date="viewDate"
+           increment="calendarView"
+           ng-click="cellIsOpen = false">
+           Next
+         </button>
+       </div>
+     </div>
+
+  <br class="visible-xs visible-sm">
+
+     <div class="col-md-6 text-center">
+       <div class="btn-group">
+         <!--label class="btn-lg btn-primary" ng-click="tampilanTahun()">Tahun</label-->
+         <label class="btn-lg btn-primary" ng-click="tampilanBulan()">Bulan</label>
+         <label class="btn-lg btn-primary" ng-click="tampilanMinggu()">Minggu</label>
+       </div>
+     </div>
+   </div>
+
+   <br>
+
+      <mwl-calendar
+          view="calendarView"
+          view-date="viewDate"
+          events="events"
+          view-title="calendarTitle"
+          on-timespan-click="timespanClicked(calendarDate)"
+          on-event-click="eventClicked(calendarEvent)"
+          on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+          cell-is-open="false">
+          <i class="fa fa-plus-circle" aria-hidden="true"></i>
+      </mwl-calendar>
+      <div class="row">
+        <div class="col-sm-3">
+          <label>Shift Kerja : </label>
+          <p ng-repeat="item in shiftKerja"> Shift  {{item.labelJam}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Tambah Jadwal-->
+    <div class="modal fade" id="modalTambahJadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Tambah Jadwal Tambat</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" name="jadwaltambatForm">
+              <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                 <div class="col-sm-6">
+                   <input class="form-control" name="tanggal" ng-model="lastDateClicked" disabled>
+                 </div>
+              </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Grup</label>
+                 <div class="col-sm-6">
+                    <input class="form-control" name="jadwalgroup" ng-model="jadwalTambat.namaGroupPetugasTambat" disabled>
+                 </div>
+               </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Shift</label>
+                 <div class="col-sm-6">
+                    <select pf-select ng-model="shift" ng-options="option as option.labelJam for option in shiftKerja" class="btn-jadwal-pandu label-center pull-left" required></select>
+                 </div>
+               </div>
+               <!--div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Dermaga</label>
+                 <div class="col-sm-6">
+                   <input type="text" name="dermaga" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+                    ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()" required>
+                 </div>
+               </div-->
+             </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!shift.id" ng-click="submit()" data-dismiss="modal">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Jadwal -->
+    <div class="modal fade" id="modalEditJadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Edit Jadwal Tambat</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" name="jadwaltambatForm">
+              <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                 <div class="col-sm-6">
+                   <input class="form-control" name="tanggal" ng-model="lastDateClicked" disabled>
+                 </div>
+              </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Grup</label>
+                 <div class="col-sm-6">
+                    <input class="form-control" name="jadwalgroup" ng-model="jadwalTambat.namaGroupPetugasTambat" disabled>
+                 </div>
+               </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Shift</label>
+                 <div class="col-sm-6">
+                    <select pf-select ng-model="shift" ng-options="option as option.labelJam for option in shiftKerja" class="btn-jadwal-pandu label-center pull-left" required></select>
+                 </div>
+               </div>
+             </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary" ng-disabled="!shift.id" ng-click="update()" data-dismiss="modal">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Hapus Jadwal -->
+    <div class="modal fade" id="modalHapusJadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Hapus Jadwal Tambat</h4>
+          </div>
+          <div class="modal-body">
+            <p>Apakah Anda ingin menghapus data ini?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-danger" ng-click="deleteJadwalTambat()" data-dismiss="modal">Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal Jadwal Per Petugas-->
+    <div class="modal fade" id="modalJadwalPerPetugas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Jadwal Tambat</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal" name="jadwaltambatForm">
+              <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                 <div class="col-sm-6">
+                   <input class="form-control" name="tanggal" ng-model="lastDateClicked" disabled>
+                 </div>
+              </div>
+                <div class="form-group">
+                   <label class="col-sm-3"><span class="text-danger">*</span>Petugas Tambat</label>
+                   <div class="col-sm-6">
+                     <input class="form-control" name="petugasTambat" ng-model="petugasTambat.namaPetugas" disabled>
+                   </div>
+                </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Grup</label>
+                 <div class="col-sm-6">
+                    <input class="form-control" name="jadwalgroup" ng-model="petugasTambat.namaGroupPetugasTambat" disabled>
+                 </div>
+               </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Shift</label>
+                 <div class="col-sm-6">
+                    <select pf-select ng-model="shift" ng-options="option as option.labelJam for option in shiftKerja" class="btn-jadwal-pandu label-center pull-left" required></select>
+                 </div>
+                 {{shift}}
+               </div>
+               <div class="form-group">
+                 <label class="col-sm-3"><span class="text-danger">*</span>Dermaga</label>
+                 <div class="col-sm-6">
+                   <input type="text" name="dermaga" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+                    ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()" required>
+                 </div>
+               </div>
+             </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary" ng-disabled="jadwaltambatForm.$invalid;" ng-click="submit()" data-dismiss="modal">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>

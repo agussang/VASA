@@ -1,0 +1,313 @@
+<div class="container-overflow-hide">
+<h2 class="col-xs-5 meetinf-tabs">Meeting Detail</h2>
+
+<div class="col-sm-4 navbar-right">
+	<button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+</div>
+<br>
+<ul class="nav nav-tabs meeting-tabs" role="tablist">
+    <li role="presentation" class="menu-tab tab-labuh aktif active" kode-menu="meeting" id="labuhTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'meeting')">Meeting Online</a></li>
+    <li role="presentation" class="menu-tab tab-tambat" kode-menu="meeting" id="tambatTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'participant')">Participant</a></li>
+    <li role="presentation" class="menu-tab tab-pandu" kode-menu="meeting" id="panduTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'summary')">Hasil Meeting</a></li>
+</ul>
+
+
+	<div class="tab-content">
+		<!-- tab 2 -->
+		<div id="meeting" role="tabpanel" class="tab-pane active" style="height: 400px !important;">
+      <div style="display:inline-flex; width:200%">
+        <div class="col-xs-5 col-md-4">
+          <form class="form-horizontal" name="meetingForm">
+        	<div class="form-group">
+      		    <label class="col-sm-3 " for="no-2">No</label>
+          	     <div class="col-sm-4">
+                  <span>:</span>
+            		  <span>{{meeting.nomorMeeting}}</span>
+                </div>
+
+          </div>
+
+          <div class="form-group">
+      		<label class="col-sm-3 " for="no-2">Deskripsi</label>
+          	<div class="col-sm-4">
+              <span>:</span>
+            	<span>{{meeting.deskripsi}}</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-sm-3 " for="no-2">Dermaga</label>
+              <div class="col-sm-4">
+                <span>:</span>
+							  <span>{{meeting.namaDermaga}}</span>
+              </div>
+            </div>
+
+          <div class="form-group">
+          <label class="col-sm-3 " for="no-2">Pembagi Utama</label>
+            <div class="col-sm-4">
+                <span>:</span>
+                <span>{{meeting.pembagiUtama}}</span>
+            </div>
+          </div>
+          </form>
+        </div>
+
+        <div class="col-xs-6 col-md-4" style="margin-left:-200px;">
+          <form class="form-horizontal" name="meetingForm2">
+						<div class="form-group">
+							<label class="col-sm-3 " for="tglPrameeting">Tgl. Pra Meeting</label>
+								<div class="col-sm-4">
+                  <span>:</span>
+									<span>{{meeting.tglPrameeting | date: "dd-MM-yyyy"}}<span>
+								</div>
+							</div>
+            <div class="form-group">
+              <label class="col-sm-3 " for="tglMeeting">Tgl. Meeting</label>
+                <div class="col-sm-4">
+                  <span>:</span>
+                  <span>{{meeting.tglMeeting | date: "dd-MM-yyyy"}}<span>
+                </div>
+              </div>
+                <div class="form-group">
+                  <label class="col-sm-3 " for="tglPenetapan">Tgl. Penetapan</label>
+                    <div class="col-sm-4">
+                      <span>:</span>
+                      <span>{{meeting.tglPenetapan | date: "dd-MM-yyyy"}}<span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                  <label class="col-sm-3 " for="no-2">Muatan</label>
+                    <div class="col-sm-4">
+                      <span>:</span>
+                      <span>{{meeting.muatan}}<span>
+                    </div>
+                  </div>
+          </form>
+          </div>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="tab-content">
+      <!-- tab 2 -->
+      <div id="participant" role="tabpanel" class="tab-pane">
+
+
+        <table class="datatable table table-striped table-bordered" style="margin:20px;">
+            <thead>
+            <tr>
+                  <td colspan="7">
+                    Show :
+                    <select class="" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                      <!--input type="button" ng-show="userRole.cflag" onclick="location.href='#/daftarmeeting/new';" value="Tambah" class="btn-list btn btn-default pull-right" /-->
+                  </td>
+              </tr>
+            <tr>
+              <td colspan="7" class="text-center">{{pagingText}}</td>
+            </tr>
+        <tr>
+          <th>No</th>
+            <th ng-click="sortBy='nomorSk'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Nama Kapal</div>
+                <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nomorSk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nomorSk' && sortDesc)}"></span></div>
+              </th>
+            <th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Agen</div>
+                <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglBerlaku' && sortDesc)}"></span></div>
+              </th>
+            <th ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">PBM</div>
+                <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisPelayaran' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisPelayaran' && sortDesc)}"></span></div>
+              </th>
+            <th ng-click="sortBy='kelasPelabuhan'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">LOA</div>
+                <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kelasPelabuhan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kelasPelabuhan' && sortDesc)}"></span></div>
+              </th>
+                <th ng-click="sortBy='kunjungan'; sortDesc = !sortDesc; pageChanged(0);">
+                <div class="pull-left">Posisi</div>
+                <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kunjungan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kunjungan' && sortDesc)}"></span></div>
+              </th>
+              <th ng-click="sortBy='kunjungan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Posisi</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kunjungan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kunjungan' && sortDesc)}"></span></div>
+            </th>
+        </tr>
+            </thead>
+        <tbody>
+        <tr ng-repeat="item in items">
+          <td>{{noIndex+$index +1}}</td>
+          <td>{{item.nomorSk}}</td>
+          <td>{{item.tglBerlaku | date: "dd-MM-yyyy"}} </td>
+          <td>{{item.jenisPelayaranText}}</td>
+          <td class="text-center">
+              <a ng-show="userRole.rflag" href="#/daftarmeeting/view/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye"></span></a>
+              <a ng-show="userRole.uflag" href="#/daftarmeeting/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+              <a ng-show="userRole.dflag" ng-click="deleteLabuh(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            </td>
+          <td>{{item.kelasPelabuhanText}}</td>
+          </tr>
+
+        </tbody>
+        </table>
+      <div><paging class="small" page="currentPage" page-size="pageSize"
+            total="totalItems" adjacent="2" dots="..." scroll-top="true"
+            hide-if-empty="false" ul-class="pagination" active-class="active"
+            disabled-class="disabled" show-prev-next="true"
+            style="cursor: pointer;" paging-action="pageChanged(page)">
+        </paging></div>
+      </div>
+      <!-- modal Ganti Cabang-->
+      <div class="modal" id="modalAddParticipant" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="modal-dialog">
+    			<div class="modal-content">
+    				<div class="modal-header">
+    					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+    						<span class="pficon pficon-close"></span>
+    					</button>
+    					<h4 class="modal-title" id="epbLabel">Add Participant</h4>
+    				</div>
+    				<div class="modal-body">
+              <form class="form-horizontal">
+              <div class="form-group">
+    					  <div class="col-md-12">
+    						    <label class="col-md-3">No. Ppk Jasa : </label>
+    						    <div class="col-md-6">
+    							    <input class="form-control" ng-model="currentCabang"></input>
+    						    </div>
+    					 </div>
+            </div>
+            <div class="form-group">
+    					<div class="col-md-12">
+    						<label class="col-md-3">User : </label>
+    						<div class="col-md-6">
+    							<input class="form-control" ng-model="currentCabang"></input>
+    						</div>
+    					</div>
+            </div>
+
+          <div class="form-group">
+    					<div class="col-md-12">
+    						<label class="col-md-3">Role : </label>
+    						<div class="col-md-9">
+    							<select pf-select ng-model="currentCabang"></select>
+    						</div>
+    					</div>
+    				</div>
+          </form>
+          </div>
+          </div>
+    				<div class="modal-footer">
+    					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+    					<button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalKonfirmasiSwitch" ng-click="switchCabang()">Proses</button>
+    				</div>
+    			</div>
+    		</div>
+      </div>
+
+    </div>
+
+	<div class="tab-content">
+		<!-- tab 3 -->
+		<div id="summary" role="tabpanel" class="tab-pane">
+      <table class="datatable table table-striped table-bordered">
+          <thead>
+          <tr>
+                <td colspan="11">
+                  Show :
+                  <select class="" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                    <!--input type="button" ng-show="userRole.cflag" onclick="location.href='#/daftarmeeting/new';" value="Tambah" class="btn-list btn btn-default pull-right" /-->
+                </td>
+            </tr>
+          <tr>
+            <td colspan="11" class="text-center">{{pagingText}}</td>
+          </tr>
+      <tr>
+        <th>No</th>
+          <th ng-click="sortBy='nomorSk'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Nama Kapal</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nomorSk' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nomorSk' && sortDesc)}"></span></div>
+            </th>
+          <th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Agen</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglBerlaku' && sortDesc)}"></span></div>
+            </th>
+          <th ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">PBM</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'jenisPelayaran' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'jenisPelayaran' && sortDesc)}"></span></div>
+            </th>
+          <th ng-click="sortBy='kelasPelabuhan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">LOA</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kelasPelabuhan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kelasPelabuhan' && sortDesc)}"></span></div>
+            </th>
+              <th ng-click="sortBy='kunjungan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Posisi</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'kunjungan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'kunjungan' && sortDesc)}"></span></div>
+            </th>
+              <th ng-click="sortBy='nilaiTarif'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Closing Time</div>
+              <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nilaiTarif' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nilaiTarif' && sortDesc)}"></span></div>
+              </th>
+              <th ng-click="sortBy='valuta'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">B</div>
+              </th>
+              <th>
+              <div class="pull-left">M</div>
+            </th>
+            <th>
+              <div class="pull-left">Komoditi</div>
+            </th>
+            <th>
+              <div class="pull-left">Keterangan</div>
+            </th>
+
+      </tr>
+          </thead>
+      <tbody>
+      <tr ng-repeat="item in items">
+        <td>{{noIndex+$index +1}}</td>
+        <td>{{item.nomorSk}}</td>
+        <td>{{item.tglBerlaku | date: "dd-MM-yyyy"}} </td>
+        <td>{{item.jenisPelayaranText}}</td>
+        <td>{{item.kelasPelabuhanText}}</td>
+        <td>{{item.kunjunganText}}</td>
+        <td class="text-right">{{item.nilaiTarif | currency:"":4}}</td>
+        <td>{{item.valuta}}</td>
+        <td>{{item.valuta}}</td>
+        <td>{{item.valuta}}</td>
+        </tr>
+
+      </tbody>
+      </table>
+    <div><paging class="small" page="currentPage" page-size="pageSize"
+          total="totalItems" adjacent="2" dots="..." scroll-top="true"
+          hide-if-empty="false" ul-class="pagination" active-class="active"
+          disabled-class="disabled" show-prev-next="true"
+          style="cursor: pointer;" paging-action="pageChanged(page)">
+      </paging></div>
+    </div>
+  </div>
+
+
+</div>
+<script type="text/javascript">
+  function openTab(evt, namaTab) {
+  		var i, tabcontent, tablinks;
+  		tabcontent = document.getElementsByClassName("tab-pane");
+  		for (i = 0; i < tabcontent.length; i++) {
+  			tabcontent[i].style.display = "none";
+  		}
+  		tablinks = document.getElementsByClassName("tablinks");
+  		for (i = 0; i < tablinks.length; i++) {
+  			tablinks[i].className = tablinks[i].className.replace(" active", "");
+  		}
+  		menuJasa = document.getElementsByClassName("menu-tab");
+  		for (i = 0; i < menuJasa.length; i++) {
+  			menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+  		}
+  		document.getElementById(namaTab).style.display = "block";
+  		evt.currentTarget.className += " active";
+  		$('.tab-'+namaTab).addClass("active");
+  	}
+</script>

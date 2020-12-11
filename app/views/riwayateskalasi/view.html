@@ -1,0 +1,68 @@
+<h2>Tarif Labuh Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nomor SK</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.nomorSk}}</span>
+	    </div>
+	    <!-- <div class="col-sm-9">
+	      	<span>{{contentLabuhDetails.nomorSk}}</span>
+	    </div> -->
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Berlaku</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.tglBerlaku}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Pelayaran</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.jenisPelayaranText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Kelas Pelabuhan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.kelasPelabuhanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Kunjungan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.kunjunganText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Dasar</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.nilaiTarif | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentLabuhDetails.valuta}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail' ng-hide="noDocument"><a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o"></i> {{contentLabuhDetails.dokumen}}</a></span>
+	      	<span class='view-detail' ng-show="noDocument">Tidak ada dokumen</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+ 	<div class="col-sm-9">
+    <input type="button" onclick="location.href='#/labuh/list';" value="Tutup" class="btn btn-lg btn-primary" />
+     </div>
+    </div>
+</form>

@@ -1,0 +1,46 @@
+	<h2>Laporan Downtime Kapal Tunda</h2>
+<div>
+	<div>
+	<form class="form-horizontal" name="">
+		<div class="form-group">
+      		<label class="col-sm-2 control-label"><span class="text-danger"></span>Tahun Bulan</label>
+		    <div class="col-sm-2" style="display:inline-flex;">
+             <div pf-datepicker id="tanggalMulaiId" data-date-format="mm-yyyy" options="options" date="tglMulai"  required></div>
+             <button type="button" class="btn btn-primary btn-sm" style="height:26px;" ng-disabled="" ng-click="prosesFilter();buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Proses</button>
+		    </div>
+	    </div>
+	</form>
+	</div>
+	<table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+  		<thead>
+				<tr>
+		        <td colspan="5">
+		             <span>Show : </span>
+		              <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+		        </td>
+		  	</tr>
+				<tr>
+					<th style="width:20px;">No</th>
+					<th>Kapal</th>
+					<th>Jumlah Down</th>
+					<th>Total Downtime</th>
+					<th>Rata-rata Downtime</th>
+				</tr>
+  		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{noIndex+$index +1}}</td>
+				<td>{{item.namaKapal}}</td>
+				<td>{{item.jumlahDown}}</td>
+				<td>{{item.totalDowntime}}</td>
+				<td>{{item.avgDowntime}}</td>
+		  	</tr>
+		</tbody>
+  	</table>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page,tglMulai)">
+	</paging></div>
+</div>

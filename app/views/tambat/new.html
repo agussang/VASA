@@ -1,0 +1,81 @@
+<h2>Tarif Tambat Baru</h2>
+<form class="form-horizontal" name="tambatAdd">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nomor SK</label>
+		<div class="col-sm-7">
+			<input type="text" id="no-3" maxlength="30" class="form-control" name="nomorSk" ng-model="tambat.nomorSk" required>
+		  	<span class="has-error" ng-show="tambatAdd.nomorSk.$touched && tambatAdd.nomorSk.$invalid">
+				Isi Nomor SK dibutuhkan.
+		  	</span>
+		</div>
+	  	<a ng-if="!tambat.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Tgl. Berlaku</label>
+		<div class="col-sm-7">
+			<div pf-datepicker id="IdtglBerlaku" options="options" data-date-format="dd-mm-yyyy" date="tglBerlaku" name="tglBerlaku" required></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-1"><span class="text-danger">*</span>Jenis Pelayaran</label>
+	  	<div class="col-sm-7">
+		  	<select pf-select ng-model="tambat.jenisPelayaran" ng-options='option.value as option.caption for option in jnsPelayaran' name="jenisPelayaran"></select>
+	  	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="kls-1"><span class="text-danger">*</span>Kelas Pelabuhan</label>
+	  	<div class="col-sm-7">
+		  	<select pf-select ng-model="tambat.kelasPelabuhan" ng-options='option.value as option.caption for option in klsPelabuhan' name="kelasPelabuhan" required></select>
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tmbt-3"><span class="text-danger">*</span>Jenis Tambatan</label>
+		<div class="col-sm-7">
+		   <select pf-select ng-model="tambat.jenisTambatan" ng-options='option.value as option.caption for option in jnsTambatan' name="jenisTambatan" required></select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tarif-3"><span class="text-danger">*</span>Tarif Dasar</label>
+		<div class="col-sm-7">
+			<input type="number" maxlength="15" decimal-number min="0" id="IdnilaiTarif" name="nilaiTarif" class="form-control" ng-model="tambat.nilaiTarif" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/"  step="0.0001"  required>
+		  	<span class="has-error" ng-show="tambatAdd.nilaiTarif.$touched && tambatAdd.nilaiTarif.$invalid">
+				Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+		  	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="valuta-3"><span class="text-danger">*</span>Valuta</label>
+		<div class="col-sm-7">
+			<select pf-select ng-model="tambat.valuta" ng-options='option.value as option.caption for option in valuta' name="valuta" required></select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jenisNegara"><span class="text-danger">*</span>Jenis Negara</label>
+		<div class="col-sm-7">
+			<select pf-select ng-model="tambat.jenisNegara" ng-options='option.value as option.caption for option in jenisNegara' name="jenisNegara" required></select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="file-3"><span class="text-danger">*</span>Dok. Pendukung</label>
+		<div class="col-sm-7">
+			<input type="file" id="file-1" class="form-control" file-input="uploadFile" accept=".jpg,.pdf" ng-model="tambat.dokumen" valid-file name="file"  ng-required="true">
+		</div>
+	  	<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button class="btn btn-default btn-lg" onclick="location.href='#/tambat/list';">Batal</button>
+			<button type="button" class="btn btn-primary btn-lg" ng-disabled="tambatAdd.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Buat Baru</button>
+		</div>
+	</div>
+</form>
+
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-3').datepicker({
+	autoclose: true,
+	todayBtn: "linked",
+	todayHighlight: true
+  });
+</script>

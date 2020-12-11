@@ -1,0 +1,185 @@
+<h2>Kedalaman Kademeter</h2>
+<!-- <div pf-filter config="filterConfig"></div> -->
+	<table class="datatable table table-striped table-bordered">
+  		<thead>
+	  		<tr>
+	            <td colspan="10">
+	            	Show :
+	            	<select class="" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+	                <input type="button" ng-show="userRole.cflag" data-toggle="modal" data-target="#addKedalaman" ng-click="resetAddKedalaman();" value="Tambah Kedalaman" class="btn-list btn btn-default pull-right" />
+	            </td>
+	        </tr>
+		    <tr>
+		    	<td colspan="10" class="text-center">{{pagingText}}</td>
+		    </tr>
+			<tr>
+				<th style="width:20px;">No</th>
+				<th>Kade Awal</th>
+				<th>Kade Akhir</th>
+				<th>Kedalaman</th>
+				<th>Warna</th>
+				<th>Dermaga</th>
+			  	<th class="table-col-full text-center">Action</th>
+			</tr>
+  		</thead>
+		<tbody>
+			<tr ng-repeat="item in items">
+				<td>{{noIndex+$index +1}}</td>
+				<td>{{item.kadeAwal}}</td>
+				<td>{{item.kadeAkhir}}</td>
+				<td>{{item.kedalaman}}</td>
+				<td>{{item.warna}}</td>
+				<td>{{item.namaDermaga}}</td>
+		  		<td class="text-center">
+		  			<a ng-show="userRole.uflag" data-toggle="modal" data-target="#EditKedalaman" ng-click="EditKedalamanKademeter(item.id)" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+		  			<a ng-show="userRole.dflag" ng-click="deleteKedalaman(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+		  		</td>
+		  	</tr>
+		</tbody>
+  	</table>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging></div>
+
+<!-- modal add -->
+   <div class="modal" id="addKedalaman" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	          <span class="pficon pficon-close"></span>
+	        </button>
+	        <h4 class="modal-title">Tambah Kedalaman</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" name="AddKedalaman">
+	          <div class="form-group">
+	            <label class="col-md-3 control-label"><span class="text-danger">*</span>Kade Awal</label>
+	              	<div class="col-md-6">
+	              		<input type="number" name="kadeAwal" class="form-control" ng-model="dataPost.kadeAwal" required>
+		            	</div>	
+						      	<span class="has-error" ng-show="AddKedalaman.kadeAwal.$touched && AddKedalaman.kadeAwal.$invalid">
+							      Isi Kade Awal dibutuhkan.
+							    	</span>
+				        		<span class="has-error" ng-show="dataPost.kadeAwal > dataPost.kadeAkhir">
+							      Nilai Kade Awal harus lebih kecil dari Kade Akhir.
+							    	</span>
+	         </div>
+	          <div class="form-group">
+		            <label class="col-md-3 control-label"><span class="text-danger">*</span>Kade Akhir</label>
+	              	<div class="col-md-6">
+	              		<input type="number" id="kadeAkhir" name="kadeAkhir" class="form-control" ng-model="dataPost.kadeAkhir" required>
+		            </div>	
+			      	<span class="has-error" ng-show="AddKedalaman.kadeAkhir.$touched && AddKedalaman.kadeAkhir.$invalid">
+				      Isi Kade Akhir dibutuhkan.
+				    </span>
+	          </div>
+	          <div class="form-group">
+		            <label class="col-md-3 control-label"><span class="text-danger">*</span>Kedalaman</label>
+	              	<div class="col-md-6">
+	              		<input type="number" id="kedalaman" name="kedalaman" class="form-control" ng-model="dataPost.kedalaman" required>
+		            </div>	
+			      	<span class="has-error" ng-show="AddKedalaman.kedalaman.$touched && AddKedalaman.kedalaman.$invalid">
+				      Isi Kedalaman dibutuhkan. 
+				    </span>
+	          </div>
+	          <div class="form-group">
+		          <label class="col-md-3 control-label"><span class="text-danger">*</span>Warna</label>
+	              <div class="col-md-6">
+		                <select pf-select ng-model="dataPost.warna" name="warna" ng-options='option.value as option.name for option in optionWarna' id="" required></select>
+		            </div>	
+			      	<span class="has-error" ng-show="AddKademeter.warna.$touched && AddKademeter.warna.$invalid">
+				      Isi Warna dibutuhkan.
+				    	</span>
+		      	</div>
+	          <div class="form-group">
+	            <label class="col-md-3 control-label"><span class="text-danger">*</span>Dermaga</label>
+	             <div class="col-md-6">
+	                  <input type="text" class="form-control" ng-model="dermaga" typeahead="dermaga as dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" typeahead-on-select="validationAddKedalaman()" typeahead-select-on-blur="true" ng-blur="validationAddKedalaman()" required>
+	             </div>
+	             <span class="has-error" ng-show="AddKedalaman.dermaga.$touched && AddKedalaman.dermaga.$invalid">
+			      Isi Dermaga dibutuhkan.
+			    </span>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="AddKedalaman.$invalid || dataPost.kadeAwal > dataPost.kadeAkhir"  ng-click="addKedalaman()"
+	        >Simpan</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<!-- modal edit -->
+	<div class="modal" id="EditKedalaman" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	          <span class="pficon pficon-close"></span>
+	        </button>
+	        <h4 class="modal-title">Edit Kedalaman</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form class="form-horizontal" name="EditKedalaman">
+	          <div class="form-group">
+	           <label class="col-md-3 control-label"><span class="text-danger">*</span>Kade Awal</label>
+	              	<div class="col-md-6">
+		                <input type="text" class="form-control" name="kadeAwal" ng-model="dataEdit.kadeAwal" required>
+		            </div>	
+			      	<span class="has-error" ng-show="EditKedalaman.kadeAwal.$touched && EditKedalaman.kadeAwal.$invalid">
+				      Isi Kade Awal dibutuhkan.
+				    </span>
+				    <span class="has-error" ng-show="dataEdit.kadeAwal > dataEdit.kadeAkhir">
+						Nilai Kade Awal harus lebih kecil dari Kade Akhir.
+						</span>
+	          </div>
+	          <div class="form-group">
+		            <label class="col-md-3 control-label"><span class="text-danger">*</span>Kade Akhir</label>
+	              	<div class="col-md-6">
+		                <input type="text" class="form-control" name="kadeAkhir" ng-model="dataEdit.kadeAkhir" required>
+		            </div>	
+			      	<span class="has-error" ng-show="EditKedalaman.kadeAkhir.$touched && EditKedalaman.kadeAkhir.$invalid">
+				      Isi Kade Akhir dibutuhkan.
+				    </span>
+	          </div>
+	          <div class="form-group">
+		            <label class="col-md-3 control-label"><span class="text-danger">*</span>Kedalaman</label>
+	              	<div class="col-md-6">
+		                <input type="text" class="form-control" name="kedalaman" ng-model="dataEdit.kedalaman" required>
+		            </div>	
+			      	<span class="has-error" ng-show="EditKedalaman.kedalaman.$touched && EditKedalaman.kedalaman.$invalid">
+				      Isi Kedalaman dibutuhkan.
+				    </span>
+	          </div>
+	          <div class="form-group">
+		            <label class="col-md-3 control-label"><span class="text-danger">*</span>Warna</label>
+	              	<div class="col-md-6">
+		                <select pf-select ng-model="dataEdit.warna" name="warna" ng-options='option.value as option.name for option in optionWarna' id="" required></select>
+		            </div>	
+			      	<span class="has-error" ng-show="EditKademeter.warna.$touched && EditKademeter.warna.$invalid">
+				      Isi warna dibutuhkan.
+				    </span>
+	          </div>
+	          <div class="form-group">
+	            <label class="col-md-3 control-label"><span class="text-danger">*</span>Dermaga</label>
+	             <div class="col-md-6">
+	                  <input type="text" class="form-control" name="dermaga" ng-model="dataEdit.namaDermaga" typeahead="dermaga as dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(dataEdit.namaDermaga)" typeahead-select-on-blur="true" ng-blur="validationEditKedalaman()" required>
+	             </div>
+	             <span class="has-error" ng-show="EditKedalaman.dermaga.$touched && EditKedalaman.dermaga.$invalid">
+			      Isi Dermaga dibutuhkan.
+			    </span>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="EditKedalaman.$invalid || dataEdit.kadeAwal > dataEdit.kadeAkhir"  ng-click="saveEditKedalaman(dataEdit.id)"">Simpan</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>

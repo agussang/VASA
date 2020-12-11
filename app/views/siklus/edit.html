@@ -1,0 +1,67 @@
+<h2>Siklus Edit</h2>
+<form name="siklusForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Pelayaran</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="dataSiklus.jenisPelayaran" name="jenisPelayaran" ng-options='option.value as option.caption for option in jenisPelayaran' required></select>
+          <span class="has-error" ng-show="siklusForm.jenisPelayaran.$touched && siklusForm.jenisPelayaran.$invalid">
+            Isi pelayaran dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Jenis Kapal</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="dataSiklus.jenisKapal" name="jenisKapal" ng-options='option.value as option.caption for option in jenisKapal' required></select>
+          <span class="has-error" ng-show="siklusForm.jenisKapal.$touched && siklusForm.jenisKapal.$invalid">
+            Isi jenis kapal dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Kode Kegiatan</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="dataSiklus.kodeKegiatan" name="kodeKegiatan" ng-options='option.value as option.caption for option in kodeKegiatan' required></select>
+          <span class="has-error" ng-show="siklusForm.kodeKegiatan.$touched && siklusForm.kodeKegiatan.$invalid">
+            Isi kode kegiatan dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Kriteria Labuh</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataSiklus.kriteriaLabuh" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Kriteria Tambat</label>
+      <div class="col-sm-7">
+       <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataSiklus.kriteriaTambat" ng-true-value ="true" ng-false-value="false" checked />
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Kriteria Air Kapal</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataSiklus.kriteriaAirKapal" ng-true-value ="true" ng-false-value="false" checked />  
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Kriteria Pandu Masuk</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataSiklus.kriteriaPanduMasuk" ng-true-value ="true" ng-false-value="false" checked />  
+
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Kriteria Pandu Keluar</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataSiklus.kriteriaPanduKeluar" ng-true-value ="true" ng-false-value="false" checked /> 
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg" ng-disabled="siklusForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="siklusForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+      </div>
+    </div>
+</form>

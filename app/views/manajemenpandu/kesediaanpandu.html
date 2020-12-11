@@ -1,0 +1,75 @@
+<h2>Kesediaan Pandu</h2>
+
+<div class="form-group dropdown-kawasan">
+<label class="col-sm-2 control-label"><span class="text-danger">*</span>Stasiun Pandu :</label>
+    <div class="col-sm-4">
+        <select pf-select ng-model="idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+    </div>
+</div>
+
+<div class="form-group dropdown-kawasan">
+ <label class="col-sm-2 control-label"><span class="text-danger">*</span>Tanggal :</label>
+ <div class="col-sm-3">
+   <span id="date-pandu" class="input-group date" style="width:150px;">
+     <input type="text" ng-model="search.jadwalPandu" date="tglPandu" class="form-control bootstrap-datepicker" options="options" ng-disabled="!showTable" readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+   </span>
+ </div>
+ <label class="col-sm-1 control-label"><span class="text-danger">*</span>Jam :</label>
+ <div class="col-sm-2">
+   <span id="date-6" class="input-group date" style="width:150px;">
+      <select pf-select ng-model="jamKerja" name="kodegrup" ng-options='option as option.label  for option in shiftKerja' id="jns-1" class="btn-jadwal-pandu label-center" ng-disabled="!showTable" required></select>
+   </span>
+ </div>
+</div>
+
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>Pandu</th>
+      <th>Tgl</th>
+      <th>Jam</th>
+      <th>Kesediaan</th>
+      <th>Absensi</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody ng-show="showTable">
+    <tr ng-repeat="item in petugasPandu">
+      <td>{{item.namaPetugas}}</td>
+      <td>{{item.tanggalPandu}}</td>
+      <td>{{item.jamPandu}}</td>
+      <td class="text-center">
+        <input  bs-switch type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="item.statusKesediaan" ng-true-value ="1" ng-false-value="0">
+      </td>
+      <td class="text-center">
+        <input  bs-switch type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="item.statusAbsen" ng-true-value ="1" ng-false-value="0">
+      </td>
+      <td>
+          <button type="button" class="btn btn-primary button" ng-click="createKesediaanPandu(item)">Simpan</button>
+      </td>
+    </tr>
+    <tr ng-repeat="item in petugasPanduConfirmed">
+      <td>{{item.namaPetugas}}</td>
+      <td>{{item.tanggalPandu}}</td>
+      <td>{{item.jamPandu}}</td>
+      <td class="text-center">
+        <input  bs-switch type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="item.statusKesediaan" ng-true-value ="'1'" ng-false-value="'0'">
+      </td>
+      <td class="text-center">
+        <input  bs-switch type="checkbox" switch-on-text="ON" switch-off-text="OFF" ng-model="item.statusAbsen" ng-true-value ="'1'" ng-false-value="'0'">
+      </td>
+      <td>
+          <button type="button" class="btn btn-default button" ng-click="updateKesediaanPandu(item)">Edit</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<script>
+$('#date-pandu').datepicker({
+  autoclose: true,
+  format: "dd-mm-yyyy",
+  language: 'id'
+});
+</script>

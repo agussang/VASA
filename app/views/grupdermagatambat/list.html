@@ -1,0 +1,37 @@
+<h2>Daftar Grup Dermaga Tambat</h2>
+
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="3">
+                <span>Show : </span>
+                <select ng-show="userRole.cflag" ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" onclick="location.href='#/grupdermagatambat/new';" value="Grup Tambat Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <div class="pull-left">No</div>
+            </th>
+            <th>
+                <div class="pull-left">Nama Grup</div>
+            </th>
+            <th class="table-col-full text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{$index+1}}</td>
+            <td>{{item.nama}} </td>
+            <td class="text-center">
+                <a ng-show="userRole.uflag" href="#/grupdermagatambat/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+                <a ng-show="userRole.dflag" ng-click="deleteGrupDermagaTambat(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>

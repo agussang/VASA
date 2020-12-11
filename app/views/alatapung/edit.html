@@ -1,0 +1,212 @@
+<div class="container-overflow-hide">
+<h2 class="col-xs-5">Alat Apung Edit</h2>
+<div style="display:inline-flex; width:200%">
+  <div class="col-xs-6 col-md-4">
+    <form class="form-horizontal" name="alatApungForm">
+  	<div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>On Hire</label>
+      <div class="col-sm-4">
+        <input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="dataAlatApung.onHire" ng-true-value ="1" ng-false-value="0">
+      </div>
+    </div>
+
+    <div class="form-group">
+		<label class="col-sm-3 control-label" ><span class="text-danger">*</span>No Reg</label>
+    	<div class="col-sm-4">
+       <div class="form-control">{{dataAlatApung.noRegistrasi}}</div>
+          <span class="has-error" ng-show="alatApungForm.noRegistrasi.$touched && alatApungForm.noRegistrasi.$invalid">
+            Isi no Registrasi dibutuhkan.
+          </span>
+    	</div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Nama Alat</label>
+      <div class="col-sm-4">
+          <input type="text" maxlength="30" class="form-control" name="nama" ng-model="dataAlatApung.nama"
+          capitalize required>
+      </div>
+      <span class="has-error" ng-show="alatApungForm.nama.$touched && alatApungForm.nama.$invalid">
+        Isi Nama Alat dibutuhkan.
+      </span>
+       <a ng-if="!dataAlatApung.nama == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Jenis</label>
+      <div class="col-sm-4">
+           <select pf-select ng-model="dataAlatApung.jenis" name="jenis" ng-options="option.value as option.caption for option in jenisKapal"  required></select>
+          <span class="has-error" ng-show="alatApungForm.jenis.$touched && alatApungForm.jenis.$invalid">
+            Isi jenis dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Kelas</label>
+      <div class="col-sm-4">
+           <select pf-select ng-model="dataAlatApung.kelas" name="kelas" ng-options="option.value as option.caption for option in kelas"  required></select>
+          <span class="has-error" ng-show="alatApungForm.kelasText.$touched && alatApungForm.kelasText.$invalid">
+            Isi kelas dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group" ng-hide="dataAlatApung.flagKapalPenunjang===1">
+        <label class="col-sm-3 control-label" ><span class="text-danger">*</span>No SK.</label>
+          <div class="col-sm-4">
+               <input type="text" maxlength="30" class="form-control" name="nomorSk" ng-model="dataAlatApung.nomorSk" required>
+               <span class="has-error" ng-show="alatApungForm.nomorSk.$touched && alatApungForm.nomorSk.$invalid">
+                 Isi No SK dibutuhkan.
+               </span>
+          </div>
+           <span class="has-error" ng-show="alatApungForm.nomorsk.$touched && alatApungForm.nomorsk.$invalid">
+                Isi no SK dibutuhkan.
+              </span>
+          <a ng-if="!dataAlatApung.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+
+    <div class="form-group" ng-hide="dataAlatApung.flagKapalPenunjang===1">
+      <label class="col-sm-3 control-label" for="tglberlaku"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+        <div class="col-sm-4">
+             <div pf-datepicker id="tglMulaiBerlaku" options="options" data-date-format="dd-mm-yyyy" date="dataAlatApung.tglMulaiBerlaku" required></div>
+        </div>
+    </div>
+
+    <div class="form-group" ng-hide="dataAlatApung.flagKapalPenunjang===1">
+      <label class="col-sm-3 control-label" for="tglberlaku"><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+        <div class="col-sm-4">
+             <div pf-datepicker id="tglSelesaiBerlaku"  options="options" data-date-format="dd-mm-yyyy" date="dataAlatApung.tglSelesaiBerlaku" required></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="pemilik"><span class="text-danger">*</span>Nama Pemilik</label>
+          <div class="col-sm-4" style="display: inline-flex;">
+              <input type="text" name="pemilik" class="form-control" ng-model="dataAlatApung.pemilikText" bs-typeahead bs-options="mdmPelanggan.mplgNamaKode for mdmPelanggan in getListOfPelanggan($viewValue)" data-limit="10" ng-focus="checkValue(dataAlatApung.pemilikText)" ng-blur="validationLookupPemilik()" required>
+             <input type="hidden" ng-model="dataAlatApung.pemilik">
+             <a ng-if="!dataAlatApung.pemilik == ''" href="#/profilperusahaan/{{dataAlatApung.pemilik}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+          </div>
+              <span class="has-error" ng-show="alatApungForm.pemilik.$touched && alatApungForm.pemilik.$invalid">
+                Isi nama pemilik dibutuhkan.
+              </span>
+          </div>
+
+      <div class="form-group">
+      <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Status Alat</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="dataAlatApung.status" name="status" ng-options="option.value as option.caption for option in statusAlat"  required></select>
+            <span class="has-error" ng-show="alatApungForm.status.$touched && alatApungForm.status.$invalid">
+              Isi status dibutuhkan.
+            </span>
+        </div>
+      </div>
+
+      <div class="form-group">
+      <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Kondisi</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="dataAlatApung.kondisi" name="jenis" ng-options="option.value as option.caption for option in kondisi"  required></select>
+            <span class="has-error" ng-show="alatApungForm.kondisiText.$touched && alatApungForm.kondisiText.$invalid">
+              Isi kondisi dibutuhkan.
+            </span>
+        </div>
+      </div>
+  </form>
+</div>
+
+<div class="col-xs-6 col-md-4" style="margin-left:-200px">
+  <form class="form-horizontal"  name="alatApungForm2">
+
+    <div class="form-group">
+		  <label class="col-sm-3 control-label">Call Sign</label>
+      <div class="col-sm-4">
+        <input  class="form-control" ng-model="dataAlatApung.callSign" name="callSign" maxlength="12">
+      </div>
+    </div>
+    
+    <div class="form-group">
+		  <label class="col-sm-3 control-label">Mmsi</label>
+      <div class="col-sm-4">
+        <input class="form-control" ng-model="dataAlatApung.mmsi" name="mmsi" maxlength="12">
+      </div>
+  	</div>
+    <div class="form-group">
+		<label class="col-sm-3 control-label" >Min. Beban</label>
+    	<div class="col-sm-4">
+      		<input type="number" only-num min="1" max="{{dataAlatApung.maxBeban}}" maxlength="12" class="form-control" name="minBeban" ng-model="dataAlatApung.minBeban" >
+    	</div>
+      <div class="col-sm-2" ng-hide="alatApungForm2.minBeban.$valid" >
+        <small class="error" ng-model="muncul" ng-show="alatApungForm2.minBeban.$error.max">
+        <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>Nilai Max harus lebih besar dari Nilai Min</span></small>
+      </div>
+  	</div>
+
+    <div class="form-group">
+		  <label class="col-sm-3 control-label" >Max. Beban</label>
+      <div class="col-sm-4">
+        <input  type="number" only-num min="1"  class="form-control" ng-model="dataAlatApung.maxBeban" name="maxBeban" maxlength="12">
+      </div>
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label">Satuan Beban</label>
+        <div class="col-sm-4">
+          <select pf-select ng-model="dataAlatApung.satuanBeban" ng-options='option.value as option.caption for option in satuanBebanOption'>
+          </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" >Satuan</label>
+        <div class="col-sm-4">
+          <select pf-select ng-model="dataAlatApung.satuan" ng-options='option.value as option.caption for option in satuanAlatApungOption'>
+          </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" >Satuan Waktu Pakai</label>
+      <div class="col-sm-4">
+          <select pf-select ng-model="dataAlatApung.satuanWaktuPakai" ng-options='option.value as option.caption for option in satuanWaktuPakaiOption'>
+          </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" >Total Daya</label>
+        <div class="col-sm-4">
+          <input type="number" only-num min="0" maxlength="12" class="form-control" ng-model="dataAlatApung.totalDaya" >
+        </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-sm-3 control-label" >Satuan Daya</label>
+        <div class="col-sm-4">
+          <select pf-select ng-model="dataAlatApung.satuanDaya" ng-options='option.value as option.caption for option in satuanDayaOption'>
+          </select>
+        </div>
+    </div>
+  </form>
+</div>
+</div>
+
+ <div class="form-group">
+    <div class="col-sm-offset-1 col-sm-7">
+      <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+      <button type="button" class="btn btn-primary btn-lg" ng-disabled="alatApungForm.$invalid || alatApungForm2.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+    </div>
+  </div>
+  <br><br><br>
+</div>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+    $("[name='status-checkbox']").bootstrapSwitch();
+</script>

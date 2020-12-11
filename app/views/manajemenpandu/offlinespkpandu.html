@@ -1,0 +1,300 @@
+<h2>Monitoring Offline SPK Pandu</h2>
+
+<div role="tabpanel" class="tab-pane active" id="aktivitas">
+    <br>
+    <div class="row">
+        <div class="col-sm-4">
+            <label class="col-sm-5 control-label">Tanggal Pandu :</label>
+            <div class="col-sm-4">
+                <span id="tglAwal" class="input-group date label-center" style="width:120px;">
+                <input type="text" ng-model="tglFilter" ng-change="changeTanggalAwal()" date="currentDate" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label class="col-sm-4 control-label">Nama Pandu :</label>
+                <div class="col-sm-6" style="display:inline-flex;">
+                    <input ng-model="namaPandu">
+                </div>
+                <span class="col-sm-2">
+                    <button type="button" class="btn btn-default btn" ng-click="pageChanged(0);"> Filter </button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <table class="datatable table table-striped table-bordered" style="margin-right:25px !important;">
+        <thead>
+            <tr>
+                <td colspan="21">
+                    Show :
+                    <select ng-options="option for option in optionSizePage.availableOptions track by option" ng-model="pageSize" ng-change="pageChanged(0)"></select>
+                </td>
+            </tr>
+            <tr>
+                <th>No</th>
+                <th class="label-center" style="min-width:100px;">Petugas Pandu</th>
+                <th class="label-center" style="min-width:100px;">Tgl. Pandu</th>
+                <th class="label-center" colspan="3" style="min-width:300px;">Aktivitas Pandu</th>
+                <th class="label-center" colspan="2" style="min-width:200px;">Aktivitas Tunda</th>
+                <th class="label-center" colspan="2" style="min-width:200px;">Aktivitas Tambat</th>
+                <th class="table-col-full text-center" style="min-width:75px;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{$index+1}}</td>
+                <td>{{item.namaPetugasPandu}}</td>
+                <td>{{item.created | date:'dd-MM-yyyy'}} <br> {{item.created | date:'HH:mm:ss' }}</td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="20" ng-model="item.tahapanPandu1Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1" style="width:50px" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Pandu Naik</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu2Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Kapal Bergerak</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu3Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Pandu Turun</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu4Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Ikat Tunda</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu5Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Lepas Tunda</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu6Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Ikat Tali</small></span>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <input  type="text" class="form-control" size="8" ng-model="item.tahapanPandu7Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1"  bs-timepicker data-length="1" style="width:50px;" readonly>
+                    </div>
+                    <span><small class="detail-daftar detail-monitoring">Lepas Tali</small></span>
+                </td>
+                <td class="text-center">
+                    <div class="row">
+                        <a ng-show="userRole.cflag"  ng-click="showModalOfflineSpk(item)" data-toggle="modal"  type="button" data-target="#offlineSpk" class="btn btn-default btn-xs" title="Submit Offline SPK"><span class="fa fa-play"></span></a> {{}}
+                        <a ng-show="userRole.dflag" ng-disabled="item.flagDone == 2" ng-click="item.flagDone === 2 || eskalasiBatalJasaPandu(item)" type="button" class="btn btn-danger btn-xs" title="Batal Jasa Pandu"><span class="fa fa-times"></span></a>
+                    </div>
+                </td>            
+            </tr>
+            <tr>
+                <td colspan="21" ng-show="item.length == 0">Data tidak tersedia</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="offlineSpk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <span class="pficon pficon-close"></span>
+                </button>
+                <h3 class="modal-title" id="myModalLabel">Offline SPK Pandu</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="formPenetapan">
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No PPK1</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="noppkb-permohonan" class="form-control" placeholder="No. PPK1..." ng-model="dataPermohonan.noPpk1" ng-blur="validationLookupPpk1()" bs-typeahead bs-options="listPpk1.noPpk1 for listPpk1 in getListOfPpk1($viewValue)" data-limit="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No PPK Jasa</label>
+                        <div class="col-sm-6">
+                            <select pf-select ng-model="dataPermohonan.noPpkJasaPandu" ng-options="option.noPpkJasa as option.noPpkJasa for option in  ppkJasaPanduOption" ng-change="ppkJasaPandu(dataPermohonan.noPpkJasaPandu)" required></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Nama Kapal</label>
+                        <div class="col-sm-6">
+                            <input ng-model="dataPermohonan.namaKapal" name="namaKapal" class="form-control" type="text" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Asal Pandu</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermagaAsal" class="form-control" ng-model="dataPermohonan.namaDermagaAsal"  data-limit="10" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Tujuan Pandu</label>
+                        <div class="col-sm-6">
+                            <input type="text" name="dermagaTujuan" class="form-control" ng-model="dataPermohonan.namaDermagaTujuan" data-limit="10" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Jenis Pandu</label>
+                        <div class="col-sm-6">
+                            <select pf-select ng-model="dataPermohonan.jenisPandu" ng-options='option.value as option.caption for option in jenisPanduOption' disabled></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Jenis Gerakan</label>
+                        <div class="col-sm-6">
+                            <select pf-select ng-model="dataPermohonan.jenisGerakan" ng-options='option.value as option.caption for option in jenisGerakanOption' disabled></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>No SPK</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="noSpk" ng-model="dataPermohonan.noSpkOfline">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Petugas Pandu</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" name="pandu" ng-model="dataPermohonan.petugasPandu" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger">*</span>Tanggal</label>
+                        <div class="col-sm-6">
+                            <span id="tanggal-penetapan" class="input-group date" style="width:150px;">
+                                <input type="text" name="tanggalPandu" ng-model="dataPermohonan.tglMulai" date="dataPermohonan.created" disabled><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Pandu Naik</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamMulai">
+                                <input id="jamNaik" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu1Jam" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamMulai" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Kapal Bergerak</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamGerak">
+                                <input id="jamGerak" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu2Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamGerak" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Pandu Turun</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamTurun">
+                                <input id="jamTurun" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu3Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamTurun" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Ikat Tunda</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamIkat">
+                                <input id="jamIkat" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu4Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamIkat" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Lepas Tunda</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamLepas">
+                                <input id="jamLepas" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu5Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamLepas" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Ikat Tali</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="JamIkatTali">
+                                <input id="JamIkatTali" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu6Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="JamIkatTali" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3"><span class="text-danger"></span>Jam Lepas Tali</label>
+                        <div class="col-sm-3">
+                            <div class="input-group" id="jamLepasTali">
+                                <input id="jamLepasTali" type="text" class="form-control" size="8" ng-model="dataPermohonan.tahapanPandu7Jam" ng-change="isBusy()" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="jamLepasTali" bs-timepicker data-length="1">
+                                <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span> 
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">Tutup</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" 
+                ng-click="dataPermohonan.flagDone === 2 || dataPermohonan.tahapanPandu1Jam == null || dataPermohonan.tahapanPandu2Jam == null || dataPermohonan.tahapanPandu3Jam == null || realisasiPandu(dataPermohonan)" ng-disabled="formPenetapan.$invalid" >Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    document.getElementById('aktivitas').style.display = "block";
+});
+
+$('#tglAwal').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+$('#addTglAktivitas').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+$('#editTglAktivitas').datepicker({
+    autoclose: true,
+    format: "dd-mm-yyyy",
+    language: 'id'
+});
+
+function openTab(evt, jenisJasa) {
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tab-pane");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	menuJasa = document.getElementsByClassName("menu-jasa");
+	for (i = 0; i < menuJasa.length; i++) {
+		menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+	}
+	document.getElementById(jenisJasa).style.display = "block";
+	evt.currentTarget.className += " active";
+	$('.tab-'+jenisJasa).addClass("active");
+}
+    
+$('#addJamAktivitas').mask('99:99');
+$('#editJamAktivitas').mask('99:99');
+</script>

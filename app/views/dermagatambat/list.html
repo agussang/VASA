@@ -1,0 +1,126 @@
+<h2>Master Grup Dermaga</h2>
+
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="5">
+                <input ng-show="userRole.cflag" type="button" data-toggle="modal" data-target="#addDermaga" value="Tambah" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <th>No</th>
+            <th>Kode</th>
+            <th>Nama Dermaga</th>
+            <th>
+                <div class="pull-left">Nama Grup</div>
+            </th>
+            <th class="table-col-full text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{$index+1}}</td>
+            <td>{{item.kodeDermaga}}</td>
+            <td>{{item.namaDermaga}}</td>
+            <td>{{item.namaGroupDermagaTambat}}</td>
+            <td class="text-center">
+                <a ng-show="userRole.uflag" data-toggle="modal" data-target="#editDermaga" ng-click="editDermagaTambatMapping(item.id)" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+                <a ng-show="userRole.dflag" ng-click="deleteDermagaTambatMapping(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>
+
+
+<div class="modal" id="addDermaga" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="DermagaTambatNewCtrl">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+          </button>
+                <h3 class="modal-title" id="myModalLabel">Grup Dermaga</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="dermagaTambatForm">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">*</span>Dermaga</label>
+                            <div class="col-sm-6" style="display:inline-flex;">
+                                <input type="text" name="dermaga" class="form-control" ng-model="dermagaTambat.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()">
+                            </div>
+                            <span class="has-error" ng-show="dermagaTambatForm.dermaga.$touched && dermagaTambatForm.dermaga.$invalid">
+                    Isi dermaga dibutuhkan
+              </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="nomorSk"><span class="text-danger">*</span>Nama Grup</label>
+                            <div class="col-sm-6">
+                                <select pf-select ng-model="dermagaTambat.grup" name="grup" ng-options='option as option.nama  for option in grup' id="jns-1" required></select>
+                                <span class="has-error" ng-show="dermagaTambatForm.grup.$touched && dermagaTambatForm.grup.$invalid">
+                      Isi nama grup dibutuhkan
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="dermagaTambatForm.$invalid;" ng-click="submit()">Buat Baru</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="editDermaga" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <span class="pficon pficon-close"></span>
+          </button>
+                <h3 class="modal-title" id="myModalLabel">Grup Dermaga</h3>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" name="dermagaTambatForm">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">*</span>Dermaga</label>
+                            <div class="col-sm-6" style="display:inline-flex;">
+                                <input type="text" name="dermaga" class="form-control" ng-model="dermagaTambat.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()">
+                            </div>
+                            <span class="has-error" ng-show="dermagaTambatForm.dermaga.$touched && dermagaTambatForm.dermaga.$invalid">
+                    Isi dermaga dibutuhkan
+              </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="nomorSk"><span class="text-danger">*</span>Nama Grup</label>
+                            <div class="col-sm-6">
+                                <select pf-select ng-model="dermagaTambat.idGroupDermagaTambat" name="grup" ng-options='option.id as option.nama  for option in grup' id="jns-1" required></select>
+                                <span class="has-error" ng-show="dermagaTambatForm.grup.$touched && dermagaTambatForm.grup.$invalid">
+                      Isi nama grup dibutuhkan
+                </span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="dermagaTambatForm.$invalid;" ng-click="submit()">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>

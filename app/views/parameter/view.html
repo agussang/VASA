@@ -1,0 +1,32 @@
+<h2>Parameter Detil</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama Parameter</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>	{{item.nama}}
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Caption</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>	{{item.caption}}
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Value</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>	{{item.value}}
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Value berupa angka</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>	<i ng-class="item.classNumeric" aria-hidden="true"></i> {{item.isNumericText}}
+	    </div>
+  	</div>
+  	
+</form>	
+<input type="button" onclick="location.href='#/parameter/list';" value="Tutup" class="btn btn-primary btn-lg pull-left" />
+
+
+

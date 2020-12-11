@@ -1,0 +1,898 @@
+<script type="text/javascript">
+	$('#collapseOne').collapse("hide");
+	$('#collapseTwo').collapse("hide");
+</script>
+<div class="containter" style="display:inline-flex;">
+	<div class="canvas">
+		<canvas id="canvas"></canvas>
+		<div class="information-kapal" ng-if="isKanan == false">
+	 		<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top}}px;left:{{kapal.posisiDepan}}px; list-style:none;">
+	 		
+	 			<li>
+	 				<a href="" data-toggle="dropdown">
+	 					<i class="fa fa-info-circle" aria-hidden="true"></i>
+	 				</a>
+	 				<div class="dropdown-menu infotip bottom-left">
+			          <div class="arrow"></div>
+			          <ul class="list-group">
+			            <li class="list-group-item">
+			              <span class="i pficon pficon-info"></span>
+			              <span class="infotip-kapal">Nama Kapal :{{kapal.namaKapal}}</span><br>
+			              
+
+			              <span class="infotip-kapal">LOA :{{kapal.panjangKapal}}</span><br>
+			              <span class="infotip-kapal">Mulai :{{kapal.mulai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+			              <span class="infotip-kapal">Selesai :{{kapal.selesai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+
+			            </li>
+			          </ul>
+			      </div>
+	 			</li>
+	 		</ul>
+	 		<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.kadeAwal}}px; list-style:none;">
+	 		
+	 			<li>
+	 				<a href="" data-toggle="dropdown">
+	 					<i class="fa fa-info-circle" aria-hidden="true"></i>
+	 				</a>
+	 				<div class="dropdown-menu infotip bottom-left">
+			          <div class="arrow"></div>
+			          <ul class="list-group">
+			            <li class="list-group-item">
+			              <span class="i pficon pficon-info"></span>
+			              <span class="infotip-kapal">Kapal Sandar</span><br>
+			              <span class="infotip-kapal">Nama Kapal : {{kapalSandar.namaKapal}}</span><br>
+			              <span class="infotip-kapal">LOA : {{kapalSandar.panjangKapal}}</span><br>
+			              <span class="infotip-kapal">Mulai : {{kapalSandar.mulai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+			              <span class="infotip-kapal">Selesai : {{kapalSandar.selesai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+
+			            </li>
+			          </ul>
+			      </div>
+	 			</li>
+	 		</ul>
+	 	</div>
+	 	<i class="fa  fa-plus-square fa-2x add-kapal-meeting" ng-click="tambahKapal()" data-toggle="tooltip" data-placement="top" title="Tambah Kapal" aria-hidden="true"></i>
+	 	<i class="fa  fa-print fa-2x print-kapal-meeting" ng-click="printKapal()" data-toggle="tooltip" data-placement="top" title="Print Kapal" aria-hidden="true"></i>
+	 	<div class="information-kapal" ng-if="isKanan == true">
+	 		<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top}}px;left:{{kapal.labelFromRight}}px; list-style:none;">
+	 			<li>
+	 				<a ng-click="infoKapalRek(kapal.id)">
+	 					<i class="fa fa-info-circle"  aria-hidden="true"></i>
+	 				</a>
+	 				
+	 			</li>
+	 		</ul>
+	 		<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.labelFromRight}}px; list-style:none;">
+	 			<li>
+	 				<a ng-click="infoKapalSandar(kapalSandar.idKapalSandar)">
+	 					<i class="fa fa-info-circle" aria-hidden="true"></i>
+	 				</a>
+	 			</li>
+	 		</ul>
+	 	</div>
+	 
+		<div class="information-dermaga">
+	 		<div class="form-group">
+            <form class="form-horizontal" style="line-height:5px; margin-top:2px;" name="">
+		          <div class="form-group">
+		            <label class="col-md-6 control-label" for="no-3"><span class="text-danger"></span>Nama Dermaga</label>
+		              <div class="col-md-6">
+		                 <span class="label label-info">{{informationDermaga.namaDermaga}}</span>
+		              </div>
+		          </div>
+		          <div class="form-group">
+		            <label class="col-md-6 control-label" for="no-3"><span class="text-danger"></span>Tgl Rencana Tambat</label>
+		              <div class="col-md-6">
+		              	<span class="label label-info">{{tanggalPrameeting}}</span>
+		              </div>
+		          </div>
+		          <div class="form-group">
+		            <label class="col-md-6 control-label" for="no-3"><span class="text-danger"></span>Tgl Meeting</label>
+		              <div class="col-md-6">
+		              	
+		              	<span class="label label-info">{{tglMeeting}}</span>
+		              </div>
+		          </div>
+	        </form>
+	      </div>
+	 	</div>
+	</div>
+</div>
+<div class="">
+    <button class="btn btn-default btn-lg" onclick="location.href='#/perencanaan';" >Batal</button>
+    <button type="button" class="btn btn-primary btn-lg" ng-disabled="" ng-click="saveData();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+    <button type="button" class="btn btn-primary btn-lg pull-right" style="" ng-disabled="" ng-click="tetapkanMeeting();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Tetapkan Hasil Meeting</button>
+     <button type="button" class="btn btn-primary btn-lg pull-right" style="margin-right:10px;" ng-disabled="" ng-click="tetapkanMeeting();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Penetapan Tambat</button>
+</div>
+<div class="modal" id="tambahKapalModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+   	<div class="modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	         	<span class="pficon pficon-close"></span>
+	        	</button>
+	        	<h4 class="modal-title">Tambah Kapal Ke Perencanaan</h4>
+	      </div>
+	      <div class="modal-body">
+	       	<form class="form-horizontal" name="">
+		       	<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+						  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						    <span class="pficon pficon-close"></span>
+						  </button>
+						  <span class="pficon pficon-error-circle-o"></span>
+						  <strong>{{showMessage}}</strong>
+						</div>
+	         	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Nama Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+	              	</div>
+	         	</div>
+	         	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kode Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+	              	</div>
+	         	</div>
+	          	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Panjang Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+	              	</div>
+	          	</div>
+	          	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kade Awal</label>
+	              	<div class="col-md-6">
+	                  <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.posisiDepan">
+	                  	<label class="radio-inline">
+		          			<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+		       			</label>
+			        	<label class="radio-inline">
+			          		<input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+			        	</label>
+	              	</div>
+	          	</div>
+	        		<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Mulai</label>
+	            	<div class="col-sm-3"> <!-- VALPMH041 -->
+									<div pf-datepicker id="" options="options" class="dateReadonly" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group" id="jamMasuk">
+										<input id="jamMasukVal" type="text" class="form-control" size="8" ng-model="jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+			            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Selesai</label>
+			            	<div class="col-sm-3"> <!-- VALPMH041 -->
+											<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy"  date="postKapal.tglSelesai"  required></div>
+										</div>
+										<div class="col-sm-3">
+											<div class="input-group" id="jamKeluar">
+												<input id="jamKeluarVal" type="text" class="form-control" size="8" ng-model="jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+												<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+											</div>
+										</div>
+							</div>
+			        <div class="form-group">
+			            <label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Hadap</label>
+			              <div class="col-sm-7">
+			                  <select pf-select ng-model="postKapal.hadap" ng-options='option.value as option.name for option in hadapKapal'>
+			                  </select>
+			              </div>
+			        </div>
+	      	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	        <button type="button" class="btn btn-primary" ng-click="addKapal()"">Simpan</button>
+	      </div>
+   	</div>
+	</div>
+</div>
+<!-- kapal tl -->
+<div class="modal" id="tambahKapalTlModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+   	<div class="modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+	         	<span class="pficon pficon-close"></span>
+	        	</button>
+	        	<h4 class="modal-title">Tambah Kapal Tl Ke Perencanaan</h4>
+	      </div>
+	      <div class="modal-body">
+	       	<form class="form-horizontal" name="">
+		       	<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+						  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						    <span class="pficon pficon-close"></span>
+						  </button>
+						  <span class="pficon pficon-error-circle-o"></span>
+						  <strong>{{showMessage}}</strong>
+						</div>
+	         	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Nama Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+	              	</div>
+	         	</div>
+	         	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kode Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+	              	</div>
+	         	</div>
+	          	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Panjang Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+	              	</div>
+	          	</div>
+	          	<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kade Awal</label>
+	              	<div class="col-md-6">
+	                  <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.posisiDepan">
+	                  	<label class="radio-inline">
+			          	<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+			       		</label>
+				        <label class="radio-inline">
+				          <input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+				        </label>
+	              	</div>
+	          	</div>
+	        		<div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Mulai</label>
+	            	<div class="col-sm-3"> <!-- VALPMH041 -->
+									<div pf-datepicker id="" options="options" class="dateReadonly" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group" id="jamMasuk">
+										<input id="jamMasukVal" type="text" class="form-control" size="8" ng-model="jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+			            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Selesai</label>
+			            	<div class="col-sm-3"> <!-- VALPMH041 -->
+											<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy"  date="postKapal.tglSelesai"  required></div>
+										</div>
+										<div class="col-sm-3">
+											<div class="input-group" id="jamKeluar">
+												<input id="jamKeluarVal" type="text" class="form-control" size="8" ng-model="jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+												<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+											</div>
+										</div>
+							</div>
+			        <div class="form-group">
+			            <label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Hadap</label>
+			              <div class="col-sm-7">
+			                  <select pf-select ng-model="postKapal.hadap" ng-options='option.value as option.name for option in hadapKapal'>
+			                  </select>
+			              </div>
+			        </div>
+	      	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+	        <button type="button" class="btn btn-primary" ng-click="addKapal()"">Simpan</button>
+	      </div>
+   	</div>
+	</div>
+</div>
+<div class="modal" id="editKapalModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+   	<div class="modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
+	          <span class="pficon pficon-close"></span>
+	      	</button>
+	      </div>
+	      <div class="modal-body">
+	      	<ul ng-show="showAction" style="display:inline-flex;">
+	        	<li style="list-style:none; margin-right:5px;">
+	        		 <button ng-click="showEdit()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+	        		 Edit Posisi Kapal/Pindah Cluster</button>
+	        	</li>
+	        	<li style="list-style:none;">
+	        		<button ng-click="showDelete()" class="btn btn-danger btn-xs" type="button"><i class="fa fa-times-circle" aria-hidden="true" style="margin-right:2px;"></i>Hapus Kapal</button>
+	        	</li>
+	      	</ul>
+        	<form ng-show="showEditKapal" class="form-horizontal" name="">
+        	<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+					    <span class="pficon pficon-close"></span>
+					  </button>
+					  <span class="pficon pficon-error-circle-o"></span>
+					  <strong>{{showMessage}}</strong>
+					</div>
+        	<input type="hidden" ng-model="postKapal.id">
+		        <div class="form-group">
+		         	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Nama Kapal</label>
+		            <div class="col-md-6">
+		               <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+		            </div>
+		        </div>
+		        <div class="form-group">
+	            	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kode Kapal</label>
+	              	<div class="col-md-6">
+	                  <input type="text" id="no-3" class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+	              	</div>
+	         	</div>
+		         <div class="form-group">
+		          	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Panjang Kapal</label>
+		            <div class="col-md-6">
+		               <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+		            </div>
+		         </div>
+		         <div class="form-group">
+		            <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Kade Awal</label>
+		            <div class="col-md-6">
+		               <input type="number" id="no-3" class="form-control" name="" ng-model="postKapal.kadeAwalKeseluruhan ">
+		               <label class="radio-inline">
+			          	<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+			       		</label>
+				        <label class="radio-inline">
+				          <input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+				        </label>
+		            </div>
+		         </div>
+	         	<div class="form-group">
+		        	<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Mulai</label>
+		        	<div class="col-sm-3"> <!-- VALPMH041 -->
+									<div pf-datepicker id="" options="options" class="" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group" id="jamMasuk">
+									<input id="jamMasukVal" type="text" class="form-control" size="8" ng-model="postKapal.jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+									<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+					    <label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>Waktu Selesai</label>
+					    <div class="col-sm-3"> <!-- VALPMH041 -->
+								<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy" date="postKapal.tglSelesai"  required></div>
+							</div>
+							<div class="col-sm-3">
+								<div class="input-group" id="jamKeluar">
+									<input id="jamKeluarVal" type="text" class="form-control" size="8" ng-model="postKapal.jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+									<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+								</div>
+							</div>
+						</div>
+			      <div class="form-group">
+			      	<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Hadap</label>
+			         <div class="col-sm-7">
+			            <select pf-select ng-model="postKapal.hadapKapal" ng-options='option.value as option.name for option in hadapKapal'>
+			            </select>
+			         </div>
+			      </div>
+	        	</form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" ng-if="showEditKapal" ng-click="cancel()">Batal</button>
+	        <button type="button" class="btn btn-primary" ng-if="showEditKapal" ng-click="pushUpdateKapal()" >Simpan</button>
+	      </div>
+      </div>
+   </div>
+  </div>
+  <div class="modal" id="updateKapalCluster" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+		<div class="modal-dialog">
+   		<div class="modal-content">
+		    <div class="modal-header">
+		    	<button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
+		          <span class="pficon pficon-close"></span>
+		      	</button>
+		        	<h4 class="modal-title">Update Cluster Kapal</h4>
+		    </div>
+		    <div class="modal-body kapal-cluster">
+		    	<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+					  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+					    <span class="pficon pficon-close"></span>
+					  </button>
+					  <span class="pficon pficon-error-circle-o"></span>
+					  <strong>{{showMessage}}</strong>
+					</div>
+		      <table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+				  		<thead>
+							<tr>
+								<th>Kapal</th>
+								<th>Kode Kapal</th>
+								<th>Cluster</th>
+							</tr>
+				  		</thead>
+						<tbody>
+							<tr ng-repeat="item in dataKapalnoCluster">
+								<td>{{item.kodeKapal}}</td>
+								<td>{{item.namaKapal}}</td>
+								<td>
+									 <select pf-select ng-model="item.cluster" name="itemCluster" ng-options='option.clusteringId as option.pembagiAnakan for option in clusterKademeter' id="jns-1" required></select>
+								</td>
+						  	</tr>
+						</tbody>
+				  </table>
+		    </div>
+		    <div class="modal-footer">
+		        <button type="button" class="btn btn-default" class="close" data-dismiss="modal" ng-click="cancel()">Batal</button>
+		        <button type="button" class="btn btn-primary"  ng-click="updateKapal()" >Simpan</button>
+		    </div>
+      </div>
+   	</div>
+</div>
+<!-- informasi kapal rekomendasi -->
+<div class="modal" id="infoKapalRekomendasi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title">Informasi Kapal</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Kapal</h3>
+				  </div>
+				  <div class="panel-body">
+				    <form class="form-horizontal">
+						  <div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{dataInformasiKapal.namaKapal}}</span>
+						    </div>
+							</div>
+							<div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{dataInformasiKapal.panjangKapal}}</span>
+						    </div>
+							</div>
+							<div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{dataInformasiKapal.draftKapal}} M</span>
+						    </div>
+							</div>
+						</form>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Info TOS</h3>
+				  </div>
+				  <div class="panel-body">
+				    <ul class="nav nav-tabs" role="tablist">
+					  	<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar')">Bongkar</a></li>
+					  	<li role="presentation" class="menu-jasa tab-muat" kode-menu="muat" id="muatTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat')">Muat</a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="bongkar" role="tabpanel" class="tab-pane active">
+								<form class="form-horizontal">
+								  
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Mulai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.mulai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Selesai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.selesai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Total</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.total}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.realisasi}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Persentase</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.persentase}}%</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.targetBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.realBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosBongkar.namaAgent}}</span>
+								    </div>
+									</div>
+								</form>
+							</div>
+							<div id="muat" role="tabpanel" class="tab-pane">
+								<form class="form-horizontal">
+								  
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Mulai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.mulai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Selesai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.selesai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Total</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.total}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.realisasi}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Persentase</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.persentase}}%</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.targetBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.realBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{dataInformasiKapal.kapalTosMuat.namaAgent}}</span>
+								    </div>
+									</div>
+								</form>
+							</div>
+						</div>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Tgl Permohonan</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<form class="form-horizontal">
+	          <div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Mulai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						    <span class="view-detail infotip-kapal">{{dataInformasiKapal.permohonanMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Selesai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						      <span class="view-detail infotip-kapal">{{dataInformasiKapal.permohonanSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						</form>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Tgl Perencanaan</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<form class="form-horizontal">
+	          <div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Mulai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						    <span class="view-detail infotip-kapal">{{dataInformasiKapal.mulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Selesai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						      <span class="view-detail infotip-kapal">{{dataInformasiKapal.selesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						</form>
+				  </div>
+				</div>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+<!-- informasi kapal sandar -->
+<div class="modal" id="infoKapalSandar" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <span class="pficon pficon-close"></span>
+        </button>
+        <h4 class="modal-title">Informasi Kapal Sandar</h4>
+      </div>
+      <div class="modal-body">
+        <div class="panel panel-default">
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Kapal</h3>
+				  </div>
+				  <div class="panel-body">
+				    <form class="form-horizontal">
+						  <div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{informasiKapalSandar.namaKapal}}</span>
+						    </div>
+							</div>
+							<div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{informasiKapalSandar.panjangKapal}}</span>
+						    </div>
+							</div>
+							<div class="form-group">
+						    <label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+						    <div class="col-sm-6">
+						        <span>:</span>
+						        <span class="view-detail infotip-kapal">{{informasiKapalSandar.draftKapal}} M</span>
+						    </div>
+							</div>
+						</form>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Info TOS</h3>
+				  </div>
+				  <div class="panel-body">
+				    <ul class="nav nav-tabs" role="tablist">
+					  	<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar2')">Bongkar</a></li>
+					  	<li role="presentation" class="menu-jasa tab-muat2" kode-menu="muat" id="muatTab2"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat2')">Muat</a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="bongkar2" role="tabpanel" class="tab-pane active">
+								<form class="form-horizontal">
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Mulai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.mulai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Selesai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.selesai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Total</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.total}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.realisasi}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Persentase</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.persentase}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.targetBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.realBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosBongkar.namaAgent}}</span>
+								    </div>
+									</div>
+								</form>
+							</div>
+							<div id="muat2" role="tabpanel" class="tab-pane">
+								<form class="form-horizontal">
+								 
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Mulai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.mulai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Selesai</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.selesai}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Total</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.total}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.realisasi}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Persentase</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.persentase}}%</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.targetBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.realBshTsd}}</span>
+								    </div>
+									</div>
+									<div class="form-group">
+								    <label class="col-sm-4 infotip-kapal">Agen PBM</label>
+								    <div class="col-sm-6">
+								        <span>:</span>
+								        <span class="view-detail infotip-kapal">{{informasiKapalSandar.kapalTosMuat.namaAgent}}</span>
+								    </div>
+									</div>
+								</form>
+							</div>
+						</div>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Tgl Permohonan</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<form class="form-horizontal">
+	          <div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Mulai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						    <span class="view-detail infotip-kapal">{{informasiKapalSandar.permohonanMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Selesai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						      <span class="view-detail infotip-kapal">{{informasiKapalSandar.permohonanSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						</form>
+				  </div>
+				  <div class="panel-heading">
+				    <h3 class="panel-title">Tgl Perencanaan</h3>
+				  </div>
+				  <div class="panel-body">
+				  	<form class="form-horizontal">
+	          <div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Mulai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						    <span class="view-detail infotip-kapal">{{informasiKapalSandar.mulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label class="col-sm-4 infotip-kapal">Selesai</label>
+						  <div class="col-sm-6">
+						    <span>:</span>
+						      <span class="view-detail infotip-kapal">{{informasiKapalSandar.selesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  </div>
+						</div>
+						</form>
+				  </div>
+				  
+				</div>
+      </div>
+      <div class="modal-footer">
+       
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript">
+	$('#jamKeluarVal').mask('99:99');
+	$('#jamMasukVal').mask('99:99');
+	$('#').mask('99-99-9999');
+	$('#tambatTglSelesai').mask('99-99-9999');
+	function openTab(evt, jenisJasa) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tab-pane");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		menuJasa = document.getElementsByClassName("menu-jasa");
+		for (i = 0; i < menuJasa.length; i++) {
+			menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+		}
+		document.getElementById(jenisJasa).style.display = "block";
+		evt.currentTarget.className += " active";
+		$('.tab-'+jenisJasa).addClass("active");
+	}
+
+</script>
+
+

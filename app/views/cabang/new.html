@@ -1,0 +1,35 @@
+  <div class="container">
+    <h2>Parameter Baru</h2>
+    <form class="form-horizontal" name="cabangNew">
+        <div class="form-group">
+        <label class="col-sm-2 control-label" for="nip"><span class="text-danger">*</span>Nama Parameter</label>
+          <div class="col-sm-4">
+              <input type="text" name="nama" class="form-control" ng-model="paramcabang.nama" maxlength="20" required>
+              <span class="has-error" ng-show="cabangNew.nama.$touched && cabangNew.nama.$invalid" >
+                Nama Parameter harus diisi.
+              </span>
+          </div>
+        </div>
+        <div class="form-group">
+        <label class="col-sm-2 control-label" for="id"><span class="text-danger">*</span>Nilai</label>
+          <div class="col-sm-4">
+              <input type="text" name="nilai" class="form-control" ng-model="paramcabang.value" required>
+              <span class="has-error" ng-show="cabangNew.nilai.$touched && cabangNew.nilai.$invalid">
+                Nilai harus diisi.
+              </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="tglMulai"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+            <div class="col-sm-4">
+                 <div pf-datepicker  options="options" id="IdtglMulai" name="tglMulai" data-date-format="dd-mm-yyyy" date="tglMulai" -model="paramcabang.tglMulai" style="width:200px;" required></div>
+            </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-7">
+              <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+              <button type="button" class="btn btn-primary btn-lg" ng-disabled="cabangNew.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true">Buat Baru</button>
+          </div>
+        </div>
+    </form>
+  </div>

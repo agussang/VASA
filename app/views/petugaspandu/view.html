@@ -1,0 +1,68 @@
+<div class="container">
+<h2>Identitas Pandu</h2>
+<form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-1"></label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'><img ng-src="{{img}}" border="0" style="height: 200px; width: 200px; border-radius: 50%;"/></span>
+      </div>
+    </div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{petugasPandu.namaPetugas}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Kode</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{petugasPandu.kode}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Username</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{petugasPandu.username}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Email</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{petugasPandu.emailPetugas}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Handphone</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{petugasPandu.hp}}</span>
+	    </div>
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-2">Stasiun Pandu</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{petugasPandu.namaKawasan}}</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2">Grup</label>
+      <div class="col-sm-9">
+          <span>:</span>
+          <span class='view-detail'>{{petugasPandu.groupName}}</span>
+      </div>
+    </div>
+  	<div class="form-group">
+ 	<div class="col-sm-9">
+    <input type="button" ng-click="back()" value="Tutup" class="btn btn-lg btn-primary" />
+     </div>
+    </div>
+</form>
+
+</div>

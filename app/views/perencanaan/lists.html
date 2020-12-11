@@ -1,0 +1,120 @@
+<div>
+	<h2>Laporan Meeting</h2>
+	<div>
+
+	<form class="form-horizontal" name="prameetingForm">
+		<div class="form-group">
+      		<label class="col-sm-2 control-label" class=""><span class="text-danger"></span>Nama Dermaga :</label>
+		    <div class="col-sm-6">
+				<select pf-select class="form-control" ng-model="idDermaga" name="idDermaga" ng-options="option as option.mdmgNama for option in dermaga" multiple></select>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<label class="col-sm-2 control-label" class=""><span class="text-danger"></span>Tgl. Rencana Tambat:</label>
+		    <div class="col-sm-2">
+            	<!-- <span class="label label-info">{{tanggalPrameeting}}</span> -->
+     			<span id="date-6" class="input-group date" style="width:150px;">
+            	<input type="text" ng-model="tanggalPrameeting" date="tanggalPrameeting" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+            	</span>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<div class="col-sm-offset-2 col-sm-7">
+	        	<button type="button" class="btn btn-primary btn-lg" ng-disabled="prameetingForm.$invalid;" ng-click="changeData();showLoader=true;"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Lihat Data</button>
+				<button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor  	<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+				<button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor
+					<i class="fa fa-file-excel-o" aria-hidden="true"></i>
+				</button>
+	      </div>
+	    </div>
+	</form>
+	</div>
+	<div id="tabel-meeting">
+		<table class="datatable table table-striped table-bordered" id="reportTable" style="margin-top:30px; width:150%;">
+			<thead>
+				<tr ng-hide="true">
+					<th colspan="18">
+						<label>Laporan Hasil Meeting</label> 
+					</th>
+				</tr>
+				<tr ng-hide="true">
+					<th colspan="18">
+						<label>{{tanggalPerencanaan|date:dd-mm-yyyy}}</label>
+					</th>
+				</tr>
+				<tr>
+					<th rowspan="3" style="width:20px;">No</th>
+					<th rowspan="3">Nama Kapal</th>
+					<th rowspan="3">No PPK1</th>
+					<th rowspan="3">Agen</th>
+					<th rowspan="3">PBM</th>
+					<th rowspan="3">GRT</th>
+					<th rowspan="3">LOA</th>
+					<th colspan="2">Kegiatan</th>
+					<th rowspan="3">Komoditi</th>
+					<th rowspan="3">Dermaga</th>
+					<th colspan="5" style="text-align:center;">Tambatan</th>
+					<th rowspan="3">No Gudang</th>
+					<th rowspan="3">Asal/Tujuan</th>
+					<th rowspan="3">Keterangan</th>	
+				</tr>
+				<tr>
+					<th rowspan="2">B</th>
+					<th rowspan="2">M</th>
+					<th style="width:100px;" rowspan="2">Posisi</th>
+					<th colspan="2">Penetapan</th>
+					<th colspan="2">Closing</th>
+				</tr>
+				<tr>
+					<td>Tgl</td>
+					<td>Jam</td>
+					<td>Tgl</td>
+					<td>Jam</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-if="hasilPrameetingList.length == 0">
+					<td colspan="19">Data tidak tersedia.</td>
+				</tr>
+				<tr ng-repeat="kapal in hasilPrameetingList">
+					<td>{{noIndex+$index +1}}</td>				
+					<td>
+						{{kapal.namaKapal}}
+						<h6 ng-if="kapal.isMeetingSusulan == true">meeting susulan</h6>
+					</td>
+					<td>{{kapal.noPpk1}}</td>
+					<td>{{kapal.namaAgen}}</td>
+					<td>{{kapal.pbm}}</td>
+					<td>{{kapal.grt}}</td>
+					<td>{{kapal.loa}}</td>
+					<td>{{kapal.b}}</td>
+					<td>{{kapal.m}}</td>
+					<td>{{kapal.jenisMuatan}}</td>
+					<td>{{kapal.namaDermaga}}</td>
+					<td>{{kapal.kadeAwal}} - {{kapal.kadeAkhir}}</td>
+					<td>{{kapal.startTgl}}</td>
+					<td>{{kapal.startJam}}</td>
+					<td>{{kapal.closingTgl}}</td>
+					<td>{{kapal.closingJam}}</td>
+					<td>{{kapal.noGudang}}</td>
+					<td>{{kapal.pelabuhanAsal}}-{{kapal.pelabuhanTujuan}}</td>
+					<td>{{kapal.keteranganExKapal}}</td>	
+
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="loadHasilPrameeting(page)">
+	</paging></div>
+</div>
+<script type="text/javascript">
+	$('#date-6').datepicker({
+      autoclose: true,
+      format: "dd-mm-yyyy",
+      language: 'id'
+    });
+</script>

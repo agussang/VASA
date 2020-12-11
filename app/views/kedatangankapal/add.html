@@ -1,0 +1,102 @@
+<h2>Tambah Kedatangan Kapal</h2>
+<br>
+<form class="form-horizontal" name="tambahform">
+	<div class="form-group">
+		<label class="col-sm-2 control-label">Kode Kapal</label>
+	  	<div class="col-sm-3">
+	  		<input type="text" class="form-control" placeholder="Kode Kapal.." ng-model="kedatangan.kodeKapal">
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger">*</span>Nama Kapal</label>
+	  	<div class="col-sm-6"> 
+			<input type="text" id="value_kapal" class="form-control" ng-model="valueKapal" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" data-limit="10" ng-blur="validationLookupKapal()">
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger" ng-show="requiredVal">*</span>CallSign</label>
+	  	<div class="col-sm-4"> 
+	  		<input type="text" class="form-control" name="callsign" placeholder="CallSign.." ng-model="kedatangan.callSign" ng-required="requiredVal">
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"><span class="text-danger"  ng-show="requiredVal">*</span>IMO</label>
+	  	<div class="col-sm-4">
+	  		<input type="text" name="imo" placeholder="IMO.." class="form-control" ng-model="kedatangan.imo" ng-required="requiredVal">
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Waktu Kedatangan</label>
+		<div class="col-sm-3">
+			<div pf-datepicker id="tglMasukVal" options="options" data-date-format="dd-mm-yyyy" date="tglDatang" required></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group" id="jamKeluar">
+				<input id="jamDatangVal" type="text" class="form-control" size="8" ng-model="jamDatang" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label"></label>
+	  	<div class="col-sm-4"> 
+	  		<label class="control-label cursor-pointer"><input type="checkbox" ng-model="kedatangan.isLabuh" class="cursor-pointer" ng-init="isLabuh=false">  Langsung Tambat</label>
+	 	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Latitude</label>
+		<div class="col-sm-9">
+			<div class="row">
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.latDegrees" ng-disabled="kedatangan.isLabuh==true"> &deg;
+				</div>
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.latMinutes" ng-disabled="kedatangan.isLabuh==true"> "
+				</div>
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.latSeconds" ng-disabled="kedatangan.isLabuh==true"> '
+				</div>
+				<div class="col-sm-1">
+					<select pf-select ng-model="kedatangan.latDirection" name="lat-direction" ng-disabled="kedatangan.isLabuh==true" ng-required="kedatangan.isLabuh==false">
+						<option value="N" selected>N</option>
+						<option value="S">S</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Longitude</label>
+		<div class="col-sm-9">
+			<div class="row">
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.lonDegrees" ng-disabled="kedatangan.isLabuh==true"> &deg;
+				</div>
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.lonMinutes" ng-disabled="kedatangan.isLabuh==true"> "
+				</div>
+				<div class="col-sm-3">
+					<input type="text" ng-model="kedatangan.lonSeconds" ng-disabled="kedatangan.isLabuh==true"> '
+				</div>
+				<div class="col-sm-1">
+					<select pf-select ng-model="kedatangan.lonDirection" name="lon-direction" ng-disabled="kedatangan.isLabuh==true" ng-required="kedatangan.isLabuh==false">
+						<option value="E" selected>E</option>
+						<option value="W">W</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<hr> 
+	<div class="form-group">
+		<div class="col-sm-offset-5 col-sm-6 navbar-right">
+			<button class="btn btn-default btn-lg" onclick="location.href='#/kedatangan';" >Batal</button>
+			<button type="button" class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="!tambahform.$valid">Buat Baru</button>
+		</div>
+	</div>
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#jamDatangVal').mask('99:99');
+})
+</script>

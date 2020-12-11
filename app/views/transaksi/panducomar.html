@@ -1,0 +1,147 @@
+<div class="row">
+  <div class="col-md-6">
+    <h2>Pandu Comar</h2>
+    
+  </div>
+  
+</div>
+    <div id="pandu" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="panduComarForm">
+  <div class="form-group">
+        <label class="col-sm-2 control-label" for="noppkb-permohonan"><span class="text-danger">*</span>No. PPK1</label>
+        <div class="col-sm-4">
+          <input type="text" id="noppkb-permohonan" class="form-control" placeholder="No. PPK1..." ng-model="panduComar.noPpk1" ng-blur="validationLookupPpk1()" bs-typeahead bs-options="listPpk1.noPpk1 for listPpk1 in getListOfPpk1($viewValue)" data-limit="10">
+        </div>
+      </div>
+      <div class="form-group">
+       <label class="col-sm-2 control-label"><span class="text-danger">*</span>Dermaga Asal</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" ng-readonly="rightReadOnly" value="{{panduComar.asal}}" ng-model="panduComar.asal" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaPandu($viewValue)" data-limit="10"  ng-change="changeJenisGerakan()" ng-focus="checkValue(panduComar.asal)" ng-blur="validationLookupAsalPandu()" required>
+            </div>
+      </div>
+      <div class="form-group">
+       <label class="col-sm-2 control-label"><span class="text-danger">*</span>Dermaga Tujuan</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" value="{{panduComar.tujuan}}" ng-model="panduComar.tujuan" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaPanduTujuan($viewValue)" data-limit="10" ng-readonly="rightReadOnly" ng-change="changeJenisGerakan()" ng-focus="checkValue(panduComar.tujuan)" ng-blur="validationLookupTujuanPandu()" required>
+            </div>
+      </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl / Jam Mulai</label>
+      <div class="col-sm-3"> <!-- VALPMH041 -->
+      <div pf-datepicker id="tglPandu" data-date-format="dd-mm-yyyy" options="options" date="tglPandu" 
+      required></div>
+      </div>
+      <div class="col-sm-3">
+      <div class="input-group" id="jamPandu">
+        <input id="jamPanduVal" type="text" class="form-control" size="8" ng-model="panduComar.jamMulai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+        <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+      </div>
+      </div> 
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl / Jam Selesai</label>
+      <div class="col-sm-3"> <!-- VALPMH041 -->
+      <div pf-datepicker id="tglPanduSelesai" data-date-format="dd-mm-yyyy" options="options" date="tglPanduSelesai" required></div>
+      </div>
+      <div class="col-sm-3">
+      <div class="input-group" id="jamPandu">
+        <input id="jamPanduVal1" type="text" class="form-control" size="8" ng-model="panduComar.jamSelesai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+        <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+      </div>
+      </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl / Jam Kapal Gerak</label>
+      <div class="col-sm-3"> <!-- VALPMH041 -->
+      <div pf-datepicker id="tglPanduGerak" data-date-format="dd-mm-yyyy" options="options" date="tglPanduGerak" required></div>
+      </div>
+      <div class="col-sm-3">
+      <div class="input-group" id="jamPandu">
+        <input id="jamPanduVal2" type="text" class="form-control" size="8" ng-model="panduComar.jamGerakKapal" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+        <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+      </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl / Jam Naik</label>
+      <div class="col-sm-3"> <!-- VALPMH041 -->
+      <div pf-datepicker id="tglPanduNaik" data-date-format="dd-mm-yyyy" options="options" date="tglPanduNaik" required></div>
+      </div>
+      <div class="col-sm-3">
+      <div class="input-group" id="jamPandu">
+        <input id="jamPanduVal3" type="text" class="form-control" size="8" ng-model="panduComar.jamNaik" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+        <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+      </div>
+      </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl / Jam Turun</label>
+      <div class="col-sm-3"> <!-- VALPMH041 -->
+      <div pf-datepicker id="tglPanduTurun" data-date-format="dd-mm-yyyy" options="options" date="tglPanduTurun" required></div>
+      </div>
+      <div class="col-sm-3">
+      <div class="input-group" id="jamPandu">
+        <input id="jamPanduVal4" type="text" class="form-control" size="8" ng-model="panduComar.jamTurun" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+        <span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+      </div>
+      </div>
+  </div>
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="nama-pandu"><span class="text-danger">*</span>Nama Pandu</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" ng-model="panduComar.nipPandu" bs-typeahead bs-options="sdmkapal.mpegNamaNip for sdmkapal in getListOfSDMKapal($viewValue)" data-limit="10" ng-focus="checkValue(panduComar.nipPandu)" ng-blur="validationLookupPetugas()" ng-readonly="rightReadOnly" required>
+      </div>
+</div>
+
+
+<div class="form-group">
+    <label class="col-sm-2 control-label" for="ppk-tongkang"><span class="text-danger"></span>PPK1 Tongkang</label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" ng-model="panduComar.noPpk1Tk" ng-changed="validationLookupPpk1()" bs-typeahead bs-options="listPpk1.itemPpk1TK for listPpk1 in getListPpk1Gandeng($viewValue)" data-limit="10" required>
+      </div>
+</div>
+
+  <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default" ng-click="resetPandu()">Reset</button>
+        <button type="button" class="btn btn-primary" ng-if="editForm == false" 
+        ng-click="submitPandutoGrid()">Simpan</button>
+      </div>
+  </div>
+</form>
+
+<h5>List Realisasi Pandu Comar</h5>
+<table class="table table-striped table-bordered">
+  <thead>
+    <tr>
+      <th>No. PPK Jasa</th>
+      <th>Asal</th>
+      <th>Tujuan</th>
+      <th>Mulai</th>
+      <th>Selesai</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in jasaPanduComar | orderBy: 'noPpkJasa'">
+        <td>{{item.noPpkJasa}}</td>
+        <td>{{item.namaLokasiAsal}} ({{item.kodeLokasiAsal}})</td>
+        <td>{{item.namaLokasiTujuan}} ({{item.kodeLokasiTujuan}})</td>
+        <td>{{item.tglMulai|date: "dd-MM-yyyy HH:mm"}}</td>
+        <td>{{item.tglSelesai|date: "dd-MM-yyyy HH:mm"}}</td>
+      </tr>
+    </tbody>
+</table>
+    </div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('#jamPanduVal,#jamPanduVal1,#jamPanduVal2,#jamPanduVal3,#jamPanduVal4').mask('99:99');
+
+});
+
+</script>

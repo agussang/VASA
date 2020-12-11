@@ -1,0 +1,258 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name vasaApp.controller:DaftarKegiatanKapalCtrl
+ * @description
+ * # DaftarKegiatanKapalCtrl
+ * Controller of the vasaApp
+ */
+angular.module('vasaApp')
+	.controller('DaftarKegiatanKapalCtrl',['$scope','$rootScope','$filter','DaftarKegiatanKapalList','ListCabang','LoadingScreen',function ($scope,$rootScope,$filter,DaftarKegiatanKapalList,ListCabang,LoadingScreen) {
+		LoadingScreen.show();
+		$scope.currentCabang = $rootScope.namaCabang;
+		//$rootScope.isPusat = localStorage.getItem('isPusat');
+		$scope.confirm = {};
+		$scope.search = {};
+		$scope.listCabang = [];
+		//get list cabang
+		$scope.$watch('isPusat', function() {
+			if($scope.isPusat !== null){
+				ListCabang.get(function(response){
+					$scope.listCabang = response;
+				});
+			} else {
+				$scope.currentCabang ="";
+			}
+		});
+
+		$scope.parent = {tanggal:''};
+		var currentDate = new Date();
+		$scope.search.tglFilter = $filter('date')(currentDate,'MMMM-yyyy');
+	  $scope.items = [];
+
+		$scope.nullChecking = function (data) {
+			data.forEach(function (element) {
+					element.tglPandu	= (element.tglPandu !== null ?element.tglPandu:'-');
+					element.namaKapal	= (element.namaKapal !== null ?element.namaKapal:'-');
+					element.bendera	= (element.bendera !== null ?element.bendera:'-');
+					element.kodeKapal	= (element.kodeKapal !== null ?element.kodeKapal:'-');
+					element.pelabuhanAsal	= (element.pelabuhanAsal !== null ?element.pelabuhanAsal:'-');
+					element.pelabuhanTujuan	= (element.pelabuhanTujuan !== null ?element.pelabuhanTujuan:'-');
+					element.jenisGerakan	= (element.jenisGerakan !== null ?element.jenisGerakan:'-');
+					element.tglFilter = $filter('date')(element.tglPandu,'MMMM-yyyy');
+		}
+	)};
+
+	$scope.gtKapalGrouping = function(data){
+		data.forEach(function (element) {
+			if (element.gtKapal < 501) {
+					element.gtKapal1 = $filter('currency') (element.gtKapal,"",0);
+					element.gtKapal2 = '-';
+					element.gtKapal3 = '-';
+			} else {
+					if (element.gtKapal > 500 && element.gtKapal < 1000) {
+						element.gtKapal1 = '-';
+						element.gtKapal2 = $filter('currency') (element.gtKapal,"",0);
+						element.gtKapal3 = '-';
+			} else  if (element.gtKapal > 1001) {
+					element.gtKapal1 = '-';
+					element.gtKapal2 = '-';
+					element.gtKapal3 = $filter('currency') (element.gtKapal,"",0);
+			} else {
+				element.gtKapal1 = '-';
+				element.gtKapal2 = '-';
+				element.gtKapal3 = '-';
+			}
+			}
+			element.gtKapal1	= (element.gtKapal1 !== null ?element.gtKapal1:'-');
+			element.gtKapal2	= (element.gtKapal2 !== null ?element.gtKapal2:'-');
+			element.gtKapal3	= (element.gtKapal3 !== null ?element.gtKapal3:'-');
+		});
+	};
+
+
+
+	  DaftarKegiatanKapalList.get(function(response){
+		LoadingScreen.hide();
+    $scope.items = response;
+
+		$scope.nullChecking($scope.items);
+		$scope.gtKapalGrouping($scope.items);
+		  });
+
+  	$scope.reset = function(){
+		$scope.search.tglFilter ="";
+	  };
+
+	$scope.generatePdf = function() {
+
+		var namaCabang = $filter('uppercase')($scope.currentCabang);
+		var reportDate = $filter('uppercase')($scope.search.tglFilter);
+		var NIPP = localStorage.getItem('NIPP');
+		var namaPetugas = localStorage.getItem('nama');
+		var tglLaporan = $filter('date')(Date.now(),'dd-MM-yyyy hh:mm:ss');
+
+		var createTabelRow = function(item,no){
+			var tabelRow = [
+				no.toString(),
+				$filter('date')(item.tglPandu,'d'),
+				item.namaKapal,
+				item.bendera,
+				item.kodeKapal,
+				item.gtKapal1,
+				item.gtKapal2,
+				item.gtKapal3,
+				item.pelabuhanAsal,
+				item.pelabuhanTujuan,
+				item.jenisGerakan
+			];
+
+			tabelRow.forEach(function(rowItem,index){
+				if(rowItem == null) tabelRow[index] = '';
+			});
+			return tabelRow;
+		}
+
+		$scope.bulanLaporan = function(data) {
+			return (data.tglFilter === $scope.search.tglFilter);
+		};
+
+		var no = 0;
+		var daftarKegiatanKapal = [];
+
+		$scope.items.filter($scope.bulanLaporan).forEach(function(item,index){
+				no++;
+				var tabelRow = createTabelRow(item,no);
+				daftarKegiatanKapal.push(tabelRow);
+		});
+
+		var pdfContent = {
+				pageSize: 'A4',
+				pageMargins: [ 40, 60, 40, 50 ],
+				styles: {
+						header: {
+							bold: true,
+							color: '#000',
+							fontSize: 12,
+							alignment: 'center'
+						},
+						subheader: {
+							bold: true,
+							color: '#000',
+							fontSize: 10,
+							alignment: 'left'
+						},
+						subheader2: {
+							bold: true,
+							color: '#000',
+							fontSize: 10,
+							alignment: 'left',
+							margin: [60, 0, 0, 0]
+						},
+						tableHeader: {
+							color: '#000',
+							bold: true,
+							fontSize: 8,
+							alignment: 'center'
+						},
+						dataTable: {
+							color: '#000',
+							fontSize: 8,
+							margin: [0, 20, 0, 8]
+						},
+						footer: {
+							color: '#000',
+							margin: [20, 20, 20, 10],
+							fontSize: 8,
+							italics:true
+						}
+					},
+				footer:function(pagenumber, pagecount) {
+        		return {
+           		text:[
+								{ text: 'Generated by ',style:'footer'},
+								{ text: namaPetugas,style: 'footer'},
+								{ text:' ('+ NIPP +') '+ ' on '+ tglLaporan, style: 'footer'},
+								{ text:' from VASA \n', style: 'footer' },
+								{ text: pagenumber + ' of ' + pagecount, style: 'footer', alignment:'right', italics:false }
+							],margin: [20, 20, 20, 10]
+        		};
+    		},
+				content: [
+					{
+							alignment: 'justify',
+							columns: [
+								{	text: 'PT PELABUHAN INDONESIA III\n', style:'subheader'},
+								{ text: 'DAFTAR KEGIATAN WAJIB PANDU\n', style:'subheader2'}
+							]
+						},
+					{
+							alignment: 'justify',
+							columns: [
+								{	text: namaCabang, style:'subheader'},
+								{ text: 'LOKASI             : '+namaCabang, style:'subheader2'}
+							]
+						},
+							{
+							alignment: 'justify',
+							columns: [
+								{	},
+								{ text: 'BULAN              : '+reportDate, style:'subheader2'}
+							]
+						},
+							{
+							style: 'dataTable',
+							table:{
+								headerRows: 2,
+								pageBreak: 'before',
+								dontBreakRows: true,
+								body:[
+									[{text: "\n\nNO", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nTANGGAL", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nNAMA KAPAL", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nBENDERA", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nNO 2 A 1", rowSpan: 2, style:'tableHeader'},
+									{text: "GT", colSpan: 3, style:'tableHeader'},
+									"",
+									"",
+									{text: "\n\nDARI", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nKE", rowSpan: 2, style:'tableHeader'},
+									{text: "\n\nI/O/S", rowSpan: 2, style:'tableHeader'}
+								],
+				          ["",
+									"",
+									"",
+									"",
+									"",
+									 {text:"0-500", style:'tableHeader'},
+									 {text:"501-1000", style:'tableHeader'},
+									 {text:"1001-ke atas", style:'tableHeader'}
+								 ]
+								].concat(daftarKegiatanKapal)
+							}
+						}
+
+				],
+
+		};
+
+	pdfMake.createPdf(pdfContent).download('Daftar Kegiatan Kapal Wajib Pandu - ' + namaCabang +' - '+ reportDate +'.pdf');
+	};
+
+
+	$scope.generateExcel = function () {
+		var namaCabang = $filter('uppercase')($scope.currentCabang);
+		var reportDate = $filter('uppercase')($scope.search.tglFilter);
+		
+		var data_type = 'data:application/vnd.ms-excel';
+		var table_div = document.getElementById('tabel-daftar-kegiatan');
+
+		var table_html = table_div.outerHTML.replace(/ /g, '%20');
+		var a = document.createElement('a');
+		a.href = data_type + ', ' + table_html;
+		a.download = 'Daftar Kegiatan Kapal Wajib Pandu - ' + namaCabang + ' - ' + reportDate + '.xls';
+		a.click();
+	};
+
+}]);

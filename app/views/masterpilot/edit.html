@@ -1,0 +1,79 @@
+<h2>Master Pilot Edit</h2>
+
+<form class="form-horizontal" name="masterPilotForm">
+     <div class="form-group">
+        <label class="col-sm-2 control-label"><span class="text-danger">*</span>Jenis Kendaraan</label>
+        <div class="col-sm-4">
+            <select pf-select ng-model="masterpilot.jnsKendaraan" name="jnsKendaraan" ng-options='option.value as option.caption for option in listJnsKendaraan' id="jns-1" ng-change="changeJnsKendaraan()" required></select>
+            <span class="has-error" ng-show="masterPilotForm.jnsKendaraan.$touched && masterPilotForm.jnsKendaraan.$invalid">
+            Isi Jenis Kendaraan dibutuhkan.
+          </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>No. Plat</label>
+        <div class="col-sm-7">
+            <input type="text" maxlength="30" class="form-control" ng-model="masterpilotcar.platNomor" ng-disabled=isDisabledShuttleCar name="platNomor" required>
+            <span class="has-error" ng-show="masterPilotForm.platNomor.$touched && masterPilotForm.platNomor.$invalid">
+              Isi no. plat dibutuhkan.
+          </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="tarif-5">
+            <span class="text-danger">*</span>Nama Kendaraan</label>
+        <div class="col-sm-7">
+            <input type="text" maxlength="30" class="form-control" ng-model="masterpilotcar.jenisMobil" name="jenisMobil" ng-disabled=isDisabledShuttleCar required>
+            <span class="has-error" ng-show="masterPilotForm.jenisMobil.$touched && masterPilotForm.jenisMobil.$invalid">
+              Isi nama kendaraan dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="tarif-5">
+            <span class="text-danger">*</span>Warna Kendaraan</label>
+        <div class="col-sm-7">
+            <input type="text" maxlength="30" class="form-control" ng-model="masterpilotcar.warna" name="warna" ng-disabled=isDisabledShuttleCar required>
+            <span class="has-error" ng-show="masterPilotForm.warna.$touched && masterPilotForm.warna.$invalid">
+              Isi warna kendaraan dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="tarif-5">
+            <span class="text-danger">*</span>Kode Kapal</label>
+        <div class="col-sm-7">
+            <input type="text" maxlength="30" class="form-control" ng-model="masterpilotboat.kodeKapal" name="kodeKapal" ng-disabled=isDisabledBoat required>
+            <span class="has-error" ng-show="masterPilotForm.kodeKapal.$touched && masterPilotForm.kodeKapal.$invalid">
+                Isi kode kapal dibutuhkan.
+            </span>
+        </div>
+    </div>
+
+     <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" class="form-control" ng-model="masterpilotboat.namaKapal" name="namaKapal"  ng-disabled=isDisabledBoat required>
+          <span class="has-error" ng-show="masterPilotForm.namaKapal.$touched && masterPilotForm.namaKapal.$invalid">
+              Isi nama kapal dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+   <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tanggal Berlaku</label>
+        <div class="col-sm-2">
+             <div pf-datepicker id="tglBerlaku" data-date-format="dd-mm-yyyy" ng-model="tglBerlaku" options="options" date="tglBerlaku" required></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-7">
+            <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+        </div>
+    </div>

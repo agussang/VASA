@@ -1,0 +1,119 @@
+<h2>Riwayat Eskalasi Saya</h2>
+<div class="row">
+  <div class="col-md-6" ng-show="showAction">
+    <form name="formSearch" ng-submit="pageChanged(0)">
+      <div class="input-group">
+        <select pf-select ng-init="selectionSearch = filterConfig[0]"  ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+        <!-- Search By Text -->
+        <input type="text" ng-show="filterType==='text'" class="form-control" name="search" ng-model="searchText" ng-minlength="filterMinLength" maxlength="30" placeholder="{{filterPlaceholder}}" capitalize>
+        <!-- Search By Date -->
+        <div pf-datepicker ng-show="filterType==='date'" id="tglDitetapkan" class="col-md-12" data-date-format="dd-mm-yyyy" options="optionsDate" date="searchByDate" required></div>
+        <!-- Search By Select -->
+        <input type="text" ng-show="filterType==='select'" name="search" class="form-control" ng-model="searchBySelect" bs-typeahead bs-options="listEskalasi.escTypeCode for listEskalasi in getListOfEscalationType($viewValue)" data-limit="99"
+          ng-focus="checkValue(searchBySelect)" ng-blur="validationLookupEscalationType()" required>
+
+        <span class="input-group-addon btn btn-default" ng-click="resetSearch()" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+        <span class="input-group-addon btn btn-default" ng-click="pageChanged(0)" title="Search"><span class="fa fa-search"></span></span>
+      </div>
+      <label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+    </form>
+  </div>
+  <div class="col-md-6" ng-hide="showAction">
+    <button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+  </div>
+  <div class="col-md-6">
+    <div class="pull-right icon-legenda">
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
+
+<span ng-show="informasiLengthItem===0 && contentSearch"><b>Hasil Pencarian : </b>{{searchSelectedResponse}} <b>{{searchTextItem}}</b> tidak ditemukan.<br></span>
+<span ng-show="contentSearch"><b>Total Hasil Pencarian : </b>{{informasiLengthItem}}</b> data</span>
+
+
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr ng-show="showAction">
+            <td colspan="8">
+              <div>
+                Show :
+                <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+              </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-center">{{pagingText}}</td>
+        </tr>
+    <tr>
+      <th>No</th>
+      <th ng-click="sortBy='created'; sortDesc = !sortDesc; pageChanged(0);" class="col-sm-2">
+        <div class="pull-left">Tgl Eskalasi</div>
+        <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'created' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'created' && sortDesc)}"></span></div>
+      </th>
+      <th style="width:100px">Kode Eskalasi</th>
+      <th ng-show="aksesOtorisasi===0">Pemohon Otorisasi</th>
+      <th ng-show="aksesOtorisasi===1">Pemberi Otorisasi</th>
+      <th>Alasan Otorisasi Diberikan</th>
+      <th>No PPK</th>
+      <th>Kode Validasi</th>
+      <!-- <th>Action</th> -->
+    </tr>
+  </thead>
+    <tbody>
+    <tr ng-repeat="item in items">
+      <td>{{noIndex+$index +1}}</td>
+      <td class="text-center">{{item.created | date: "dd-MM-yyyy HH:mm"}}</span>
+      </td>
+      <td>
+        <span>{{item.escTypeText}}</span>
+      </td>
+      <td ng-show="aksesOtorisasi===0">
+        <span>{{item.username}} ({{item.nama}})</span><br>
+      </td>
+      <td ng-show="aksesOtorisasi===1">
+        <span>{{item.approvedByText}} ({{item.approvedBy}})</span><br>
+      </td>
+      <td>
+        {{item.escReason | cut:true:40:' ...'}}
+        <span ng-show="{{item.showTooltip}}" class="large info-tooltip cursor-pointer pull-right" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{item.escReason}}" data-placement="left" bs-tooltip> &#187;
+        </span>
+      </td>
+      <td>
+        <span><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a></span> 
+        <span class="cursor-pointer" ng-mouseover="getDataJasa(item)" ng-show="item.showToolTip">
+          <a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{dataToolTipJasa}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+        </span>
+        <!-- <span>pada PPK Jasa : {{item.noPpkJasa}}</span> -->
+        <!-- <span>{{item.noPpkJasa}}</span> -->
+        <br>
+        <h6 ng-repeat="(key, value) in item.listNamaJasa" ng-class="value.status == true ? 'list-after' : (value.status == false ? 'list-before' : 'list-before')">{{value.nama}}&nbsp;{{$last ? '' : '-'}}&nbsp;</h6>
+      </td>
+
+      <td>
+        <span>{{item.valCode}}</span>
+        <span class="cursor-pointer">
+          <a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{item.valDesc}}" data-placement="left" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+        </span>
+      </td>
+    </tr>
+    </tbody>
+</table>
+<div ng-show="showAction">
+  <paging class="small" page="currentPage" page-size="pageSize"
+    total="totalItems" adjacent="2" dots="..." scroll-top="true"
+    hide-if-empty="false" ul-class="pagination" active-class="active"
+    disabled-class="disabled" show-prev-next="true"
+    style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>
+
+<script type="text/javascript">
+  $(document).on("click", ".statusEpb", function () {
+    var ppk1 = $(this).data('ppk');
+    var urutan = $(this).data('urutan');
+    $(".modal-body #noPpkVal").val( ppk1 );
+    $(".modal-body #urutanVal").val( urutan );
+});
+</script>

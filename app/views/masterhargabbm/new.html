@@ -1,0 +1,41 @@
+<h2>Harga BBM Baru</h2>
+<form name="hargabbmForm" class="form-horizontal">
+    <div class="form-group">
+    	<label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Tgl. Berlaku</label>
+      	<div class="col-sm-7">
+			<div pf-datepicker  id="tglBerlaku" name="tglBerlaku" options="options" data-date-format="dd-mm-yyyy" date="tglBerlaku"></div>
+      	</div>
+    </div>
+	<div class="form-group">
+    	<label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Harga BBM</label>
+      	<div class="col-sm-7">
+
+          	<input type="number" maxlength="14" min="1" num-only id="no-1" class="form-control" ng-model="hargaBbm.harga" name="harga"  required>
+
+            <span class="has-error" ng-show="hargabbmForm.harga.$touched && hargabbmForm.harga.$invalid">
+                Isi harga bbm dibutuhkan.
+            </span>
+      	</div>
+    </div>
+    <div class="form-group">
+    	<label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Keterangan</label>
+      	<div class="col-sm-7">
+          	<input type="text" id="no-1" class="form-control" ng-model="hargaBbm.keterangan" name="keterangan" required>
+            <span class="has-error" maxlength="30" ng-show="hargabbmForm.keterangan.$touched && hargabbmForm.keterangan.$invalid">
+                Isi keterangan dibutuhkan.
+            </span>
+      	</div>
+    </div>
+    <div class="form-group">
+    	<label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>status</label>
+      	<div class="col-sm-7">
+            <input bs-switch type="checkbox" switch-on-text="Aktif" switch-off-text="Tidak Aktif" ng-model="hargaBbm.status" ng-true-value ="true" ng-false-value="false" />
+      	</div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg" ng-disabled="hargabbmForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="hargabbmForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>

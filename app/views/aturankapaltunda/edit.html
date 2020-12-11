@@ -1,0 +1,58 @@
+<h2>Aturan Kapal Tunda Baru</h2>
+<form name="aturankapaltundaForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Panjang Kapal Min</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="number" id="panjangKapalMin" name="panjangKapalMin" class="form-control" ng-model="aturankapaltunda.panjangKapalMin" required>
+
+          <span class="has-error" ng-show="aturankapaltundaForm.panjangKapalMin.$touched && aturankapaltundaForm.panjangKapalMin.$invalid">
+            Isi Panjang Kapal Min.
+          </span>
+      </div>
+    </div>
+
+   <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Panjang Kapal Max</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="number" id="panjangKapalMax" name="panjangKapalMax" class="form-control" ng-model="aturankapaltunda.panjangKapalMax" required>
+
+          <span class="has-error" ng-show="aturankapaltundaForm.panjangKapalMax.$touched && aturankapaltundaForm.panjangKapalMax.$invalid">
+            Isi Panjang Kapal Max.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Jumlah Kapal Tunda</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="number" id="jumlahKapalTunda" name="jumlahKapalTunda" class="form-control" ng-model="aturankapaltunda.jumlahKapalTunda" required>
+
+          <span class="has-error" ng-show="aturankapaltundaForm.jumlahKapalTunda.$touched && aturankapaltundaForm.jumlahKapalTunda.$invalid">
+            Isi Jumlah Kapal Tunda.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Total Horse Power</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="number" id="totalHorsePower" name="totalHorsePower" class="form-control" ng-model="aturankapaltunda.totalHorsePower" required>
+
+          <span class="has-error" ng-show="aturankapaltundaForm.totalHorsePower.$touched && aturankapaltundaForm.totalHorsePower.$invalid">
+            Isi Total Horse Power.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg"  ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+
+    </div>
+</form>

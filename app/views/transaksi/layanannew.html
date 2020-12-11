@@ -1,0 +1,142 @@
+	<div class="TransaksiLayanannewCtrl">
+		<h2>Buat Layanan Baru</h2>
+		<br>
+		<form class="form-horizontal" name="layananForm">
+		  	<div class="form-group">
+				<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Masukkan Kapal</label>
+				<div class="input-group col-sm-7">
+					<select pf-select ng-init="selectionSearchKapal = selectKapalConfig[0]"  ng-model="selectionSearchKapal" ng-options='fields.title for fields in selectKapalConfig'></select>
+
+					<input ng-show="selectionSearchKapal.id==='namaKapal'" type="text" class="form-control" ng-model="kapal" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" data-limit="10" ng-focus="checkValue(kapal)" ng-blur="validationLookupKapal()" required placeholder="{{filterPlaceholder}}">
+
+					<input ng-show="selectionSearchKapal.id==='kodeKapal'" type="text" class="form-control" ng-model="kapal" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapalByKode($viewValue)" data-limit="10" ng-focus="checkValue(kapal)" ng-blur="validationLookupKapal()" required placeholder="{{filterPlaceholder}}">
+
+					<span class="input-group-addon btn btn-default" ng-click="resetSearch()" ng-show="kapal" title="Reset Search"><span class="fa fa-close"></span></span>
+				</div>
+		  	</div>
+		  	<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-7">
+			  		<button type="button" class="btn btn-lg btn-primary" ng-click="cekLayanan(kapal)" ng-disabled="!layananForm.$valid">Cek Layanan</button>
+				</div>
+		 	 </div>
+		</form>
+	</div>
+
+	<div class="modal" id="kondisi1" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title">Konfirmasi Layanan</h4>
+				</div>
+				<div class="modal-body">
+					Kapal masih memiliki Layanan aktif.
+					<p><b>Silahkan pilih No. PPK1 : </b></p>
+					<div id="kotakPpk1" style="max-height: 100px;height: 100px;overflow-y: auto;
+    				margin-top: 5px;margin-bottom: 5px;"> 
+						<p ng-repeat="item in availablePpk1">
+							<input type="radio" name="ppk1" ng-model="$parent.noPpk1" value="{{item.idData}}"> <b>{{item.noPpk1}}</b> (Penyerahan : {{item.tglBuat | date:'dd-MM-yyyy'}}{{item.eta ? ', ETA : '+ (item.eta | date:'dd-MM-yyyy') : ''}})
+						</p>
+					</div>
+					
+					<p>Jika Anda ingin membuat <strong>Permohonan Tambah Jasa</strong>, Pilih <strong>Tambah Jasa</strong></p>
+					<p>atau Jika Anda ingin membuat <strong>Kapal Putus Ganti Agen</strong>, Pilih <strong>Putus Ganti Agen</strong>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="namaKapal(noPpk1)"  ng-disabled="noPpk1==null || noPpk1==''">Tambah Jasa</button> 
+					<div style="float:left">
+						<button type="button" class="btn btn-warning" data-dismiss="modal" ng-click="gantiAgen()" ng-disabled="noPpk1==null || noPpk1==''">Putus Ganti Agen</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="kondisi2" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title">Konfirmasi Layanan</h4>
+				</div>
+				<div class="modal-body">
+					Kapal tidak memiliki Layanan Aktif.<br>
+					Apakah Anda ingin membuat Permohonan Baru?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="namaKapal(kapal)" >Ya</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="kondisi3" tabindex="-1" role="dialog" aria-labelledby="putusAgen" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title">Konfirmasi Putus Agen</h4>
+				</div>
+				<div class="modal-body">
+					Apakah Anda yakin ingin <strong>Putus Ganti Agen</strong> ?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="confirmPutusAgen()" >Ya</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="kondisi4" tabindex="-1" role="dialog" aria-labelledby="benderaKosong" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title">Konfirmasi Layanan</h4>
+				</div>
+				<div class="modal-body">
+					Kapal tidak memiliki Layanan Aktif.<br><br>
+					<p class="border-content-modal" ng-bind-html="textKelengkapan"></p>
+					Silahkan informasikan ke pengguna jasa untuk melengkapi data tersebut dengan melampirkan surat ukur.
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="kondisi5" tabindex="-1" role="dialog" aria-labelledby="pmhAirKapal" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title">Konfirmasi Layanan</h4>
+				</div>
+				<div class="modal-body">
+					<b>Kapal belum memiliki ID Visit</b><br><br>
+					<p>
+					Silahkan mengajukan Permohonan Jasa Kapal terlebih dahulu sebelum mengajukan Permohonan Air Kapal.
+					</p>
+					<p>Lanjutkan pengajuan Jasa Kapal ? </p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="kondisi5Tidak()">Tidak</button>
+					<button type="button" class="btn btn-success" data-dismiss="modal" ng-click="namaKapal(kapal)">Ya</button>	
+				</div>
+			</div>
+		</div>
+	</div>

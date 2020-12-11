@@ -1,0 +1,31 @@
+<h2>Edit Tagihan Minimum</h2>
+<form name="tagihanminbaru" class="form-horizontal" onsubmit="return Validate(this);">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nilaiTarif"><span class="text-danger">*</span>Tagihan Min.</label>
+		<div class="col-sm-7">
+			<input type="number" decimal-number maxlength="15" class="form-control" min="0" ng-model="tagihanData.tagihanMin" name="tagihanmin" id="tagihanmin" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/" step="0.0001" required>
+			<span class="has-error" ng-show="tagihanData.tagihanmin.$touched && tagihanData.tagihanmin.$invalid">
+				Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+			</span>
+		</div>
+	</div>
+    <div class="form-group">
+    	<label class="col-sm-2 control-label" for="valuta"><span class="text-danger">*</span>Valuta</label>
+     	<div class="col-sm-7">
+        	<select pf-select ng-model="tagihanData.valuta" name="valuta" ng-options='option.value as option.caption for option in valuta' id="jns-1" required></select>
+        	<span class="has-error" ng-show="tagihanData.valuta.$touched && tagihanData.valuta.$invalid">Isi Valuta dibutuhkan.</span>
+      	</div>
+    </div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span> Status Aktif</label>
+		<div class="col-sm-7">
+			<input bs-switch type="checkbox" switch-on-text="Ya" switch-off-text="Tidak" ng-model="tagihanData.kodeAktif" switch-active="{{isActive}}" ng-true-value="1" ng-false-value="0" checked />
+	  	</div>
+	</div>
+    <div class="form-group">
+      	<div class="col-sm-offset-2 col-sm-7">
+          	<button class="btn btn-default btn-lg" onclick="location.href='#/tagihanminimum';" >Batal</button>
+          	<button type="button" class="btn btn-primary btn-lg" ng-disabled="tagihanminbaru.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Buat Baru</button>
+      	</div>
+    </div>
+</form>

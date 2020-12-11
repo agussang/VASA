@@ -1,0 +1,78 @@
+<h2>Daftar Kapal Pelabuhan {{namaCabang}}</h2>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">FILTER</label>
+        <div class="col-sm-8">
+            <label class="radio-inline">
+                <input type="radio" name="optRamdoor" ng-model="isLabuh" value="">Semua
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optRamdoor" ng-model="isLabuh" value="0">Labuh Rede Luar
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optRamdoor" ng-model="isLabuh" value="1">Langsung Tambat
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Tgl. Kedatangan</label>
+        <div class="col-sm-3">
+            <div pf-datepicker id="tglMasukVal" options="options" data-date-format="dd-mm-yyyy" date="tglDatangMulai" required></div>
+        </div>
+        <div class="col-sm-1" style="width: 30px;padding-left: 0px;padding-right: 0px">s.d.</div>
+        <div class="col-sm-3">
+            <div pf-datepicker id="tglSelesaiVal" options="options" data-date-format="dd-mm-yyyy" date="tglDatangSelesai" required></div>
+        </div>
+    </div>  
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Nama Kapal </label>
+        <div class="col-sm-3" style="display:inline-flex;">
+             <input ng-model="sandarNamaKapal" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-8">
+            <button type="button" class="btn btn-warning" ng-click="reset()"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
+            <button type="button" class="btn btn-primary" ng-click="filter()" ng-disabled="tglDatangMulai != null && tglDatangSelesai == undefined || tglDatangMulai == undefined && tglDatangSelesai != null && sandarNamaKapal!=null"><i class="fa fa-filter" aria-hidden="true"></i> Filter</button>
+        </div>
+    </div>
+</form>
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td colspan="5">
+                <span>Show : </span>
+                <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" onclick="location.href='#/kedatangan/add';" value="Kedatangan Kapal Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <th>Kode Kapal</th>
+            <th>Nama Kapal</th>
+            <th>Waktu Kedatangan</th>
+            <th>Posisi</th>
+            <th class="table-col-full text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-show="kedatanganList.length == 0">
+            <td colspan="5">Data tidak tersedia.</td>
+        </tr>
+        <tr ng-repeat="item in kedatanganList">
+            <td>{{item.kodeKapal}}</td>
+            <td>{{item.namaKapal}}</td>
+            <td>{{item.tglDatang | date : 'dd-MM-yyyy HH:mm' }}</td>
+            <td>{{item.posisi}}</td>
+            <td class="text-center">
+                <a ng-show="item.asalData == 'V'" href="#/kedatangan/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true" hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>

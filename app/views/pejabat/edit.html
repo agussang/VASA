@@ -1,0 +1,138 @@
+<h2>Pejabat Pengesahan Edit</h2>
+<form class="form-horizontal" name="pejabatForm">
+  <div class="form-group">
+  <label class="col-sm-2 control-label" ><span class="text-danger">*</span>NIP</label>
+    <div class="col-sm-3">
+        <input type="text" maxlength="15" class="form-control" name="nip" ng-model="dataPejabat.nip" required>
+        <span class="has-error" ng-show="pejabatForm.nip.$touched && pejabatForm.nip.$invalid">
+          Isi nip dibutuhkan.
+        </span>
+    </div>
+
+    <div class="col-sm-4">
+        <input type="text" maxlength="75" name="nama" class="form-control" ng-model="dataPejabat.nama" placeholder="Nama" required>
+        <span class="has-error" ng-show="pejabatForm.nama.$touched && pejabatForm.nama.$invalid">
+          Isi nama dibutuhkan.
+        </span>
+    </div>
+      <a ng-if="!dataPejabat.nama == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+  </div>
+
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Jabatan</label>
+    	<div class="col-sm-7">
+      		 	<input type="text" maxlength="50" class="form-control" ng-model="dataPejabat.jabatan" name="jabatan" required>
+            <span class="has-error" ng-show="pejabatForm.jabatan.$touched && pejabatForm.jabatan.$invalid">
+              Isi jabatan dibutuhkan.
+            </span>
+    	</div>
+      <a ng-if="!dataPejabat.jabatan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+  	</div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label" for="tglberlaku"><span class="text-danger">*</span>Nama Tercetak</label>
+    	<div class="col-sm-7">
+          <div class="form-control">{{dataPejabat.nama}}</div>
+            <span class="has-error" ng-show="pejabatForm.namaTercetak.$touched && pejabatForm.namaTercetak.$invalid">
+              Isi nama tercetak dibutuhkan.
+            </span>
+    	</div>
+  	</div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Jabatan Tercetak</label>
+      <div class="col-sm-7">
+          <!--<input type="text"  class="form-control" ng-model="dataPejabat.jabatanTercetak" name="jabatanTercetak" required> -->
+          <div class="form-control">{{dataPejabat.jabatan}}</div>
+          <span class="has-error" ng-show="pejabatForm.jabatanTercetak.$touched && pejabatForm.jabatanTercetak.$invalid">
+            Isi jabatan tercetak dibutuhkan.
+          </span>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Jenis Dokumen</label>
+    <div class="col-sm-3">
+        <div class="form-control">{{dataPejabat.jenisDokumen}}</div>
+        <span class="has-error" ng-show="pejabatForm.jenisDokumen.$touched && pejabatForm.jenisDokumen.$invalid">
+          Isi jenis dokumen dibutuhkan.
+        </span>
+    </div>
+    <div class="col-sm-4">
+      <select pf-select ng-model="dataPejabat.jenisDokumen" name="jenisDokumen" ng-options='option.value as option.caption for option in jenisDokumen' id="jns-1" required></select>
+        <span class="has-error" ng-show="pejabatForm.jenisDokumenText.$touched && pejabatForm.jenisDokumenText.$invalid">
+          Isi jenis dokumen dibutuhkan.
+        </span>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Level</label>
+    <div class="col-sm-3">
+      <div class="form-control">{{dataPejabat.levelPejabat}}</div>
+      <span class="has-error" ng-show="pejabatForm.levelPejabat.$touched && pejabatForm.levelPejabat.$invalid">
+        Isi level pejabat dibutuhkan.
+      </span>
+    </div>
+    <div class="col-sm-4">
+        <select pf-select ng-model="dataPejabat.levelPejabat" name="levelPejabat" ng-options='option.value as option.caption for option in level' id="jns-1" required></select>
+        <span class="has-error" ng-show="pejabatForm.levelPejabatText.$touched && pejabatForm.levelPejabatText.$invalid">
+          Isi level pejabat dibutuhkan.
+        </span>
+    </div>
+  </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Pengesahan Sebagai</label>
+    <div class="col-sm-3">
+        <div class="form-control">{{dataPejabat.sebagai}}</div>
+        <span class="has-error" ng-show="pejabatForm.sebagai.$touched && pejabatForm.sebagai.$invalid">
+          Isi sebagai dibutuhkan.
+        </span>
+    </div>
+    <div class="col-sm-4">
+        <select pf-select ng-model="dataPejabat.sebagai" name="levelPejabat" ng-options='option.value as option.caption  for option in sebagai' id="jns-1" required></select>
+        <span class="has-error" ng-show="pejabatForm.sebagaiText.$touched && pejabatForm.sebagaiText.$invalid">
+          Isi sebagai dibutuhkan.
+        </span>
+    </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Surat Penunjukan</label>
+      <div class="col-sm-7">
+          <input type="text"  maxlength="50" class="form-control" ng-model="dataPejabat.noSuratPenunjukan" name="noSuratPenunjukan" required>
+          <span class="has-error" ng-show="pejabatForm.noSuratPenunjukan.$touched && pejabatForm.noSuratPenunjukan.$invalid">
+            Isi surat penunjukan dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Otorisasi</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="YA" switch-off-text="TIDAK" ng-model="dataPejabat.otorisasi" ng-true-value ="true" ng-false-value="false">
+        <span class="has-error" ng-show="pejabatForm.otorisasi.$touched && pejabatForm.otorisasi.$invalid">
+          Isi otorisasi dibutuhkan.
+        </span>
+      </div>
+    </div>
+
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="pejabatForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+	    </div>
+  	</div>
+
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+    $("[name='status-checkbox']").bootstrapSwitch();
+</script>

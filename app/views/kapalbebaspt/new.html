@@ -1,0 +1,67 @@
+<h2>Kapal Bebas Pandu Tunda Baru</h2>
+<form name="kapalBebasPTNew" class="form-horizontal" onsubmit="return Validate(this);">
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nomorSk"><span class="text-danger">*</span>Nomor SK</label>
+      <div class="col-sm-7">
+        <input type="text" name="nomorSk" maxlength="30" class="form-control" ng-model="kapalbebaspt.nomorSk" required>
+        <span class="has-error" ng-show="kapalBebasPTNew.nomorSk.$touched && kapalBebasPTNew.nomorSk.$invalid">
+                Isi Nomor SK dibutuhkan.
+        </span>
+      </div>
+    <a ng-if="!kapalbebaspt.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="kodeKapal"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+        <input type="text" id="no-2" name="kodeKapal" class="form-control" ng-model="kapalbebaspt.mdmKapal" bs-typeahead bs-options="mdmKapal.mkplNama for mdmKapal in getListOfmdmKapal($viewValue)" data-limit="10" ng-blur="validationLookupKapal()" required>
+          <a ng-if="!mdmKapal == ''" href="#/profilkapal/{{mdmKapal.mkplKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+        <span class="has-error" ng-show="kapalBebasPTNew.kodeKapal.$touched && kapalBebasPTNew.kodeKapal.$invalid">
+              Isi Nama Kapal dibutuhkan.
+        </span>
+    </div>    
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tetap-7"><span class="text-danger">*</span>Jenis Bebas Pandu Tunda</label>
+      <div class="col-sm-7">
+        <select pf-select ng-model="kapalbebaspt.jenisBebasPt" name="jenisBebasPt" ng-options='option.value as option.caption for option in jenisBebasPt' required></select>
+        <span class="has-error" ng-show="kapalBebasPTNew.jenisBebasPt.$touched && kapalBebasPTNew.jenisBebasPt.$invalid">
+            Isi jenis kapal dibutuhkan.
+        </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tglBerlaku"><span class="text-danger">*</span>Tgl. Berlaku</label>
+      <div class="col-sm-7">
+          <div pf-datepicker  options="options" id="IdtglBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" date="tglBerlaku" required></div>
+          <span class="has-error" ng-show="kapalBebasPTNew.tglBerlaku.$touched && kapalBebasPTNew.tglBerlaku.$invalid">
+                Isi Tgl. Berlaku dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="file-8"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" ng-model="kapalbebaspt.dokumen" class="form-control" class="form-control" name="file" base-sixty-four-input required  maxsize="500" accept=".jpeg,.jpg,.pdf">
+          <span class="has-error" ng-show="kapalBebasPTNew.dokumen.$touched && kapalBebasPTNew.dokumen.$invalid">
+            Isi Dok. Pendukung dibutuhkan.
+          </span>
+          <span class="has-error" ng-show="errorMessageUploadFile">
+            {{errorMessageUploadFile}}
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-4">
+        <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="kapalbebaspt.flagAktif" ng-true-value ="1" ng-false-value="0">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button class="btn btn-default btn-lg" onclick="location.href='#/kapal_bebas_pandu_tunda/list';" >Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="kapalBebasPTNew.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Buat Baru</button>
+      </div>
+    </div>
+</form>
+<script>
+</script>

@@ -1,0 +1,74 @@
+<h2>Kapal Charter Baru</h2>
+<form name="kapalCharterForm" class="form-horizontal">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="namaKapal"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+      		<input type="text" id="no-2" name="namaKapal" class="form-control" ng-model="mdmKapal"
+                 bs-typeahead bs-options="mdmKapal.mkplNama for mdmKapal in getListOfmdmKapal($viewValue)" data-limit="10"
+                  ng-blur="validationLookupKapal()" required>
+          <a ng-if="!mdmKapal == ''" href="#/profilkapal/{{mdmKapal.mkplKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+      <span class="has-error" ng-show="kapalCharterForm.namaKapal.$touched && kapalCharterForm.namaKapal.$invalid">
+      Isi nama kapal dibutuhkan.
+      </span>
+  	</div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label" for="kantorId"><span class="text-danger">*</span>Nama Perusahaan</label>
+    	<div class="col-sm-7" style="display: inline-flex;">
+          <input type="text" name="kantorId" class="form-control" ng-model="mdmPelanggan"
+                 bs-typeahead bs-options="mdmPelanggan.mplgNamaKode for mdmPelanggan in getListOfPelanggan($viewValue)" data-limit="10"
+                 ng-focus="checkValue(mdmPelanggan)" ng-blur="validationLookupPelanggan()" required>
+           <a ng-if="!mdmPelanggan == ''" href="#/profilperusahaan/{{mdmPelanggan.mplgKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+        <span class="has-error" ng-show="kapalCharterForm.kantorId.$touched && kapalCharterForm.kantorId.$invalid">
+        Isi nama perusahaan dibutuhkan.
+        </span>
+  	</div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+        <div class="col-sm-2">
+             <div pf-datepicker id="tglMulaiBerlaku" data-date-format="dd-mm-yyyy" options="options" date="tglMulaiBerlaku" required></div>
+        </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+        <div class="col-sm-2">
+             <div pf-datepicker id="tglSelesaiBerlaku"data-date-format="dd-mm-yyyy" options="options" date="tglSelesaiBerlaku" required></div>
+        </div>
+  	</div>
+    <!--
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="dokCharter"><span class="text-danger">*</span>Nomor Dokumen</label>
+      <div class="col-sm-7">
+          <input type="text" id="dokCharter" class="form-control" name="dokCharter" ng-model="kapalCharter.dokCharter" required>
+          <span class="has-error" ng-show="kapalCharterForm.dokCharter.$touched && kapalCharterForm.dokCharter.$invalid">
+            Isi Nomor Dokumen charter dibutuhkan.
+          </span>
+      </div>
+    </div> -->
+     <div class="form-group">
+    <label class="col-sm-2 control-label" for="dokumenUpload"><span class="text-danger">*</span>Dok. Charter</label>
+      <div class="col-sm-7">
+
+          <input type="file" id="dokumenUpload" class="form-control" file-input="uploadFile" accept="
+          .pdf,.jpg" ng-model="kapalCharter.dokCharter" valid-file ng-required="true" />
+
+          <span class="has-error" ng-show="kapalCharterForm.dokumenUpload.$touched && kapalCharterForm.dokumenUpload.$invalid">
+            Isi File dibutuhkan.
+          </span>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="status"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="kapalCharter.status" ng-true-value ="1" ng-false-value="0" checked>
+      </div>
+    </div>
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="kapalCharterForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>

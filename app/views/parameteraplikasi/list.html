@@ -1,0 +1,44 @@
+<h2>Parameter Aplikasi</h2>
+<div pf-filter config="filterConfig"></div>
+<br>
+	<table class="datatable table table-striped table-bordered">
+  		<thead>
+        <tr>
+            <td colspan="3">
+                <span>Show : </span>
+                <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/parameteraplikasi/new';" value="Parameter Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+          <td colspan="3" class="text-center">{{pagingText}}</td>
+        </tr>
+  			<tr>
+          <th class="col-xs-1">No</th>
+	  			<th ng-click="sortBy='nama'; sortDesc = !sortDesc; pageChanged(0);">
+            <div class="pull-left">Nama Parameter</div>
+            <div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nama' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nama' && sortDesc)}"></span></div>
+          </th>
+          <th class="table-col-full text-center">Action</th>
+  			</tr>
+  		</thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td>{{noIndex+$index +1}}</td>
+      		<td>{{item.nama}}</td>
+      		<td class="text-center">
+            <a ng-show="userRole.rflag" href="#/parameteraplikasi/view/{{item.nama}}" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+            <a ng-show="userRole.uflag" href="#/parameteraplikasi/edit/{{item.nama}}" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+            <a ng-show="userRole.dflag" ng-click="deleteParameterByGroup(item.nama)" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+      		</td>
+        </tr>
+    </tbody>
+  </table>
+<div>
+  <paging class="small" page="currentPage" page-size="pageSize"
+     total="totalItems" adjacent="2" dots="..." scroll-top="true"
+     hide-if-empty="false" ul-class="pagination" active-class="active"
+     disabled-class="disabled" show-prev-next="true"
+     style="cursor: pointer;" paging-action="pageChanged(page)">
+  </paging>
+</div>

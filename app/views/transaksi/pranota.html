@@ -1,0 +1,1439 @@
+<div class="row" ng-hide="statusPermohonan==='T' && !isPranotaPublic">
+   <div class="col-md-6">
+      <h2 ng-show="statusPermohonan==='R'">Cek Pranota {{sktdTeks}}</h2>
+      <h2 ng-show="statusPermohonan==='T'">Pranota {{sktdTeks}}</h2>
+   </div>
+   <div class="col-md-6">
+      <div ng-show="statusPermohonan==='R'" class="stepwizard">
+         <div class="stepwizard-row setup-panel">
+            <div class="stepwizard-step">
+               <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+               <p>Permohonan</p>
+            </div>
+            <div class="stepwizard-step">
+               <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+               <p>Perencanaan</p>
+            </div>
+            <div class="stepwizard-step">
+               <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+               <p>Penetapan</p>
+            </div>
+            <div class="stepwizard-step">
+               <a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">4</a>
+               <p>Realisasi</p>
+            </div>
+            <div class="stepwizard-step">
+               <a type="button" class="btn btn-sm btn-primary btn-circle">5</a>
+               <p>Verifikasi</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="text-center" ng-show="responsePranota && !isPranotaPublic">
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="close()" ng-show="!isPranotaPublic">Tutup</button>
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-show="isShowBtnEkspor" ng-click="cetakPDF(responsePranota)">Ekspor  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+   <h3 ng-show="!isShowBtnEkspor" class="pranta-not-found">Data Pranota tidak tersedia</h3>
+</div>
+
+<div ng-repeat="dataPranota in responsePranota">
+   <div class="view-pranota {{!isPranotaPublic?'border-pranota':'border-publicpranota'}}" ng-show="dataPranota">
+      <div id="exportthis">
+         <table class="table table-pranota font-pranota"> 
+            <tr>
+               <td colspan="4">PT. (PERSERO) PELABUHAN INDONESIA III CABANG : {{dataPranota.kodeCabangText}}
+                  <!-- <button class="pull-right btn btn-primary btn-lg" ng-disabled="dataPranota.jenisPranota==='normal'?statusButtonCheckKirimNota===false:statusButtonCheckKirimNotaAirKapal===false" ng-click="confirmKirimNota(dataPranota)">{{dataPranota.textButtonKirimNota}}</button> -->
+               </td>
+            </tr>
+            <tr>
+               <td colspan="4" class="text-center">
+                  <!-- <b>PERHITUNGAN JASA {{dataPranota.itemAirKapal.length>0?'AIR KAPAL':'LABUH/TAMBAT/PANDU/TUNDA/KEPIL'}}</b> -->
+                  <b>{{dataPranota.judulPranota}}</b>
+               </td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">No PPK Pertama</td>
+               <td class="col-xs-3">: {{dataPranota.noPpk1}}</td>
+               <td class="col-xs-2">Pelanggan</td>
+               <td class="col-xs-3">: {{dataPranota.namaAgen}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">Kapal</td>
+               <td>: {{dataPranota.namaKapal}}</td>
+               <td class="col-xs-2">Bank</td>
+               <td>: - </td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">Jenis Kapal</td>
+               <td>: {{dataPranota.jenisKapal}}</td>
+               <td class="col-xs-2">Valuta</td>
+               <td>: {{dataPranota.valuta}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">Pelayaran</td>
+               <td>: {{dataPranota.jenisPelayaran}}</td>
+               <td class="col-xs-2">Pelabuhan Asal/Tujuan</td>
+               <td>: {{dataPranota.pelabuhanAsal}} / {{dataPranota.pelabuhanTujuan}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">Trayek</td>
+               <td>: {{dataPranota.trayek}}</td>
+               <td class="col-xs-2">Bendera</td>
+               <td>: {{dataPranota.bendera}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">Kunjungan</td>
+               <td>: {{dataPranota.sifatKunjungan}}</td>
+               <td class="col-xs-2">Kemasan Bongkar/Muat</td>
+               <td>: {{dataPranota.kemasanBongkar}} / {{dataPranota.kemasanMuat}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2">GT/LOA/DWT</td>
+               <td>: {{dataPranota.gtKapal}} / {{dataPranota.loaKapal}} / {{dataPranota.dwtKapal?dataPranota.dwtKapal:''}}</td>
+               <td class="col-xs-2">Tonase Bongkar/Muat</td>
+               <td>: {{dataPranota.jumlahBongkar}} {{dataPranota.satuanBongkar}} / {{dataPranota.jumlahMuat}} {{dataPranota.satuanMuat}}</td>
+            </tr>
+            <tr>
+               <td class="col-xs-2"></td>
+               <td> </td>
+               <td class="col-xs-2">Batas Masa Tambat</td>
+               <td>: {{dataPranota.batasMasaTambat}}</td>
+            </tr>
+         </table>
+            <div class ="access-jasa-labuh">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:1}">
+               <hr class=" hr-pranota" ng-show="item.jenisJasa===1">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag" ng-disabled="statusButtonVerifiedLabuh===false" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota  pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag"><i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi</span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}} </td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: Dari {{item.reaDetails.tglMasuk  | date:'dd-MM-yyyy HH:mm'}} sampai {{item.reaDetails.tglKeluar  | date:'dd-MM-yyyy HH:mm'}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: {{item.reaDetails.namaLokasi}}</td>
+                     </tr>
+                     <tr ng-show="item.reaDetails.jenisGerakanText">
+                        <td colspan="4">{{item.reaDetails.jenisGerakanText}}</td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<99">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">Masa {{key}}</td>
+                                 <td colspan="3">(
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'GT',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Masa Labuh',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Tarif',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Prosen I',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span>% ) X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Prosen II',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span>% = 
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',jenisBiaya:'PENDAPATAN',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='999'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.value | formatCurr2}}</span>
+                                 </td>
+                              </tr>
+                              <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= Rp</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+<!--                               
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key>110 && key<888">
+                        <td colspan="6" ng-show="key!=='777'">
+                           <br>
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td colspan="3">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Biaya Jasa',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value}}%</span> = 
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='888'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+          <!--            <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2" class="text-right "><hr class="hr-pranota-jumlah"></td>
+                     </tr>                        
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td>Biaya Per Pelayanan {{item.jenisJasaText}}</td>
+                        <td clas="text-right">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr> -->
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr>
+                     <tr>
+                        <td colspan="2">Total Biaya {{item.jenisJasaText}}</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr2}}</td>
+                        <!-- <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td> -->
+                     </tr>
+                    <!--  <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</td>
+                     </tr> -->
+                     <tr ng-show="item.jenisJasa===5">
+                        <td colspan="4"><hr class="hr-pranota"></td>
+                     </tr>
+                  </table>
+                  <!-- <hr ng-hide="item.jenisJasa===5" class="hr-pranota"> -->
+
+               </div>
+         </div>
+
+         <!-- start BARIS JASA TAMBAT -->
+         <div class ="access-jasa-tambat">
+            <div ng-repeat="(key,value) in dataPranota.items | groupBy:'noPpkJasa'">
+            <div ng-repeat="item in value | where:{jenisJasa:2}">
+            <hr class=" hr-pranota" ng-show="item.jenisJasa===2">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag && !isRegionalByPass() && isTerminal(item.reaDetails.kodeTerminal)" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi
+                        <a class="large info-tooltip" ng-show="isStatusVerifikasiLabuh" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-placement="left" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question" ng-click="confirmBatalVerifikasi(item.reaDetails)"></i></a>
+                     </span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                  <!-- <stable class="datatable table table-striped table-bordered"> -->
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: Dari {{item.reaDetails.tglMulai | date:'dd-MM-yyyy HH:mm'}} sampai {{item.reaDetails.tglSelesai | date:'dd-MM-yyyy HH:mm'}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: {{item.reaDetails.namaLokasi}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Kade Meter</td>
+                        <td colspan="3">: {{item.reaDetails.kadeAwal}} - {{item.reaDetails.kadeAkhir}}</td>
+                     </tr>
+                     <tr ng-show="item.reaDetails.jenisGerakanText">
+                        <td colspan="4">{{item.reaDetails.jenisGerakanText}}</td>
+                     </tr>
+                     <tr ng-show="item.reaDetails.kodeKapalTender">
+                        <td class="col-xs-2 table-pranota">
+                           Kapal Tender
+                        </td>
+                        <td colspan="3">: {{item.reaDetails.kodeKapalTenderText}} ({{item.reaDetails.kodeKapalTender}})</td>
+                        <td>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<2">
+                        <td class="col-xs-2 table-pranota">
+                           Kemasan Bongkar/Muat
+                        </td>
+                        <td colspan="4">: 
+                           <span ng-repeat="detail in details | where:{namaKomponen:'Jenis Kemasan Bongkar',urutan:key}" ng-if="key<2">{{detail.ext1?detail.ext1:'-'}} /</span>  <span ng-repeat="detail in details | where:{namaKomponen:'Jenis Kemasan Muat',urutan:key}" ng-if="key<2">{{detail.ext1?detail.ext1:'-'}}</span>
+                        </td>
+                     </tr>
+                     <!-- Kapal Gandeng Isi -->
+                     <tr>
+                        <td class="col-xs-3" colspan="6">
+                           <table class="table table-pranota-nospace" >
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='100'">
+                                 <td>KAPAL YANG DI GANDENG</td>
+                                 <td>GRT</td>
+                                 <td>LOA</td>
+                                 <td>DWT</td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'">
+                                 <td class="col-xs-10">
+                                    <span ng-hide="key==='110' || key<100" ng-repeat="detail in details | where:{namaKomponen:'Kapal Tongkang',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td class="text-right">
+                                    <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'GT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td>
+                                    <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'LOA Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td>
+                                    <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'DWT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr>
+                              <tr class="td-kapalgandeng" ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='110'">
+                                 <td>JUMLAH</td>
+                                 <td ng-repeat="detail in details | where:{namaKomponen:'Total GT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                 </td>
+                                 <td ng-repeat="detail in details | where:{namaKomponen:'Total LOA Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                 </td>
+                                 <td ng-repeat="detail in details | where:{namaKomponen:'Total DWT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>   
+                     <!-- end Kapal Gandeng Isi -->
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<50">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td colspan="3">
+                                    ( <span ng-repeat="detail in details | where:{namaKomponen:'GT',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Tarif',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Etmal',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value | formatCurr}}%</span> ) X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Masa',urutan:key}">{{detail.value | formatCurr}}%</span> = 
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr }}</span>
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total Ori',urutan:key}" ng-show="detail.value"><br>( Nilai Asli = {{detail.value | formatCurr }} )</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key>50 && key<99">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td colspan="3">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Biaya Jasa',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value}}</span>% = 
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr}}</span>
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total Ori',urutan:key}" ng-show="detail.value"><br>( Nilai Asli = {{detail.value | formatCurr }} )</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right"></td>
+                                 <!-- <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td> -->
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='999'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.value | formatCurr2}}</span>
+                                 </td>
+                              </tr>
+                              <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= Rp</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key>110 && key<888">
+                        <td colspan="6" ng-show="key!=='777'">
+                           <br>
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td colspan="3">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Biaya Jasa',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value}}%</span> = 
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='888'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr>
+                     <tr>
+                        <td colspan="2">Total Biaya {{item.jenisJasaText}}</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr2}}</td>
+                       <!--  <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td> -->
+                     </tr>
+                     <!-- <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</span></td>
+                     </tr> -->
+                  </table>
+               </div>
+               </div>
+         </div>
+         <!-- end BARIS JASA TAMBAT -->
+
+         <!-- start BARIS JASA PANDU -->
+         <div class ="access-jasa-pandu">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:4}">
+                  <hr class=" hr-pranota" ng-show="item.jenisJasa===4">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag && isRegional" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi
+                        <a class="large info-tooltip" ng-show="isStatusVerifikasiLabuh" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-placement="left" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question" ng-click="confirmBatalVerifikasi(item.reaDetails)"></i></a>
+                     </span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}} <!--<span ng-show="item.reaDetails.noForm">No.1A : {{item.reaDetails.noForm}}</span>--></td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: <span ng-if="item.reaDetails.tglMulai">Dari {{item.reaDetails.tglMulai | date:'dd-MM-yyyy HH:mm'}} sampai {{item.reaDetails.tglSelesai | date:'dd-MM-yyyy HH:mm'}}</span></td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: <span ng-if="item.reaDetails.namaLokasiAsal">Dari {{item.reaDetails.namaLokasiAsal}} Ke {{item.reaDetails.namaLokasiTujuan}}</span></td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Jenis Pandu</td>
+                        <td colspan="3">: <span ng-if="item.reaDetails.jenisPanduText">{{item.reaDetails.jenisPanduText}}</span></td>
+                     </tr>
+                     <!-- <tr ng-show="item.reaDetails.jenisGerakanText">
+                        <td colspan="4">{{item.reaDetails.jenisGerakanText}}</td>
+                     </tr> -->
+                     <tr>
+                        <td colspan="4">
+                           <!-- DETAIL URUTAN 1 -->
+                           <table class="table table-pranota-nospace">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <table class="table table-pranota-nospace" >
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='100'">
+                                          <td>KAPAL YANG DI GANDENG</td>
+                                          <td>GRT</td>
+                                          <td>LOA</td>
+                                          <td>DWT</td>
+                                       </tr>
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'">
+                                          <td class="col-xs-10">
+                                             <span ng-hide="key==='110' || key<100" ng-repeat="detail in details | where:{namaKomponen:'Kapal Tongkang',urutan:key}">{{detail.ext1}}</span>
+                                          </td>
+                                          <td class="text-right">
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'GT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td>
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'LOA Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td>
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'DWT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr>
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='110'">
+                                       <!-- <tr ng-repeat="detail in item.details | where:{urutan:'110'}"> -->
+                                          <td class="col-xs-10">JUMLAH</td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total GT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total LOA Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total DWT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3"><span ng-show="item.reaDetails.jenisGerakanText">{{item.reaDetails.jenisGerakanText}},</span></td>
+                                 <td colspan="5"> </td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<99">
+                                 <td colspan="6">
+                                    <table class="table table-pranota">
+                                       <tr ng-repeat="detail in details | where:{namaKomponen:'Gerakan',urutan:key}">
+                                          <td class="col-xs-3">
+                                          <!-- {{details}} -->
+                                          B. Tetap</td>
+                                          <td colspan="3"> 
+                                             ( <span ng-repeat="detail in details | where:{namaKomponen:'Gerakan',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                             <span ng-repeat="detail in details | where:{namaKomponen:'Tarif Tetap',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen I',urutan:key}">{{detail.value | formatCurr}}%</span>
+                                             ) X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen II',urutan:key}">{{detail.value | formatCurr}}% = </span>
+                                             <span ng-repeat="detail in details | where:{namaKomponen:'Total Biaya Tetap',urutan:key}">{{detail.value | formatCurr }}</span>
+                                          </td>
+                                          <td class="col-xs-1"></td>
+                                          <td class="col-xs-2 text-right"></td>
+                                       </tr>
+                                       <tr ng-repeat="detail in details | where:{namaKomponen:'GT',urutan:key}">
+                                          <td class="col-xs-3">B. Variable</td>
+                                          <td colspan="3"> 
+                                             ( <span ng-repeat="detail in details | where:{namaKomponen:'GT',urutan:key}">{{detail.value | formatCurr}}</span> X 1 X <span ng-repeat="detail in details | where:{namaKomponen:'Tarif Variable',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen I',urutan:key}">{{detail.value | formatCurr}}%</span>
+                                             ) X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen II',urutan:key}">{{detail.value | formatCurr}}% = </span>
+                                             <span ng-repeat="detail in details | where:{namaKomponen:'Total Biaya Variabel',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td class="col-xs-1"></td>
+                                          <td class="col-xs-2 text-right"></td>
+                                       </tr>
+                                       <tr ng-repeat="detail in details | where:{ext1:'Tambahan SLG',urutan:key}">
+                                          <td class="col-xs-3">Tambahan SLG</td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                          <td class="col-xs-2 text-right"><span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr}}</span></td>
+                                       </tr>
+                                       <tr ng-show="dataPranota.valuta==='USD'" ng-repeat="detail in details | where:{ext1:'Tambahan SLG',urutan:key}">
+                                          <td class="col-xs-3"></td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= Rp</td>
+                                          <td class="col-xs-2 text-right"><span ng-repeat="detail in details | where:{namaKomponen:'Sub Total IDR',urutan:key}">{{detail.value | formatCurr}}</span></td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='999'">
+                                 <td colspan="6">
+                                    <table class="table table-pranota">
+                                       <!-- <tr>
+                                          <td class="col-xs-3"><span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.namaKomponen}}</span>
+                                          </td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                          <td class="col-xs-2 text-right">
+                                             <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr> -->
+
+                                       <tr>
+                                          <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.namaKomponen}}</span>
+                                          </td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                          <td class="col-xs-2 text-right">
+                                             <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.value | formatCurr2}}</span>
+                                          </td>
+                                       </tr>
+                                       <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                          <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.namaKomponen}}</span>
+                                          </td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= Rp</td>
+                                          <td class="col-xs-2 text-right">
+                                             <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr> -->
+
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key>110 && key<888">
+                                 <td colspan="6" ng-show="key!=='777'">
+                                    <br>
+                                    <table class="table table-pranota">
+                                       <tr>
+                                          <td class="col-xs-3">
+                                             <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                          </td>
+                                          <td colspan="3">
+                                             <span ng-repeat="detail in details | where:{namaKomponen:'Biaya Jasa',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                            <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value}}%</span> = 
+                                            <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr }}</span>
+                                          </td>
+                                          <td class="col-xs-1"></td>
+                                          <td class="col-xs-2"></td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='888'">
+                                 <td colspan="6">
+                                    <table class="table table-pranota">
+                                       <tr>
+                                          <td class="col-xs-3"><span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.namaKomponen}}</span>
+                                          </td>
+                                          <td colspan="3"></td>
+                                          <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                          <td class="col-xs-2 text-right">
+                                             <span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                              <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='99'">
+                                 <td colspan="6">
+                                    <table class="table table-pranota">
+                                       <tr>
+                                          <td class="col-xs-3">FUEL SURCHARGE</td>
+                                          <td colspan="3"> 
+                                             : (( <span ng-repeat="detail in details | where:{namaKomponen:'Surcharge BBM',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Jumlah kapal',urutan:key}">{{detail.value | formatCurr}}</span> ) / <span ng-repeat="detail in details | where:{namaKomponen:'Nilai kurs',urutan:key}">{{detail.value | formatCurr}}</span> )
+                                          </td>
+                                          <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                          <td class="col-xs-2 text-right">
+                                             <span ng-repeat="detail in details | where:{namaKomponen:'Total',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="col-xs-3">Tgl. BBM</td>
+                                          <td colspan="3"> 
+                                              : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Tanggal BBM'">{{detail.ext1?detail.ext1:'-' | date:'dd-MM-yyyy'}}</span> Harga BBM : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Harga BBM'">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td class="col-xs-1"></td>
+                                          <td class="col-xs-2 text-right">
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td class="col-xs-3">Tgl. Kurs</td>
+                                          <td colspan="3"> 
+                                              : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Tanggal kurs'">{{detail.ext1?detail.ext1:'-' | date:'dd-MM-yyyy'}}</span> Nilai Kurs : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Nilai kurs'">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td class="col-xs-1"></td>
+                                          <td class="col-xs-2 text-right">
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2" class="text-right"><hr class="hr-pranota-jumlah"></td>
+                     </tr>                        
+                     </tr>
+                     <!-- <tr>
+                        <td></td>
+                        <td>Biaya Per Pelayanan {{item.jenisJasaText}}</td>
+                        <td clas="text-right">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr> -->
+                     <tr>
+                        <td colspan="2">Total Biaya {{item.jenisJasaText}}</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr2}}</td>
+                        <!-- <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td> -->
+                     </tr>
+                     <!-- <tr>
+                        <td colspan="4"><hr class="hr-pranota"></td>
+                     </tr>
+                     <tr>
+                        <td colspan="4">Tgl/Nilai Kurs : {{tglSekarang | date:'dd-MM-yyyy'}} /{{dataPranota.valutaMataUang}} 1</td>
+                     </tr>
+                     <tr>
+                        <td ></td>
+                        <td class="text-right">Biaya Jasa Pandu/Tunda/Kepil</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2" class="text-right">Biaya Jasa Pandu/Tunda/Kepil ({{dataPranota.valuta}})</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr> -->
+                     <!-- <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</td>
+                     </tr> -->
+                     <!-- <tr ng-show="item.jenisJasa===5">
+                        <td colspan="4"><hr class="hr-pranota"></td>
+                     </tr> -->
+                  </table>
+                  <!-- <hr ng-hide="item.jenisJasa===5" class="hr-pranota"> -->
+               </div>
+         </div>
+         <!-- end BARIS JASA PANDU -->
+
+         <!-- start BARIS JASA TUNDA --> 
+         <div class ="access-jasa-tunda">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:5}">
+               <hr class=" hr-pranota" ng-show="item.jenisJasa===5">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag && isRegional" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi
+                        <a class="large info-tooltip" ng-show="isStatusVerifikasiLabuh" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-placement="left" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question" ng-click="confirmBatalVerifikasi(item.reaDetails)"></i></a>
+                     </span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}}  <!--<span ng-show="item.reaDetails.noForm">No.1A : {{item.reaDetails.noForm}}</span>--></td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: Dari {{item.reaDetails.tglMulai | date:'dd-MM-yyyy HH:mm'}} sampai {{item.reaDetails.tglSelesai | date:'dd-MM-yyyy HH:mm'}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: Dari {{item.reaDetails.namaLokasiAsal}} sampai {{item.reaDetails.namaLokasiTujuan}}</td>
+                     </tr>
+                     <tr ng-show="item.reaDetails.jenisGerakanText">
+                        <td colspan="4">{{item.reaDetails.jenisGerakanText}}</td>
+                     </tr>
+                     <!-- Kapal Gandeng Isi -->
+                     <tr>
+                        <td colspan="4">
+                           <table class="table table-pranota-nospace">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <table class="table table-pranota-nospace" >
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='100'">
+                                          <td>KAPAL YANG DI GANDENG</td>
+                                          <td>GRT</td>
+                                          <td>LOA</td>
+                                          <td>DWT</td>
+                                       </tr>
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'">
+                                          <td class="col-xs-10">
+                                             <span ng-hide="key==='110' || key<100" ng-repeat="detail in details | where:{namaKomponen:'Kapal Tongkang',urutan:key}">{{detail.ext1}}</span>
+                                          </td>
+                                          <td class="text-right">
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'GT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td>
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'LOA Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                          <td>
+                                             <span ng-hide="key==='110'" ng-repeat="detail in details | where:{namaKomponen:'DWT Tongkang',urutan:key}">{{detail.value | formatCurr}}</span>
+                                          </td>
+                                       </tr>
+                                       <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='110'">
+                                          <td>JUMLAH</td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total GT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total LOA Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                          <td ng-repeat="detail in details | where:{namaKomponen:'Total DWT Tongkang',urutan:'110'}">{{detail.value | formatCurr}}
+                                          </td>
+                                       </tr>
+                                    </table>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>   
+                     <!-- end Kapal Gandeng Isi -->
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<99">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in details | where:{namaKomponen:'Kapal tunda',urutan:key}">{{detail.ext1}},</span></td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right"></td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">Keterangan</td>
+                                 <td colspan="4">: <span ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span></td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">Lokasi Asal</td>
+                                 <td colspan="4">: <span ng-repeat="detail in details | where:{namaKomponen:'Lokasi Asal',urutan:key}">{{detail.ext1}}</span></td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">Lokasi Tujuan</td>
+                                 <td colspan="4">: <span ng-repeat="detail in details | where:{namaKomponen:'Lokasi Tujuan',urutan:key}">{{detail.ext1}}</span></td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">B. Tetap</td>
+                                 <td colspan="3"> 
+                                    ( <span ng-repeat="detail in details | where:{namaKomponen:'HP Kapal Tunda',urutan:key}">{{detail.value | formatCurr}}</span> / <span ng-repeat="detail in details | where:{namaKomponen:'HP Total',urutan:key}">{{detail.value | formatCurr}}</span> ) X ( <span ng-repeat="detail in details | where:{namaKomponen:'Tarif Tetap',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Jumlah Jam',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen I',urutan:key}">{{detail.value | formatCurr}}%</span>
+                                    ) X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen II',urutan:key}">{{detail.value | formatCurr}}% = </span>
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Total biaya tetap',urutan:key}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right"></td>
+                              </tr>
+                              <tr >
+                                 <td class="col-xs-3">B. Variable</td>
+                                 <td colspan="3"> 
+                                    ( <span ng-repeat="detail in details | where:{namaKomponen:'HP Kapal Tunda',urutan:key}">{{detail.value | formatCurr}}</span> / <span ng-repeat="detail in details | where:{namaKomponen:'HP Total',urutan:key}">{{detail.value | formatCurr}}</span> ) X (( <span ng-repeat="detail in details | where:{namaKomponen:'Tarif Variabel',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Jumlah Jam',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'GT',urutan:key}">{{detail.value | formatCurr}}</span> ) X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen I',urutan:key}">{{detail.value | formatCurr}}%</span>
+                                    ) X <span ng-repeat="detail in details | where:{namaKomponen:'Prosen II',urutan:key}">{{detail.value | formatCurr}}% = </span>
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Total biaya variabel',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key==='999'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <!-- <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Total Pendapatan'">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan'}">{{detail.value | formatCurr2}}</span>
+                                 </td>
+                              </tr>
+                              <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= Rp</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total Pendapatan IDR'}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key>110 && key<888">
+                        <td colspan="6" ng-show="key!=='777'">
+                           <br>
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1" ng-repeat="detail in details | where:{namaKomponen:'Keterangan',urutan:key}">{{detail.ext1}}</span>
+                                 </td>
+                                 <td colspan="3">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Biaya Jasa',urutan:key}">{{detail.value | formatCurr}}</span> X
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Prosen Biaya',urutan:key}">{{detail.value}}%</span> = 
+                                   <span ng-repeat="detail in details | where:{namaKomponen:'Sub Total',urutan:key}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2"></td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='888'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3"><span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.namaKomponen}}</span>
+                                 </td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where:{namaKomponen:'Total Denda',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-show="key==='99'">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <!-- <tr>
+                                 <td class="col-xs-3">FUEL SURCHARGE</td>
+                                 <td colspan="3"> 
+                                    : (( <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Surcharge BBM'">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Jumlah kapal'">{{detail.value | formatCurr}}</span> ) / <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Nilai kurs'">{{detail.value | formatCurr}}</span> )
+                                 </td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Total'">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr> -->
+                              <tr>
+                                 <td class="col-xs-3">FUEL SURCHARGE</td>
+                                 <td colspan="3"> 
+                                    : (( <span ng-repeat="detail in details | where:{namaKomponen:'Surcharge BBM',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Jumlah kapal',urutan:key}">{{detail.value | formatCurr}}</span> ) / <span ng-repeat="detail in details | where:{namaKomponen:'Nilai kurs',urutan:key}">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in details | where:{namaKomponen:'Jam tunda',urutan:key}">{{detail.value | formatCurr}}</span> )
+                                 </td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in details | where:{namaKomponen:'Total',urutan:key}">{{detail.value | formatCurr}}</span>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">Tgl. BBM</td>
+                                 <td colspan="3"> 
+                                     : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Tanggal BBM'">{{detail.ext1?detail.ext1:'-' | date:'dd-MM-yyyy'}}</span> Harga BBM : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Harga BBM'">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right">
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td class="col-xs-3">Tgl. Kurs</td>
+                                 <td colspan="3"> 
+                                     : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Tanggal kurs'">{{detail.ext1?detail.ext1:'-' | date:'dd-MM-yyyy'}}</span> Nilai Kurs : <span ng-repeat="detail in details | filterBy: ['namaKomponen']: 'Nilai kurs'">{{detail.value | formatCurr}}</span>
+                                 </td>
+                                 <td class="col-xs-1"></td>
+                                 <td class="col-xs-2 text-right">
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2" class="text-right"><hr class="hr-pranota-jumlah"></td>
+                     </tr>                        
+                     </tr>
+                     <!-- <tr>
+                        <td></td> 
+                        <td>Biaya Per Pelayanan {{item.jenisJasaText}}</td>
+                        <td clas="text-right">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr> -->
+                     <tr>
+                        <td colspan="2">Total Biaya {{item.jenisJasaText}}</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr2}}</td>
+                        <!-- <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td> -->
+                     </tr>
+                     <!-- <tr>
+                        <td colspan="4"><hr class="hr-pranota"></td>
+                     </tr>
+                     <tr>
+                        <td colspan="4">Tgl/Nilai Kurs : {{tglSekarang | date:'dd-MM-yyyy'}} /{{dataPranota.valutaMataUang}} 1</td>
+                     </tr>
+                     <tr>
+                        <td ></td>
+                        <td class="text-right">Biaya Jasa Pandu/Tunda/Kepil</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2" class="text-right">Biaya Jasa Pandu/Tunda/Kepil ({{dataPranota.valuta}})</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr> -->
+                     <!-- <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</td>
+                     </tr> -->
+      <!--                <tr>
+                        <td colspan="4"><hr class="hr-pranota"></td>
+                     </tr> -->
+                  </table>
+               </div>
+         </div>
+         <!-- end BARIS JASA AIR KAPAL -->  
+
+         <!-- start BARIS JASA AIR KAPAL -->  
+         <div class ="access-jasa-airkapal">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:3}">
+               <hr class=" hr-pranota" ng-show="item.jenisJasa===3">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag && isRegional" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag">
+                        <i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi
+                        <a class="large info-tooltip" ng-show="isStatusVerifikasiLabuh" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-placement="left" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question" ng-click="confirmBatalVerifikasi(item.reaDetails)"></i></a>
+                     </span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: Dari {{item.reaDetails.tglMulaiIsi | date:'dd-MM-yyyy HH:mm'}} sampai {{item.reaDetails.tglSelesaiIsi | date:'dd-MM-yyyy HH:mm'}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: {{item.reaDetails.namaDermaga}}</td>
+                     </tr>
+                     <tr ng-show="item.reaDetails.jenisGerakanText">
+                        <td colspan="4">{{item.reaDetails.jenisGerakanText}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="4">
+                        <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Alat isi'">{{detail.ext1}}</span>
+                          <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-2"></td>
+                                 <td colspan="3">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Tarif'}">{{detail.value | formatCurr }}</span> 
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Keterangan Tarif'}"> {{detail.ext1}}</span>  X 
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Volume'}">{{detail.value | formatCurr }}</span> X 
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Prosen'}">{{detail.value | formatCurr }}%</span>
+                                 </td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total'}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                              </tr>
+                              <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                 <td class="col-xs-2">Total IDR</td>
+                                 <td colspan="3">
+                                 </td>
+                                 <td class="col-xs-1">= Rp</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total IDR'}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                              </tr> -->
+                           </table>
+                        </td>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2" class="text-right"><hr class="hr-pranota-jumlah"></td>
+                     </tr>                        
+                     </tr>
+                     <!-- <tr>
+                        <td></td>
+                        <td>Biaya Per Pelayanan {{item.jenisJasaText}}</td>
+                        <td clas="text-right">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr> -->
+                     <tr>
+                        <!-- <td >Total Biaya {{item.jenisJasaText}}</td>
+                        <td >: {{item.total | formatCurr}} * {{dataPranota.kurs | formatCurr}} </td> -->
+                        <td colspan="2"></td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <!-- <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</td>
+                     </tr> -->
+                  </table>
+               </div>
+            </div>
+
+            <!-- end BARIS JASA AIR KAPAL -->
+
+            <!-- start BARIS JASA KEPIL -->  
+            <div class ="access-jasa-tambat">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:6}">
+               <hr class=" hr-pranota" ng-show="item.jenisJasa===6">
+                  <span class="font-pranota">PERHITUNGAN JASA {{item.jenisJasaText}}</span>
+                  <div ng-show="dataPranota && !isPranotaPublic">
+                     <button class="btn btn-primary btn-lg pull-right" ng-show="item.reaDetails.status===1 && userRole.pflag && !isRegionalByPass()" ng-click="confirmVerifikasi(dataPranota.noPpk1,1,item.jenisJasa,item.jenisJasaTextNormal,item.noPpkJasa,item)"><span class="text-verify-jasa">Verifikasi {{item.jenisJasaTextNormal}}</span><br><span class="text-verify-noppkjasa">{{item.noPpkJasa}}</span></button>
+                     <span class="font-pranota  pull-right" style="color: #409e36;" ng-show="item.reaDetails.status===2 && userRole.pflag"><i class="fa fa-check-square-o" aria-hidden="true"></i> Data Sudah di Verifikasi</span>
+                  </div>
+                  <br>
+                  <table class="table table-pranota font-pranota">
+                     <tr class="">
+                        <td class="col-xs-2 table-pranota">No PPK</td>
+                        <td colspan="3">: {{item.noPpkJasa}}</td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota ">Waktu</td>
+                        <td colspan="3">: Dari <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Tanggal mulai'">{{detail.ext1 | date:'dd-MM-yyyy HH:mm'}}</span> sampai <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Tanggal selesai'">{{detail.ext1 | date:'dd-MM-yyyy HH:mm'}}</span></td>
+                     </tr>
+                     <tr>
+                        <td class="col-xs-2 table-pranota">Lokasi</td>
+                        <td colspan="3">: <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Lokasi'">{{detail.ext1}}</span></td>
+                     </tr>
+                     <tr ng-repeat="(key,details) in item.details | groupBy:'urutan'" ng-if="key<50">
+                        <td colspan="6">
+                           <table class="table table-pranota">
+                              <tr>
+                                 <td class="col-xs-3">
+                                    <span class="tambat-pranota1">B. Tetap</span>
+                                 </td>
+                                 <td colspan="3">
+                                    ( <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Tarif'">{{detail.value | formatCurr}}</span> X
+                                   <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Jumlah gerakan'">{{detail.value | formatCurr}}</span> X <span ng-repeat="detail in item.details | filterBy: ['namaKomponen']: 'Prosen'">{{detail.value}}</span>% )
+                                 </td>
+                                 <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total'}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                              </tr>
+                              <!-- <tr ng-show="dataPranota.valuta==='USD'">
+                                 <td class="col-xs-3">Total IDR</td>
+                                 <td colspan="3"></td>
+                                 <td class="col-xs-1">= Rp</td>
+                                 <td class="col-xs-2 text-right">
+                                    <span ng-repeat="detail in item.details | where: {namaKomponen:'Total IDR'}">{{detail.value | formatCurr }}</span>
+                                 </td>
+                              </tr> -->
+                           </table>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2" class="text-right"><hr class="hr-pranota-jumlah"></td>
+                     </tr>                        
+                     </tr>
+                     <!-- <tr>
+                        <td></td>
+                        <td>Biaya Per Pelayanan {{item.jenisJasaText}}</td>
+                        <td clas="text-right">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr}}</td>
+                     </tr>
+                     <tr>
+                        <td colspan="2"></td>
+                        <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                     </tr> -->
+                     <tr>
+                        <td colspan="2">Total Biaya {{item.jenisJasaText}}</td>
+                        <td class="col-xs-1">= {{dataPranota.valutaMataUang}}</td>
+                        <td class="text-right col-xs-2">{{item.total | formatCurr2}}</td>
+                        <!-- <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td> -->
+                     </tr>
+                     <!-- <tr>
+                        <td colspan="4"><span ng-show="item.terbilang!=='zero'">Terbilang : {{item.terbilang}} {{dataPranota.valutaTerbilang}}</td>
+                     </tr> -->
+                  </table>
+               </div>
+            </div>
+            <!-- end BARIS JASA KEPIL --> 
+            
+            <!-- :: Start Baris Total Keseluruhan -->
+            <hr class="hr-pranota">
+            <table class="table table-pranota font-pranota" ng-show="dataPranota.valuta==='USD'">
+               <tr>
+                  <td class="col-xs-5"></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+               </tr>
+               <tr>
+                  <td class="col-xs-1"><b>TOTAL</b></td>
+                  <td></td>
+                  <td class="col-xs-1">= <b>{{dataPranota.valutaMataUang}}</b></td>
+                  <td class="text-right col-xs-2"><b>{{dataPranota.total | formatCurr2}}</b></td>
+               </tr>
+               <!-- <tr>
+                  <tr>
+                     <td colspan="2"></td>
+                     <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+                  </tr>
+               </tr>
+               <tr>
+                  <td colspan="4" class="col-xs-1"><b>Terbilang : {{dataPranota.terbilang}} {{dataPranota.valutaTerbilang}}</b></td>
+               </tr>  -->
+            </table>
+
+            <!-- start BARIS JASA OTHER -->
+            <div class ="access-jasa-pandu">
+               <div ng-repeat="item in dataPranota.items | where:{jenisJasa:10}">
+                  <table class="table table-pranota font-pranota">
+                     <tr>
+                        <td colspan="2">Tambahan SLG</td>
+                        <td class="col-xs-1">= Rp</td>
+                        <td class="text-right col-xs-2">{{item.totalIdr | formatCurr}}</td>
+                     </tr>
+                  </table>
+               </div>
+         </div>
+         <!-- end BARIS JASA OTHER -->
+
+         <!-- :: Start Baris Total Keseluruhan -->
+         <hr class="hr-pranota" ng-show="dataPranota.valuta==='USD'">
+         <table class="table table-pranota font-pranota">
+            <tr>
+               <td class="col-xs-5"><b>Tgl / Nilai Kurs : {{dataPranota.tglKurs | date:'dd-MM-yyyy'}} / Rp {{dataPranota.kurs | formatCurr}}</b></td>
+               <td></td>
+               <td></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td class="col-xs-1"><b>TOTAL</b></td>
+               <td></td>
+               <td class="col-xs-1">= <b>Rp</b></td>
+               <td class="text-right col-xs-2"><b>{{dataPranota.totalIdr | formatCurr2}}</b></td>
+            </tr>
+            <tr>
+               <tr>
+                  <td colspan="2"></td>
+                  <td colspan="2"><hr class="hr-pranota-jumlah"></td>
+               </tr>
+            </tr>
+            <tr>
+               <td colspan="4" class="col-xs-1"><b>Terbilang : {{dataPranota.terbilang}} rupiah</b></td>
+            </tr> 
+         </table>
+         <!-- :: End Baris Total Kesluruhan -->
+         <hr class="hr-pranota">
+         <!-- :: Start Pejabat Pengesahan -->
+         <div class="form-group font-pranota">
+            <div class="text-right">
+               <span style="margin-right:40px">{{kotaCabangPelabuhan}}, {{tglSekarang | date:'dd-MM-yyyy'}}</span><br>
+               <span style="margin-right:30px"> {{namaPejabatPengesahan.jabatanTercetak}}</span>
+               <br><br><br><br><br>
+               <span style="margin-right:50px;"><b>{{namaPejabatPengesahan.nama}}</b></span>
+               <br><br><br>
+            </div>
+         </div>
+         <!-- :: End  Pejabat Pengesaha -->
+      </div>
+      </div>
+<br>
+</div>
+
+<div class="text-center">
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="close()" ng-show="!isPranotaPublic">Tutup</button>
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-show="isShowBtnEkspor" ng-click="cetakPDF(responsePranota)">Ekspor  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+</div>
+
+<!-- modal konfirmasi labuh -->
+<div class="modal" id="confirmSPB" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi SPB</h4>
+         </div>
+         <div class="modal-body">
+            Kapal belum ada SPB, apakah akan dilanjutkan?
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#confirmLabuh">Lanjut</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal konfirmasi labuh -->
+<div class="modal" id="confirmLabuh" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Konfirmasi Pranota</h4>
+         </div>
+
+         <div class="modal-body">
+            Apakah anda sudah yakin bahwa nilai pranota yang ditampilkan dilayar ini sudah benar ?<br><br>
+            Klik <b>Lanjut</b> untuk melakukan Verifikasi Labuh, atau<br>
+            Klik <b>Tidak</b> untuk mengecek ulang.
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="konfirmasiLabuh()">Lanjut</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal konfirmasi verifikasi -->
+<div class="modal" id="confirmVerifikasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Konfirmasi Verifikasi</h4>
+         </div>
+
+         <div class="modal-body">
+            Apakah anda ingin melakukan Verifikasi {{confirmVerifikasi.labelJenisJasa}} : <b>{{confirmVerifikasi.noPpkJasa}}</b> ?
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="verifikasiPerNoPPKJasa(confirmVerifikasi)">Ya</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal konfirmasi Batal Verifikasi -->
+<div class="modal" id="confirmBatalVerifikasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi Verifikasi</h4>
+         </div>
+
+         <div class="modal-body">
+            Jasa <b>{{itemBatalVerifikasi.labelJenisJasa}}</b> yang telah di Verifikasi tidak dapat diedit data <b>Realisasi</b> nya.
+            <br><br>Kode validasi: <b>{{itemBatalVerifikasi.infoKodeVal}}</b>
+         </div>
+         <div class="modal-footer">
+            <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+                  <i class="fa fa-level-up "></i> 
+               <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+            </div>
+            <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="batalVerifikasiPerNoPPKJasa(itemBatalVerifikasi)">Ya</button> -->
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal konfirmasi verifikasi -->
+<div class="modal" id="confirmKirimNota" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Konfirmasi Kirim Nota {{labelKirimNota}}</h4>
+         </div>
+         <div class="modal-body">
+            Apakah anda ingin mengirim Nota {{labelKirimNota}}: <b>{{noPpk1KirimNota}}</b> ke SAP?
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createNota(noPpk1KirimNota)">Ya</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal informasi kapal tunda -->
+<div class="modal" id="validasiVerifikasiKapalTunda" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi Kapal Tunda</h4>
+         </div>
+         <div class="modal-body">
+            Nama Kapal Tunda belum diinputkan di fase <b>Realisasi -> Jasa Tunda</b>.<br>Silahkan lengkapi untuk dapat melanjutkan proses Verifikasi.
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<!-- modal informasi Siklus Pandu -->
+<div class="modal" id="validasiSiklusPandu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi Siklus Pandu</h4>
+         </div>
+         <div class="modal-body">
+            <span data-ng-bind-html="infoSiklusPandu"></span><br>
+            <br>     
+            Hal ini dapat terjadi akibat:<br>
+            1. Ada jasa pandu yang belum dilakukan <b>Realisasi</b>.<br>
+            2. Ada jasa pandu yang belum dilakukan <b>Permohonan</b>.<br>
+            <br>
+            Silahkan melakukan pengecekan ulang lokasi <b>Asal</b> dan <b>Tujuan</b> jasa pandu.
+            <br><br>Kode validasi: <b>VALOTH-020</b>
+         </div>
+         <div class="modal-footer">
+            <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+               <i class="fa fa-level-up "></i> 
+               <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+            </div>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>

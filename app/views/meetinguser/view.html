@@ -1,0 +1,38 @@
+<h2>User Meeting Detail</h2>
+<br>
+<form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2">Username</label>
+        <div class="col-sm-4">
+          <span>:</span>
+          <span class='view-detail'>{{meetingUserDetails.username}}</span>
+        </div>
+    </div>
+    <div class="form-group" ng-show="meetingUserDetails.userRole=='AGEN'">
+      <label class="col-sm-2">Nama</label>
+        <div class="col-sm-4">
+          <span>:</span>
+          <span class='view-detail'>{{meetingUserDetails.nama}}</span>
+        </div>
+    </div>
+      <div class="form-group">
+        <label class="col-sm-2">Role</label>
+        <div class="col-sm-4">
+            <span>:</span>
+            <span class='view-detail'>{{meetingUserDetails.userRole}}</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2">Id Agen</label>
+          <div class="col-sm-4">
+            <span>:</span>
+            <span class='view-detail'>{{meetingUserDetails.idAgen}}</span>
+          </div>
+      </div>
+    <div class="form-group">
+    <div class="col-sm-1">
+        <button class="btn btn-primary btn-lg" ng-click="close()">Tutup</button>
+    </div>
+</div>
+
+</form>

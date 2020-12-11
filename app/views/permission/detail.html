@@ -1,0 +1,43 @@
+<h2>Permission Detail</h2>
+
+<br>
+<form class="form-horizontal">
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-3">ID Menu</label>
+  	    <div class="col-sm-9">
+          <span>:</span>
+          <span class="view-detail">{{dataPermission.kodeMenu}}</span>
+        </div>
+  	</div>
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-3">Nama Menu</label>
+        <div class="col-sm-9">
+          <span>:</span>
+          <span class="view-detail">{{dataPermission.namaMenu}}</span>
+        </div>
+  	</div>
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-3">Grup</label>
+        <div class="col-sm-9">
+          <span>:</span>
+          <span class="view-detail">{{dataPermission.grupText}}</span>
+        </div>
+  	</div>
+  	<div class="form-group">
+  	    <label class="col-sm-2 col-xs-3">Permission</label>
+        <div class="col-sm-9">
+          <span>:</span>
+          <span class="view-detail">
+
+            <td class="text-center"><i ng-class="dataPermission.cflag" aria-hidden="true"></i></td><td>Create</td><td><span class="view-detail"></span></td>
+            <td class="text-center"><i ng-class="dataPermission.rflag" aria-hidden="true"></i></td><td>Read</td><td><span
+            class="view-detail"></span></td>
+            <td class="text-center"><i ng-class="dataPermission.uflag" aria-hidden="true"></i></td><td>Update</td><td><span class="view-detail"></span></td>
+            <td class="text-center"><i ng-class="dataPermission.dflag" aria-hidden="true"></i></td><td>Delete</td><td><span class="view-detail"></span></td>
+            <td class="text-center"><i ng-class="dataPermission.pflag" aria-hidden="true"></i></td><td>Print</td><td><span class="view-detail"></span></td>
+            </tr>
+          </span>
+        </div>
+  	</div>
+</form>
+<button class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>

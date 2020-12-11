@@ -1,0 +1,287 @@
+<h2>Monitoring Kapal Sandar</h2>
+
+<ul class="nav nav-tabs" role="tablist">
+	<li role="presentation" class="menu-jasa tab-kapalsandar aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'kapalsandar')">KAPAL SANDAR</a></li>
+	<li role="presentation" class="menu-jasa tab-kapalptp"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'kapalptp')">KAPAL BELUM SANDAR</a></li>
+	<li role="presentation" class="menu-jasa tab-kapalrea"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'kapalrea')">KAPAL SUDAH LAST LINE</a></li>
+</ul>
+<div class="tab-content">
+<!-- tab-1 kapal sandar -->
+	<div id="kapalsandar" role="tabpanel" class="tab-pane">
+		<div class="row">
+			<form class="form-horizontal" name="monitoringkapalsandar">
+				<div class="col-md-6">
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Tgl Tambat</label>
+			            <div class="col-sm-5">
+							<!-- <div pf-datepicker id="idtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="sandarTgl"></div> -->	
+							<strong>{{sandarTgl | date : 'dd-MM-yyyy'}}</strong>				
+			            </div>           
+			            <!-- <button class="brn btn-xs btn-danger" ng-click="hapusTgl()" title="Hapus Tanggal"><i class="fa fa-times" aria-hidden="true"></i></button> -->	            
+			        </div>
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Nama Kapal </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="sandarNamaKapal" class="form-control">
+			            </div>
+			        </div>
+				</div>	
+				<div class="col-md-6">
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Dermaga</label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+							<input type="text" class="form-control" ng-model="sandarDermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10" ng-focus="checkValue()" ng-blur="validationLookupLokasiTambat()">
+			            </div>
+			        </div>
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">No PPK1 </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="sandarPpk1" class="form-control">
+			            </div>
+			        </div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group"> 
+						<div class="col-md-12">					
+							<button class="btn btn-lg btn-primary pull-right" ng-click="loadMonitoringRea()" ng-disabled="sandarNamaKapal==null&&sandarDermaga==null&&sandarPpk1==null"><i class="fa fa-search" aria-hidden="true" ></i> Cari</button>
+							<button class="btn btn-lg btn-warning pull-right" ng-click="resetRea()" style="margin-right: 20px;"><i class="fa fa-refresh" aria-hidden="true"></i> reset</button>
+						</div>			
+					</div>
+				</div>	
+			</form>
+		</div>
+<hr>
+		<table class="datatable table table-striped table-bordered" border="1" cellspacing="0" style="margin-bottom: 50px">
+			<thead>
+				<tr>
+					<thead>
+						<tr>
+							<th style="text-align: center;">No</th>
+							<th style="text-align: center;">No. PPK Jasa</th>
+							<th style="text-align: left;">Kapal</th>
+							<th style="text-align: left;">Dermaga </th>
+							<th style="text-align: left;">Posisi</th>
+							<th style="text-align: left;">Closing Time</th>
+							<th style="text-align: left;">Mulai Tambat</th>
+							<th style="text-align: center;">Action</th>						
+						</tr>
+					</thead>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-show="dataMonitorRea.length == 0">
+					<td colspan="6">Data tidak tersedia.</td>
+				</tr>
+				<tr ng-show="dataMonitorRea.length > 0" ng-repeat="item in dataMonitorRea">
+					<td style="text-align: center;"> {{noIndex+$index +1}} </td>
+					<td style="text-align: center;"><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpkJasa}}</a></td>
+					<td style="text-align: left;">{{item.namaKapal}}</td>
+					<td style="text-align: left;">{{item.namaDermaga}}</td>
+					<td style="text-align: left;">{{item.kadeAwal}} - {{item.kadeAkhir}}</td>
+					<td>{{item.tglSelesaiPtp | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+					<td>{{item.mulai | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+					<td style="text-align: center;"><a href="#/transaksi/listRealisasi/{{item.noPpk1}}/{{item.urutanPermohonan}}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="kapalptp" role="tabpanel" class="tab-pane">
+<!-- tab-2 kapal penetapan -->
+		<div class="row">
+			<form class="form-horizontal" name="monitoringkapalptp">
+				<div class="col-md-6">
+			        <div class="form-group">
+			            <label class="col-sm-4 control-label">Tgl. Rencana Tambat</label>
+			            <div class="col-sm-3" style="display:inline-flex;padding-right: 0px;">
+			            	<div pf-datepicker id="idtgltambatawal" data-date-format="dd-mm-yyyy" options="optionsStart" date="ptpTglAwal"></div>
+			            </div>
+			            <div class="col-sm-3" style="display:inline-flex;padding-left: 0px;margin-right: 10px;"> 
+			                <label class="control-label" style="margin-left:5px;">s.d.</label>
+			                <div pf-datepicker id="idtgltambatakhir" data-date-format="dd-mm-yyyy" options="optionsEnd" date="ptpTglAkhir"></div>
+			            </div>
+			             <button class="brn btn-xs btn-danger" ng-click="hapusTglPtp()" title="Hapus Tanggal"><i class="fa fa-times" aria-hidden="true"></i></button>
+			        </div> 
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Nama Kapal </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="ptpNamaKapal" class="form-control">
+			            </div>
+			        </div>
+				</div>	
+				<div class="col-md-6">
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Dermaga</label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+							<input type="text" class="form-control" ng-model="ptpDermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10" ng-focus="checkValue(ptpDermaga)" ng-blur="validationLookupLokasiTambat()">
+			            </div>
+			        </div>
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">No PPK1 </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="ptpPpk1" class="form-control">
+			            </div>
+			        </div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group"> 
+						<div class="col-md-12">					
+							<button class="btn btn-lg btn-primary pull-right" ng-click="loadMonitoringPtp()" ng-disabled="ptpTglAwal==null&&ptpTglAkhir==null&&ptpNamaKapal==null&&ptpDermaga==null&&ptpPpk1==null"><i class="fa fa-search" aria-hidden="true" ></i> Cari</button>
+							<button class="btn btn-lg btn-warning pull-right" ng-click="resetPtp()" style="margin-right: 20px;"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
+						</div>			
+					</div>
+				</div>	
+			</form>
+		</div>
+<hr>
+		<table class="datatable table table-striped table-bordered" border="1" cellspacing="0" style="margin-bottom: 50px">
+			<thead>
+				<tr>
+					<thead>
+						<tr>
+							<th rowspan="2" style="text-align: center;">No</th>
+							<th rowspan="2" style="text-align: left; width: 10%;">Tgl. Rencana Tambat</th>
+							<th rowspan="2" style="text-align: center;">No. PPK Jasa</th>
+							<th rowspan="2" style="text-align: left;">Kapal</th>
+							<th rowspan="2" style="text-align: left;">Dermaga </th>
+							<th rowspan="2" style="text-align: left;">Posisi</th>
+							<th colspan="2" style="text-align: center;width: 270px;">Penetapan</th>
+							<th rowspan="2" style="text-align: center;">Action</th>						
+						</tr>
+						<tr>
+							<th style="text-align: center;">Mulai</th>
+							<th style="text-align: center;">Selesai</th>
+						</tr>
+					</thead>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-show="dataMonitorPtp.length == 0">
+					<td colspan="8">Data tidak tersedia.</td>
+				</tr>
+				<tr ng-show="dataMonitorPtp.length > 0" ng-repeat="item in dataMonitorPtp|orderBy:'-mulai'">
+					<td style="text-align: center;"> {{noIndex+$index +1}} </td>
+					<td style="text-align: left;">{{item.mulai | date :'dd-MM-yyyy'}}</td>
+					<td style="text-align: center;"><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpkJasa}}</a></td>
+					<td style="text-align: left;">{{item.namaKapal}}</td>
+					<td style="text-align: left;">{{item.namaDermaga}}</td>
+					<td style="text-align: left;">{{item.kadeAwal}} - {{item.kadeAkhir}}</td>
+					<td>{{item.mulai | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+					<td>{{item.selesai | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+					<td style="text-align: center;"><a href="#/transaksi/listRealisasi/{{item.noPpk1}}/{{item.urutanPermohonan}}"><i class="fa fa-external-link" aria-hidden="true"></i></a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div id="kapalrea" role="tabpanel" class="tab-pane">
+<!-- tab-3 kapal realisasi -->
+		<div class="row">
+			<form class="form-horizontal" name="monitoringkapalrea">
+				<div class="col-md-6">
+			        <div class="form-group">
+			            <label class="col-sm-4 control-label">Tgl. Realisasi Tambat</label>
+			            <div class="col-sm-3" style="display:inline-flex;padding-right: 0px;">
+			            	<div pf-datepicker id="idtgltambatawal" data-date-format="dd-mm-yyyy" options="optionsStart" date="reaTglAwal"></div>
+			            </div>
+			            <div class="col-sm-3" style="display:inline-flex;padding-left: 0px;margin-right: 10px;"> 
+			                <label class="control-label" style="margin-left:5px;">s.d.</label>
+			                <div pf-datepicker id="idtgltambatakhir" data-date-format="dd-mm-yyyy" options="optionsEnd" date="reaTglAkhir"></div>
+			            </div>
+			             <button class="brn btn-xs btn-danger" ng-click="hapusTglRea()" title="Hapus Tanggal"><i class="fa fa-times" aria-hidden="true"></i></button>
+			        </div> 
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Nama Kapal </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="reaNamaKapal" class="form-control">
+			            </div>
+			        </div>
+				</div>	
+				<div class="col-md-6">
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">Dermaga</label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+							<input type="text" class="form-control" ng-model="reaDermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10" ng-focus="checkValue(reaDermaga)" ng-blur="validationLookupLokasiTambat()">
+			            </div>
+			        </div>
+					<div class="form-group">
+			            <label class="col-sm-4 control-label">No PPK1 </label>
+			            <div class="col-sm-6" style="display:inline-flex;">
+			                <input ng-model="reaPpk1" class="form-control">
+			            </div>
+			        </div>
+				</div>
+				<div class="col-md-12">
+					<div class="form-group"> 
+						<div class="col-md-12">					
+							<button class="btn btn-lg btn-primary pull-right" ng-click="loadMonitoringReaTambat()" ng-disabled="reaTglAwal==null&&reaTglAkhir==null&&reaNamaKapal==null&&reaDermaga==null&&reaPpk1==null"><i class="fa fa-search" aria-hidden="true" ></i> Cari</button>
+							<button class="btn btn-lg btn-warning pull-right" ng-click="resetReaTambat()" style="margin-right: 20px;"><i class="fa fa-refresh" aria-hidden="true"></i> Reset</button>
+						</div>			
+					</div>
+				</div>	
+			</form>
+		</div>
+<hr>
+		<table class="datatable table table-striped table-bordered" border="1" cellspacing="0" style="margin-bottom: 50px">
+			<thead>
+				<tr>
+					<thead>
+						<tr>
+							<th rowspan="2" style="text-align: center;">No </th>
+							<th rowspan="2" style="text-align: center;">No. PPK Jasa</th>
+							<th rowspan="2" style="text-align: left;">Nama Kapal</th>
+							<th rowspan="2" style="text-align: left;">Dermaga </th>
+							<th rowspan="2" style="text-align: left;">Posisi</th>
+							<th colspan="2" style="text-align: center;width: 270px;">Realisasi</th>					
+						</tr>
+						<tr>
+							<th style="text-align: center;">Mulai</th>
+							<th style="text-align: center;">Selesai</th>
+						</tr>
+					</thead>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-show="dataMonitorReaTambat.length == 0">
+					<td colspan="8">Data tidak tersedia.</td>
+				</tr>
+				<tr ng-show="dataMonitorReaTambat.length > 0" ng-repeat="item in dataMonitorReaTambat">
+				<!-- <div ng-if="item.selesai !== null"> -->
+					<td style="text-align: center"> {{noIndex+$index +1}} </td>
+					<td style="text-align: center;"><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpkJasa}}</a></td>
+					<td style="text-align: left;">{{item.namaKapal}}</td>
+					<td style="text-align: left;">{{item.namaDermaga}}</td>
+					<td style="text-align: left;">{{item.kadeAwal}} - {{item.kadeAkhir}}</td>
+					<td>{{item.mulai | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+					<td>{{item.selesai | date :'dd-MM-yyyy &nbsp;&nbsp; HH:mm'}}</td>
+				<!-- </div> -->
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</div>
+
+<script>
+$(document).ready(function() {
+    document.getElementById('kapalsandar').style.display = "block";
+});
+
+function openTab(evt, jenisJasa) {
+	var i, tabcontent, tablinks;
+	tabcontent = document.getElementsByClassName("tab-pane");
+	for (i = 0; i < tabcontent.length; i++) {
+		tabcontent[i].style.display = "none";
+	}
+	tablinks = document.getElementsByClassName("tablinks");
+	for (i = 0; i < tablinks.length; i++) {
+		tablinks[i].className = tablinks[i].className.replace(" active", "");
+	}
+	menuJasa = document.getElementsByClassName("menu-jasa");
+	for (i = 0; i < menuJasa.length; i++) {
+		menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+	}
+	document.getElementById(jenisJasa).style.display = "block";
+	evt.currentTarget.className += " active";
+	$('.tab-'+jenisJasa).addClass("active");
+}    
+</script>

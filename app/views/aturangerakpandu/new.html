@@ -1,0 +1,27 @@
+<h2>Aturan Gerak Pandu Baru</h2>
+<form name="aturangerakpanduForm" class="form-horizontal">
+  	<div class="form-group">
+		  <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Lokasi</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="text" id="dermaga" name="dermaga" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+           ng-focus="checkValue(dermaga)" ng-blur="validationLookupDermaga()" required>
+
+          <span class="has-error" ng-show="aturangerakpanduForm.dermaga.$touched && aturangerakpanduForm.dermaga.$invalid">
+            Isi nama lokasi dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+          <input bs-switch id="flagAktif" type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-true-value ="1" ng-false-value="2" ng-model="aturangerakpandu.flagAktif" checked />
+      </div>
+    </div>
+  	<div class="form-group">
+	    <div class="col-sm-offset-3 col-sm-7">
+	      	<button type="button" class="btn btn-default btn-lg"  ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="aturangerakpanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>

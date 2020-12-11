@@ -1,0 +1,202 @@
+<div>
+	<h2>Tambah Kapal Prameeting</h2>
+	
+	<div class="preprameeting-table">
+		<table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+	  		<thead>
+				<tr>
+					<th style="width:20px;">Urutan</th>
+					<th>No PPK1</th>
+					<th>No PPK Jasa</th>
+					<th>Nama Kapal</th>
+					<th>Kedatangan Kapal</th>
+					<th>Cluster</th>					
+					<th>Status TL</th>
+					<th>Prameeting</th>
+					<th>PBM</th>
+					<th>Jumlah Bongkar</th>
+					<th>Jenis Barang Bongkar</th>
+					<th>Jumlah Muat</th>
+					<th>Jenis Barang Muat</th>
+					<th>Ubah Urutan</th>
+				</tr>
+	  		</thead>
+			<tbody>
+				<tr ng-repeat="item in items">
+					<td>{{noIndex+$index +1}}</td>
+					<td>{{item.noPpk1}}</td>
+					<td>{{item.noPpkJasa}}</td>
+					<td>{{item.namaKapal}}
+						<span class="bg-primary" ng-if="item.flagTender == 1"><br>Tender</span>
+					</td>
+					<td>{{item.tglMasukPelabuhan | date: "dd-MM-yyyy HH:mm"}}</td>
+					<td>
+		                 <select pf-select ng-model="item.clusteringId" name="itemCluster" ng-options='option.clusteringId as option.pembagiAnakan for option in clusteringNama' id="jns-1" required></select>
+					</td>
+					<td style="max-width:10px;">
+						<input type="checkbox" id="no-3" class="" name="tl" ng-model="item.tl">
+					</td>
+					<td style="max-width:10px;">
+						<input type="checkbox" id="no-3" class="" name="prameeting" ng-model="item.isPrameeting" ng-disabled="item.tl">
+					</td>
+					<td style="max-width:10px;">
+						{{item.pbm == null ? '-': item.pbm}}
+					</td>
+					<td>{{item.detailRkbmBongkar == null ? '-' : (item.detailRkbmBongkar.jumlahBongkar == null ? '-' : item.detailRkbmBongkar.jumlahBongkar)}}</td>
+					<td>{{item.detailRkbmBongkar == null ? '-' : (item.detailRkbmBongkar.komoditi == ''? '-' :  item.detailRkbmBongkar.komoditi)}}</td>
+					<td>{{item.detailRkbmMuat == null ? '-' : (item.detailRkbmMuat.jumlahMuat == null ? '-' : item.detailRkbmMuat.jumlahMuat)}}</td>
+					<td>{{item.detailRkbmMuat == null ? '-' : (item.detailRkbmMuat.komoditi == null ? '-' : item.detailRkbmMuat.komoditi)}}</td>	
+					<td>
+						<button  type="button" class="btn btn-primary btn-xs" title="Up" ng-click="swapUp(items, $index)"><i class="fa fa-arrow-up" aria-hidden="true"></i></button>
+	        			<button  type="button" class="btn btn-primary btn-xs" title="Down" ng-click="swapDown(items, $index)"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+					</td>
+			  	</tr>
+			</tbody>
+	  	</table>
+	</div>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging></div>
+	<div class="modal-footer pre-prameeting">
+        <button type="button" class="btn btn-primary" ng-click="save()" >Tambah Kapal</button>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<form name="formSearch" ng-submit="pageChanged(0)">
+				<div class="input-group" class="col-md-4">
+					<select pf-select ng-init="selectionSearch  = filterConfig[0]" ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+					<input type="text" id="" class="form-control" ng-model="namaKapal">
+					<span class="input-group-addon btn btn-default" ng-click="resetSearch()" title="Reset Search"><span class="fa fa-close"></span></span>
+					<span class="input-group-addon btn btn-default" ng-click="pageChanged(0,idDermaga,'move')" title="Search"><span class="fa fa-search"></span></span>
+				</div>
+			</form>					
+		</div>
+		<div class="col-md-4">
+			<button type="button" class="btn btn-primary" ng-click="saveStatusTl()" style="margin-left:5px; margin-right: 30px;" >Simpan Status TL</button>	
+		</div>
+		<div class="col-md-4">
+			<select pf-select ng-model="idDermaga" name="idDermaga" ng-options="option.mdmgKode as option.mdmgNama for option in dermaga" ng-change="getKapalDermaga(idDermaga,'move')"></select>
+		</div>
+	</div>
+
+	<div class="preprameeting-table">
+		<table class="datatable table table-striped table-bordered " style="margin-top:30px;">
+	  		<thead>
+				<tr>
+					<th style="width:20px;">Urutan</th>
+					<th>No PPK1/Nama Kapal</th>
+					<th>No PPK Jasa</th>
+					
+					<th>Status TL</th>
+					<th ng-click="sortBy('tglPermohonan')">
+					Waktu Permohonan/Rencana Tambat
+					<div class="pull-right"><span class="sortorder" ng-class="{reverse: reverse}"></span></div>
+					</th>
+					<th>Waktu Masuk Pelabuhan</th>
+					<th>Status Bongkar/Muat</th>
+					<th>Action</th>
+				</tr>
+	  		</thead>
+			<tbody>
+				<tr ng-repeat="secondItem in itemsNoComplete | orderBy:[tosFirst,rkbmFirst,'-tglMasukPelabuhan','-tglRencanaTambat']">
+					<td>{{noIndex+$index +1}}</td>
+					<td>
+					<a href="#/transaksi/listmonitoring/{{secondItem.noPpk1}}" target="_blank">{{secondItem.noPpk1}}</a><br>
+					{{secondItem.namaKapal}}
+					<span class="bg-primary" ng-if="secondItem.flagTender == 1"><br>Permohonan Tender</span>
+					</td>
+					<td>{{secondItem.noPpkJasa}}</td>
+					<td>
+						<input type="checkbox" id="no-3" class="" name="tl" ng-model="secondItem.tl">
+					</td>
+					<td>{{secondItem.tglRencanaTambat | date: "dd-MM-yyyy HH:mm"}}</td>
+					<td>{{secondItem.tglMasukPelabuhan | date: "dd-MM-yyyy HH:mm"}}</td>
+					<td>
+						TOS : {{secondItem.statusOperationPlan == true ? 'Ada' : 'Tidak Ada'}} <br>
+						RKBM : {{secondItem.statusRkbmText}} <br>
+						<a class="cursor-pointer" ng-show="secondItem.statusRkbm == true" ng-click="getDetailRkbm(secondItem.detailRkbmBongkar,secondItem.detailRkbmMuat)"><span>Kegiatan Kapal</span></a>
+					</td>
+					<td>
+						<button  type="button" class="btn btn-primary btn-xs" title="Up" ng-click="moveToPrameeting(secondItem.noPpkJasa)">Prameeting</button>
+					</td>
+			  	</tr>
+			</tbody>
+	  	</table>
+	</div>
+
+<div class="modal" id="detailRkbmModal" tabindex="-1" role="dialog" aria-labelledby="rkbmLabel" aria-hidden="true" width="600px;">
+	<div class="modal-dialog modal-info-kegiatan-kapal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Detail RKBM</h4>
+			</div>
+			<div class="modal-body">
+			  	<div class="form-group col-sm-12">
+					<label class="col-sm-2 control-label">No. PPK1</label>
+					<span class="col-sm-3">
+						: {{detailRkbm.noPpk1}}
+					</span>
+					<label class="col-sm-2 control-label">Agen</label>
+					<span class="col-sm-5">
+						: {{detailRkbm.namaAgen}}
+					</span>
+				</div>
+			  	<div class="form-group col-sm-12">
+					<label class="col-sm-2 control-label">Kapal</label>
+					<span class="col-sm-3">
+						: {{detailRkbm.namaKapal}}
+					</span>
+					<label class="col-sm-2 control-label">Agen BM</label>
+					<span class="col-sm-5">
+						: {{detailRkbm.namaAgenBm}}
+					</span>
+				</div>
+				<div class="form-group col-sm-12">
+					<hr>
+				</div>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Komoditi</th>
+							<th>Jumlah</th>
+						</tr>						
+					</thead>
+					<tbody>
+						<tr>
+							<th>Bongkar</th>
+							<td>{{detailRkbm.komoditiBongkar}}</td>
+							<td>{{detailRkbm.jumlahBongkar}}</td>
+						</tr>
+						<tr>
+							<th>Muat</th>
+							<td>{{detailRkbm.komoditiMuat}}</td>
+							<td>{{detailRkbm.jumlahMuat}}</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+			<div class="modal-footer">
+				<br>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+	$('#date-6').datepicker({
+      autoclose: true,
+      format: "dd-mm-yyyy",
+      language: 'id'
+    });
+</script>
+	

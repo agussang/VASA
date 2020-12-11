@@ -1,0 +1,36 @@
+<h2>Master Tagihan Minimum</h2>
+<div pf-filter config="filterConfig"></div>
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="11">
+            	<span>Show :</span> 
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/tagihanminimum/new';" value="Tagihan Minimum Baru" class="btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="11" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th width="30">No</th>
+            <th>Tagihan Min.</th>
+            <th>Valuta</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td width="30">{{noIndex+$index +1}}</td>
+            <td>{{item.tagihanMin | currency:"":4}}</td>
+            <td>{{item.valuta}}</td>
+            <td>{{item.kodeAktif}}</td>
+            <td class="text-center">
+                <a href="#/tagihanminimum/view/{{item.id}}" type="button" class="btn btn-default btn-xs" title="View" ng-show="userRole.rflag"><span class="fa fa-eye"></span></a>
+                <a href="#/tagihanminimum/edit/{{item.id}}" type="button" class="btn btn-default btn-xs" title="Edit"  ng-show="userRole.uflag" ><span class="fa fa-pencil-square-o"></span></a>
+                <a ng-click="deleteTagihan(item.id)" type="button" class="btn btn-danger btn-xs" title="Delete" ng-show="userRole.dflag"><span class="fa fa-times"></span></a>
+            </td>
+        </tr>
+    </tbody>
+</table>

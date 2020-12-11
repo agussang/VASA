@@ -1,0 +1,558 @@
+<h2>Dashboard</h2>
+
+<!--div class="cards-pf card-pf-body">
+	<div class="container-fluid container-cards-pf"-->
+		<div class="row row-cards-pf">
+			<div class="row row-cards-pf"  align="center" ng-if="!isOp">
+				<div class="col-sm-2 col-sm-offset-1">
+					<div class="card-pf dashboard-cards dashboard-cards-medium dashboard-summary">
+						<!-- <div class="refresh-button pull-right">
+							<a class="reload">
+								<i ng-click="reloadRealisasi()" class="fa fa-refresh cursor-pointer icon-refresh" title="Refresh" aria-hidden="true"></i>
+							</a>
+						</div> -->
+						<h3>Outstanding Nota</h3>
+						  <!-- Trigger the modal with a button -->
+						  <button type="button" class="btn" ng-click="showModalOutstandingNota()" style="font-size:xx-large" ><h1>{{informasiOutstandingNota}} </h1></button>
+
+						  <!-- Modal -->
+						  <div class="modal fade" id="outstandingNota" role="dialog">
+						    <div class="modal-dialog" style="width:1200px;">
+						    
+						      <!-- Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Nota Outstanding</h4>
+						        </div><!-- 
+						        <ul class="nav nav-tabs" id="tabContent">
+							        <li class="active"><a href="#outstandingNota" data-toggle="tab">Detail Nota Outstanding</a></li>
+							        <li><a href="#dataUmum" data-toggle="tab">Data Umum</a></li>
+							     </ul> -->
+								<div class="tab-content">
+						        <div class="modal-body" class="tab-pane active" id="outstandingNota">
+						          <table class="table table-bordered table-report">
+						          	<thead>
+						          		<tr>
+						          			<th class="text-center valign"> No </th>
+						          			<th class="text-center valign"> Nama Kapal </th>
+						          			<th class="text-center valign"> No PKK </th>
+						          			<th class="text-center valign"> Jenis Kapal </th>
+						          			<th class="text-center valign"> Lama Outstanding </th>
+						          			<th class="text-center valign"> Tanggal Masuk </th>
+						          			<th class="text-center valign"> Tanggal Keluar </th>
+						          		</tr>
+						          	</thead>
+						          	<tbody>
+						          		<tr ng-repeat="item in items">
+						          			<td> {{noIndex+$index +1}} </td>
+						          			<td>{{item.namaKapal}} (<a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>) </td>
+						          			<td class="text-center valign">{{item.noPkk}}</td>
+						          			<td class="text-center valign">{{item.jenisKapal}}</td>
+						          			<td class="text-center valign">{{item.outstanding}} <span> jam </span> </td>
+						          			<td class="text-center valign">{{item.tglMasuk | date : "dd-MM-yyyy hh:mm"}}</td>
+						          			<td class="text-center valign">{{item.tglKeluar | date : "dd-MM-yyyy hh:mm"}}</td>
+						          		</tr>
+						          	</tbody>
+						          </table>
+						        </div>
+						    	</div>
+								<div class="col-sm-offset-3 col-sm-6 text-center">
+							    <div class="row">
+							      <button class="btn btn-default btn-lg btn-exportPDF" data-dismiss="modal">Tutup</button>
+							      <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdfOutstandingNota()">Ekspor PDF
+							        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+							      </button> -->
+							     </div>
+							  </div>
+						        <div class="modal-footer">
+						        </div>
+						      </div>
+						      
+						    </div>
+						  </div>
+  	
+					</div>
+				</div>
+			<div class="col-sm-2">
+				<div class="card-pf dashboard-cards dashboard-cards-medium dashboard-summary">  
+				    <h3> Kunjungan Kapal </h3>
+				    <button type="button" class="btn" ng-click="showModalKunjunganKapal()" style="font-size:xx-large" ><h1>{{informasiKunjunganKapal}} </h1></button>
+				    <!-- Modal -->
+						  <div class="modal fade" id="kunjunganKapal" role="dialog">
+						    <div class="modal-dialog" style="width:1200px;">
+						      <!-- Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Detail Kunjungan Kapal</h4>
+						        </div>
+						        <div class="modal-body" id="kunjunganKapal">
+						          <table class="table table-bordered table-report">
+						          	<thead>
+						          		<tr>
+						          			<th class="text-center valign"> No </th>
+						          			<th class="text-center valign"> No PKK </th>
+						          			<th class="text-center valign"> Nama Kapal </th>
+						          			<th class="text-center valign"> No PPK Jasa </th>
+						          			<th class="text-center valign"> Jenis Kapal </th>
+						          			<th class="text-center valign"> Nama Dermaga </th>
+						          			<th class="text-center valign"> Tanggal Masuk </th>
+						          			<th class="text-center valign"> Tanggal Keluar </th>
+						          		</tr>
+						          	</thead>
+						          	<tbody>
+						          		<tr ng-repeat="item in items">
+						          			<td> {{noIndex+$index +1}} </td>
+						          			<td class="text-center valign">{{item.noPkk}}</td>
+						          			<td>{{item.namaKapal}} (<a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>) </td>
+						          			<td class="text-center valign">{{item.noPpkJasa}}</td>
+						          			<td class="text-center valign">{{item.jenisKapal}}</td>
+						          			<td class="text-center valign">{{item.namaDermaga}}</td>
+						          			<td class="text-center valign">{{item.tglMasuk | date : "dd-MM-yyyy hh:mm"}}</td>
+						          			<td class="text-center valign">{{item.tglKeluar | date : "dd-MM-yyyy hh:mm"}}</td>
+						          		</tr>
+						          	</tbody>
+						          </table>
+						        </div>
+								<div class="col-sm-offset-3 col-sm-6 text-center">
+							    <div class="row">
+							      <button class="btn btn-default btn-lg btn-exportPDF" data-dismiss="modal">Tutup</button>
+							      <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdfKunjunganKapal()">Ekspor PDF<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button> -->
+							     </div>
+							  </div>
+						        <div class="modal-footer">
+						        </div>
+						      </div>
+						    </div>
+						  </div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="card-pf dashboard-cards dashboard-cards-medium dashboard-summary">
+				    <h3>Pendapatan Kapal</h3>
+				    <button type="button" class="btn" ng-click="showModalPendapatanKapal()" style="font-size:xx-large" >
+				    	<h5>Pendapatan Jasa</h5></button>
+				    <div class="modal fade" id="pendapatanKapal" role="dialog">
+				    	<div class="modal-dialog" style="width:1200px;">
+				    		<div class="modal-content">
+				    			<div class="modal-header">
+				    			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Detail Pendapatan Kapal</h4>
+				    			</div>
+				    			<div class="modal-body">
+				    				<div class="form-group">
+				    				<label class="col-sm-2 control-label">Bln. Pendapatan : </label>
+				    				<div class="col-sm-2">
+				    					<span id="pendapatan" class="input-group date" style="width:150px;">
+								        <input type="text" ng-model="search.tglFilter" ng-change="showModalPendapatanKapal()" date="search.tglFilter" class="form-control bootstrap-datepicker" options="options" readonly>
+								        <span class="input-group-addon">
+          								<span class="fa fa-calendar"></span>
+        								</span>
+								      </span>
+				    				</div>
+				    				<div class="col-sm-2">
+				    					<label style="padding-top: 5px;">{{currentMonth}}</label>
+				    				</div>
+				    				</div>
+				    				<table class="table table-bordered table-report">
+						          	<thead>
+						          		<tr>
+						          			<th class="text-center valign"> Jenis Kapal </th>
+						          			<th class="text-center valign"> Jasa Pandu </th>
+						          			<th class="text-center valign"> Jasa Tunda </th>
+						          			<th class="text-center valign"> Jasa Tambat </th>
+						          			<th class="text-center valign"> Jasa Air Kapal </th>
+						          			<!-- <th class="text-center valign"> Total </th> -->
+						          		</tr>
+						          	</thead>
+						          	<tbody>
+						          		<tr ng-repeat="item in items">
+						          			<td class="text-center valign">{{item.jenisKapal}}</td>
+						          			<td class="text-center valign">{{item.totalPandu | currency : "" : 2}}</td>
+						          			<td class="text-center valign">{{item.totalTunda | currency : "" : 2}}</td>
+						          			<td class="text-center valign">{{item.totalTambat | currency : "" : 2}}</td>
+						          			<td class="text-center valign">{{item.totalAirKapal | currency : "" : 2}}</td>
+						          			<!-- <td class="text-center valign">{{(item.totalPandu * 1) + (item.totalTunda * 1) +  (item.totalTambat * 1) + (item.totalAirKapaln * 1) | currency : "" : 2 }}</td> -->
+						          		</tr>
+
+						          		<tr>
+						          			<td class="text-center valign"><h4 class="modal-title">Total</h4></td>
+						          			<td class="text-center valign">{{ getTotalPandu() | currency : "" : 2 }}</td>
+						          			<td class="text-center valign">{{ getTotalTunda() | currency : "" : 2 }}</td>
+						          			<td class="text-center valign">{{ getTotalTambat() | currency : "" : 2 }}</td>
+						          			<td class="text-center valign">{{ getTotalAirKapal() | currency : "" : 2 }}</td>
+						          			
+						          		</tr>
+						          	</tbody>
+						          </table>
+				    			</div>
+				    			<div class="col-sm-offset-3 col-sm-6 text-center">
+				    				<div class="row">
+				    					<button class="btn btn-default btn-lg btn-exportPDF" data-dismiss="modal">Tutup</button>
+							     		 <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdfPendapatanKapal()">Ekspor PDF<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button> -->
+				    				</div>
+				    			</div>
+				    			<div class="modal-footer">
+				    			</div>
+
+				    		</div>
+				    	</div>
+				    </div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="card-pf dashboard-cards dashboard-cards-medium dashboard-summary">
+				    <h3>Pembatalan Nota</h3>
+				    <button type="button" class="btn" ng-click="showModalPembatalanNota()" style="font-size:xx-large" >
+				    	<h5>Pembatalan Nota</h></button>
+				    <div class="modal fade" id="pembatalanNota" role="dialog">
+				    	<div class="modal-dialog" style="width:1200px;">
+				    		<div class="modal-content">
+				    			<div class="modal-header">
+				    			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Detail Pembatalan Nota</h4>
+				    			</div>
+				    			<div class="modal-body">
+				    				<div class="form-group">
+				    				<label class="col-sm-2 control-label">Bln. Pembatalan : </label>
+				    				<div class="col-sm-2">
+				    					<span id="pembatalan" class="input-group date" style="width:150px;">
+								        <input type="text" ng-model="search.tglFilter" ng-change="showModalPembatalanNota()" date="search.tglFilter" class="form-control bootstrap-datepicker" options="options" readonly>
+								        <span class="input-group-addon">
+          								<span class="fa fa-calendar"></span>
+        								</span>
+								      </span>
+				    				</div>
+				    				<div class="col-sm-2">
+				    					<label style="padding-top: 5px;">{{currentMonth}}</label>
+				    				</div>
+				    				</div>
+				    				<table class="table table-bordered table-report">
+						          	<thead>
+						          		<tr>
+						          			<th class="text-center valign"> No PPK1 </th>
+						          			<th class="text-center valign"> Nama Kapal </th>
+						          			<th class="text-center valign"> Nama Agen </th>
+						          			<th class="text-center valign"> Tanggal Masuk </th>
+						          			<th class="text-center valign"> Tanggal Keluar </th>
+						          			<th class="text-center valign"> Tanggal Batal </th>
+						          		</tr>
+						          	</thead>
+						          	<tbody>
+						          		<tr ng-repeat="item in items">
+						          			<td class="text-center valign">{{item.noPpk1}}</td>
+						          			<td class="text-center valign">{{item.namaKapal}}</td>
+						          			<td class="text-center valign">{{item.namaAgen}}</td>
+						          			<td class="text-center valign">{{item.tglMasuk | date : "dd-MM-yyyy hh:mm"}}</td>
+						          			<td class="text-center valign">{{item.tglKeluar | date : "dd-MM-yyyy hh:mm"}}</td>
+						          			<td class="text-center valign">{{item.tglBatal | date : "dd-MM-yyyy hh:mm"}}</td>
+
+						          		</tr>
+						          	</tbody>
+						          </table>
+				    			</div>
+				    			<div class="col-sm-offset-3 col-sm-6 text-center">
+				    				<div class="row">
+				    					<button class="btn btn-default btn-lg btn-exportPDF" data-dismiss="modal">Tutup</button>
+							     		 <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdfPembatalanNota()">Ekspor PDF<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button> -->
+				    				</div>
+				    			</div>
+				    			<div class="modal-footer">
+				    			</div>
+
+				    		</div>
+				    	</div>
+				    </div>
+				</div>
+			</div>
+			<div class="col-sm-2">
+				<div class="card-pf dashboard-cards dashboard-cards-medium dashboard-summary">
+				    <h3>Lama Approval Nota</h3>
+				    <button type="button" class="btn" ng-click="showModalApprovalNota()" style="font-size:xx-large" >
+				    	<h5>Approval Nota</h5></button>
+				    <div class="modal fade" id="approvalNota" role="dialog">
+				    	<div class="modal-dialog" style="width:1300px;">
+				    		<div class="modal-content">
+				    			<div class="modal-header">
+				    			  <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">Detail Approval Nota</h4>
+				    			</div>
+				    			<div class="modal-body">
+				    				<div class="form-group">
+				    				<label class="col-sm-2 control-label">Bln. Approval : </label>
+				    				<div class="col-sm-2">
+				    					<span id="approval" class="input-group date" style="width:150px;">
+								        <input type="text" ng-model="search.tglFilter" date="search.tglFilter" ng-change="showModalApprovalNota()" class="form-control bootstrap-datepicker" options="options"  readonly>
+								        <span class="input-group-addon">
+								        	<span class="fa fa-calendar"></span>
+								        </span>
+								      </span>
+				    				</div>
+				    				<div class="col-sm-2">
+				    					<label style="padding-top: 5px;">{{currentMonth}}</label>
+				    				</div>
+				    				</div>
+				    				<table class="table table-bordered table-report">
+						          	<thead>
+						          		<tr>
+						          			<th class="text-center valign" rowspan="2"> No </th>
+						          			<th class="text-center valign" rowspan="2"> No PKK </th>
+						          			<th class="text-center valign" rowspan="2"> No PPK1 </th>
+						          			<th class="text-center valign" rowspan="2"> Nama Kapal </th>
+						          			<th class="text-center valign" rowspan="2"> Pandu Naik</th>
+							                <th class="text-center valign" colspan="2"> Kapal Gerak</th>
+							                <th class="text-center valign" rowspan="2"> Pandu Turun</th>
+							                <th class="text-center valign" colspan="2"> Verifikasi</th>
+							                <th class="text-center valign" rowspan="2"> ODB <br>(Hours)</th>
+							                <th class="text-center valign" rowspan="2"> Keterangan</th>
+							                <th class="text-center valign" rowspan="2"> SPB</th>
+						          		</tr>
+						          		<tr>
+						          			<th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+							                <th class="text-center valign">Jam</th>
+							                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+							                <th class="text-center valign">Jam</th>
+						          		</tr>
+
+						          	</thead>
+						          	<tbody>
+						          		<tr ng-repeat="item in items">
+						          			<td> {{noIndex+$index +1}} </td>
+						          			<td class="text-center valign">{{item.noPkk}}</td>
+						          			<td class="text-center valign">
+							                  <a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>
+							                </td>
+							                <td class="text-center valign">{{item.namaKapal}}</td>
+							                <td class="text-center valign">{{item.jamNaik | date:'HH:mm:ss'}}</td>
+							                <td class="text-center valign">{{item.jamKapalGerak | date:'dd-MM-yyyy'}}</td>
+							                <td class="text-center valign">{{item.jamKapalGerak | date:'HH:mm:ss'}}</td>
+							                <td class="text-center valign">{{item.jamTurun | date:'HH:mm:ss'}}</td>
+							                <td class="text-center valign">{{item.tglMulaiTunda | date:'dd-MM-yyyy'}}</td>
+               							    <td class="text-center valign">{{item.tglMulaiTunda | date:'HH:mm:ss'}}</td>
+               							    <td class="text-center valign">{{item.odb}}</td>
+               							    <td class="text-center valign">{{item.statusNota  == true ? 'SUDAH NOTA':'BELUM NOTA'}}</td>
+               							    <td class="text-center valign">{{item.noSpb}}</td>
+						          		</tr>
+
+						          		<tr>
+						          		</tr>tr>
+						          	</tbody>
+						          </table>
+				    			</div>
+				    			<div class="col-sm-offset-3 col-sm-6 text-center">
+				    				<div class="row">
+				    					<button class="btn btn-default btn-lg btn-exportPDF" data-dismiss="modal">Tutup</button>
+							     		 <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdfApprovalNota()">Ekspor PDF<i class="fa fa-file-pdf-o" aria-hidden="true"></i></button> -->
+				    				</div>
+				    			</div>
+				    			<div class="modal-footer">
+				    			</div>
+
+				    		</div>
+				    	</div>
+				    </div>
+				</div>
+			</div>
+		</div><!-- /row -->
+		<!-- 	<div class="col-xs-6">
+				<div class="card-pf dashboard-cards">
+					<div class="card-pf-heading">
+						<div class="refresh-button pull-right">
+							<a class="reload">
+								<i ng-click="reloadRealisasi()" class="fa fa-refresh cursor-pointer icon-refresh" title="Refresh" aria-hidden="true"></i>
+							</a>
+						</div>
+						<h2 class="card-pf-title">
+						5	Realisasi Terakhir Siap Verifikasi
+						</h2>
+					</div>
+					<div class="card-pf-body">
+						<table class="datatable table table-striped table-bordered table-dashboard table-verifikasi">
+								<thead>
+										<tr>
+											<th style="width:10px">No</th>
+												<th>
+														<div class="pull-left">No. PPK1</div>
+												</th>
+												<th>
+														<div class="pull-left">Nama Kapal</div>
+												</th>
+										</tr>
+								</thead>
+								<tbody>
+										<tr ng-repeat="item in realisasiItems | limitTo: 5 | orderBy:'-created'">
+											<td>{{noIndex+$index +1}}</td>
+												<td>
+													<a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>
+													<span class="cursor-pointer" ng-mouseover="getDataJasa(item)" ng-show="item.showToolTip">
+														<a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{dataToolTipJasa}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+													</span>
+													<br>
+														<h6 class="capitalize" ng-repeat="(key, value) in item.listNamaJasa" ng-class="value.status == true ? 'list-jasa-dashboard' : (value.status == false ? 'list-jasa-dashboard' : 'list-jasa-dashboard')">{{value.nama}}&nbsp;{{$last ? '' : '-'}}&nbsp;</h6>
+												</td>
+												<td>{{item.namaKapal}} <br><small>{{item.namaPelabuhanAsal}} <span class="fa fa-long-arrow-right"></span> {{item.namaPelabuhanTujuan}}</small></td></td>
+											</tr>
+								</tbody>
+						</table>
+					</div>
+				</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="card-pf dashboard-cards">
+				<div class="card-pf-heading">
+					<div class="pull-right refresh-button">
+						<a class="reload">
+							<i ng-click="reloadBBM()" class="fa fa-refresh cursor-pointer icon-refresh" title="Refresh" aria-hidden="true"></i>
+						</a>
+					</div>
+					<h2 class="card-pf-title">
+						5 Perubahan Terakhir Harga BBM
+					</h2>
+				</div>
+				<div class="card-pf-body table-dashboard">
+					<div id="chart" style="height:240px"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+			<div class="row row-cards-pf">
+				<div class="col-xs-6">
+					<div class="card-pf dashboard-cards dashboard-cards-medium">
+						<div class="card-pf-heading">
+							<div class="pull-right refresh-button">
+								<a class="reload">
+									<i ng-click="reloadTarif()" class="fa fa-refresh cursor-pointer icon-refresh" title="Refresh"  aria-hidden="true"></i>
+								</a>
+							</div>
+							<h2 class="card-pf-title">
+							5	Perubahan Tarif Terakhir
+							</h2>
+						</div>
+						<div class="card-pf-body">
+							<table class="datatable table table-striped table-bordered table-dashboard">
+									<thead>
+											<tr>
+												<th style="width:10px">No</th>
+													<th>
+															<div class="pull-left">No. SK</div>
+														</th>
+													<th>
+															<div class="pull-left">Jenis Tarif</div>
+														</th>
+													<th>
+															<div class="pull-left">Tgl. Berlaku</div>
+														</th>
+											</tr>
+									</thead>
+									<tbody>
+											<tr ng-repeat="item in perubahanTarifItems | limitTo: 5 | orderBy:'-tglBerlaku'">
+												<td>{{noIndex+$index +1}}</td>
+												<td>{{item.nomorSk}}</td>
+												<td><a href="#/{{item.link}}/list">{{item.jenisTarif}}</a></td>
+												<td>{{item.tglBerlaku | date: "dd-MM-yyyy"}}</td>
+												</tr>
+									</tbody>
+							</table>
+						</div>
+					</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="card-pf dashboard-cards dashboard-cards-medium">
+				  <div class="card-pf-heading">
+				    <div class="pull-right refresh-button">
+				    	<a class="reload">
+				      		<i ng-click="reloadKesepakatan()" class="fa fa-refresh cursor-pointer icon-refresh" title="Refresh"  aria-hidden="true"></i>
+				      	</a>
+				    </div>
+				    <h2 class="card-pf-title">
+				      5 Kesepakatan Terakhir Segera Habis Masa Berlaku
+				    </h2>
+				  </div>
+				  <div class="card-pf-body">
+				    <table class="datatable table table-striped table-bordered table-dashboard">
+				        <thead>
+				            <tr>
+				              <th style="width:10px">No</th>
+				                <th>
+				                    <div class="pull-left">No. SK</div>
+				                  </th>
+				                <th>
+				                    <div class="pull-left">Jenis Kesepakatan</div>
+				                  </th>
+				                <th>
+				                    <div class="pull-left">Tgl Sepakat</div>
+				                  </th>
+				                  <th>
+				                    <div class="pull-left">Tgl Berakhir</div>
+				                  </th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				            <tr ng-repeat="item in kesepakatanItems | limitTo: 5 | orderBy:'tglBerakhir'">
+				              <td>{{noIndex+$index +1}}</td>
+				              <td>{{item.nomorSk}}</td>
+				              <td><a href="#/{{item.link}}/list">{{item.jenisKesepakatan}} </a></td>
+				              <td>{{item.tglSepakat | date: "dd-MM-yyyy"}}</td>
+				              <td>{{item.tglBerakhir | date: "dd-MM-yyyy"}}</td>
+				            </tr>
+				        </tbody>
+				    </table>
+				  </div>
+				</div>
+			</div>
+		</div> -->
+		<!-- /row -->
+	<!--/div--><!-- /container -->
+<!--/div-->
+<script>
+$(document).ready(function() {
+	// matchHeight the contents of each .card-pf and then the .card-pf itself
+	$(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
+	$(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
+	$(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
+	$(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
+
+	// initialize tooltips
+	$('[data-toggle="tooltip"]').tooltip();
+
+	//initialize datepicker
+	$('#pendapatan').datepicker({
+    autoclose: true,
+    format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    language: 'id'
+  });
+
+	$('#pembatalan').datepicker({
+    autoclose: true,
+    format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    language: 'id'
+  });
+
+	$('#approval').datepicker({
+    autoclose: true,
+    format: "mm-yyyy",
+    viewMode: "months",
+    minViewMode: "months",
+    language: 'id'
+  });
+	// initialize nav
+	$().setupVerticalNavigation(true);
+
+	//icon rotate
+	$( ".reload" ).on( "click", function( e ) {
+        var $icon = $( this ).find( ".icon-refresh" ),
+            animateClass = "icon-refresh-animate";
+
+        $icon.addClass( animateClass );
+        // setTimeout is to indicate some async operation
+        window.setTimeout( function() {
+        	$icon.removeClass( animateClass );
+        }, 500 );
+    });
+});
+</script>

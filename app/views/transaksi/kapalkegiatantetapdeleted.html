@@ -1,0 +1,31 @@
+<h2>Riwayat Penghapusan Kapal Kegiatan Tetap</h2>
+<br>
+<table class="datatable table table-striped table-bordered">
+  <thead>
+    <tr>
+      <td colspan="10">
+        <span>Show : </span>
+        <select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="10" class="text-center">{{pagingText}}</td>
+    </tr>
+    <tr>
+      <th>Kode Agen</th>
+      <th>Kode Kapal</th>
+      <th>PPK1 Lama</th>
+      <th>PPK1 Baru</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="item in data">
+      <td>{{item.kodeKapal}}</td>
+      <td>{{item.kodeAgen}}</td>
+      <td>{{item.noPpk1Lama}}</td>
+      <td>{{item.noPpk1Baru}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<br>

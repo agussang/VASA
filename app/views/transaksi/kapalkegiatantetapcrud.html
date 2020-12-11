@@ -1,0 +1,104 @@
+<div class="row">
+	<div class="col-md-6">
+		<h2>Kapal Kegiatan Tetap</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="col-sm-3 navbar-right">
+	<button ng-click="back()" class="btn btn-default"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+</div>
+<br>
+<form class="form-horizontal" name="KapalKegiatanTetapForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>Periode Bulan</label>
+		<div class="col-sm-3">
+			<div pf-datepicker id="periodeBulan" options="optionsMonths" data-date-format="MM" date="periodeBulan" required></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>Periode Tahun</label>
+		<div class="col-sm-3">
+			<div pf-datepicker id="periodetahun" options="optionsYears" data-date-format="yyyy" date="periodeTahun" required></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Labuh</label>
+		<div class="col-sm-6">
+			<input type="text"  class="form-control" ng-model="kapaltetap.lokasiLabuh" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfLokasiLabuh($viewValue)" data-limit="10"
+			 ng-focus="checkValue(kapaltetap.lokasiLabuh)" ng-blur="validationLookupLokasiLabuh()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Tambat</label>
+	   	<div class="col-sm-6">
+			<input type="text"  class="form-control" ng-model="kapaltetap.lokasiTambat" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10"  ng-focus="checkValue(kapaltetap.lokasiTambat)" ng-blur="validationLookupLokasiTambat()" required>
+	   	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Pelabuhan</label>
+		<div class="col-sm-6">
+			<input type="text"  class="form-control" ng-model="kapaltetap.pelabuhan" bs-typeahead bs-options="pelabuhan.mkplNamaPlb for pelabuhan in getListOfPelabuhan($viewValue)" data-limit="10"
+			 ng-focus="checkValue(kapaltetap.pelabuhan)" ng-blur="validationLookupPelabuhan()" required>
+		</div>
+	</div>
+    <div class="form-group">
+     	 <div class="col-sm-offset-2 col-sm-2">
+          	<button type="button" class="btn btn-default btn-lg" ng-disabled="!KapalKegiatanTetapForm.$valid || showLoading" ng-click="tampilkanKapal()">Tampilkan Kapal</button>
+      </div>
+			<div class="col-sm-2">
+					 <button type="button" class="btn btn-primary btn-lg" ng-disabled="!showDaftarKapal || !isSelected" ng-click="hitungTagihan()">Hitung Tagihan</button>
+		 </div>
+			<div class="col-sm-2">
+				<b ng-show="showLoading">Hitung kapal {{done}}/{{items.length}}</b>
+			</div>
+			<div class="col-sm-2">
+				<div  class="spinner spinner-lg" ng-show="showLoading"></div>
+			</div>
+    </div>
+</form>
+
+<table class="table table-striped table-bordered" ng-show="showDaftarKapal">
+	<thead>
+		<tr>
+			<th><input type="checkbox" ng-model="checkbox"></th>
+	  		<th>Kode Kapal</th>
+	  		<th>Nama Kapal</th>
+	  		<th>Agen</th>
+		</tr>
+  	</thead>
+  	<tbody>
+  		<tr ng-repeat="item in items" ng-show="!item.hideItem">
+				<td> <input type="checkbox" ng-model="item.checked" ng-change="getSelectedState()" ng-disabled="item.benderaText == null"></td>
+				<td>{{item.kode}}</td>
+	  		<td>{{item.nama}} 	<span class="cursor-pointer" ng-mouseover="showToolTip(item.nama)" ng-show="item.benderaText == null">
+						<a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{keterangan}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+					</span></td>
+	  		<td>{{item.kodeAgenText}}</td>
+  		</tr>
+  	</tbody>
+</table>

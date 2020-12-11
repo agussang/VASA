@@ -1,0 +1,22 @@
+<div class="">
+	<h2>Laporan Lineup Kapal</h2>
+	<form class="form-horizontal" name="PerencanaanNew">
+	  	<div class="form-group">
+			<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama Dermaga</label>
+			<div class="col-sm-7">
+		  		<input type="text" id="" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" required>
+			</div>
+	  	</div>
+	  	<div class="form-group">
+	      <label class="col-sm-2 control-label" for="tglPerencanaan"><span class="text-danger">*</span>Tgl. Rencana Tambat</label>
+	        <div class="col-sm-2">
+	             <div pf-datepicker id="IdtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="tglPerencanaan" required></div>
+	        </div>
+	    </div>
+	  	<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-7">
+		  		<button type="button" class="btn btn-lg btn-primary" ng-click="createPenetapanMeeting()" ng-disabled="PerencanaanNew.$invalid;">Lihat Laporan</button>
+			</div>
+	 	 </div>
+	</form>
+</div>

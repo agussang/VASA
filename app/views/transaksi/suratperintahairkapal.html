@@ -1,0 +1,103 @@
+<h2>Surat Perintah Kerja</h2>
+
+<hr>
+<div class="container-fluid" style="border: 1px solid #d3d3d3;overflow:hidden">
+  <div class="row">
+    <div class="col-xs-6">
+        <label>PT PELABUHAN INDONESIA III</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+        <label>CABANG <span>{{currentCabang}}<span></label>
+    </div>
+  </div>
+
+  <div class="col-xs-12">
+      <div class="spk-header label-center"><label>SURAT PERINTAH KERJA / PELAYANAN AIR</label></div>
+  </div>
+
+  <div class="col-xs-12">
+    <form class="form-horizontal">
+      <div class="row">
+        <p class="col-sm-11">Berdasarkan surat permohonan nomor <label class='view-detail'>{{item.noPpk1}}  </label>  Tgl <label class='view-detail'>{{item.tglPermohonan | date:'dd-MM-yyyy'}}</label></p>
+      </div>
+      <div class="row">
+        <p class="col-sm-12">Diperintahkan agar:</p>
+      </div>
+      <div class="row">
+        <p class="col-sm-2 col-sm-offset-1">Untuk Kapal</p>
+        <div class="col-sm-8">
+            <span>:</span>
+            <label class='view-detail'>{{item.namaKapal}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2 col-sm-offset-1">Bendera</p>
+        <div class="col-sm-8">
+            <span>:</span>
+            <label class='view-detail'>{{item.bendera}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2 col-sm-offset-1" style="padding-right:0px;">Berlabuh/bertambat di</p>
+        <div class="col-sm-8">
+            <span>:</span>
+            <label class='view-detail'>{{item.namaDermaga}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2 col-sm-offset-1">Dari Perusahaan</p>
+        <div class="col-sm-8">
+            <span>:</span>
+            <label class='view-detail'>{{item.namaAgen}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-3">Diberikan pelayanan air sebanyak</p>
+        <div class="col-sm-4">
+            <span>:</span>
+            <label class='view-detail'>{{item.volume}} ( {{item.volumeWords}} ) m3</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-2">Mulai tanggal</p>
+        <div class="col-sm-2">
+            <span>:</span>
+            <label class='view-detail'>{{item.tglMulaiIsi | date:'dd-MM-yyyy'}}</label>
+        </div>
+        <p class="col-sm-1">Jam</p>
+        <div class="col-sm-2">
+            <span>:</span>
+            <label class='view-detail'>{{item.tglMulaiIsi | date: 'HH:mm'}}</label>
+        </div>
+        <p class="col-sm-1">melalui</p>
+        <div class="col-sm-3">
+            <span>:</span>
+            <label class='view-detail'>{{item.alatIsi}}</label>
+        </div>
+      </div>
+      <div class="row">
+        <p class="col-sm-12">Tonage berdasarkan flow meter PT Pelabuhan Indonesia III (Persero) Cabang {{namaCabangTitle}}</p>
+      </div>
+      <div class="row">
+        <p class="col-sm-4 col-sm-offset-7">{{kota_meeting}}, {{item.tglSurat | date:'dd-MM-yyyy'}}</p>
+      </div>
+      <div class="row">
+        <p class="col-sm-4 col-sm-offset-7">{{namaJabatan}}</p>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <p class="col-sm-3 col-sm-offset-8">({{pejabatPengesahan}})</p>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+
+<div class="text-center">
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="close()">Tutup</button>
+   <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generate()">Ekspor  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+</div>

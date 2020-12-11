@@ -1,0 +1,34 @@
+<h2>Parameter Detail</h2>
+<form class="form-horizontal">
+    <div class="form-group">
+      <label class="col-sm-2">Nama Parameter</label>
+      <div class="col-sm-9">
+          <span>:</span> {{parameter.nama}}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+                <th>Judul</th>
+                <th class="text-center">Nilai</th>
+                <th class="text-center">Value berupa angka</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="itemDataParam in itemDataParams" ng-show="itemDataParams">
+              <td class="col-sm-3">{{itemDataParam.caption}}</td>
+              <td class="text-center col-sm-1">{{itemDataParam.value}}</td>
+              <td class="text-center col-sm-2">{{itemDataParam.isNumericText}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+</form>
+<button type="button" class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>
+
+
+
+

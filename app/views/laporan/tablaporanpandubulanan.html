@@ -1,0 +1,279 @@
+<div class="tab-content">
+    <div id="tabBulanan" role="tabpanel" class="tab-pane active">
+        <form class="form-horizontal" name="PerencanaanNew">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Tgl. Pandu</label>
+                  <div class="col-sm-4">
+                    <span id="date-3" class="input-group date" style="width:150px;">
+                      <input type="text" ng-model="search.tglFilter" date="search.tglFilter" ng-change="loadLaporanBulanan()" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+                    </span>
+                  </div>
+                  <div class="col-sm-4">
+                    <label style="padding-top: 5px;">{{currentMonth}}</label>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Nama Pandu </label>
+                <div class="col-sm-9" style="display:inline-flex;">
+                  <input type="text" ng-model="search.namaPandu">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Nama Kapal </label>
+                  <div class="col-sm-9" style="display:inline-flex;">
+                    <input ng-model="search.namaKapal">
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+              <label class="col-sm-3 control-label">Status Nota </label>
+                <select class="col-sm-4 pull-left" pf-select ng-model="search.statusNota" ng-options="option.value as option.caption for option in optionStatusNota"
+                  title="Status Nota" ng-change="loadLaporanBulanan()"></select>
+              </div>
+             
+            </div>
+          </div>
+        </form>
+        <div class="row">
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-7">
+              <button type="button" class="btn btn-default btn-lg btn-exportPDF" ng-click="loadLaporanBulanan()"> Filter </button>
+              <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              </button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-show="isRegional()" ng-click="generateExcelRegionalBulanan()">Ekspor Excel Regional
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="tabel-kegiatan-pemanduan" class="col-sm-12" style="margin-left:0px" style="display:inline-flex; width:100%">
+          <table class="table table-bordered table-report">
+            <thead>
+              <tr ng-hide="true">
+                <th colspan="20">
+                  <label> Laporan Kegiatan Pemanduan</label>
+                </th>
+              </tr>
+              <tr ng-hide="true">
+                <th colspan="20">
+                  <label> </label>
+                </th>
+              </tr>
+              <tr>
+                <th class="text-center valign" rowspan="2">No</th>
+                <th class="text-center valign" rowspan="2">No. PPK1</th>
+                <th class="text-center valign" rowspan="2">Kapal</th>
+                <th class="text-center valign" rowspan="2">GT</th>
+                <th class="text-center valign" rowspan="2">LOA</th>
+                <th class="text-center valign" rowspan="2">Nama Agen</th>
+                <th class="text-center valign" rowspan="2">Pelayaran</th>
+                <th class="text-center valign" rowspan="2">Trayek</th>
+                <th class="text-center valign" rowspan="2">Valuta</th>
+                <th class="text-center valign" rowspan="2">Jenis Kapal</th>
+                <th class="text-center valign" rowspan="2">Bendera</th>
+                <th class="text-center valign" rowspan="2">Gerakan</th>
+                <th class="text-center valign" rowspan="2">Lok Awal</th>
+                <th class="text-center valign" rowspan="2">Lok Akhir</th>
+                <th class="text-center valign" colspan="2">Permohonan</th>
+                <th class="text-center valign" colspan="2">Penetapan</th>
+                <th class="text-center valign" rowspan="2">Pandu Naik</th>
+                <th class="text-center valign" colspan="2">Kapal Gerak</th>
+                <th class="text-center valign" rowspan="2">Pandu Turun</th>
+                <th class="text-center valign" rowspan="2">Nama Pandu</th>
+                <!-- <th class="text-center valign" rowspan="2" style="min-width: 120px !important">WTP/ODB</th> -->
+                <!-- <th class="text-center valign" rowspan="2" style="min-width:90px !important;">Tanggal Tunda</th> -->
+                <th class="text-center valign" rowspan="2">WTP<br>(Minutes)</th>
+                <th class="text-center valign" rowspan="2">ODB<br>(Hours)</th>
+                <th class="text-center valign" colspan="2">Verifikasi</th>
+                <th class="text-center valign" rowspan="2">Keterangan</th>
+                <th class="text-center valign" rowspan="2">No PKK</th>
+              </tr>
+              <tr>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width: 90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in items">
+                <td class="text-center valign">{{$index +1}}</td>
+                <td class="text-center valign">
+                  <a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>
+                </td>
+                <td class="text-center valign">{{item.namaKapal}}</td>
+                <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+                <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+                <td class="text-center valign">{{item.namaAgen}}</td>
+                <td class="text-center valign">{{item.jenisPelayaran}}</td>
+                <td class="text-center valign">{{item.trayek}}</td>
+                <td class="text-center valign">{{item.valuta}}</td>
+                <td class="text-center valign">{{item.jenisKapal}}</td>
+                <td class="text-center valign">{{item.bendera}}</td>
+                <td class="text-center valign">{{item.jenisGerakan}}</td>
+                <td class="text-center valign">{{item.kodeLokasiAsal}}</td>
+                <td class="text-center valign">{{item.kodeLokasiTujuan}}</td>
+                <td class="text-center valign">{{item.tglPermohonan | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglPermohonan | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglPenetapan | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamNaik | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamKapalGerak | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.jamKapalGerak | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamTurun | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.namaPandu}}</td>
+                <td class="text-center valign">{{item.wtp}}</td>
+                <td class="text-center valign">{{item.odb}}</td>
+                <td class="text-center valign">{{item.tglMulaiTunda | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglMulaiTunda | date:'HH:mm:ss'}}</td>
+
+                <!-- <td class="text-center valign">{{item.tglSelesaiTunda | date:'HH:mm:ss'}}</td> -->
+                <td class="text-center valign">{{item.statusNota  == true ? 'SUDAH NOTA':'BELUM NOTA'}}</td>
+                <td class="text-center valign">{{item.noPkk}}</td>
+
+              </tr>
+              <tr><td colspan="20" class="text-center valign" ng-show="items.length == 0"><b> Data tidak tersedia</b></td></tr>
+            </tbody>
+          </table>
+
+          <div class="text-center col-sm-3">
+            <label>{{jabatanLaporanPemanduan}}</label>
+            <br>
+            <label class="top-buffer">{{namaLaporanPemanduan}}</label>
+          </div>
+          
+        </div>
+
+          <div id="tabel-kegiatan-pemanduan-public" class="col-sm-12" style="margin-left:0px" style="display:inline-flex; width:100%" ng-hide="true">
+          <table class="table table-bordered table-report">
+            <thead>
+              <tr ng-hide="true">
+                <th colspan="20">
+                  <label> Laporan Kegiatan Pemanduan</label>
+                </th>
+              </tr>
+              <tr ng-hide="true">
+                <th colspan="20">
+                  <label> </label>
+                </th>
+              </tr>
+              <tr>
+                <th class="text-center valign" rowspan="2">No</th>
+                <th class="text-center valign" rowspan="2">No. PPK1</th>
+                <th class="text-center valign" rowspan="2">Kapal</th>
+                <th class="text-center valign" rowspan="2">GT</th>
+                <th class="text-center valign" rowspan="2">LOA</th>
+                <th class="text-center valign" rowspan="2">Nama Agen</th>
+                <th class="text-center valign" rowspan="2">Pelayaran</th>
+                <th class="text-center valign" rowspan="2">Trayek</th>
+                <th class="text-center valign" rowspan="2">Valuta</th>
+                <th class="text-center valign" rowspan="2">Jenis Kapal</th>
+                <th class="text-center valign" rowspan="2">Bendera</th>
+                <th class="text-center valign" rowspan="2">Gerakan</th>
+                <th class="text-center valign" rowspan="2">Lok Awal</th>
+                <th class="text-center valign" rowspan="2">Lok Akhir</th>
+                <th class="text-center valign" colspan="2">Permohonan</th>
+                <th class="text-center valign" colspan="2">Penetapan</th>
+                <th class="text-center valign" rowspan="2">Pandu Naik</th>
+                <th class="text-center valign" colspan="2">Kapal Gerak</th>
+                <th class="text-center valign" rowspan="2">Pandu Turun</th>
+                <th class="text-center valign" rowspan="2">Nama Pandu</th>
+                <!-- <th class="text-center valign" rowspan="2" style="min-width: 120px !important">WTP/ODB</th> -->
+                <!-- <th class="text-center valign" rowspan="2" style="min-width:90px !important;">Tanggal Tunda</th> -->
+                <th class="text-center valign" rowspan="2">WTP<br>(Minutes)</th>
+                <th class="text-center valign" rowspan="2">ODB<br>(Hours)</th>
+                <th class="text-center valign" colspan="2">Verifikasi</th>
+                <th class="text-center valign" rowspan="2">Keterangan</th>
+                <th class="text-center valign" rowspan="2">No PKK</th>
+              </tr>
+              <tr>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width:90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+                <th class="text-center valign" style="min-width: 90px !important;">Tanggal</th>
+                <th class="text-center valign">Jam</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in itemsPublic">
+                <td class="text-center valign">{{$index +1}}</td>
+                <td class="text-center valign">
+                  <a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a>
+                </td>
+                <td class="text-center valign">{{item.namaKapal}}</td>
+                <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+                <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+                <td class="text-center valign">{{item.namaAgen}}</td>
+                <td class="text-center valign">{{item.jenisPelayaran}}</td>
+                <td class="text-center valign">{{item.trayek}}</td>
+                <td class="text-center valign">{{item.valuta}}</td>
+                <td class="text-center valign">{{item.jenisKapal}}</td>
+                <td class="text-center valign">{{item.bendera}}</td>
+                <td class="text-center valign">{{item.jenisGerakan}}</td>
+                <td class="text-center valign">{{item.kodeLokasiAsal}}</td>
+                <td class="text-center valign">{{item.kodeLokasiTujuan}}</td>
+                <td class="text-center valign">{{item.tglPermohonan | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglPermohonan | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglPenetapan | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamNaik | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamKapalGerak | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.jamKapalGerak | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.jamTurun | date:'HH:mm:ss'}}</td>
+                <td class="text-center valign">{{item.namaPandu}}</td>
+                <td class="text-center valign">{{item.wtp}}</td>
+                <td class="text-center valign">{{item.odb}}</td>
+                <td class="text-center valign">{{item.tglMulaiTunda | date:'dd-MM-yyyy'}}</td>
+                <td class="text-center valign">{{item.tglMulaiTunda | date:'HH:mm:ss'}}</td>
+
+                <!-- <td class="text-center valign">{{item.tglSelesaiTunda | date:'HH:mm:ss'}}</td> -->
+                <td class="text-center valign">{{item.statusNota  == true ? 'SUDAH NOTA':'BELUM NOTA'}}</td>
+                <td class="text-center valign">{{item.noPkk}}</td>
+
+              </tr>
+              <tr><td colspan="20" class="text-center valign" ng-show="items.length == 0"><b> Data tidak tersedia</b></td></tr>
+            </tbody>
+          </table>
+
+          <div class="text-center col-sm-3">
+            <label>{{jabatanLaporanPemanduan}}</label>
+            <br>
+            <label class="top-buffer">{{namaLaporanPemanduan}}</label>
+          </div>
+          
+        </div>
+
+    </div>
+</div>
+  <script>
+    $('#date-3').datepicker({
+      autoclose: true,
+      format: "mm-yyyy",
+      viewMode: "months",
+      minViewMode: "months",
+      language: 'id'
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>

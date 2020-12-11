@@ -1,0 +1,41 @@
+<div class="container">
+	<h2>Master Kapal Tunda Minimum Edit</h2>
+	<form class="form-horizontal" name="formKtEdit">
+		<div class="form-group">
+		  	<label class="col-sm-2 control-label"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+			<div class="col-sm-4">
+				<div pf-datepicker  options="options" name="tglBerlaku" data-date-format="dd-mm-yyyy" date="tglBerlaku" style="width:200px;"></div>
+			</div>
+		</div>
+		<div class="form-group">
+            <label class="col-md-2 control-label"><span class="text-danger">*</span>Horse Power</label>
+            <div class="col-md-4">
+                <input type="number" only-num maxlength="6" max="100000" min="1" class="form-control" name="hp" ng-model="paramMinKt.hp">
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-md-2 control-label"><span class="text-danger">*</span>Jml. Kapal</label>
+            <div class="col-md-4">
+                <input type="number" only-num maxlength="10" min="1" class="form-control" name="jmlKapal" ng-model="paramMinKt.jmlKapal">
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-md-2 control-label"><span class="text-danger">*</span>LOA Min.</label>
+            <div class="col-md-4">
+                <input type="number" only-num maxlength="10" min="1" class="form-control" name="loaMin" ng-model="paramMinKt.loaMin">
+            </div>
+        </div>
+		<div class="form-group">
+            <label class="col-md-2 control-label"><span class="text-danger">*</span>LOA Max.</label>
+            <div class="col-md-4">
+                <input type="number" only-num maxlength="10" min="1" class="form-control" name="loaMax" ng-model="paramMinKt.loaMax" required>
+            </div>
+        </div>
+		<div class="form-group">
+		  	<div class="col-sm-offset-2 col-sm-7">
+			  	<button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+			  	<button type="button" class="btn btn-primary btn-lg" ng-disabled="formKtEdit.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true">Simpan</button>
+		  	</div>
+		</div>
+	</form>
+</div>

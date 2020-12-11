@@ -1,0 +1,92 @@
+<div class="">
+	<h2>Laporan Antrian</h2>
+	<form class="form-horizontal" name="reportAntrian">
+	  	<div class="form-group">
+			<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama Dermaga</label>
+			<div class="col-sm-7">
+		  		<input type="text" id="" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" required>
+			</div>
+	  	</div>
+	  	<div class="form-group">
+	      <label class="col-sm-2 control-label" for="tglPerencanaan"><span class="text-danger">*</span>Tanggal</label>
+	        <div class="col-sm-2">
+	             <div pf-datepicker id="IdtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="tglPerencanaan" required></div>
+	        </div>
+	    </div>
+	  	<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-7">
+		  		<button type="button" class="btn btn btn-primary" ng-click="createPenetapanMeeting()" ng-disabled="reportAntrian.$invalid;">Lihat Data</button>
+		  		<button type="button" class="btn btn-primary" ng-click="printEkspor(3);showLoader=true;" ng-disabled="items.length == 0" >Cetak Semua</button>
+		  		<button type="button" class="btn btn-primary" ng-click="printEkspor(2);showLoader=true;" ng-disabled="items.length == 0">Cetak Antrian TL</button>
+    			<button type="button" class="btn btn-primary" ng-click="printEkspor(1);showLoader=true;" ng-disabled="items.length == 0">Cetak Antrian Non TL</button>
+				<button type="button" class="btn btn-primary" ng-click="generateExcel();showLoader=true;" ng-disabled="items.length == 0">Ekspor <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+	
+			</div>
+	 	 </div>
+	</form>
+
+	<div id="laporan-antrian">
+		<table class="datatable table table-striped table-bordered" id="reportTable" style="margin-top:30px; width:150%; ">
+  		<thead>
+			<tr ng-hide="true">
+				<th colspan="17"><label>Laporan Antrian {{namaDermaga}}</label></th>
+			</tr>
+  			<tr ng-hide="true">
+				<th colspan="17"><label> {{tgl}}</label></th>
+			</tr>
+			<tr>
+				<th rowspan="3" style="width:20px;">No</th>
+				<th rowspan="3" style="text-align:center;">No PPK1</th>
+				<th rowspan="3" style="text-align:center;">Nama Kapal</th>
+				<th rowspan="3" style="text-align:center;">Agen</th>
+				<th rowspan="3" style="text-align:center;">PBM</th>
+				<th rowspan="3" style="text-align:center;">LOA</th>
+				<th rowspan="3" style="text-align:center;">Draft</th>
+				<th rowspan="3" style="text-align:center;">Rede</th>
+				<th rowspan="3" style="text-align:center;">PPK1 Rencana</th>
+				<th rowspan="3" style="text-align:center;">Master Cable</th>
+				<th rowspan="3" style="text-align:center;">Pangkalan</th>
+				<th colspan="4" style="text-align:center;">Rencana</th>
+				<th colspan="2" style="text-align:center;">Pelabuhan</th>			
+
+			</tr>
+			<tr>
+				<th colspan="2" style="text-align:center;">Bongkar</th>
+				<th colspan="2" style="text-align:center;">Muat</th>
+				<th rowspan="2" style="text-align:center;">Asal</th>
+				<th rowspan="2" style="text-align:center;">Tujuan</th>				
+			</tr>
+			<tr>
+				<th style="text-align:center;">Ton/m3</th>
+				<th style="text-align:center;">Jenis Barang</th>
+				<th style="text-align:center;">Ton/m3</th>
+				<th style="text-align:center;">Jenis Barang</th>
+			</tr>
+  		</thead>
+		<tbody>
+			<tr ng-if="items.length == 0">
+				<td colspan="17">Data tidak tersedia</td>
+			</tr>
+			<tr ng-repeat="kapal in items">
+				<td>{{noIndex+$index +1}}</td>	
+				<td>{{kapal.noPpk1}}</td>			
+				<td>{{kapal.namaKapal}}</td>
+				<td>{{kapal.namaAgen}}</td>
+				<td>{{kapal.pbm}}</td>
+				<td>{{kapal.loa}}</td>
+				<td>{{kapal.draft}}</td>
+				<td>{{kapal.rede}}</td>
+				<td>{{kapal.rencana}}</td>
+				<td>{{kapal.masterCable}}</td>
+				<td>{{(kapal.tl == true ? 'TL': 'NON TL')}}</td>
+				<td>{{kapal.jumlahBongkar}}</td>
+				<td>{{kapal.jenisBarangBongkar}}</td>
+				<td>{{kapal.jumlahMuat}}</td>
+				<td>{{kapal.jenisBarangMuat}}</td>
+				<td>{{kapal.pelabuhanAsal}}</td>
+				<td>{{kapal.pelabuhanTujuan}}</td>	
+		  	</tr>
+		</tbody>
+  	</table>
+	</div>
+</div>

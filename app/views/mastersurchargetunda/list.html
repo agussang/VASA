@@ -1,0 +1,86 @@
+<h2>Master Surcharge Tunda</h2>
+<div pf-filter config="filterConfig"></div>
+
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr>
+            <td colspan="11">
+            	<span>Show :</span>
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+                <input type="button" ng-show="userRole.cflag" onclick="location.href='#/mastersurchargetunda/new';" value="Surcharge Tunda Baru" class=" btn-list btn btn-default pull-right" />
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="11" class="text-center">{{pagingText}}</td>
+        </tr>
+
+		<tr>
+			<th>No</th>
+			<th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Tgl. Berlaku</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'tglBerlaku' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'tglBerlaku' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='nomor'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Nomor</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'nomor' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'nomor' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='hargaMin'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Harga Min.</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'hargaMin' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'hargaMin' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='hargaMax'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Harga Max.</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'hargaMax' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'hargaMax' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='gtMin'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">GT Min.</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'gtMin' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'gtMin' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='gtMax'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">GT Max.</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'gtMax' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'gtMax' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='surcharge'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Fuel Surcharge</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'surcharge' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'surcharge' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='keterangan'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Keterangan</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'keterangan' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'keterangan' && sortDesc)}"></span></div>
+			</th>
+			<th ng-click="sortBy='status'; sortDesc = !sortDesc; pageChanged(0);">
+				<div class="pull-left">Status</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'status' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'status' && sortDesc)}"></span></div>
+			</th>
+            <th class="table-col-full text-center">Action</th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items">
+			<td>{{noIndex+$index +1}}</td>
+			<td>{{item.tglBerlaku | date: "dd-MM-yyyy"}}</td>
+			<td>{{item.nomor}}</td>
+			<td><span class="pull-right">{{item.hargaMin | currency:"":0}}</span></td>
+			<td><span class="pull-right">{{item.hargaMax | currency:"":0}}</span></td>
+			<td>{{item.gtMin | currency:"":0}}</td>
+			<td>{{item.gtMax | currency:"":0}}</td>
+			<td><span class="pull-right">{{item.surcharge | currency:"":0}}</span></td>
+			<td>{{item.keterangan}}</td>
+			<td>{{item.status}}</td>
+			<td class="text-center">
+				<a href="#/mastersurchargetunda/view/{{item.id}}" ng-show="userRole.rflag" type="button" class="btn btn-default btn-xs" title="View"><span class="fa fa-eye" ></span></a>
+				<a href="#/mastersurchargetunda/edit/{{item.id}}" ng-show="userRole.uflag" type="button" class="btn btn-default btn-xs" title="Edit"><span class="fa fa-pencil-square-o"></span></a>
+				<a ng-click="deleteMasterSurchargeTunda(item.id)" ng-show="userRole.dflag" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+			</td>
+		</tr>
+ 	</tbody>
+</table>
+<div>
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>

@@ -1,0 +1,69 @@
+<h2>Kapal Bebas Pandu Tunda Edit</h2>
+<form class="form-horizontal" name="kapalBebasPTForm">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nomor SK</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="20" class="form-control" ng-model="kapalbebaspt.nomorSk" name="nomorSk" bs-typeahead bs-options="kapalbebaspt.nomorSk for kapalbebaspt in listOfParam" data-limit="10" disabled>
+          <span class="has-error" ng-show="kapalBebasPTForm.nomorSk.$touched && kapalBebasPTForm.nomorSk.$invalid">
+            Isi Nomor SK dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-1"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="20" class="form-control" ng-model="kapalbebaspt.namaKapal" name="namaKapal" bs-typeahead bs-options="kapalbebaspt.namaKapal for kapalbebaspt in listOfParam" data-limit="10" disabled>
+          <span class="has-error" ng-show="kapalBebasPTForm.namaKapal.$touched && kapalBebasPTForm.namaKapal.$invalid">
+            Isi Nama Kapal dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Jenis Bebas Pandu Tunda</label>
+    <div class="col-sm-7">
+          <select pf-select ng-model="kapalbebaspt.jenisBebasPt" name="jenisBebasPt" ng-options='option.value as option.caption for option in jenisBebasPt' required></select>
+          <span class="has-error" ng-show="kapalBebasPTForm.jenisBebasPt.$touched && kapalBebasPTForm.jenisBebasPt.$invalid">
+            Isi jenis bebas pandu tunda dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Berlaku</label>
+      <div class="col-sm-7">
+        <div pf-datepicker id="tglBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options"  date="kapalbebaspt.tglBerlaku" required></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" ng-model="kapalbebaspt.dokumen" class="form-control" class="form-control" name="file" base-sixty-four-input required  maxsize="500" accept=".jpeg,.jpg,.pdf">
+          <span class="has-error" ng-show="kapalBebasPTForm.dokumen.$touched && kapalBebasPTForm.dokumen.$invalid">
+            Isi Dok. Pendukung dibutuhkan.
+          </span>
+          <span class="has-error" ng-show="errorMessageUploadFile">
+            {{errorMessageUploadFile}}
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="kapalbebaspt.flagAktif" ng-true-value ="1" ng-false-value="0" >
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="kapalBebasPTForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+      </div>
+    </div>
+</form>
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+  $("[name='status-checkbox']").bootstrapSwitch();
+</script>

@@ -1,0 +1,8 @@
+<a class="btn btn-link btn-block" role="button" >
+    <button ng-show="notificationGroup.heading && notificationGroup.isLoadMore" class="btn btn-default btn-xs" showLoader=true;buttonDisabled=true; ng-click="$emit('loadMore',notificationGroup,showLoader);buttonDisabled=true" ><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Muat Lebih</button>
+</a>
+<div ng-show="notificationGroup.heading && !notificationGroup.isLoadMore" style="text-align:center">
+	Test Web Notifikasi <br>
+	<button class="btn btn-default btn-xs" ng-click="$emit('testWebNotifikasi');">Test Notifikasi</button>
+	<br><br>
+</div>

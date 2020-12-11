@@ -1,0 +1,103 @@
+<div class="tab-content" ng-controller="LaporanHarianPanduCtrl">
+    <div id="tabHarian" role="tabpanel" class="tab-pane">
+      <form class="form-horizontal" name="PerencanaanNew">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">Tgl. Pandu</label>
+              <div class="col-sm-2">
+                   <div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="searchTglMulai" ng-model="searchTglMulai"></div>
+              </div>
+          </div>
+          <div class="form-group">
+          <label class="col-sm-2 control-label" for="no-3">Jenis Gerakan</label>
+          <div class="col-sm-7">
+              <select pf-select ng-model="searchJenisGerakan" ng-options="option.value as option.caption for option in jenisGerakanOption">
+              </select>
+          </div>
+          </div>
+          <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-7">
+              <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="exportHarianPanduPDF(1)">Ekspor PDF <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="exportHarianPanduPDF(2)">Print  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+              <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              </button>
+              <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              </button> -->
+          </div>
+         </div>
+      </form>
+
+      <div id="tabel-kegiatan-harian" class="col-sm-12">
+          <table class="table table-bordered table-report">
+            <thead>
+              <tr ng-hide="true">
+                <th colspan="15"> LAPORAN PANDU HARIAN  {{jenisGerakanText}} - {{searchTglMulai | date : dd-mm-yyyy}}</th>
+              </tr>
+              <tr ng-hide="true"><th colspan="15"></th></tr>
+              <tr>
+                <th class="text-center valign" rowspan="2">No.</th>
+                <th class="text-center valign" rowspan="2">Nama Kapal</th>
+                <th class="text-center valign" rowspan="2">Agen</th>
+                <th class="text-center valign" rowspan="2">Kode Pandu</th>
+                <th class="text-center valign" colspan="2">Jam Pandu</th>
+                <th class="text-center valign" rowspan="2">Tunda</th>
+                <th class="text-center valign" colspan="2">Jam Tunda</th>
+                <th class="text-center valign" colspan="2">Posisi</th>
+                <th class="text-center valign" rowspan="2">No. PPK1</th>
+                <th class="text-center valign" rowspan="2">Tgl. Permohonan</th>
+                <th class="text-center valign" rowspan="2">Tgl. Penetapan</th>
+                <th class="text-center valign" rowspan="2">Ket</th>
+              </tr>
+              <tr>
+                <th class="text-center valign">Naik</th>
+                <th class="text-center valign">Turun</th>
+                <th class="text-center valign">Mulai</th>
+                <th class="text-center valign">Sampai</th>
+                <th class="text-center valign">Dari</th>
+                <th class="text-center valign">Ke</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="item in itemHarianPandu">
+                <td class="text-center valign">{{$index +1}}</td>
+                <td class="text-center valign">
+                  <span><a href="#/transaksi/listmonitoring/{{item.noPpk1}}" target="_blank">{{item.namaKapal}}</a></span>
+                </td>
+                <td class="text-center valign">{{item.namaAgen}}</td>
+                <td class="text-center valign">{{item.kodePandu}}</td>
+                <td class="text-center valign">{{item.jamNaik}}</td>
+                <td class="text-center valign">{{item.jamTurun}}</td>
+                <td class="text-center valign">{{item.listKapalTundaText}}</td>
+                <td class="text-center valign">{{item.jamMulaiTunda}}</td>
+                <td class="text-center valign">{{item.jamSelesaiTunda}}</td>
+                <td class="text-center valign">{{item.kodeLokasiAsal}}</td>
+                <td class="text-center valign">{{item.kodeLokasiTujuan}}</td>
+                <td class="text-center valign">
+                  <span><a href="#/transaksi/listmonitoring/{{item.noPpk1}}" target="_blank">{{item.noPpk1}}</a></span>
+                </td>
+                <td class="text-center valign">{{item.tglPermohonan}}</td>
+                <td class="text-center valign">{{item.tglPenetapan}}</td>
+                <td class="text-center valign">{{item.statusNotaText}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-sm-offset-2 col-sm-7 row">
+          <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+          <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="exportHarianPanduPDF(1)">Ekspor PDF
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="exportHarianPanduPDF(2)">Print
+            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+          </button>
+          <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+          </button>
+          <!-- <button class="btn btn-primary btn-lg btn-exportPDF" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+                  <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              </button> -->
+        </div>
+    </div>
+</div>

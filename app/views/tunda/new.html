@@ -1,0 +1,121 @@
+<h2>Tarif Tunda Baru</h2>
+<form class="form-horizontal" name="tundaAdd">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-9"><span class="text-danger">*</span>Nomor SK</label>
+		<div class="col-sm-7">
+			<input type="text" name="nomorSk" maxlength="30" class="form-control" ng-model="tunda.nomorSk" required>
+			<span class="has-error" ng-show="tundaAdd.nomorSk.$touched && tundaAdd.nomorSk.$invalid">
+                Isi Nomor SK dibutuhkan.
+          	</span>
+		</div>
+		 <a ng-if="!tunda.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tgl-9"><span class="text-danger">*</span>Tgl. Berlaku</label>
+		<div class="col-sm-7">
+			 <div pf-datepicker id="IdtglBerlaku" options="options" data-date-format="dd-mm-yyyy" date="tglBerlaku" required></div>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-9"><span class="text-danger">*</span>Jenis Pelayaran</label>
+
+		<div class="col-sm-7">
+          <select pf-select ng-options='option.value as option.caption for option in jnsPelayaran' ng-model="tunda.jenisPelayaran" required></select>
+      </div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-9"><span class="text-danger">*</span>Jenis Perairan</label>
+
+		<div class="col-sm-7">
+          <select pf-select ng-options='option.value as option.caption for option in jnsPerairan' ng-model="tunda.jenisPerairan" required></select>
+      </div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jns-9"><span class="text-danger">*</span>Jenis Kegiatan</label>
+
+		<div class="col-sm-7">
+          <select pf-select ng-options='option.value as option.caption for option in jnsKegiatan' ng-model="tunda.jenisKegiatan" required></select>
+      </div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="min-9"><span class="text-danger">*</span>GT Min. </label>
+		<div class="col-sm-7">
+			<input type="number" only-num min="1" max="{{tunda.maxGt}}" name="minGt" class="form-control" ng-model="tunda.minGt" required>
+			<span class="has-error" ng-show="tundaAdd.minGt.$touched && tundaAdd.minGt.$invalid">
+                Isi GT Min. dibutuhkan.
+          	</span>
+		</div>
+		<div class="col-sm-2" ng-hide="tundaAdd.minGt.$valid" >
+		<small class="error" ng-show="tundaAdd.minGt.$error.max"><a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>GT Min. tidak bisa lebih dari GT Max.</span></small>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="max-9"><span class="text-danger">*</span>GT Max.</label>
+		<div class="col-sm-7">
+			<input type="number" only-num min="1"  name="maxGt" class="form-control" ng-model="tunda.maxGt" required>
+			<span class="has-error" ng-show="tundaAdd.maxGt.$touched && tundaAdd.maxGt.$invalid">
+                Isi GT Max. dibutuhkan.
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tetap-9"><span class="text-danger">*</span>Tarif Tetap</label>
+		<div class="col-sm-7">
+			<input type="number" maxlength="15" decimal-number min="0" name="tarifTetap" class="form-control" ng-model="tunda.tarifTetap" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/"  step="0.01"  required>
+			<span class="has-error" ng-show="tundaAdd.tarifTetap.$touched && tundaAdd.tarifTetap.$invalid">
+                  Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="variabel-9"><span class="text-danger">*</span>Tarif Variabel</label>
+		<div class="col-sm-7">
+			<input type="number" maxlength="15" decimal-number min="0" name="tarifVariabel" class="form-control" ng-model="tunda.tarifVariabel" ng-pattern="/^[0-9]+(\.[0-9]{1,4})?$/"  step="0.01"  required>
+			<span class="has-error" ng-show="tundaAdd.tarifVariabel.$touched && tundaAdd.tarifVariabel.$invalid">
+                Isi tarif dibutuhkan (maksimal 4 angka di belakang koma).
+          	</span>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="valuta-9"><span class="text-danger">*</span>Valuta</label>
+		<div class="col-sm-7">
+          	<select pf-select ng-options='option.value as option.caption for option in valuta' ng-model="tunda.valuta" required></select>
+      	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="jenisNegara"><span class="text-danger">*</span>Jenis Negara</label>
+		<div class="col-sm-7">
+          	<select pf-select ng-options='option.value as option.caption for option in jenisNegara' ng-model="tunda.jenisNegara" required></select>
+      	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="file-9"><span class="text-danger">*</span>Dok. Pendukung</label>
+		<div class="col-sm-7">
+			<input type="file" id="file-1" class="form-control" file-input="uploadFile"  accept=".jpg,.pdf" valid-file ng-required="true" ng-model="dokumen">
+		</div>
+		<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button class="btn btn-default btn-lg" onclick="location.href='#/tunda/list';">Batal</button>
+			<button type="button" class="btn btn-primary btn-lg" ng-disabled="tundaAdd.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true">Buat Baru</button>
+		</div>
+	</div>
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-9').datepicker({
+	autoclose: true,
+	todayBtn: "linked",
+	todayHighlight: true
+  });
+</script>
+<script>
+  var checkExt = function() {
+    if(document.mainForm.myfile.value.lastIndexOf(".pdf")==-1) {
+       alert("file harus format PDF");
+       return false;
+    }
+  }
+</script>

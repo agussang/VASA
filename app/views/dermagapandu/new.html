@@ -1,0 +1,31 @@
+<h2>Dermaga Pandu Baru</h2>
+
+  <form class="form-horizontal" name="dermagaPanduForm">
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Lokasi</label>
+      <div class="col-sm-7">
+          <input type="text" name="lokasi" class="form-control" ng-model="dermagaPandu.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10"
+           ng-focus="checkValue(masterDenda.dermaga)" ng-blur="validationLookupDermaga()">
+          <span class="has-error" ng-show="dermagaPanduForm.nama.$touched && dermagaPanduForm.nama.$invalid">
+              Isi dermaga dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="tarif-5"><span class="text-danger">*</span>Kawasan</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="dermagaPandu.idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+          <span class="has-error" ng-show="dermagaPanduForm.idKawasan.$touched && dermagaPanduForm.idKawasan.$invalid">
+              Isi kawasan dibutuhkan.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="dermagaPanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>

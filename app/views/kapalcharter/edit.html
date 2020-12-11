@@ -1,0 +1,86 @@
+<h2>Kapal Charter Edit</h2>
+<form class="form-horizontal" name="kapalCharterForm">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="namaKapal"><span class="text-danger">*</span>Nama Kapal</label>
+    	<div class="col-sm-7" style="display: inline-flex;">
+        <div class="form-control">{{dataKapalCharter.namaKapal}}</div>
+      		<input type="hidden" id="no-2" class="form-control" name="namaKapal" ng-model="dataKapalCharter.namaKapal" ng-disabled="true">
+          <input type="hidden" name="kodeKapal" ng-model="dataKapalCharter.kodeKapal">
+          <a ng-if="!dataKapalCharter.namaKapal == ''" href="#/profilkapal/{{dataKapalCharter.kodeKapal}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+
+      </div>
+      <span class="has-error" ng-show="kapalCharterForm.namaKapal.$touched && kapalCharterForm.namaKapal.$invalid">
+        Isi nama kapal dibutuhkan.
+      </span>
+  	</div>
+    <div class="form-group">
+		<label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Nama Perusahaan</label>
+    	<div class="col-sm-7" style="display: inline-flex;">
+         <div class="form-control">{{dataKapalCharter.kantorIdText}}</div>
+      		<input type="hidden" id="no-2" class="form-control" name="kantorId" ng-model="dataKapalCharter.kantorIdText"   ng-disabled="true">
+          <input type="hidden" name="kantorId" ng-model="dataKapalCharter.kantorId">
+           <a ng-if="!dataKapalCharter.kantorIdText == ''" href="#/profilperusahaan/{{dataKapalCharter.kantorId}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+    	</div>
+      <span class="has-error" ng-show="kapalCharterForm.kantorId.$touched && kapalCharterForm.kantorId.$invalid">
+        Isi nama perusahaan dibutuhkan.
+      </span>
+  	</div>
+  	<div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+        <div class="col-sm-2">
+             <div pf-datepicker id="tglMulaiBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options"  date="dataKapalCharter.tglMulaiBerlaku" required></div>
+        </div>
+
+  	</div>
+
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+        <div class="col-sm-2">
+             <div pf-datepicker id="tglSelesaiBerlaku"  data-date-format="dd-mm-yyyy" options="options"  date="dataKapalCharter.tglSelesaiBerlaku" required></div>
+        </div>
+  	</div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Dok. Charter</label>
+      <div class="col-sm-7">
+         <!-- <input type="text" id="no-2" name="dokCharter" class="form-control" ng-model="dataKapalCharter.dokCharter" required> -->
+
+          <input type="file" id="file-1" class="form-control" file-input="uploadFile" accept=".pdf,.jpg" ng-model="dataKapalCharter.dokCharter">
+          <a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="dataKapalCharter.dokCharter"></i> {{dataKapalCharter.dokCharter}}</a>
+
+
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+      <span class="has-error" ng-show="kapalCharterForm.dokCharter.$touched && kapalCharterForm.dokCharter.$invalid">
+        Isi dok charter dibutuhkan.
+      </span>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-2"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="dataKapalCharter.status" ng-true-value ="1" ng-false-value="0" >
+      </div>
+    </div>
+
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="kapalCharterForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan</button>
+	    </div>
+  	</div>
+
+</form>
+
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+
+  $("[name='status-checkbox']").bootstrapSwitch();
+
+</script>

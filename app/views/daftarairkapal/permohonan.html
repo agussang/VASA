@@ -1,0 +1,206 @@
+<h2>Daftar Permohonan Air Kapal</h2>
+<div class="row">
+	<div class="col-md-6" ng-show="showAction">
+		<form name="formSearch" ng-submit="pageChanged(0)">
+			<div class="input-group">
+				<select pf-select ng-init="selectionSearch = filterConfig[0]"  ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+				<input type="text" ng-disabled="isClicked" class="form-control" name="search" ng-model="searchText" ng-minlength="filterMinLength" maxlength="30" placeholder="{{filterPlaceholder}}" capitalize>
+				<span class="input-group-addon btn btn-default" ng-click="isClicked || resetSearch()" ng-disabled="isClicked" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+				<span class="input-group-addon btn btn-default" ng-click="isClicked || pageChanged(0)" ng-disabled="isClicked" title="Search"><span class="fa fa-search"></span></span>
+			</div>
+			<label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+		</form>
+	</div>
+	<div class="col-md-6" ng-hide="showAction">
+		<button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+	</div>
+	<div class="col-md-6">
+		<div class="pull-right icon-legenda">
+			<span class="pficon pficon-warning-triangle-o"></span> EPB belum dibayar<br>
+			<span class="pficon pficon-ok"></span> EPB sudah dibayar
+		</div>
+	</div>
+</div>
+
+<span ng-show="informasiLengthItem===0 && contentSearch"><b>Hasil Pencarian : </b>{{searchSelectedResponse}} <b>{{searchTextItem}}</b> tidak ditemukan.<br></span>
+<span ng-show="contentSearch"><b>Total Hasil Pencarian : </b>{{informasiLengthItem}}</b> data</span>
+
+
+<table class="datatable table table-striped table-bordered">
+	<thead>
+		<tr ng-show="showAction">
+            <td colspan="9">
+            	Show :
+            	<select ng-init="number='10'" ng-options="option.number for option in optionSizePage.availableOptions track by option.number" ng-model="optionSizePage.selectedOption" ng-change="pageChanged(0)"></select>
+            	<input type="button" ng-show="userRole.cflag" value="Permohonan Air Kapal Baru" class="btn-list btn btn-default pull-right" ng-click="setAirKapal()">
+                <select ng-init="option.name='Semua Permohonan'" ng-options='option.value as option.name group by option.groupBy for option in options.filter' ng-model="option.value" ng-change="pageChanged(0)" style="height:26px; margin-right:5px;"></select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="9" class="text-center">{{pagingText}}</td>
+        </tr>
+		<tr>
+			<th>No</th>
+			<th style="border-right:hidden; max-width:30px;"></th>
+			<th ng-click="sortBy='noPpk1'; sortDesc = !sortDesc; pageChanged(0);" style="width:150px">
+				<div class="pull-left">No. PPK1</div>
+				<div class="pull-right"><span class="fa fa-sort" ng-class="{'fa-sort-up fa-large':(sortBy === 'noPpk1' && !sortDesc),'fa-sort-down fa-large':(sortBy === 'noPpk1' && sortDesc)}"></span></div>
+			</th>
+			<th>
+				<div class="pull-left">Kapal</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th>
+				<div class="pull-left">Dermaga</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th>
+				<div>Volume</div>
+			</th>
+			<th>
+				<div class="pull-left">Agen</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th style="min-width:130px;">
+				<div class="text-center">Tgl. Isi</div>
+				<div class="pull-right"><span></span></div>
+			</th>
+			<th class="text-center"></th>
+		</tr>
+	</thead>
+  	<tbody>
+		<tr ng-repeat="item in items" ng-class="{'text-disabled': item.flagJasa == false}">		
+			<td style="color: #000">{{noIndex+$index +1}}</td>
+
+			<td style="max-width:30px;" ng-if="item.flagJasa == true">
+				<span ng-if="item.status !== 'N'" class="pficon pficon-ok col-sm-1" style="line-height: inherit; margin-left:-20px;" title="Sudah Bayar"></span>
+				<span ng-if="item.status === 'N'" class="pficon pficon-warning-triangle-o col-sm-1" style="line-height: inherit; margin-left:-20px;" title="Belum Bayar"></span>
+			</td>
+			<td style="max-width:30px;" ng-if="item.flagJasa == false">
+				<span ng-if="item.status !== 'N'" class="fa fa-check-circle-o col-sm-1" style="line-height: inherit; margin-left:-20px;" title="Sudah Bayar"></span>
+				<span ng-if="item.status === 'N'" class="fa fa-exclamation-triangle col-sm-1" style="line-height: inherit; margin-left:-20px;" title="Belum Bayar"></span>
+			</td>
+			<td>
+				<span><a href="#/transaksi/listmonitoring/{{item.noPpk1}}">{{item.noPpk1}}</a></span>
+				<span class="cursor-pointer" ng-mouseover="getDataJasa(item)" ng-show="item.showToolTip">
+					<a class="large pull-right info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{dataToolTipJasa}}" data-placement="right" bs-tooltip><i style="color: #808080;" class="i pficon pficon-info"></i></a>
+				</span>
+				<br>
+				<h6 ng-repeat="(key, value) in item.listNamaJasa" class="detail-daftar">{{value.nama}}&nbsp;{{$last ? '' : '-'}}&nbsp;</h6>
+			</td>
+			<td>
+				<span>{{item.namaKapal}}</span><br>
+				<span>({{item.kodeKapal}})</span><br>
+				<span class="detail-daftar">GT:{{item.gtKapal | currency:"":0}}&nbsp;LOA:{{item.loa}}</span>
+			</td>
+			<td>
+				<span>{{item.namaDermagaAirKapal}}</span><br>
+				<span>({{item.kodeDermagaAirKapal}})</span>
+			</td>
+			<td>
+				<span>{{item.volumeAir}} &nbsp; {{item.satuanText}}</span>
+			</td>
+			<td>
+				<span>{{item.namaAgen}}</span><br>
+				<span>({{item.kodeAgen}})</span>
+			</td>
+			<td class="text-center">
+			<span>{{item.tglIsi}}</span><br>
+			<span class="detail-daftar">{{item.hari}} | {{item.jamIsi}}</span>
+
+			</td>
+			<td  class="text-center" style="width:150px;display:inline-flex;border-bottom:none;border-right:none;border-left:none;">
+				<button type="button" ng-show="userRole.pflag" class="btn btn-default btn-sm statusEpb" ng-disabled="item.status !== 'N' || item.listNamaJasa.length < 1 || item.flagJasa == false" data-toggle="modal" data-target="#setStatusEpb" data-ppk="{{item.noPpk1}}" data-urutan="{{item.urutanPermohonan}}" title="Set Status EPB" style="font-family: 'FontAwesome', sans-serif;margin-right:5px">&#xf283;</button>
+				<div class="dropdown"  style="font-family: 'FontAwesome', sans-serif;">
+				
+				<button ng-show="userRole.uflag" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="item.status === 'T'|| item.status === 'R' || item.flagJasa == false" title="Revisi Jasa" type="button" id="dropdownMenuButton" data-toggle="dropdown" style="height:30px;margin-right:5px;">
+				   &#xf065;&nbsp;<span class="caret"></span>
+				</button>
+				  	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+				  		<li class="list-daftar-penetapan cursor-pointer">
+				  			<a ng-if="item.status === 'C' || item.status === 'N' || item.status === 'P' || item.status === 'D'" style="font-color:#363636;" href="#/transaksi/pembatalan/{{item.noPpk1}}/{{item.urutanPermohonan}}/{{item.status}}">Pembatalan</a>
+				  		</li>
+				  		<li class="list-daftar-penetapan cursor-pointer">
+				  			<a class="" ng-if="item.status === 'C'" href="#/perubahan/{{item.noPpk1}}/{{item.urutanPermohonan}}">Perubahan</a>
+				  		</li>
+				  	</ul>
+				</div>
+				<div class="dropdown"  style="font-family: 'FontAwesome', sans-serif;">				
+					<button ng-show="userRole.uflag" class="btn btn-default btn-sm dropdown-toggle" ng-disabled="item.flagJasa == false || item.status =='T' || item.status =='R' || item.status =='D'|| item.status =='C'" title="Edit Jasa" type="button" id="dropdownMenuButton" data-toggle="dropdown" style="height:30px;margin-right:5px;">&#xf040;&nbsp;<span class="caret"></span>
+					</button>
+				  	<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+				  		<li class="list-daftar-penetapan cursor-pointer">
+				  			<a ng-class="{'avoidclick': item.status != 'N'}" ng-click="editJasa(item.noPpk1,item.urutanPermohonan)">Transaksi</a>
+				  		</li>
+				  		<li class="list-daftar-penetapan cursor-pointer">
+				  			<a ng-class="{'avoidclick': item.status != 'P'}" ng-click="showModalValidasiDataUmum(item)">Data Umum</a>
+				  		</li>
+				  	</ul>
+				</div>
+			</td>
+		</tr>
+  	</tbody>
+</table>
+<div ng-show="showAction">
+	<paging class="small" page="currentPage" page-size="pageSize"
+		total="totalItems" adjacent="2" dots="..." scroll-top="true"
+		hide-if-empty="false" ul-class="pagination" active-class="active"
+		disabled-class="disabled" show-prev-next="true"
+		style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging>
+</div>
+<div class="modal" id="setStatusEpb" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title" id="epbLabel">Set Status Label</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="noPpkVal">
+				<input type="hidden" id="urutanVal">
+				<p>Apakah Anda yakin ingin mengubah status menjadi telah dibayar?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="setStatusEpb()">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- modal Edit Data Umum -->
+<div class="modal" id="modalValidasiEditDataUmum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title">Informasi Data Umum</h4>
+         </div>
+         <div class="modal-body">
+            Data umum yang berisi Nama Kapal, Agen, Pelabuhan, Sifat Kunjungan dan Jenis Kemasan tidak dapat diubah setelah pembayaran EPB.
+            <br><br>Kode validasi: <b>VALPMH-049</b>
+         </div>
+         <div class="modal-footer">
+            <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+                  <i class="fa fa-level-up "></i> 
+               <a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+            </div>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script type="text/javascript">
+	$(document).on("click", ".statusEpb", function () {
+    var ppk1 = $(this).data('ppk');
+    var urutan = $(this).data('urutan');
+    $(".modal-body #noPpkVal").val( ppk1 );
+    $(".modal-body #urutanVal").val( urutan );
+});
+</script>

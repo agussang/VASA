@@ -1,0 +1,31 @@
+<h2>Laporan Kegiatan Pemanduan</h2>
+<br>
+
+<!-- <button ng-click="testMqtt()">Test Mqtt</button> -->
+<ul class="nav nav-tabs meeting-tabs" role="tablist">
+    <li role="presentation" class="menu-tab" kode-menu="tabHarian" id="tabPanduHarian"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tabHarian')">Harian</a></li>
+    <li role="presentation" class="menu-tab aktif active" kode-menu="tabBulanan" id="tabPanduBulanan"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tabBulanan')">Bulanan</a></li>
+</ul>
+  
+<div ng-include="tabPanduHarian"></div>
+<div ng-include="tabPanduBulanan"></div>
+<script type="text/javascript">
+  function openTab(evt, namaTab) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tab-pane");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      menuJasa = document.getElementsByClassName("menu-tab");
+      for (i = 0; i < menuJasa.length; i++) {
+        menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+      }
+      document.getElementById(namaTab).style.display = "block";
+      evt.currentTarget.className += " active";
+      $('.tab-'+namaTab).addClass("active");
+    }
+</script>

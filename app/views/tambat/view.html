@@ -1,0 +1,75 @@
+<div class="container">
+<h2>Tarif Tambat Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nomor SK</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.nomorSk}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Berlaku</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.tglBerlaku}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Pelayaran</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.jenisPelayaranText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Kelas Pelabuhan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.kelasPelabuhanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Tambatan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.jenisTambatanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Dasar</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.nilaiTarif | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.valuta}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Negara</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentTambatDetails.jenisNegaraText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'ng-hide="noDocument"><a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o"></i> {{contentTambatDetails.dokumen}}</a></span>
+	      	<span class='view-detail' ng-show="noDocument">Tidak ada dokumen</span>
+	    </div>
+  	</div>
+ 	<div class="form-group">
+ 	<div class="col-sm-9">
+    <input type="button" onclick="location.href='#/tambat/list';" value="Tutup" class="btn btn-primary btn-lg pull-left" />
+     </div>
+    </div>
+</form>
+
+</div>

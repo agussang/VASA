@@ -1,0 +1,427 @@
+<h2>Laporan Bulanan Kapal</h2>
+<br>
+
+<form class="form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-4 col-sm-offset-5">
+      <span id="date-2" class="input-group date label-center" style="width:150px;">
+          <input type="text" ng-model="search.tglFilter" date="tglLaporan" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+      </span>
+    </div>
+  </div>
+</form>
+
+  <div class="col-sm-offset-3 col-sm-6 text-center">
+    <div class="row">
+      <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+      </button>
+      <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <hr style="width: 160%;">
+  </div>
+
+<div ng-show="search.tglFilter">
+<div class="col-xs-12">
+    <div class="label-center"><label>LAPORAN BULANAN KAPAL PT PELABUHAN INDONESIA III <span>{{currentCabang}}<span></label></div>
+</div>
+
+<div id="tabel-laporan-harian" class="col-sm-12" style="margin-left:0px" style="display:inline-flex; width:100%">
+  <table class="table table-bordered table-report-harian">
+    <thead>
+      <tr ng-hide="true">
+        <th colspan="20">
+        <label>LAPORAN BULANAN KAPAL PT PELABUHAN INDONESIA III
+          <span>{{currentCabang}}
+            <span>
+        </label>
+        </th>
+      </tr>
+      <tr>
+        <th class="text-center valign" rowspan="2">No</th>
+        <th class="text-center valign" rowspan="2">Nama Kapal</th>
+        <th class="text-center valign" rowspan="2">Jenis Kapal</th>
+        <th class="text-center valign" rowSpan="2">Jenis Muatan (Bongkar/Muat)</th>
+        <th class="text-center valign" rowspan="2">Agen</th>
+        <th class="text-center valign" colspan="2">Rencana B/M</th>
+        <th class="text-center valign">Kedatangan</th>
+        <th class="text-center valign" rowspan="2">Pelb Asal - Pelb Tujuan</th>
+        <th class="text-center valign" rowspan="2">Bendera</th>
+        <th class="text-center valign" rowspan="2">GRT</th>
+        <th class="text-center valign" rowspan="2">LOA</th>
+        <th class="text-center valign" rowspan="2">GTS</th>
+        <th class="text-center valign" rowspan="2">Grk</th>
+        <th class="text-center valign">Penetapan</th>
+        <th class="text-center valign" colspan="2">Pelayanan Pandu</th>
+        <th class="text-center valign">Kapal Sandar</th>
+        <th class="text-center valign" rowspan="2">W Time Pandu</th>
+        <th class="text-center valign" rowspan="2">W Time Tambat</th>
+        <th class="text-center valign" rowspan="2">Ket</th>
+      </tr>
+      <tr>
+        <th class="text-center valign">Bongkar (Ton/M)</th>
+        <th class="text-center valign">Muat (Ton/M)</th>
+        <th class="text-center valign">Tgl/Jam</th>
+        <th class="text-center valign">Tgl/Jam (PPKB)</th>
+        <th class="text-center valign">Tgl/Jam Naik</th>
+        <th class="text-center valign">Tgl/Jam Turun</th>
+        <th class="text-center valign">Tgl/Jam</th>
+      </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td><b>A. KAPAL LUAR NEGERI</b></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><b> 1. DERMAGA UMUM</b></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr ng-repeat="item in items | filter: luarNegeriDermagaUmum | groupBy: items.namaDermaga | filter: search">
+        <td class="text-center valign">{{$index +1}}</td>
+        <td class="text-center valign">{{item.namaKapal}}</td>
+        <td class="text-center valign">{{item.jenisKapal}}</td>
+        <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+        <td class="text-center valign">{{item.namaAgen}}</td>
+        <td class="text-center valign">{{item.jumlahBongkar}}</td>
+        <td class="text-center valign">{{item.jumlahMuat}}</td>
+        <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+        <td class="text-center valign">{{item.bendera}}</td>
+        <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+        <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.jenisGerakan}}</td>
+        <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.lamaPandu}}</td>
+        <td class="text-center valign">{{item.lamaTambat}}</td>
+        <td class="text-center valign"></td>
+    </tr>
+      <tr>
+          <td></td>
+          <td><b> 2. DERMAGA DUKS</b></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+      </tr>
+      <tr ng-repeat="item in items | filter: luarNegeriDermagaKhusus | groupBy: items.namaDermaga | filter: search">
+        <td class="text-center valign">{{$index +1}}</td>
+        <td class="text-center valign">{{item.namaKapal}}</td>
+        <td class="text-center valign">{{item.jenisKapal}}</td>
+        <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+        <td class="text-center valign">{{item.namaAgen}}</td>
+        <td class="text-center valign">{{item.jumlahBongkar}}</td>
+        <td class="text-center valign">{{item.jumlahMuat}}</td>
+        <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+        <td class="text-center valign">{{item.bendera}}</td>
+        <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+        <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.jenisGerakan}}</td>
+        <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.lamaPandu}}</td>
+        <td class="text-center valign">{{item.lamaTambat}}</td>
+        <td class="text-center valign"></td>
+    </tr>
+      <tr>
+        <td></td>
+        <td><b> 3.REDE/RELOADING POINT</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr ng-repeat="item in items | filter: luarNegeriAreaLabuh | groupBy: items.namaDermaga | filter: search">
+        <td class="text-center valign">{{$index +1}}</td>
+        <td class="text-center valign">{{item.namaKapal}}</td>
+        <td class="text-center valign">{{item.jenisKapal}}</td>
+        <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+        <td class="text-center valign">{{item.namaAgen}}</td>
+        <td class="text-center valign">{{item.jumlahBongkar}}</td>
+        <td class="text-center valign">{{item.jumlahMuat}}</td>
+        <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+        <td class="text-center valign">{{item.bendera}}</td>
+        <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+        <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+        <td class="text-center valign">{{item.jenisGerakan}}</td>
+        <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+        <td class="text-center valign">{{item.lamaPandu}}</td>
+        <td class="text-center valign">{{item.lamaTambat}}</td>
+        <td class="text-center valign"></td>
+    </tr>
+      <tr>
+        <td></td>
+        <td><b>B. KAPAL DALAM NEGERI</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><b> 1. DERMAGA UMUM</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="item in items | filter: dalamNegeriDermagaUmum | groupBy: items.namaDermaga | filter: search">
+      <td class="text-center valign">{{$index +1}}</td>
+      <td class="text-center valign">{{item.namaKapal}}</td>
+      <td class="text-center valign">{{item.jenisKapal}}</td>
+      <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+      <td class="text-center valign">{{item.namaAgen}}</td>
+      <td class="text-center valign">{{item.jumlahBongkar}}</td>
+      <td class="text-center valign">{{item.jumlahMuat}}</td>
+      <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+      <td class="text-center valign">{{item.bendera}}</td>
+      <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+      <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.jenisGerakan}}</td>
+      <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.lamaPandu}}</td>
+      <td class="text-center valign">{{item.lamaTambat}}</td>
+      <td class="text-center valign"></td>
+  </tr>
+    <tr>
+        <td></td>
+        <td><b> 2. DERMAGA DUKS</b></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr ng-repeat="item in items | filter: dalamNegeriDermagaKhusus | groupBy: items.namaDermaga | filter: search">
+      <td class="text-center valign">{{$index +1}}</td>
+      <td class="text-center valign">{{item.namaKapal}}</td>
+      <td class="text-center valign">{{item.jenisKapal}}</td>
+      <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+      <td class="text-center valign">{{item.namaAgen}}</td>
+      <td class="text-center valign">{{item.jumlahBongkar}}</td>
+      <td class="text-center valign">{{item.jumlahMuat}}</td>
+      <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+      <td class="text-center valign">{{item.bendera}}</td>
+      <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+      <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.jenisGerakan}}</td>
+      <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.lamaPandu}}</td>
+      <td class="text-center valign">{{item.lamaTambat}}</td>
+      <td class="text-center valign"></td>
+  </tr>
+    <tr>
+      <td></td>
+      <td><b> 3.REDE/RELOADING POINT</b></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr ng-repeat="item in items | filter: dalamNegeriAreaLabuh | groupBy: items.namaDermaga | filter: search">
+      <td class="text-center valign">{{$index +1}}</td>
+      <td class="text-center valign">{{item.namaKapal}}</td>
+      <td class="text-center valign">{{item.jenisKapal}}</td>
+      <td class="text-center valign">{{item.kemasanBongkar}} / {{item.kemasanMuat}}</td>
+      <td class="text-center valign">{{item.namaAgen}}</td>
+      <td class="text-center valign">{{item.jumlahBongkar}}</td>
+      <td class="text-center valign">{{item.jumlahMuat}}</td>
+      <td class="text-center valign">{{item.tglKedatangan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.pelabuhanAsal}}-{{item.pelabuhanTujuan}}</td>
+      <td class="text-center valign">{{item.bendera}}</td>
+      <td class="valign" align="right">{{item.gtKapal | currency:"":0}}</td>
+      <td class="valign" align="right">{{item.loaKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.gtKapal | currency:"":0}}</td>
+      <td class="text-center valign">{{item.jenisGerakan}}</td>
+      <td class="text-center valign">{{item.tglPenetapan | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamNaik | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.jamTurun | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.tglTambat | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+      <td class="text-center valign">{{item.lamaPandu}}</td>
+      <td class="text-center valign">{{item.lamaTambat}}</td>
+      <td class="text-center valign"></td>
+  </tr>
+    </tbody>
+  </table>
+  </div>
+
+
+  <div>
+    <hr style="width: 160%;">
+  </div>
+
+    <div class="col-sm-offset-4 col-sm-4 text-center" ng-show="search.tglFilter">
+      <div class="row">
+        <button class="btn btn-default btn-lg btn-exportPDF" ng-click="reset()">Reset</button>
+        <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generatePdf()">Ekspor PDF
+          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+        </button>
+        <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generateExcel()">Ekspor Excel
+          <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+      </div>
+  </div>
+  </div>
+
+  <script>
+    $('#date-2').datepicker({
+      autoclose: true,
+      format: "MM-yyyy",
+      viewMode: "months",
+      minViewMode: "months",
+      language: 'id'
+    });
+  </script>

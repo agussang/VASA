@@ -1,0 +1,1096 @@
+<div ng-controller="ComponentsHeaderCtrl">
+    <nav class="navbar navbar-pf-vertical">
+        <div class="navbar-header">
+            <button type="button" class="btn navbar-btn yay-toggle" toggle-class="active">
+				<i class="fa fa-bars"></i>
+			</button>
+            <a href="#/" class="navbar-brand navbar-brand-p3">
+                <img class="navbar-brand-icon" src="" alt="" /><img class="navbar-brand-name" src="images/logoheader.png" width="100px" alt="PatternFly Enterprise Application" />
+            </a>
+        </div>
+        <nav class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right navbar-iconic"> 
+                <li class="dropdown" ng-hide="viewOnly"> 
+                    <!-- ng-show="isPusat" -->
+                    <!-- <button class="btn btn-primary" style="margin-top:15px;" data-toggle="modal" data-target="#modalSwitchCabang" ng-if="isPusat === 'true'">Cabang : {{namaCabang}}</button>
+                    <button class="btn btn-primary" style="margin-top:15px;" data-toggle="modal" data-target="#modalSwitchKawasan" ng-click="getListOfKawasan()" ng-hide="isKawasan == 'true' || isPusat == 'true'">Cabang : {{namaCabang}}</button> -->
+                    <h6 style="margin-top:25px; color:#fff;" ng-show="isKawasan == 'true'">Kawasan : {{namaCabang}}</h6>
+                    <button class="btn btn-primary" style="margin-top:15px;" data-toggle="modal" data-target="#modalSwitchTerminal" ng-click="getListTerminal()" ng-if="!inTerminal">Regional
+                        : {{namaRegional}}</button>
+                    <button class="btn btn-primary" style="margin-top:15px;" data-toggle="modal" data-target="#modalSwitchTerminal" ng-click="getListTerminal()" ng-if="inTerminal">Terminal
+                        : {{namaTerminal}}</button>
+                    
+                </li>
+
+                <li class="dropdown navbar-border-left ">
+                    <a class="dropdown-toggle nav-item-iconic dropdown-notif" id="notifications" aria-haspopup="true" aria-expanded="true" ng-click="toggleShowDrawer()">
+                        <span title="Notifikasi" class="fa fa-bell"></span>
+                        <span class="badge badge-notify">{{groups[0].totalNotif+groups[1].totalNotif}}</span>
+                    </a>
+
+                    <!--notifikasi -->
+
+                    <div class="layout-pf-fixed" style="width:100% !important">
+
+                        </a>
+                        <!--1st line notifikasi -->
+
+                        <div class="navbar-pf-vertical">
+                            <div pf-notification-drawer drawer-hidden="hideDrawer" drawer-title="Notifikasi" allow-expand="true" notification-groups="groups" heading-include="views/components/heading.html" subheading-include="views/components/subheading.html" notification-body-include="views/components/notification-body.html"
+                                notification-footer-include="views/components/notification-footer.html" custom-scope="customScope" id="subheading-include">
+                            </div>
+                        </div>
+                    </div>
+
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle nav-item-iconic" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" ng-click="Hidedrawer()">
+                        <span title="NIPP" class="fa pficon-user"></span>
+                        <span>{{username}}</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu2" style="width:170px;">
+                        <li class="menu-cabang" kode-menu="3201">
+                            <a href="#/riwayateskalasi/list" class="cursor-pointer"><i class="fa fa-level-up"></i> &nbsp;&nbsp;Riwayat Eskalasi Saya</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li ng-controller="LoginCtrl">
+                            <a class="cursor-pointer" ng-click="logOut()"><i class="fa fa-sign-out"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+    </nav>
+    <!--/.navbar-->
+
+    <div class="yaybar yay-hide-to-small yay-shrink yay-gestures nav-pf-vertical">
+        <div class="nano">
+            <div class="nano-content">
+                <ul id="vasa-navbar">
+                    <li class="label">
+                        Menu
+                    </li>
+                    <li class="menu-cabang">
+                        <a href="#/"><i class="fa fa-dashboard"></i> Dashboard </a>
+                    </li>
+                    <li class="menu-utama" kode-menu="2000">
+                        <a class="yay-sub-toggle"><i class="fa fa-archive"></i> Administrasi<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                        <ul>
+                            <li class="menu-utama" kode-menu="2100">
+                                <a class="yay-sub-toggle">Pengaturan<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2101">
+                                        <a href="#/parameteraplikasi/list"><span>Parameter Aplikasi</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2102">
+                                        <a href="#/cabang/list"><span>Parameter Cabang</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2103">
+                                        <a href="#/roles"><span>Roles</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2104">
+                                        <a href="#/permission"><span>Permissions</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2105">
+                                        <a href="#/aturangerakpandu"><span>Aturan Gerak Pandu</span></a>
+                                    </li>
+
+                                      <li class="menu-cabang" kode-menu="3304">
+                                        <a href="#/transaksi/bataljasatanpadenda"><span>Form Super Administrator </span></a>
+                                     </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2200">
+                                <a class="yay-sub-toggle" href="#">Pemeliharaan Master<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2201">
+                                        <a href="#/kapalcharter/list"><span>Kapal Charter</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2202">
+                                        <a href="#/alatapung/list"><span>Alat Apung</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2203">
+                                        <a href="#/pejabat/list"><span>Pejabat Pengesahan</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2205">
+                                        <a href="#/dokkapal/list"><span>Dokumen Kapal Kegiatan Tetap</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2206">
+                                        <a href="#/siklus/list"><span>Siklus</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2207">
+                                        <a href="#/mastermasatambat/list"><span>Masa Tambat</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2208">
+                                        <a href="#/masterdenda/list"><span>Master Denda</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2209">
+                                        <a href="#/masterdermagakepil/list"><span>Dermaga Kepil</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2210">
+                                        <a href="#/paramkesepakatan/list"><span>Parameter Kesepakatan</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2211">
+                                        <a href="#/tagihanminimum"><span>Tagihan Minimum</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2212">
+                                        <a href="#/kapal_tunda_min/list"><span>Kapal Tunda Minimum</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2213">
+                                        <a href="#/kapal_bebas_pandu_tunda/list"><span>Kapal Bebas Pandu Tunda</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2400">
+                                <a class="yay-sub-toggle" href="#">Pemeliharaan Kesepakatan<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2401">
+                                        <a href="#/pelanggan/list"><span>Pelanggan per Jasa</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2402">
+                                        <a href="#/kapallangganan/list"><span>Kapal Langganan</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2403">
+                                        <a href="#/perlokasitujuan/list"><span>Perlokasi Tujuan</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2500">
+                                <a class="yay-sub-toggle" href="#">Pemeliharaan Tarif<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2501">
+                                        <a href="#/labuh/list"><span>Tarif Labuh</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2502">
+                                        <a href="#/tambat/list"><span>Tarif Tambat </span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2503">
+                                        <a href="#/airkapal/list"><span>Tarif Air Kapal</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2504">
+                                        <a href="#/pandu/list"><span>Tarif Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2505">
+                                        <a href="#/tunda/list"><span>Tarif Tunda</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2506">
+                                        <a href="#/kepil/list"><span>Tarif Kepil</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2600">
+                                <a class="yay-sub-toggle" href="#">Master Fuel Surcharge<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2601">
+                                        <a href="#/bbm"><span class="list-group-item-value">Harga BBM</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2602">
+                                        <a href="#/surchargepandu/list"><span class="list-group-item-value">Surcharge Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2603">
+                                        <a href="#/mastersurchargetunda/list"><span class="list-group-item-value">Surcharge Tunda</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2300">
+                                <a class="yay-sub-toggle" href="#">Perencanaan<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2301">
+                                        <a href="#/cluster/clusterutama"><span>Master Pembagi Utama Dermaga</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2302">
+                                        <a href="#/cluster/clustermuatan"><span>Master Jenis Muatan</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2303">
+                                        <a href="#/kademeter/kedalaman"><span>Master Kedalaman</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2305">
+                                        <a href="#/kademeter/kademeterdermaga"><span>Master Kade Meter</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2306">
+                                        <a href="#/cluster/clusteringkapal"><span>Master Jenis Kapal</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2307">
+                                        <a href="#/meetinguser/list"><span>Master User Meeting Online</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2308">
+                                        <a href="#/kademeter/informasidermaga"><span>Master Informasi Dermaga</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2700">
+                                <a class="yay-sub-toggle" href="#">Pandu/Tunda<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2701">
+                                        <a href="#/kawasanpandu/list"><span class="list-group-item-value">Kawasan Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2707">
+                                        <a href="#/dermagapandu/list"><span class="list-group-item-value">Dermaga Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2702">
+                                        <a href="#/gruppandu/list"><span class="list-group-item-value">Grup Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2703">
+                                        <a href="#/jamkerjapandu/list"><span class="list-group-item-value">Jam Kerja Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2704">
+                                        <a href="#/petugaspandu/list"><span class="list-group-item-value">Petugas Pandu</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2705">
+                                        <a href="#/manajementunda/listkapaltunda"><span class="list-group-item-value">Daftar Kapal Tunda</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2706">
+                                        <a href="#/manajementunda/aturankapaltunda"><span class="list-group-item-value">Aturan Kapal Tunda</span></a>
+                                    </li>
+                                    <!-- <li class="menu-cabang" kode-menu="2707">
+								        <a href="#/tipeeskalasi"><span class="list-group-item-value">Tipe Eskalasi</span></a>
+								    </li> -->
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="2800">
+                                <a class="yay-sub-toggle" href="#">Tambat<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="2801">
+                                        <a href="#/grupdermagatambat/list"><span class="list-group-item-value">Grup Dermaga Tambat</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2802">
+                                        <a href="#/dermagatambat/list"><span class="list-group-item-value">Dermaga Tambat</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2803">
+                                        <a href="#/gruptambat/list"><span class="list-group-item-value">Grup Tambat</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2804">
+                                        <a href="#/jamkerjatambat/list"><span class="list-group-item-value">Jam Kerja Tambat</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="2805">
+                                        <a href="#/petugastambat/list"><span class="list-group-item-value">Petugas Tambat</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-utama" kode-menu="4124">
+                                <a href="#/masterpilot/list"><span class="list-group-item-value">Master Pilot</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="open menu-utama" kode-menu="3200">
+                        <a class="yay-sub-toggle"><i class="fa fa-briefcase"></i> Transaksi<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                        <ul>
+                            <li class="menu-cabang" kode-menu="3201">
+                                <a href="#/transaksi/listmonitoring"><span>Monitoring</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3202">
+                                <a href="#/transaksi/permohonanlist"><span>Permohonan</span></a>
+                            </li>
+                            <li class="menu-utama" kode-menu="3400">
+                                <a class="yay-sub-toggle" href="#">Perencanaan<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="3404">
+                                        <a href="#/perencanaan/preprameeting"><span>Persiapan Pra-Meeting</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="3401">
+                                        <a href="#/perencanaan"><span>Meeting</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="3402">
+                                        <a href="#/monitoring/rpkro"><span>Monitoring RPKRO</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3204">
+                                <a href="#/transaksi/penetapan"><span>Penetapan</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3205">
+                                <a href="#/transaksi/realisasi"><span>Realisasi</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3206">
+                                <a href="#/kapalkegiatantetap"><span>Kapal Kegiatan Tetap</span>
+									<span class="nav-label pull-right">Khusus</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3207">
+                                <a href="#/kapalgeser"><span>Permohonan Geser</span>
+									<span class="nav-label pull-right">Khusus</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3208">
+                                <a href="#/realisasi/new"><span>Realisasi Tanpa Permohonan</span>
+									<span class="nav-label pull-right">Khusus</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3209">
+                                <a href="#/transaksi/putusvaluta"><span>Putus Valuta</span>
+                                    <span class="nav-label pull-right">Khusus</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3210">
+                                <a href="#/revisianjungan"><span>Revisi Anjungan</span></a>
+                            </li>
+                            <li class="menu-utama" kode-menu="3300">
+                                <a class="yay-sub-toggle" href="#">Air Kapal<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                                <ul>
+                                    <li class="menu-cabang" kode-menu="3301">
+                                        <a href="#/airkapal/permohonan"><span>Permohonan Air Kapal</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="3302">
+                                        <a href="#/airkapal/penetapan"><span>Penetapan Air Kapal</span></a>
+                                    </li>
+                                    <li class="menu-cabang" kode-menu="3303">
+                                        <a href="#/airkapal/realisasi"><span>Realisasi Air Kapal</span></a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4117">
+                                <a href="#/panducomar"><span>Pandu Comar</span>
+                                    <span class="nav-label pull-right">Khusus</span></a>
+                            </li>
+
+                            
+                        </ul>
+                    </li>
+                    <li class="open menu-utama" kode-menu="3500">
+                        <a class="yay-sub-toggle"><i class="fa fa-calendar-check-o"></i> SIM Pandu Tunda<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                        <ul>
+                            <li class="menu-cabang" kode-menu="3500">
+                                <a href="#/manajemenpandu/dashboard">
+                                    <span>Dashboard Pandu</span>
+                                </a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3501">
+                                <a href="#/manajemenpandu/jadwalpandu"><span>Jadwal Pandu</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3502">
+                                <a href="#/manajemenpandu/monitoring"><span>Monitoring Pandu</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4123">
+                                <a href="#/manajemenpandu/offlinespkpandu"><span>Monitoring Offline SPK Pandu</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3503">
+                                <a href="#/manajemenpandu/perencanaan"><span>Perencanaan Pandu</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4121">
+                                <a href="#/manajemenpandu/perencanaanbaru"><span>Perencanaan Pandu Baru</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4122">
+                                <a href="#/manajemenpandu/perencanaantanpatambat"><span>Perencanaan Pandu Tanpa Tambat</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3504">
+                                <a href="#/manajementunda/monitoring"><span>Monitoring Tunda</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3504">
+                                    <a href="#/manajementunda/perencanaan"><span>Perencanaan Tunda</span></a>
+                                </li>
+                            <li class="menu-cabang" kode-menu="3505">
+                                <a href="#/manajementambat/jadwaltambat"><span>Jadwal Tambat</span></a>
+                            </li>
+                            <!--li class="menu-cabang" kode-menu="3506">
+                                <a href="#/manajementambat/monitoring"><span>Monitoring Tambat</span></a>
+                            </li-->
+                        </ul>
+                    </li>
+                    <li class="menu-utama" kode-menu="3600">
+                        <a class="yay-sub-toggle"><i class="fa fa-television"></i> Operasional<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                        <ul>
+                            <li class="menu-cabang" kode-menu="3601">
+                                <a href="#/monitoring_tambat"><span>Monitoring Tambat</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3602">
+                                <a href="#/monitoring_pandu"><span>Monitoring Pandu</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4120">
+                                <a href="#/manajemenpandu/monitoringpandu"><span>Monitoring Petugas</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3603">
+                                <a href="#/monitoring_tunda"><span>Monitoring Tunda</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3605">
+                                <a href="#/kapal_sandar"><span>Monitoring Kapal Sandar</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="3604">
+                                <a href="#/kedatangan"><span>Kedatangan Kapal</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu-utama" kode-menu="4100">
+                        <a class="yay-sub-toggle"><i class="fa  fa-file-text"></i> Laporan<span class="yay-collapse-icon fa fa-angle-down"></span></a>
+                        <ul>
+                            <li class="menu-cabang" kode-menu="4101">
+                                <a href="#/daftarkegiatankapal"><span>Daftar Kegiatan Kapal</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4102">
+                                <a href="#/laporanharian"><span>Laporan Bulanan</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4103">
+                                <a href="#/laporanpemanduan"><span>Laporan Kegiatan Pemanduan</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4104">
+                                <a href="#/rekapitulasikinerja"><span>Rekapitulasi Kinerja Petugas</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4105">
+                                <a href="#/pivotkeuangan"><span>Pivot Keuangan</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4106">
+                                <a href="#/pivotoperasi"><span>Pivot Operasional</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4107">
+                                <a href="#/laporanairkapal"><span>LPPT Air Kapal</span></a>
+                            </li>
+                            <!-- <li class="menu-cabang" kode-menu="4108">
+                                    <a href="#/"><span>Riwayat Kapal Tunda</span></a>
+                                </li> -->
+                            <li class="menu-cabang" kode-menu="4109">
+                                <a href="#/manajementunda/laporankapaltunda"><span>Riwayat Downtime</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4110">
+                                <a href="#/perencanaan/laporanprameeting"><span>Laporan Meeting</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4111">
+                                <a href="#/perencanaan/laporanmeeting"><span>Laporan Lineup Kapal</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4112">
+                                <a href="#/perencanaan/reportantrian"><span>Laporan Antrian</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4113">
+                                <a href="#/pembatalanspk">
+                                    <span>History Pembatalan SPK</span>
+                                </a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4114">
+                                <a href="#/silapor">
+                                    <span>Silapor</span>
+                                </a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4115">
+                                <a href="#/laporanpnbp"><span>Laporan PNBP</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4116">
+                                <a href="#/jasakapal"><span>Laporan Jasa Kapal</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4118">
+                                <a href="#/laporanarus"><span>Laporan Arus</span></a>
+                            </li>
+                            <li class="menu-cabang" kode-menu="4119">
+                                <a href="#/laporanproduksi"><span>Laporan Produksi</span></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+    <!-- /Yay Sidebar -->
+
+    <!-- modal Session Timeout -->
+    <div class="modal" id="modalSessionTimeOut" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" style="max-width: 400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="epbLabel">Sesi Login Berakhir</h4>
+                </div>
+                <div class="modal-body">
+                    <div >
+                        <i class="fa fa-4x fa-exclamation-triangle fa-session-timeout" aria-hidden="true"></i>
+                        <p class="text-modal-session">Sesi Anda telah berakhir, karena tidak ada aktivitas.<br><b>Silakan login kembali.</b></p> 
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-session-timeout">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" ng-click="logOutBySession()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal Ganti Cabang-->
+    <div class="modal" id="modalSwitchCabang" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+                    <h4 class="modal-title" id="epbLabel">Ganti Cabang</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label class="col-md-3">Cabang : </label>
+                        <div class="col-md-5">
+                            <select pf-select ng-model="currentCabang" ng-options="option.kodeTerminal as option.namaTerminal for option in listCabang"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalKonfirmasiSwitch" ng-click="switchCabang()">Proses</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adding by cahyo in 10/12/2018 -->
+    <!-- modal Ganti Terminal-->
+    <div class="modal" id="modalSwitchTerminal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="pficon pficon-close"></span>
+                    </button>
+                    <h4 class="modal-title" id="epbLabel">Ganti Terminal</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label class="col-md-3">Terminal : </label>
+                        <div class="col-md-5">
+                            <select pf-select ng-model="masterCabangDetail" ng-options="option as option.namaTerminal for option in listTerminal" ng-disabled="hasTerminal==false || inTerminal"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalKonfirmasiSwitchTerminal"
+                        ng-click="switchTerminal()">Proses</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal Ganti Kawasan-->
+    <div class="modal" id="modalSwitchKawasan" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+                    <h4 class="modal-title" id="epbLabel">Ganti Kawasan</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-md-12">
+                        <label class="col-md-3">Kawasan : </label>
+                        <div class="col-md-5">
+                            <select pf-select ng-model="currentCabang" ng-disabled="hasKawasan==false" ng-options="option.kodeTerminal as option.namaTerminal for option in listKawasan"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalKonfirmasiSwitchKawasan" ng-click="switchKawasan()" ng-disabled="hasKawasan==false">Proses</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Ganti Cabang -->
+    <div class="modal" id="modalKonfirmasiSwitch" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="toast-pf toast-pf-max-width toast-pf-top-right alert alert-{{notify.type}} alert-dismissable {{notify.status}}">
+            <span class="pficon pficon-error-circle-o"></span>
+            <p>{{notify.message}}</p>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+                    <h4 class="modal-title" id="epbLabel">Konfirmasi Autentikasi</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputUsername" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>NIPP</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" id="konfirmasiUsername" placeholder="" tabindex="1" ng-model="confirm.username">
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="inputPassword" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>Password</label>
+                        <div class="col-sm-10 col-md-10">
+                            <div class="input-group">
+                                <input type="{{inputTypePassword}}" class="form-control" id="konfirmasiPassword" placeholder="" tabindex="2" ng-model="confirm.password">
+                                <span class="input-group-addon btn btn-default" ng-controller="LoginCtrl" ng-click="hideShowPassword()" title="{{inputTypePassword!=='password'?'Sembunyikan Password':'Tampilkan Password'}}"><span class="fa {{inputTypePassword!=='password'?'fa-eye':'fa-eye-slash'}}"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="{{modalDismiss}}" ng-click="authSwitch()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Ganti Kawasan -->
+    <div class="modal" id="modalKonfirmasiSwitchKawasan" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="toast-pf toast-pf-max-width toast-pf-top-right alert alert-{{notify.type}} alert-dismissable {{notify.status}}">
+            <span class="pficon pficon-error-circle-o"></span>
+            <p>{{notify.message}}</p>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+                    <h4 class="modal-title" id="epbLabel">Konfirmasi Autentikasi</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputUsernameKws" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>NIPP</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" id="konfirmasiUsernameKws" placeholder="" tabindex="1" ng-model="confirm.username">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="inputPasswordKws" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>Password</label>
+                        <div class="col-sm-10 col-md-10">
+                            <div class="input-group">
+                                <input type="{{inputTypePassword}}" class="form-control" id="konfirmasiPasswordKws" placeholder="" tabindex="2" ng-model="confirm.password">
+                                <span class="input-group-addon btn btn-default" ng-controller="LoginCtrl" ng-click="hideShowPassword()" title="{{inputTypePassword!=='password'?'Sembunyikan Password':'Tampilkan Password'}}"><span class="fa {{inputTypePassword!=='password'?'fa-eye':'fa-eye-slash'}}"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="{{modalDismiss}}" ng-click="authSwitch()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Ganti Terminal -->
+    <div class="modal" id="modalKonfirmasiSwitchTerminal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="toast-pf toast-pf-max-width toast-pf-top-right alert alert-{{notify.type}} alert-dismissable {{notify.status}}">
+            <span class="pficon pficon-error-circle-o"></span>
+            <p>{{notify.message}}</p>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <span class="pficon pficon-close"></span>
+                    </button>
+                    <h4 class="modal-title" id="epbLabel">Konfirmasi Autentikasi</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputUsernameKws" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>NIPP</label>
+                        <div class="col-sm-10 col-md-10">
+                            <input type="text" class="form-control" id="konfirmasiUsernameKws" placeholder="" tabindex="1"
+                                ng-model="confirm.username">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label for="inputPasswordKws" class="col-sm-2 col-md-2 control-label"><span class="text-danger">*</span>Password</label>
+                        <div class="col-sm-10 col-md-10">
+                            <div class="input-group">
+                                <input type="{{inputTypePassword}}" class="form-control" id="konfirmasiPasswordKws"
+                                    placeholder="" tabindex="2" ng-model="confirm.password">
+                                <span class="input-group-addon btn btn-default" ng-controller="LoginCtrl" ng-click="hideShowPassword()"
+                                    title="{{inputTypePassword!=='password'?'Sembunyikan Password':'Tampilkan Password'}}"><span
+                                        class="fa {{inputTypePassword!=='password'?'fa-eye':'fa-eye-slash'}}"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="{{modalDismiss}}" ng-click="authSwitchTerminal()">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- modal Survey App Vasa -->
+    <div class="modal" id="modalSurveyApp" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="epbLabel">Survey Kepuasan User TIK</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <p class="text-modal-session">Pengguna VASA yang terhormat, untuk meningkatkan layanan dan kualitas TIK, mohon luangkan waktu anda mengisi survey yang akan kami gunakan sebagai bahan untuk perbaikan layanan kami.<br><br><b>- IT Service Management -</b></p>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-session-timeout">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak, Terima Kasih</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" ng-click="openSurveyAppVASA()">Ya, Buka Halaman Survey</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Search Notifikasi -->
+    <div class="modal" id="modalSearchNotifikasi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+        <div class="toast-pf toast-pf-max-width toast-pf-top-right alert alert-{{notify.type}} alert-dismissable {{notify.status}}">
+            <span class="pficon pficon-error-circle-o"></span>
+            <p>{{notify.message}}</p>
+        </div>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+                    <h4 class="modal-title" id="epbLabel">Notifikasi {{modalSearch.heading}}</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- <div class="constrained" ng-controller="ComponentsHeaderCtrl">
+					    <table infinite-scroll="increaseLimit()" infinite-scroll-container='".constrained"'>
+					        <tr ng-repeat="item in items2 | limitTo:barLimit">
+					            <td>Number</td>
+					            <td>{{item.number}}</td>
+					        </tr>
+					    </table>
+					</div> -->
+                    <!-- <div class="col-sm-8 pull-left"> -->
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" ng-model="modalSearch.searchNotifikasi" placeholder="Cari Notifikasi {{modalSearch.heading}}">
+                        <span class="input-group-addon btn btn-default" ng-show="modalSearch.searchNotifikasi" ng-click="resetSearchNotifikasi()" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+                        <span class="input-group-addon btn btn-default" ng-click="searchNotifikasi()" title="Search"><span class="fa fa-search"></span></span>
+                    </div>
+                    <label class="control-label cursor-pointer"><input type="checkbox" ng-model="modalSearch.checkboxIsRead" ng-true-value ="1" ng-false-value="0" class="cursor-pointer" ng-click="getDataTempNotifikasi(modalSearch.heading)">   Sudah dibaca</label>
+                    <!-- <input type="checkbox" ng-model="modalSearch.checkboxIsRead" ng-click="getDataTempNotifikasi(modalSearch.heading)" ng-true-value ="1" ng-false-value="0" class="cursor-pointer"> <span ng-click="getDataTempNotifikasi(modalSearch.heading)"> Sudah dibaca</span></span> -->
+                    <!-- </div> -->
+                    <label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+                    <br>
+                    <br>
+                    <table class="datatable table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width:100px">{{contentNotifikasi.items.length}} Notifikasi</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="{{contentNotifikasi.items.length>8?'modal-notifikasi-row':''}}">
+                        <table class="datatable table table-striped table-bordered">
+                            <tbody>
+                                <tr ng-repeat="item in contentNotifikasi.items | filter:modalSearch.searchNotifikasi" class="{{item.unread?'font-bold':''}}">
+                                    <!-- <td class="col-sm-2 text-center"></td> -->
+                                    <td>
+                                        <span class="large info-tooltip cursor-pointer" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{item.message}}" data-placement="right" bs-tooltip ng-click="readFromSearchModal(item);" data-dismiss="modal">{{item.message}}
+										</span>
+                                        <br>
+                                        <span class="labeltextdate" ng-show="item.textdate==='1'">{{item.created | timeago}}</span>
+                                        <span class="labeltextdate" ng-show="item.textdate!=='1'">{{item.textdate}} </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    ! function($) {
+        "use strict";
+
+        $('#test').click(function() {
+            alert("sasa");
+        });
+        $('.navbar-btn').click(function() {
+            $('.wrapper').toggleClass('wrapper-collapsed');
+        });
+
+        var YAY = function(element, options) {
+            this.options = options;
+            this.$yay = $(element);
+            this.$content = this.$yay.find('~ .content-wrap');
+            this.$nano = this.$yay.find(".nano");
+            this.$html = $('html');
+            this.$body = $('body');
+            this.$window = $(window);
+
+            // set in true when first time were clicked on toggle button
+            this.changed = false;
+
+            this.init();
+        };
+
+        YAY.DEFAULTS = {
+            // duration od animations
+            duration: 300,
+
+            // set small sidebar when window width < resizeWnd
+            resizeWnd: 1000
+        };
+
+        YAY.prototype.init = function() {
+            var _this = this;
+
+            // no transition enable
+            _this.$body.addClass('yay-notransition');
+
+            // init Nano Scroller
+            _this.$nano.nanoScroller({
+                preventPageScrolling: true
+            });
+
+            // sidebar toggle
+            $('.yay-toggle').on('click', function(e) {
+                e.preventDefault();
+                _this.toggleYay();
+            });
+
+            // hide sidebar when push content overlay
+            _this.$content.on('click', function() {
+                if (_this.isHideOnContentClick()) {
+                    _this.hideYay();
+                }
+            });
+
+            // toggle sub menus
+            _this.$yay.on('click', 'li a.yay-sub-toggle', function(e) {
+                e.preventDefault();
+                _this.toggleSub($(this));
+            });
+
+            if (_this.showType() === 'push' && _this.isShow()) {
+                _this.$body.css('overflow', 'hidden');
+            }
+
+            // init gesture swipes
+            if (_this.$yay.hasClass('yay-gestures')) {
+                _this.useGestures();
+            }
+
+            // on window resize - set small sidebar
+            _this.$window.on('resize', function() {
+                _this.windowResize();
+            });
+
+            _this.windowResize();
+
+            // no transition disable
+            setTimeout(function() {
+                _this.$body.removeClass('yay-notransition');
+            }, 1);
+        };
+
+        YAY.prototype.isShow = function() {
+            return !this.$body.hasClass('yay-hide');
+        };
+
+        // check show type
+        YAY.prototype.showType = function() {
+            if (this.$yay.hasClass('yay-overlay')) return 'overlay';
+            if (this.$yay.hasClass('yay-push')) return 'push';
+            if (this.$yay.hasClass('yay-shrink')) return 'shrink';
+        };
+
+
+        // check if hide on content click
+        YAY.prototype.isHideOnContentClick = function() {
+            return this.$yay.hasClass('yay-overlap-content');
+        }
+
+        // check if sidebar static position
+        YAY.prototype.isStatic = function() {
+            return this.$yay.hasClass('yay-static');
+        }
+
+
+        YAY.prototype.toggleYay = function(type) {
+            var _this = this;
+            var show = !_this.isShow();
+
+            if (type) {
+                if (
+                    (type === 'show' && !show) ||
+                    (type === 'hide' && show)) {
+                    return;
+                }
+            }
+
+            _this.options.changed = true;
+
+            if (show) {
+                _this.showYay();
+            } else {
+                _this.hideYay();
+            }
+        }
+
+        YAY.prototype.showYay = function() {
+            var _this = this;
+
+            _this.$body.removeClass('yay-hide');
+
+            if (_this.showType() === 'push' /* && !_this.isStatic() */ ) {
+                _this.$body.css('overflow', 'hidden');
+            }
+
+            setTimeout(function() {
+                // restore scroller on normal sidebar after end animation (300ms)
+                _this.$nano.nanoScroller();
+
+                // resize for charts reinit
+                _this.$window.resize();
+            }, _this.options.duration);
+        }
+
+        YAY.prototype.hideYay = function() {
+            var _this = this;
+
+            _this.$body.addClass('yay-hide');
+
+            // destroy scroller on hidden sidebar
+            _this.$nano.nanoScroller({
+                destroy: true
+            });
+
+            // resize for charts reinit
+            setTimeout(function() {
+                if (_this.showType() === 'push' /* && !_this.isStatic() */ ) {
+                    _this.$body.css('overflow', 'visible');
+                }
+                _this.$window.resize();
+            }, _this.options.duration);
+        }
+
+
+        // toggle submenu [open or close]
+        YAY.prototype.toggleSub = function(toggle) {
+            var _this = this;
+
+            var toggleParent = toggle.parent();
+            var subMenu = toggleParent.find('> ul');
+            var opened = toggleParent.hasClass('open');
+
+            if (!subMenu.length) {
+                return;
+            }
+
+            // close
+            if (opened) {
+                _this.closeSub(subMenu);
+            }
+
+            // open
+            else {
+                _this.openSub(subMenu, toggleParent);
+            }
+        }
+
+        // close submenus
+        YAY.prototype.closeSub = function(subMenu) {
+            var _this = this;
+
+            subMenu.css('display', 'block').stop()
+                .slideUp(_this.options.duration, 'swing', function() {
+                    // close child dropdowns
+                    $(this).find('li a.yay-sub-toggle').next().attr('style', '');
+
+                    // reinit nano scroller
+                    _this.$nano.nanoScroller();
+                });
+
+            subMenu.parent().removeClass('open');
+            subMenu.find('li a.yay-sub-toggle').parent().removeClass('open');
+        }
+
+        // open submenus
+        YAY.prototype.openSub = function(subMenu, toggleParent) {
+            var _this = this;
+
+            subMenu
+                .css('display', 'none').stop()
+                .slideDown(_this.options.duration, 'swing', function() {
+                    // reinit nano scroller
+                    _this.$nano.nanoScroller();
+                });
+            toggleParent.addClass('open');
+
+            _this.closeSub(toggleParent.siblings('.open').find('> ul'));
+        }
+
+        // use gestures for show / hide menu
+        YAY.prototype.useGestures = function() {
+            var _this = this;
+            var touchStart = 0;
+            var startPoint = 0; // x position
+            var endPoint = 0; // x position
+
+            // on touch start
+            _this.$window.on('touchstart', function(e) {
+                startPoint = (e.originalEvent.touches ? e.originalEvent.touches[0] : e).pageX;
+                endPoint = (e.originalEvent.touches ? e.originalEvent.touches[0] : e).pageX;
+                touchStart = 1;
+            });
+
+            // on swipe start
+            _this.$window.on('touchmove', function(e) {
+                if (touchStart) {
+                    endPoint = (e.originalEvent.touches ? e.originalEvent.touches[0] : e).pageX;
+                }
+            });
+
+            // on swipe end
+            _this.$window.on('touchend', function(e) {
+                if (touchStart) {
+                    var resultSwipe = startPoint - endPoint,
+                        rtl = _this.$html.hasClass('rtl');
+
+                    touchStart = 0;
+
+                    // swipe min width 100px
+                    if (Math.abs(resultSwipe) < 100) {
+                        return;
+                    }
+
+                    // change values if rtl
+                    if (rtl) {
+                        resultSwipe *= -1;
+                        startPoint = _this.$window.width() - startPoint;
+                    }
+
+                    // from left to right
+                    if (resultSwipe < 0) {
+                        // show only when touch started from left corner
+                        if (startPoint < 40) {
+                            _this.showYay();
+                        }
+                    }
+
+                    // from right to left
+                    else {
+                        _this.hideYay();
+                    }
+                }
+            });
+        }
+
+        // on resize window and on start
+        var resizeTimer;
+        YAY.prototype.windowResize = function() {
+            var _this = this;
+
+            // if user currently changed size of sidebar, stop change it
+            if (!_this.options.changed) {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    if (_this.$window.width() < _this.options.resizeWnd) {
+                        _this.toggleYay('hide');
+                    }
+                }, 50);
+            }
+        };
+
+
+
+
+        // init
+        $('.yaybar').each(function() {
+            var options = $.extend({}, YAY.DEFAULTS, $(this).data(), typeof option === 'object' && option);
+            var curyay = new YAY(this, options);
+        });
+
+    }(jQuery);
+</script>

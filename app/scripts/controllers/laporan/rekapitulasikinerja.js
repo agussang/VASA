@@ -1,0 +1,260 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name vasaApp.controller:LaporanHarianCtrl
+ * @description
+ * # LaporanHarianCtrl
+ * Controller of the vasaApp
+ */
+angular.module('vasaApp')
+	.controller('RekapitulasiKinerjaCtrl',['$scope','$filter','$rootScope','ListCabang','LaporanKinerjaList','LoadingScreen', '$http','API_PATH',
+		function ($scope,$filter,$rootScope,ListCabang,LaporanKinerjaList,LoadingScreen, $http, API_PATH) {
+		
+		$scope.currentCabang = $rootScope.namaCabang;
+		$scope.confirm = {};
+		$scope.listCabang = [];
+		$scope.search = { tglFilter: '' };
+		$scope.search.tglFilter = $filter('date')(new Date(), 'MM-yyyy');
+		
+		$scope.$watch('isPusat', function() {
+			if($scope.isPusat !== null){
+				ListCabang.get(function(response){
+					$scope.listCabang = response;
+				});
+			} else {
+				$scope.currentCabang ="";
+			}
+		});
+
+	$scope.currentCabang = $filter('uppercase')($scope.currentCabang);
+
+	$scope.tanggalHariIni = new Date();
+	$scope.currentMonth = $filter('uppercase')($filter('date')($scope.tanggalHariIni,'MMMM-yyyy'));
+
+  $scope.items = [];
+  $scope.itemsRegional = [];
+
+	$scope.nullChecking = function(data){
+		data.forEach(function (element) {
+			element.nama	= (element.nama !== null ?element.nama:'-');
+			element.nip	= (element.nip !== null ?element.nip:'-');
+			element.kelasJabatan	= (element.kelasJabatan !==null ?element.kelasJabatan:'-');
+			element.tglBertugasTmt	= (element.tglBertugasTmt !== null ?element.tglBertugasTmt:'-');
+			element.totalGerakan	= (element.totalGerakan !== null ? JSON.stringify(element.totalGerakan):'-');
+			element.totalGt	= (element.totalGt !== null ? JSON.stringify(element.totalGt):'-');
+			element.jumlahKecelakaan	= (element.jumlahKecelakaan !== null ?element.jumlahKecelakaan:'-');
+			element.jenisKecelakaan	= (element.jenisKecelakaan !== null ?element.jenisKecelakaan:'-');
+			element.keterangan	= (element.keterangan !== null ?element.keterangan:'-');
+			element.tglFilter = $filter('date')(element.tglPermohonan,'MMMM-yyyy');
+		});
+	};
+
+	$scope.loadData = function() {
+		var splitDate = $scope.search.tglFilter.split('-');
+		$scope.bulanLaporan = splitDate[0];
+		$scope.tahunLaporan = splitDate[1];
+		$scope.currentMonth = $filter('uppercase')($filter('date')(new Date($scope.tahunLaporan, $scope.bulanLaporan - 1), 'MMMM-yyyy'));
+		LoadingScreen.show();
+		LaporanKinerjaList.get({
+			bulan: $scope.bulanLaporan,
+			tahun: $scope.tahunLaporan
+		},function (response) {
+			$scope.items = response;
+			$scope.nullChecking($scope.items);
+		});	
+			//isi pada itemsRegional
+            var kodeRegional = localStorage.getItem('kodeRegional');
+            var splitDate = $scope.search.tglFilter.split('-');
+			var bulan = splitDate[0];
+			var tahun = splitDate[1];
+            $http.get(API_PATH + 'public/permohonan/regional/report_kinerja?kodeRegional=' + kodeRegional + '&tahun=' + tahun +'&bulan='+bulan)
+                .then(function (response) {
+                    if (response) {
+                    	$scope.itemsRegional = response.data;
+                    }
+                });
+
+		LoadingScreen.hide();
+	};
+
+		$scope.$watch('search.tglFilter', function (newValue) {
+			if (newValue) {
+				$scope.loadData();
+			}
+		});
+  
+	$scope.generatePdf = function() {
+
+		var namaCabang = $scope.currentCabang;
+		var reportDate = $filter('uppercase')($scope.currentMonth);
+
+		var NIPP = localStorage.getItem('NIPP');
+		var namaPetugas = localStorage.getItem('nama');
+		var tglLaporan = $filter('date')(Date.now(),'dd-MM-yyyy hh:mm:ss');
+
+			var createTabelRow = function(item,no){
+				var tabelRow = [
+					no.toString(),
+					item.nama,
+					item.nip,
+					item.kelasJabatan,
+					item.tglBertugasTmt,
+					item.totalGerakan,
+					item.totalGt,
+					item.jumlahKecelakaan,
+					item.jenisKecelakaan,
+					item.keterangan
+				];
+				tabelRow.forEach(function(rowItem,index){
+					if(rowItem == null) tabelRow[index] = '';
+				});
+				return tabelRow;
+			}
+
+			$scope.bulanLaporan = function(data) {
+				return (data.tglFilter === $scope.search.tglFilter);
+			};
+
+			var no = 0;
+			var rekapitulasiKinerja = [];
+
+			$scope.items.forEach(function(item,index){
+					no++;
+					var tabelRow = createTabelRow(item,no);
+					rekapitulasiKinerja.push(tabelRow);
+			});
+
+		var pdfContent = {
+				pageSize: 'A4',
+				pageOrientation: 'landscape',
+				pageMargins: [ 40, 60, 40, 60 ],
+				style: 'dataTable',
+				styles: {
+						header: {
+							bold: true,
+							color: '#000',
+							fontSize: 14,
+							margin: [0, 0, 0, 8],
+							alignment: 'center'
+						},
+						dataTable: {
+							color: '#000',
+							fontSize: 10,
+							margin: [0, 20, 0, 8],
+							alignment: 'center'
+						},
+						footer: {
+							color: '#000',
+							alignment: 'justify',
+							margin: [20, 20, 20, 10],
+							fontSize: 8,
+							italics: true
+						}
+				},
+				footer:function(pagenumber, pagecount) {
+        		return {
+           		text:[
+								{ text: 'Generated by ',style:'footer'},
+								{ text: namaPetugas,style: 'footer'},
+								{ text:' ('+ NIPP +') '+ ' on '+ tglLaporan, style: 'footer'},
+								{ text:' from VASA \n', style: 'footer' },
+								{ text: pagenumber + ' of ' + pagecount, style: 'footer', alignment:'right', italics:false }
+							],margin: [20, 20, 20, 10]
+        		};
+    		},
+				content: [
+					{ text: 'REKAPITULASI KINERJA PETUGAS PANDU PT PELABUHAN INDONESIA III '+ namaCabang, fontSize: 14, bold: true, alignment:'center',margin: [0, 0, 0, 8] },
+					{ text: "BULAN "+ reportDate, fontSize: 14, bold: true, alignment:'center',margin: [0, 0, 0, 8] },
+					{
+						style: 'dataTable',
+						table:{
+							headerRows: 2,
+							pageBreak: 'before',
+							dontBreakRows: true,
+							body: [
+								[{text: "NO", rowSpan: 2, style:'tableHeader'},
+								{text: "NAMA", rowSpan: 2, style:'tableHeader'},
+								{text: "NIP", rowSpan: 2, style:'tableHeader'},
+								{text: "KELAS JABATAN", rowSpan: 2, style:'tableHeader'},
+								{text: "BERTUGAS TMT", rowSpan: 2, style:'tableHeader'},
+								{text: "PRODUKSI", colSpan: 2, style:'tableHeader'},
+								 "",
+								 {text: "JUMLAH KECELAKAAN", rowSpan: 2, style:'tableHeader'},
+								 {text: "JENIS KECELAKAAN", rowSpan: 2, style:'tableHeader'},
+								 {text: "KETERANGAN", rowSpan: 2, style:'tableHeader'}
+							 ],
+								["",
+								"",
+								"",
+								"",
+								"",
+								{text:"GERAKAN", style:'tableHeader'},
+								{text:"GT", style:'tableHeader'}
+							]
+
+						].concat(rekapitulasiKinerja)
+
+					}
+				}
+					 ]
+		};
+
+	 pdfMake.createPdf(pdfContent).download('Kinerja Petugas Pandu - ' + namaCabang +' - '+ reportDate +'.pdf');
+
+	};
+
+	$scope.generateExcel = function () {
+		var namaCabang = $filter('uppercase')($scope.currentCabang);
+		var reportDate = $filter('uppercase')($scope.search.tglFilter);
+
+		var data_type = 'data:application/vnd.ms-excel';
+		var table_div = document.getElementById('rekapitulasi-kinerja');
+
+		var table_html = table_div.outerHTML.replace(/ /g, '%20');
+		var a = document.createElement('a');
+		a.href = data_type + ', ' + table_html;
+		a.download = 'Kinerja Petugas Pandu - ' + namaCabang + ' - ' + reportDate + '.xls';
+		a.click();
+	};
+
+	// $scope.generateExcelRegional = function () {
+	// 	LoadingScreen.show();
+ //        var kodeRegional = localStorage.getItem('kodeRegional');
+ //        var splitDate = $scope.search.tglFilter.split('-');
+	// 	var bulan = splitDate[0];
+	// 	var tahun = splitDate[1];
+
+	// 	var data_type = 'data:application/vnd.ms-excel';
+	// 	var table_div = document.getElementById('rekapitulasi-kinerja');
+
+	// 	var table_html = table_div.outerHTML.replace(/ /g, '%20');
+	// 	var a = document.createElement('a');
+	// 	a.href = data_type + ', ' + table_html;
+	// 	a.download = 'Kinerja Petugas Pandu - ' + kodeRegional + ' - ' + tahun + ' - ' + bulan + '.xls';
+	// 	a.click();
+	// };
+	//add by Nurika to check regional or not
+        $scope.isRegional = function () {
+            if (localStorage.getItem('statusUser') == 'regional') {
+                return true;
+            }
+        }
+
+        $scope.generateExcelRegional = function () {
+            LoadingScreen.show();
+            var kodeRegional = localStorage.getItem('kodeRegional');
+            var splitDate = $scope.search.tglFilter.split('-');
+			var bulan = splitDate[0];
+			var tahun = splitDate[1];
+
+			//download excel 
+            var blob = new Blob([document.getElementById('rekapitulasi-kinerja-regional').innerHTML], {
+			type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+			});
+			saveAs(blob, 'Kinerja Petugas Pandu- ' + kodeRegional + ' - ' + tahun + ' - ' + bulan +'.xls');
+			LoadingScreen.hide();
+        	};
+
+
+}]);

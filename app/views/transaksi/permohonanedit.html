@@ -1,0 +1,171 @@
+<div class="row">
+	<div class="col-md-6">
+		<h2>Edit Data Umum</h2>
+		<button  class="btn" ng-show="escTypeCode" style="background-color:#990000;color:#ffffff"> Mode Eskalasi : {{escTypeCode}}</button>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{fase!='Permohonan'?'disabled':''}}">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{fase!='Penetapan' ?'disabled':''}}">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{fase!='Realisasi'?'disabled':''}}" >4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{fase !='Verifikasi'?'disabled':''}}">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<ul class="nav nav-tabs" role="tablist" >
+	<li role="presentation" class="active"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'permohonan')">PPK1 : {{ppk1}}</a></li>
+</ul>
+<div role="tabpanel" class="tab-pane active" id="permohonan">
+<br>
+	<form class="form-horizontal" name="permohonanForm">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="nama-11"><span class="text-danger">*</span>Nama Kapal</label>
+			<div class="col-sm-6">
+				<input type="text" id="namaKapalDataUmum" class="form-control" ng-model="permohonan.namaKapal" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" ng-blur="validationLookupKapal()" ng-focus="checkValue(permohonan.namaKapal)" data-limit="10" ng-disabled="disabledColoumnKapal" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Info Kapal</label>
+			<div class="col-sm-6">
+				<div class="row">
+				    <div class="col-sm-3">Kode Kapal </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.kodeKapal?permohonan.kodeKapal:'-'}}</div>
+				    <div class="col-sm-3">Jenis Kapal </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.jenisKapal?permohonan.jenisKapal:'-'}}</div>
+				</div>
+				<div class="row">
+				    <div class="col-sm-3">Bendera </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.negaraKapal?permohonan.negaraKapal:'-'}}</div>
+				    <div class="col-sm-3">LOA </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.loa?(permohonan.loa | number):'-'}}</div>
+				</div>
+				<div class="row">
+				    <div class="col-sm-3">Call Sign </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.callSign?permohonan.callSign:'-'}}</div>
+				    <div class="col-sm-3">GT </div>
+				    <div class="col-sm-3 font-bold">: {{permohonan.gtKapal?(permohonan.gtKapal| number):'-' }}</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="agen-11"><span class="text-danger">*</span>Agen Pelayaran</label>
+			<div class="col-sm-6">
+				<input type="text" id="agen-11" class="form-control" ng-model="permohonan.namaAgen" bs-typeahead bs-options="agenKapal.mplgNamaKode for agenKapal in getListOfAgenKapal($viewValue)" data-limit="10" ng-disabled="inputTambahJasa || afterSubmit" ng-focus="checkValue(permohonan.namaAgen)" ng-blur="validationLookupAgen()" ng-disabled="afterSubmit" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="brngk-11"><span class="text-danger">*</span>Berangkat dari</label>
+			<div class="col-sm-6">
+				<input type="text" id="brngk-11" class="form-control" ng-model="permohonan.namaPelabuhanAsal" bs-typeahead bs-options="pelabuhan.mkplNamaPlb for pelabuhan in getListOfPelabuhan($viewValue)" data-limit="50" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" ng-focus="checkValue(permohonan.namaPelabuhanAsal)" ng-change="validationNegaraAsal(permohonan.namaPelabuhanAsal)" ng-blur="validationLookupAsal()" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Tujuan</label>
+			<div class="col-sm-6">
+				<input type="text" id="brngk-11" class="form-control" ng-model="permohonan.namaPelabuhanTujuan" bs-typeahead bs-options="pelabuhan.mkplNamaPlbTjn for pelabuhan in getListOfPelabuhanTujuan($viewValue)" data-limit="50" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" ng-focus="checkValue(permohonan.namaPelabuhanTujuan)" ng-change="validationNegaraTujuan(permohonan.namaPelabuhanTujuan)" ng-blur="validationLookupTujuan()" required>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Sifat Kunjungan</label>
+			<div class="col-sm-6">
+			    <select pf-select ng-model="permohonan.sifatKunjungan" ng-options='option.value as option.caption for option in sifatKunjungan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged" required></select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">Rencana Bongkar</label>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Kemasan:</label>
+					<div class="col-sm-3">
+					    <select pf-select ng-model="permohonan.kemasanBongkar" ng-options='option.value as option.caption for option in kemasan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged">
+	                    </select>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> Jumlah:</label>
+					<div class="col-sm-10">
+						<input type="number" class="col-sm-4" ng-model="permohonan.jumlahBongkar" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" min="1" autocomplete="off">
+						<div>
+							<select pf-select class="col-sm-8" ng-model="permohonan.satuanBongkar" ng-options='option.value as option.caption for option in satuan' ng-disabled="inputTambahJasa || permohonan.jumlahBongkar == undefined || afterSubmit || agentChanged" ng-required="permohonan.jumlahBongkar">
+				            </select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11">Rencana Muat</label>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Kemasan:</label>
+					<div class="col-sm-3">
+					    <select pf-select ng-model="permohonan.kemasanMuat" ng-options='option.value as option.caption for option in kemasan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged">
+	                    </select>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-2 control-label"> Jumlah:</label>
+					<div class="col-sm-10">
+						<input type="number" class="col-sm-4" ng-model="permohonan.jumlahMuat" ng-disabled="inputTambahJasa|| afterSubmit || agentChanged" min="1" autocomplete="off">
+						<div>
+							<select pf-select class="col-sm-8" ng-model="permohonan.satuanMuat" ng-options='option.value as option.caption for option in satuan' ng-disabled="inputTambahJasa || permohonan.jumlahMuat == undefined || afterSubmit || agentChanged" ng-required="permohonan.jumlahMuat">
+		                	</select>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="form-group">
+			<div class="col-sm-offset-5 col-sm-6 navbar-right">
+				<button class="btn btn-primary btn-lg" ng-show="btnMainSimpan" ng-disabled="!permohonanForm.$valid || disabledBtnUpdate" ng-click="update()">Update</button>
+				<span ng-show="showLoader"><span class="spinner spinner-xs spinner-inline"></span> Silahkan tunggu...</span>	
+			</div>
+		</div>
+	</form>
+</div>
+
+<!-- start modal Check Lock Agen -->
+<div class="modal" id="modalCheckLockAgen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      	<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				   <span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Informasi Agen Pelayaran</h4>
+			</div>
+			<div class="modal-body">
+				<p><span  class="text-center">{{edescription}}</span>
+				<br><br>Kode validasi: <b>VALPMH-021</b></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+      	</div>
+   </div>
+</div>
+<!-- end modal Check Lock Agen -->

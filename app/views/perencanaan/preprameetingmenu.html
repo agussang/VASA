@@ -1,0 +1,53 @@
+<div class="row">
+	<div class="col-md-6">
+		<h2>Persiapan Prameeting</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="">	
+	<form class="form-horizontal" name="PerencanaanNew">
+	  	<div class="form-group">
+			<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama Dermaga</label>
+			<div class="col-sm-7">
+		  		<input type="text" id="" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" required>
+			</div>
+	  	</div>
+	  	<div class="form-group">
+	      <label class="col-sm-2 control-label" for="tglPerencanaan"><span class="text-danger">*</span>Tgl. Rencana Tambat</label>
+	        <div class="col-sm-2">
+	             <div pf-datepicker id="IdtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="tglPerencanaan" required></div>
+	        </div>
+	    </div>
+	  	<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-7">
+		  		<button type="button" class="btn btn-lg btn-primary" ng-click="createPenetapanMeeting()" ng-disabled="PerencanaanNew.$invalid;">Buat Prameeting</button>
+			</div>
+	 	 </div>
+	</form>
+</div>

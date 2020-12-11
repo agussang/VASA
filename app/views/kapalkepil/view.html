@@ -1,0 +1,53 @@
+<div class="container">
+<h2>Tarif Kapal Kepil Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nomor SK</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentKapalkepilDetails.nomorSk}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Berlaku</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentKapalkepilDetails.tglBerlaku | date: "dd-MM-yyyy"}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Pelayaran</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentKapalkepilDetails.jenisPelayaranText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Satuan Pakai</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentKapalkepilDetails.nilaiTarif | currency : "" : 4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentKapalkepilDetails.valuta}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'><a href="" class="fa fa-file-pdf-o sm-1" aria-hidden="true"  ng-click="buildPDF()"  ng-show="contentKapalkepilDetails.dokumen"> {{contentKapalkepilDetails.dokumen}}</a></span>
+	    </div>
+  	</div>
+
+<div class="form-group">
+ 	<div class="col-sm-9">
+    <input type="button" onclick="location.href='#/kepil/list';" value="Tutup" class="btn btn-lg btn-primary" />
+     </div>
+    </div>
+</form>
+</div>

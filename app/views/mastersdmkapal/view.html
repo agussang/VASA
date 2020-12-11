@@ -1,0 +1,54 @@
+<h2>SDM Kapal Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">NIP</label>
+	    <div class="col-sm-9">	
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.nip}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Nama</label>
+	    <div class="col-sm-9">	
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.nama}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">ID</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.idNumber}}</span>	
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jabatan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.jabatan1}}</span>	
+	    </div>
+  	</div>
+  	<div class="form-group {{SDMKapalDetails.showJabatan2}}">
+    	<label class="col-sm-2"></label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.jabatan2}}</span>	
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Kode</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.kode}}</span>	
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Aktif</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class="view-detail"> {{SDMKapalDetails.aktif}}</span>	
+	    </div>
+  	</div>
+	<button class="btn btn-primary btn-lg" ng-click="cancel()">Tutup</button>
+</form>
+

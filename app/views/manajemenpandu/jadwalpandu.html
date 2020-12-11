@@ -1,0 +1,54 @@
+<h2>Jadwal Pandu</h2>
+
+<div class="form-group dropdown-kawasan">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Stasiun Pandu  :</label>
+    <div class="col-sm-4">
+        <select pf-select ng-model="idKawasan" name="idKawasan" ng-options='option.id as option.namaKawasan  for option in kawasan' id="jns-1" required></select>
+    </div>
+</div>
+
+<div class="form-group dropdown-kawasan">
+    <label class="col-sm-2 control-label"><span class="text-danger">*</span>Periode :</label>
+    <div class="col-sm-2">
+        <span id="date-pandu2" class="input-group date" style="width:150px;">
+      <input type="text" ng-model="search.jadwalPandu" date="jadwalPandu" ng-change="change()" class="form-control bootstrap-datepicker" options="options" ng-disabled="!showTable" readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+        </span>
+    </div>
+    <div class="col-sm-2">
+        <label style="padding-top: 5px;">{{currentMonth}}</label>
+    </div>
+    <div class="col-sm-offset-9 col-sm-3 pull-right" style="margin-bottom:20px;">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="openPerencanaanPandu()"><span></span>Perencanaan Pandu</button>
+    </div>
+</div>
+<table class="datatable table table-striped table-bordered" ng-show="showTable" style="width:100%">
+    <thead>
+        <tr>
+            <th width ="2%">Tgl</th>
+            <th ng-repeat="item in shiftKerja">{{item.label}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in arrayTanggal[0] track by $index">
+            <td width ="2%">{{$index+1}}</td>
+            <td width="49%" ng-repeat="items in shiftKerja track by $index" align="center">
+                <select pf-select ng-model="arrayTanggal[$index][$parent.$index].groupId" ng-show="userRole.cflag" ng-options="option.id as option.namaGroup for option in group | orderBy:'namaGroup'" id="jns-1" class="btn-jadwal-pandu label-center pull-right" ng-change="update($index,$parent.$index)"
+                    title="Grup Pandu" multiple required></select>
+                <span width="49%" ng-repeat="item in arrayTanggal[$index][$parent.$index].groupName" class="tag label label-group label-primary">
+          <span> {{item.name}} </span>
+                <a><i class="remove glyphicon glyphicon-remove-sign glyphicon-white" ng-show="userRole.dflag" ng-click="deleteJadwalPandu(arrayTanggal[$index][$parent.$index].groupName,item.id,item.nama)"></i></a>
+                </span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<script>
+    $('#date-pandu2').datepicker({
+        autoclose: true,
+        viewMode: "months",
+        format: "mm-yyyy",
+        minViewMode: "months",
+        language: 'id'
+    });
+</script>

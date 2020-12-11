@@ -1,0 +1,67 @@
+<div class="login-pf">
+<div class="row">
+	<div class="col-md-6">
+		<img class="vasalogo" src="images/vasalogin.png" alt="VASA"/>
+	</div>
+	<div class="col-md-6">
+		<span id="badge">
+ 	 		<img class="logo-pelindo-new" src="images/pelindo3.png" alt=" logo" />
+		</span>
+	</div>
+</div>
+
+
+<div class="container">
+  	<div class="row">
+	    <div class="col-sm-7 col-md-6 col-lg-5 login">
+	      	<form class="form-horizontal" role="form">
+	        	<div class="form-group">
+		          	<label for="inputUsername" class="col-sm-2 col-md-2 control-label">NIPP</label>
+		          	<div class="col-sm-10 col-md-10">
+		            	<input type="text" class="form-control" id="inputUsername" placeholder="" tabindex="1" ng-model="username">
+		         	</div>
+	        	</div>
+	        	<div class="form-group">
+	          		<label for="inputPassword" class="col-sm-2 col-md-2 control-label">Password</label>
+	          		<div class="col-sm-10 col-md-10">
+	            		<div class="input-group">
+		            		<input type="{{inputTypePassword}}" class="form-control" id="inputPassword" placeholder="" tabindex="2" ng-model="password" onkeypress="capLock(event)">
+		            		<span class="input-group-addon btn btn-default" ng-controller="LoginCtrl" ng-click="hideShowPassword()" title="{{inputTypePassword!=='password'?'Sembunyikan Password':'Tampilkan Password'}}"><span class="fa {{inputTypePassword!=='password'?'fa-eye':'fa-eye-slash'}}"></span></span>
+		            	</div>
+						<div id="divMayus" style="visibility:hidden"><strong><span class="fa fa-keyboard-o"></span> CAPS LOCK ON!</strong></div> 
+	          		</div>
+	        	</div>
+	        	<div class="form-group">
+	          		<div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
+	            		<!-- <div class="checkbox">
+			              	<label>
+			                	<input type="checkbox" tabindex="3"> Ingat username
+			              	</label>
+	            		</div> -->
+	          		</div>
+	          		<div class="col-xs-4 col-sm-4 col-md-4 submit">
+	            		<button type="submit" class="btn btn-primary btn-lg" tabindex="4" ng-click="doLogin()" ng-disabled="showLoader"><span ng-show="showLoader"><span class="spinner spinner-xs spinner-inline"></span> Silahkan tunggu...</span> <span ng-hide="showLoader">Log In</span></button>
+	          		</div>
+	        	</div>
+	      	</form>
+	    </div><!--/.col-*-->
+	    <div class="col-sm-5 col-md-6 col-lg-7 details">
+	      	<p>Selamat datang di <strong>VASA</strong></p>
+	        <p><strong>Vessel Administration System and Automation</strong></p>
+	        <p>PT. Pelabuhan Indonesia III (Persero)</p>
+	    </div><!--/.col-*-->
+  	</div><!--/.row-->
+</div><!--/.container-->
+</div>
+<script type="text/javascript">
+function capLock(e){
+ 	kc = e.keyCode?e.keyCode:e.which;
+ 	sk = e.shiftKey?e.shiftKey:((kc == 16)?true:false);
+ 	if(((kc >= 65 && kc <= 90) && !sk)||((kc >= 97 && kc <= 122) && sk)){ 		
+  		document.getElementById('divMayus').style.visibility = 'visible';
+ 	}
+ 	else{
+  		document.getElementById('divMayus').style.visibility = 'hidden';
+ 	}
+}
+</script>

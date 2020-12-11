@@ -1,0 +1,695 @@
+<!-- <br> -->
+<div class="row">
+	<div class="col-md-6">
+		<h2>Pembatalan Baru</h2>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{stt == 'D' || stt == 'C'?'disabled':''}}" >1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle {{stt == 'P' || stt == 'N'?'disabled':''}}">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle disabled">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle disabled">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<!-- <h2>Pembatalan Baru</h2> -->
+<div class="col-sm-3 navbar-right">
+	<button class="btn btn-default" ng-click="greenBtn()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+</div>
+<!-- <br> -->
+<ul class="nav nav-tabs" role="tablist" >
+	<li role="presentation" class="active"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'permohonan')">DATA UMUM</a></li>
+	<li role="presentation" class="menu-jasa" kode-menu="labuh"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'labuh')" ng-show="dataUmum.tabLabuh">LABUH</a></li>
+	<li role="presentation" class="menu-jasa" kode-menu="tambat"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tambat')" ng-show="dataUmum.tabTambat">TAMBAT</a></li>
+	<li role="presentation" class="menu-jasa" kode-menu="pandu"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'pandu')" ng-show="dataUmum.tabPandu">PANDU</a></li>
+	<li role="presentation" class="menu-jasa" kode-menu="tunda"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tunda')" ng-show="dataUmum.tabTunda">TUNDA</a></li>
+	<li role="presentation" class="menu-jasa" kode-menu="airkapal"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'airkapal')" ng-show="dataUmum.tabAir">AIR KAPAL</a></li>
+</ul>
+<div class="tab-content">
+	<!-- tab 2 PEMBATALAN LABUH-->
+	<div id="labuh" role="tabpanel" class="tab-pane" ng-controller="TransaksiPembatalanlabuhCtrl">
+		<div class="col-list">
+			<div class="col-pmh-left">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">No. PPK Jasa</h5>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="tempSelection.noPpkJasa" readonly>
+						</div>
+					</div>
+				</form>
+
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-view" class="penetapan-list-view" items="itemsPenetapan">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Lokasi Labuh</h5>
+						<div class="col-md-9">
+							<input type="text" id="nama-12" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasi}}" readonly>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Kedatangan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tempSelection.tglMasuk" class="dateReadonly" ng-readonly="true"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamMasukLabuh">
+								<input type="text" class="form-control" value="{{tempSelection.jamMasuk}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Waktu Keberangkatan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tempSelection.tglKeluar" class="dateReadonly"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamKeluarLabuh">
+								<input type="text" class="form-control" value="{{tempSelection.jamKeluar}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="button-move-cancel">
+				<button class="btn btn-default labuh" ng-click="moveSelection()" ng-disabled="btnJasaBatal"><i class="fa fa-angle-double-right fa-2x"></i> </button>
+			</div>
+			<div class="col-pmh-right">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Tgl. Pembatalan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tglPembatalanLabuh" class="dateReadonly"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPembatalanLabuh">
+								<input type="text" class="form-control" ng-model="jamPembatalanLabuh" data-time-format="HH:mm:ss" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<h5>Pembatalan</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="penetapan-list-view" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item" ng-class="{jasabatal:item.status=='9'}">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<div class="form-group">
+					<div class="col-sm-offset-6 col-sm-3">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPembatalan" ng-click="triggerBatal(rightSelection.noPpkJasa)" ng-disabled="disabledBtn">Batal Jasa</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /tab 2 -->
+	<!-- tab 3 PEMBATALAN TAMBAT-->
+	<div id="tambat" role="tabpanel" class="tab-pane" ng-controller="TransaksiPembatalantambatCtrl">
+		<div class="col-list">
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">No. PPK Jasa</h5>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="tempSelection.noPpkJasa" readonly>
+						</div>
+					</div>
+				</form>
+
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-tambat" class="penetapan-list-view" items="itemsPenetapan">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Lokasi Tambat</h5>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasi}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Mulai Tertambat pada</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="tempSelection.tglMulai" class="dateReadonly" readonly></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamMulaiTambat">
+								<input type="text" class="form-control" value="{{tempSelection.jamMulai}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Selesai pada</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="tempSelection.tglSelesai" class="dateReadonly" readonly></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamSelesaiTambat">
+								<input type="text" class="form-control" value="{{tempSelection.jamSelesai}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Kade Meter</h5>
+						<div class="col-md-6" style="display:inline-flex;">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.kadeAwal}}">
+							<span>s/d</span>
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.kadeAkhir}}">
+						</div>
+						<div class="col-sm-3">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="button-move-cancel">
+				<button class="btn btn-default labuh" ng-click="moveSelection()"><i class="fa fa-angle-double-right fa-2x"></i> </button>
+			</div>
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Tgl. Pembatalan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tglPembatalanTambat" class="dateReadonly"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPembatalanTambat">
+								<input type="text" class="form-control" ng-model="jamPembatalanTambat" data-time-format="HH:mm:ss" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<h5>Pembatalan</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="penetapan-list-tambat" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item" ng-class="{jasabatal:item.status=='9'}">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<div class="form-group">
+					<div class="col-sm-offset-6 col-sm-3">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPembatalan" data-ppk1="rightSelection.noPpkJasa" ng-click="triggerBatal(rightSelection.noPpkJasa)" ng-disabled="disabledBtn">Batal Jasa</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /tab 3 -->
+	<!-- tab 4 PEMBATALAN PANDU-->
+	<div id="pandu" role="tabpanel" class="tab-pane" ng-controller="TransaksiPembatalanpanduCtrl">
+		<div class="col-list">
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">No. PPK Jasa</h5>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="tempSelection.noPpkJasa" readonly>
+						</div>
+					</div>
+				</form>
+
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-pandu" class="penetapan-list-view" items="itemsPenetapan">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Waktu Pandu</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="tempSelection.tglMulai" class="dateReadonly" readonly></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPandu">
+								<input type="text" class="form-control" value="{{tempSelection.jamMulai}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Lokasi Asal Pandu</h5>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasiAsal}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Lokasi Tujuan Pandu</h5>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasiTujuan}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Jenis Pandu</h5>
+						<div class="col-md-6">
+							<select pf-select ng-model="tempSelection.jenisPandu" ng-options='option.value as option.caption for option in jenisPanduOption' disabled></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Jenis Gerakan</h5>
+						<div class="col-md-6">
+							<select pf-select ng-model="tempSelection.jenisGerakan" ng-options='option.value as option.caption for option in jenisGerakanOption' disabled></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Menggunakan APBS</h5>
+						<div class="col-md-6">
+							<input type="radio" name="options" id="option2" autocomplete="off" ng-model="tempSelection.flagApbs" value="1" disabled> Ya
+							<input type="radio"  name="options" id="option3" autocomplete="off" ng-model="tempSelection.flagApbs" value="2" disabled>  Tidak
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="button-move">
+				<button class="btn btn-default labuh" ng-click="moveSelection()"><i class="fa fa-angle-double-right fa-2x"></i> </button>
+			</div>
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Tgl. Pembatalan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tglPembatalanPandu" class="dateReadonly"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPembatalanPandu">
+								<input type="text" class="form-control" ng-model="jamPembatalanPandu" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<h5>Pembatalan</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="penetapan-list-pandu" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item" ng-class="{jasabatal:item.status=='9'}">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<div class="form-group">
+					<div class="col-sm-offset-6 col-sm-3">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPembatalan" ng-click="triggerBatal(rightSelection.noPpkJasa)" ng-disabled="disabledBtn">Batal Jasa</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /tab 4 -->
+	<!-- tab 5 PEMBATALAN TUNDA -->
+	<div id="tunda" role="tabpanel" class="tab-pane" ng-controller="TransaksiPembatalantundaCtrl">
+		<div class="col-list">
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">No. PPK Jasa</h5>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="tempSelection.noPpkJasa" readonly>
+						</div>
+					</div>
+				</form>
+
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-tunda" class="penetapan-list-view" items="itemsPenetapan">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Waktu Tunda</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="tempSelection.tglMulai" class="dateReadonly" readonly></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamTunda">
+								<input type="text" class="form-control" value="{{tempSelection.jamMulai}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Lokasi Asal Tunda</h5>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasiAsal}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Lokasi Tujuan Tunda</h5>
+						<div class="col-md-9">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaLokasiTujuan}}">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="button-move">
+				<button class="btn btn-default labuh" ng-click="moveSelection()"><i class="fa fa-angle-double-right fa-2x"></i> </button>
+			</div>
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Tgl. Pembatalan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tglPembatalanTunda" class="dateReadonly" ng-readonly="true"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPembatalanTunda">
+								<input type="text" class="form-control" ng-model="jamPembatalanTunda" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<h5>Pembatalan</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-tunda" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item" ng-class="{jasabatal:item.status=='9'}">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<div class="form-group">
+					<div class="col-sm-offset-6 col-sm-3">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalPembatalan" ng-click="triggerBatal(rightSelection.noPpkJasa)" ng-disabled="disabledBtn">Batal Jasa</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /tab 5 -->
+	<!-- tab 6 PEMBATALAN AIR KAPAL -->
+	<div id="airkapal" role="tabpanel" class="tab-pane" ng-controller="TransaksiPembatalanairkapalCtrl">
+		<div class="col-list">
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">No. PPK Jasa</h5>
+						<div class="col-md-10">
+							<input type="text" class="form-control" ng-model="tempSelection.noPpkJasa" readonly>
+						</div>
+					</div>
+				</form>
+
+				<h5>Penetapan</h5>
+				<div class="dt-pmh" ng-class="{avoidclick:avoidClick}">
+					<div pf-list-view config="config" id="permohonan-list-tunda" class="penetapan-list-view" items="itemsPenetapan">
+						<div class="permohonan-item">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Alat Isi</h5>
+						<div class="col-md-6">
+							<select pf-select ng-model="tempSelection.alatIsi" ng-options="option.value as option.caption for option in alatIsiAir" class="dateReadonly" disabled></select>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Dermaga</h5>
+						<div class="col-md-6">
+							<input type="text" class="form-control" ng-readonly="true" value="{{tempSelection.namaDermaga}}">
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label">Tanggal Jam Mulai</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="options" date="tempSelection.tglIsi" readonly class="dateReadonly"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamIsi">
+								<input type="text" class="form-control" value="{{tempSelection.jamIsi}}" readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<h5 class="col-label" style="margin-top:none;">Volume</h5>
+						<div class="col-md-12">
+							<input type="text" class="col-sm-4" ng-readonly="true" value="{{tempSelection.volume}}">
+							<select pf-select class="col-sm-8" ng-model="tempSelection.satuanVolume" ng-options='option.value as option.caption for option in satuan' disabled></select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="button-move">
+				<button class="btn btn-default labuh" ng-click="moveSelection()"><i class="fa fa-angle-double-right fa-2x"></i> </button>
+			</div>
+			<div class="col-pmh">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<h5 class="col-label">Tgl. Pembatalan</h5>
+						<div class="col-md-6">
+							<div pf-datepicker data-date-format="dd-mm-yyyy" options="optionReadonly" date="tglPembatalanAirKapal" class="dateReadonly" ng-readonly="true"></div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-group time-picker-pf" id="jamPembatalanAirKapal">
+								<input type="text" class="form-control" ng-model="jamPembatalanAirKapal"  readonly>
+								<span class="input-group-addon btn btn-default">
+									<span class="fa fa-clock-o"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<h5>Pembatalan</h5>
+				<div class="dt-pmh">
+					<div pf-list-view config="configRight" id="permohonan-list-tunda" class="penetapan-list-view" items="itemSelected">
+						<div class="permohonan-item" ng-class="{jasabatal:item.status=='9'}">{{item.noPpkJasa}}</div>
+					</div>
+				</div>
+				<div class="separate"></div>
+				<div class="form-group">
+					<div class="col-sm-offset-6 col-sm-3">
+						<button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalPembatalan" ng-click="triggerBatal(rightSelection.noPpkJasa)" ng-disabled="disabledBtn">Batal Jasa</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- /tab 6 -->
+<!-- tab 1 -->
+<div role="tabpanel" class="tab-pane active" id="permohonan">
+	<form class="form-horizontal">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="no-11"><span class="text-danger">*</span>No. PPK1</label>
+			<div class="col-sm-3">
+				<input type="text" id="no-11" class="form-control" placeholder="No. PPK1..." ng-model="dataUmum.noPpk1" readonly>
+			</div>
+			<div class="col-sm-3">
+				<input type="text" id="no-11" class="form-control" placeholder="No.Form" ng-model="dataUmum.noForm" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="nama-11"><span class="text-danger">*</span>Nama Kapal</label>
+			<div class="col-sm-6">
+				<input type="text" id="nama-11" class="form-control" ng-model="dataUmum.namaKapal" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="agen-11"><span class="text-danger">*</span>Agen Pelayaran</label>
+			<div class="col-sm-6">
+				<input type="text" id="agen-11" class="form-control" ng-model="dataUmum.namaAgen" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="brngk-11"><span class="text-danger">*</span>Berangkat dari</label>
+			<div class="col-sm-6">
+				<input type="text" id="brngk-11" class="form-control" ng-model="dataUmum.namaPelabuhanAsal" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Tujuan</label>
+			<div class="col-sm-6">
+				<input type="text" id="tjn-11" class="form-control" ng-model="dataUmum.namaPelabuhanTujuan" readonly>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Sifat Kunjungan</label>
+			<div class="col-sm-6">
+				<select pf-select ng-model="dataUmum.sifatKunjungan" ng-options='option.value as option.caption for option in sifatKunjungan' disabled=""></select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><span class="text-danger">*</span>Rencana Bongkar</label>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Kemasan:</label>
+					<div class="col-sm-3">
+						<select pf-select ng-model="dataUmum.kemasanBongkar" ng-options='option.value as option.caption for option in kemasan' disabled>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Jumlah:</label>
+					<div class="col-sm-10">
+						<input type="number" class="col-sm-4" ng-model="dataUmum.jumlahBongkar" disabled>
+						<select pf-select class="col-sm-8" ng-model="dataUmum.satuanBongkar" ng-options='option.value as option.caption for option in satuan' disabled>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Rencana Muat</label>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">Kemasan:</label>
+					<div class="col-sm-3">
+						<select pf-select ng-model="dataUmum.kemasanMuat" ng-options='option.value as option.caption for option in kemasan' disabled>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Jumlah:</label>
+					<div class="col-sm-10">
+						<input type="number" class="col-sm-4" ng-model="dataUmum.jumlahMuat" disabled>
+						<select pf-select class="col-sm-8" ng-model="dataUmum.satuanMuat" ng-options='option.value as option.caption for option in satuan' disabled>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+<!-- /tab 1 -->
+<!-- modal pembatalan -->
+	<div class="modal" id="modalPembatalan" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<h4 class="modal-title" id="epbLabel">Konfirmasi Pembatalan Jasa</h4>
+				</div>
+				<div class="modal-body">
+					<div class="col-md-12">
+						<h5>Apakan Anda ingin membatalkan Jasa?</h5>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="doBatal()">Ya</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	function openTab(evt, cityName) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tab-pane");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		document.getElementById(cityName).style.display = "block";
+		evt.currentTarget.className += " active";
+	};
+	$('#jamMasukEditLabuh').datetimepicker({
+		format: 'HH:mm:ss'
+	});
+	$('#jamKeluarEditLabuh').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSetujuLabuh').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamMulaiTambatEdit').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSelesaiTambatEdit').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSetujuTambat').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSetujuPandu').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamMulaiPandu').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSelesaiPandu').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSetujuTunda').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamMulaiTunda').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamSelesaiTunda').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+	$('#jamIsiEdit').datetimepicker({
+		format: 'HH:mm:ss',
+	});
+</script>

@@ -1,0 +1,1801 @@
+<script type="text/javascript">
+	$('#collapseOne').collapse("hide");
+	$('#collapseTwo').collapse("hide");
+</script>
+<div class="toast-pf alert alert-success alert-dismissable notification-alert" ng-show="showSuccessSave">
+	<span class="pficon pficon-ok"></span> Data Berhasil Terupdate.
+</div>
+<div class="toast-pf alert alert-warning alert-dismissable notification-alert" ng-show="showLoading">
+	<span class="pficon pficon-warning-triangle-o"></span><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i> Loading...
+</div>
+<div class="toast-pf alert alert-success alert-dismissable notification-alert" ng-show="showSuccess" style="width: 400px;">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+		<span class="pficon pficon-close"></span>
+	</button>
+	<span class="pficon pficon-ok"></span> <h5 id="message"></h5>
+</div>
+<div class="containter">
+	<div class="row">
+		<div class="col-md-5">
+			<div class="panel-group" id="accordion">
+			    <div class="panel panel-default" id="panel1">
+			        <div class="panel-heading">
+					   	<div class="row">
+							<div class="col-md-6">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-target="#collapseOne" style="display:block;cursor: pointer;">Kapal TL</a>			        
+								</h4>
+							</div>
+							<div class="col-md-6">
+								<i class="fa fa-refresh pull-right" aria-hidden="true" ng-click="refreshTl()"></i>		
+							</div>
+					   	</div>
+			        </div>
+			        <div id="collapseOne" class="panel-collapse collapse in">
+			            <div class="panel-body">
+							<div style="width:300px;"></div>
+							<div class="list-kapal">
+								<table class="datatable table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>No PPK Jasa</th>
+											<th>Nama Kapal</th>										
+											<th style="width:20px;">Add</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="kapaltl in KapalTl">
+											<td>{{kapaltl.noPpkJasa}}</td>
+											<td>
+												{{kapaltl.namaKapal}}
+												<em ng-if="kapaltl.isMeetingSusulan == true">(meeting susulan)</em>
+											</td>										
+											<td>
+												<i class="fa fa-plus-square"  data-toggle="modal" ng-click="tambahKapalTl($index)" data-target="#tambahKapalTlModal" aria-hidden="true"></i>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+			            </div>
+			        </div>
+			    </div>
+			    <div class="panel panel-default" id="panel2">
+			        <div class="panel-heading">
+						<div class="row">
+							<div class="col-md-12">
+								<h4 class="panel-title">
+									<a data-toggle="collapse" data-target="#collapseTwo" style="display:block;cursor: pointer; width: 80%">Info Kapal Sandar</a>	
+								</h4>
+							</div>
+						</div>
+			        </div>
+			        <div id="collapseTwo" class="panel-collapse collapse">
+			            <div class="panel-body">
+							<div style="width:300px;"></div>
+							<div class="list-kapal">
+								<table class="datatable table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>No PPK Jasa</th>
+											<th>Nama Kapal</th>										
+											<th style="width:20px;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="kapalSandar in kapalSandar">
+											<td>{{kapalSandar.noPpkJasa}}</td>
+											<td>{{kapalSandar.namaKapal}}</td>
+											<td>
+												<i class="fa fa-info-circle"  data-toggle="modal" ng-click="infoKapalSandar(kapalSandar.idKapalSandar)" title="Detail Kapal" style="cursor: pointer;" aria-hidden="true"></i>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>            	
+			            </div>
+			        </div>
+			    </div>
+			    <div class="panel panel-default" id="panel3">
+			        <div class="panel-heading">			            
+					   	<div class="row">
+							<div class="col-md-8">
+								<h4 class="panel-title">
+								    <a data-toggle="collapse" data-target="#collapseThree" class="collapsed" style="display:block;cursor: pointer; width: 80%">
+								        Kapal dengan Revisi
+								    </a>
+					      		</h4>
+							</div>
+							<div class="col-md-4">
+								<span class="badge pull-right" style="background-color: #e60000;">{{dataKapalRev.length}}</span>		
+							</div>
+					   	</div>			      		
+			        </div>
+			        <div id="collapseThree" class="panel-collapse collapse">
+			            <div class="panel-body">
+							<div style="width:300px;"></div>
+							<div class="list-kapal">
+								<table class="datatable table table-striped table-bordered">
+									<thead>
+										<tr>
+											<th>No PPK Jasa</th>
+											<th>Nama Kapal</th>										
+											<th style="width:20px;"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="x in dataKapalRev">
+											<td>{{x.noPpkJasa}}</td>
+											<td>{{x.namaKapal}}</td>
+											<td>
+												<i class="fa fa-info-circle" aria-hidden="true" data-toggle="modal" ng-click="infoKapalRek(x.id)" style="cursor: pointer;"></i>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div> 
+			            </div>
+			        </div>
+			    </div>			   
+			</div>
+		</div>
+		<div class="col-md-2">
+			<a class="fa fa-plus-square fa-2x" ng-click="tambahKapal()" data-toggle="tooltip" data-placement="top" title="Tambah Kapal" aria-hidden="true" style="cursor: pointer;"></a>
+			<a class="fa fa-print fa-2x" ng-click="printKapal()" data-toggle="tooltip" data-placement="top" title="Print Kapal" aria-hidden="true" style="cursor: pointer;"></a>	
+			<a class="fa fa-refresh fa-2x" ng-click="getKapalRek()" data-toggle="tooltip" data-placement="top" title="Refresh" aria-hidden="true" style="cursor: pointer;"></a>
+		</div>
+		<div class="col-md-5">
+			<form class="form-horizontal" style="line-height:5px; margin-top:2px;" name="">
+				<div class="form-group">
+					<label class="col-md-6 control-label" ><span class="text-danger"></span>Nama Dermaga</label>
+					<div class="col-md-6">
+						<span class="label small-label">{{informationDermaga.namaDermaga}}</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-6 control-label" ><span class="text-danger"></span>Tgl Rencana Tambat</label>
+					<div class="col-md-6">
+						<!-- <span class="label small-label">{{tglPrameeting}}</span> -->
+						<div pf-datepicker id="IdtglPerencanaan" data-date-format="dd-mm-yyyy" options="options" date="tglPrameeting"></div>
+					</div>
+				</div>
+			</form>	 
+		</div>
+	</div>
+</div>
+<div class="containter" style="display:inline-flex;">
+	<div class="canvas">
+		<canvas id="canvas" style="height:500px;"></canvas>
+		<div class="information-kapal" ng-if="isKanan == false">
+			<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top}}px;left:{{kapal.posisiDepan}}px; list-style:none;">			
+				<li>
+					<a href="" data-toggle="dropdown">
+						<i class="fa fa-info-circle" aria-hidden="true" title="{{kapal.noPpk1}}"></i>
+					</a>
+					<div class="dropdown-menu infotip bottom-left">
+					  	<div class="arrow"></div>
+					 	<ul class="list-group">
+							<li class="list-group-item">
+						  		<span class="i pficon pficon-info"></span>
+						  		<span class="infotip-kapal">Nama Kapal :{{kapal.namaKapal}}</span><br>	
+						  		<span class="infotip-kapal">LOA :{{kapal.panjangKapal}}</span><br>
+						  		<span class="infotip-kapal">Mulai :{{kapal.mulai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+						  		<span class="infotip-kapal">Selesai :{{kapal.selesai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+							</li>
+					  	</ul>
+				  	</div>
+				</li>
+			</ul>
+			<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.kadeAwal}}px; list-style:none;">
+				<li>
+					<a href="" data-toggle="dropdown">
+						<i class="fa fa-info-circle" aria-hidden="true"></i>
+					</a>
+					<div class="dropdown-menu infotip bottom-left">
+					  	<div class="arrow"></div>
+					  	<ul class="list-group">
+							<li class="list-group-item">
+						  		<span class="i pficon pficon-info"></span>
+						  		<span class="infotip-kapal">Kapal Sandar</span><br>
+						  		<span class="infotip-kapal">Nama Kapal : {{kapalSandar.namaKapal}}</span><br>
+						  		<span class="infotip-kapal">LOA : {{kapalSandar.panjangKapal}}</span><br>
+						  		<span class="infotip-kapal">Mulai : {{kapalSandar.mulai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+						  		<span class="infotip-kapal">Selesai : {{kapalSandar.selesai | date: "dd-MM-yyyy HH:mm"}}</span><br>
+							</li>
+					  	</ul>
+				  	</div>
+				</li>
+			</ul>
+		</div>
+
+		<div class="information-kapal" ng-if="isKanan == true">
+			<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top}}px;left:{{kapal.labelFromRight}}px; list-style:none;">
+				<li>
+					<a ng-click="infoKapalRek(kapal.id)" style="cursor: pointer;">
+						<i class="fa fa-info-circle" aria-hidden="true" title="{{kapal.noPpkJasa}}"></i>
+					</a>			
+				</li>
+			</ul>
+			<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top}}px;left:{{kapalSandar.labelFromRight}}px; list-style:none;">
+				<li>
+					<a ng-click="infoKapalSandar(kapalSandar.idKapalSandar)" style="cursor: pointer;">
+						<i class="fa fa-info-circle" aria-hidden="true" title="{{kapal.noPpk1Jasa}}" style="color: #000000"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div>
+	<div class="col-md-5 pull-right">
+		<!-- tetapkan biasa -->
+		<button type="button" class="btn btn-primary btn-lg pull-right" ng-disabled="disableButtonSave" style=""  ng-click="tetapkanPrameeting();" ng-hide="ButtonSaveMeetingSusulan"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Tetapkan Meeting</button>
+		<!-- end tetapkan biasa -->
+		<!-- tetapkan meeting susulan -->
+		<button type="button" class="btn btn-primary btn-lg pull-right" style=""  ng-click="tetapkanPrameeting();" ng-show="ButtonSaveMeetingSusulan"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Tetapkan Meeting Susulan</button>
+		 <!-- end tetapkan meeting susulan -->
+	</div>
+</div>
+<div class="modal" id="tambahKapalModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Tambah Kapal Ke Perencanaan</h4>
+		</div>
+		<div class="modal-body">
+			<form class="form-horizontal" name="">
+				<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<span class="pficon pficon-error-circle-o"></span>
+					<strong>{{showMessage}}</strong>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Nama Kapal</label>
+					<div class="col-md-6">
+					  <input type="text"  class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kode Kapal</label>
+					<div class="col-md-6">
+					  <input type="text"  class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Panjang Kapal</label>
+					<div class="col-md-6">
+					  <input type="number"  class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kade Awal</label>
+					<div class="col-md-6">
+					  	<input type="number"  class="form-control" name="" ng-model="postKapal.posisiDepan">
+					  	<label class="radio-inline">
+							<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+						</label>
+						<label class="radio-inline">
+							<input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Mulai</label>
+					<div class="col-sm-3"> <!-- VALPMH041 -->
+						<div pf-datepicker id="" options="options" class="" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group" id="jamMasuk">
+							<input id="jamMasukVal" type="text" class="form-control" size="8" ng-model="jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+							<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Selesai</label>
+					<div class="col-sm-3"> <!-- VALPMH041 -->
+						<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy"  date="postKapal.tglSelesai"  required></div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group" id="jamKeluar">
+							<input id="jamKeluarVal" type="text" class="form-control" size="8" ng-model="jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+							<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Hadap</label>
+					<div class="col-sm-7"> 
+						<select pf-select ng-model="postKapal.hadap" ng-options='option.value as option.name for option in hadapKapal'>
+						</select>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+			<button type="button" class="btn btn-primary" ng-click="addKapal()"">Simpan</button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- kapal tl -->
+<div class="modal" id="tambahKapalTlModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		  	<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Tambah Kapal TL Ke Perencanaan</h4>
+		  	</div>
+		  	<div class="modal-body">
+				<form class="form-horizontal" name="">
+					<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+							<span class="pficon pficon-close"></span>
+						</button>
+						<span class="pficon pficon-error-circle-o"></span>
+						<strong>{{showMessage}}</strong>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Nama Kapal</label>
+						<div class="col-md-6">
+					  		<input type="text"  class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kode Kapal</label>
+						<div class="col-md-6">
+					 		<input type="text"  class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>NoPPKJasa</label>
+						<div class="col-md-6">
+					  		<input type="text"  class="form-control" name="" ng-model="postKapal.noPpkJasa" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Panjang Kapal</label>
+						<div class="col-md-6">
+					  		<input type="number"  class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kade Awal</label>
+						<div class="col-md-6">
+					  		<input type="number"  class="form-control" name="" ng-model="postKapal.posisiDepan">
+					   		<label class="radio-inline">
+								<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+					  		</label>
+							<label class="radio-inline">
+						  		<input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Mulai</label>
+						<div class="col-sm-3"> <!-- VALPMH041 -->
+							<div pf-datepicker id="" options="options" class="" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-group" id="jamMasuk">
+								<input id="jamMasukValTL" type="text" class="form-control" size="8" ng-model="jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+								<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Selesai</label>
+						<div class="col-sm-3"> <!-- VALPMH041 -->
+							<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy"  date="postKapal.tglSelesai"  required></div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-group" id="jamKeluar">
+								<input id="jamKeluarValTL" type="text" class="form-control" size="8" ng-model="jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+								<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger">*</span>Hadap</label>
+						  <div class="col-sm-7">
+							  <select pf-select ng-model="postKapal.hadap" ng-options='option.value as option.name for option in hadapKapal'>
+							  </select>
+						  </div>
+					</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+			<button type="button" class="btn btn-primary" ng-click="addKapal()"">Simpan</button>
+		</div>
+	</div>
+	</div>
+</div>
+<!-- modal meeting susulan -->
+<div class="modal" id="meetingSusulanModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+	<div class="modal-content">
+		  <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Confirm Meeting Susulan</h4>
+		  </div>
+		  <div class="modal-body">
+			<span><h5>Meeting telah ditetapkan, apakah anda ingin melakukan meeting susulan?<h5></span>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="checkMeetingSusulan()">Ya</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+		  </div>
+	</div>
+	</div>
+</div>
+<div class="modal" id="editKapalModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header"> 
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-show="showAction || allowBack">
+				<span class="pficon pficon-close"></span>
+			</button>
+			<h4 class="modal-title" ng-if="showEditKapal">Edit Kapal Ke Perencanaan</h4>
+			<h4 class="modal-title" ng-if="showMoveKapal">Pindah Kapal ke Dermaga Lain</h4>
+		</div>
+		<div class="modal-body">
+			<ul ng-show="showAction" style="display:inline-flex;">
+				<li style="list-style:none; margin-right:5px;">
+					<button ng-click="showEdit()" class="btn btn-primary btn-xs" type="button" ng-show="forkapalRekomendasi"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+					Edit Posisi Kapal/Pindah Cluster</button>
+				</li>
+				<li style="list-style:none;  margin-right:5px;">
+					<button ng-click="moveKapal()" class="btn btn-info btn-xs" type="button" ng-show="forkapalRekomendasi"><i class="fa fa-share" aria-hidden="true" style="margin-right:2px;"></i>Pindah Kapal ke Dermaga Lain</button>
+				</li>
+				<li style="list-style:none;">
+					<button ng-click="showDelete()" class="btn btn-danger btn-xs" type="button" ng-show="forkapalRekomendasi"><i class="fa fa-times-circle" aria-hidden="true" style="margin-right:2px;"></i>Hapus Kapal</button>
+				</li>
+				<li style="list-style:none; margin-right:5px;">
+					<button ng-click="showGeser()" class="btn btn-primary btn-xs" type="button" ng-show="forkapalSandar"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+					Geser Kapal Sandar</button>
+				</li>
+			</ul>
+			<form ng-show="showEditKapal" class="form-horizontal" name="formEditKapal">
+				<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<span class="pficon pficon-error-circle-o"></span>
+						 <strong>{{showMessage}}</strong>
+				</div>
+				<div class="alert alert-warning alert-dismissable" ng-show="showLoadingSave">			
+					<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+					<span style="font-size: 30px"><strong>Loading...</strong></span>
+				</div>
+				<div class="alert alert-warning alert-dismissable" ng-show="showLoadingData">			
+					<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+					<span style="font-size: 10px"><strong>Mengambil Data...</strong></span>
+				</div>
+				<input type="hidden" ng-model="postKapal.id">
+				<div class="form-group" ng-if="postKapal.infoTB">
+					<label class="col-sm-3 control-label" for="tetap-7">Nama Tugboat</label> 
+					<div class="col-sm-7"> 
+						{{postKapal.infoTB.namaKapal}}
+					</div>
+				</div>	
+				<hr ng-show="postKapal.infoTB">				
+				<div class="form-group" ng-show="postKapal.pmhKapalGandengs != null">
+					<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger" ng-show="postKapal.flagTender == 1">*</span> Nama Tongkang</label> 
+					<div class="col-sm-7"> 						
+						<span ng-repeat="gandeng in postKapal.pmhKapalGandengs">
+							{{gandeng.namaKapal}}
+						</span>
+					</div>
+				</div>				
+				<hr ng-show="postKapal.pmhKapalGandengs != null">
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Nama Kapal</label>
+					<div class="col-md-6">
+					   <input type="text"  class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kode Kapal</label>
+					<div class="col-md-6">
+					  <input type="text"  class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>No PPK1</label>
+					<div class="col-md-6">
+					  <input type="text"  class="form-control" name="" ng-model="postKapal.noPpk1" disabled="disabled">
+					</div>
+				</div>
+				 <div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>No PPK Jasa</label>
+					<div class="col-md-6">
+					  <input type="text"  class="form-control" name="" ng-model="postKapal.noPpkJasa" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Panjang Kapal</label>
+					<div class="col-md-6">
+					   <input type="number"  class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kade Awal</label>
+					<div class="col-md-6">
+					  	<input type="number"  class="form-control" name="" ng-model="postKapal.kadeAwal">
+					  	<label class="radio-inline">
+							<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+						</label>
+						<label class="radio-inline">
+							<input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+						</label>
+					</div>
+					<label class="col-md-7 control-label" ng-show="postKapal.kadeAwal < selectedVessel.kadeAwal || postKapal.kadeAwal > selectedVessel.kadeAkhir"><span class="text-danger"><small class="text-danger">*Sesuaikan kade awal dengan kade awal kapal tender.</small></span>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Mulai</label>
+					<div class="col-sm-3"> <!-- VALPMH041 -->
+						<div pf-datepicker id="" options="options" class="" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group" id="jamMasuk">
+							<input id="jamMasukEditVal" type="text" class="form-control" size="8" ng-model="postKapal.jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+							<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-md-3 control-label" ><span class="text-danger">*</span>Waktu Selesai</label>
+					<div class="col-sm-3"> <!-- VALPMH041 -->
+						<div pf-datepicker id="tambatTglSelesai" options="options" data-date-format="dd-mm-yyyy" date="postKapal.tglSelesai"  required></div>
+					</div>
+					<div class="col-sm-3">
+						<div class="input-group" id="jamKeluar">
+							<input id="jamKeluarEditVal" type="text" class="form-control" size="8" ng-model="postKapal.jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+							<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="tetap-7">Hadap</label>
+					 <div class="col-sm-7">
+						<select pf-select ng-model="postKapal.hadapKapal" ng-options='option.value as option.name for option in hadapKapal'>
+						</select>
+					 </div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label" for="nama-12">Kapal Tender</label>
+					<div class="col-sm-7" ng-init="postKapal.flagTender='0'">
+						<label class="radio-inline">
+							<input name="optradio" type="radio" ng-model="postKapal.flagTender" value="1">Ya
+						</label>
+						<label class="radio-inline">
+							<input name="optradio" type="radio" ng-model="postKapal.flagTender" value="0">Tidak
+						</label>
+					</div>
+				</div> 
+				<div class="form-group" ng-show="postKapal.flagTender == 1"> 
+					<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger" ng-show="postKapal.flagTender == 1">*</span> Nama Tender</label> 
+					<div class="col-sm-7"> 
+						<input type="text" class="form-control" ng-model="selectedVessel" typeahead="item as item.namaKapal + ' ('+item.noPpkJasa+')' for item in dataKapal | filter:{namaKapal:$viewValue}" ng-required="postKapal.flagTender == 1" ng-change="validationVessel()">
+						<!-- <small class="text-warning">*kapal yang dipilih hanya kapal yang sedang sandar</small> -->		
+					</div>
+				</div>
+				<hr ng-show="selectedVessel.kodeKapal != null">
+				<div class="form-group" ng-show="selectedVessel.kodeKapal != null">	
+					<div class="col-sm-offset-1 col-sm-11">
+						<span class="text-info" ng-show="selectedVessel.kodeKapal != null">*Silakan sesuaikan info Permohoan Kapal Tender dengan info berikut : </span>				
+					</div>	
+			    	<label class="col-sm-3 control-label">Info Kapal</label>
+			    	<div class="col-sm-9">
+				    	<div class="row">
+				    		<div class="col-sm-3">Nama Kapal </div>
+				    		<div class="col-sm-4 font-bold">: {{selectedVessel.kodeKapal?selectedVessel.kodeKapal:'-'}}</div>	
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-sm-3">LOA </div>
+				    		<div class="col-sm-3 font-bold">: {{selectedVessel.panjangKapal?(selectedVessel.panjangKapal | number):'-'}}</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-sm-3" style="font-size: 11.7px;">Mulai Tambat</div>
+				    		<div class="col-sm-8">: <span class="font-bold">{{selectedVessel.mulai?(selectedVessel.mulai | date:'dd-MM-yyyy HH:mm'):''}}</span> </div>
+				    		<div class="col-sm-3">Posisi</div>
+				    		<div class="col-sm-8">: <span class="font-bold">{{selectedVessel.kadeAwal}} - {{selectedVessel.kadeAkhir}}</span> </div>
+				    	</div>
+				    	<div>
+				    		<span class="text-danger" ng-show="selectedVessel.panjangKapal < postKapal.panjangKapal">*Panjang kapal lebih kecil dibanding Panjang Kapal Permohonan</span>
+				    	</div>
+			    	</div>				    			    	
+				</div> 			
+			</form>
+				<form ng-show="showMoveKapal" class="form-horizontal" name="">
+					<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+							<span class="pficon pficon-close"></span>
+						</button>
+						<span class="pficon pficon-error-circle-o"></span>
+						<strong>{{showMessage}}</strong>
+					</div>
+					<input type="hidden" ng-model="postKapal.id">
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger"></span>Nama Kapal</label>
+						<div class="col-md-6">
+						   <input type="text"  class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger"></span>Kode Kapal</label>
+						<div class="col-md-6">
+						  <input type="text"  class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+						</div>
+					</div>
+					 <div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger"></span>Panjang Kapal</label>
+						<div class="col-md-6">
+						   <input type="number"  class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+						</div>
+					 </div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger"></span>Waktu Mulai</label>
+						<div class="col-sm-3"> <!-- VALPMH041 -->
+							<div pf-datepicker id="" options="options" class="dateReadonly" data-date-format="dd-mm-yyyy" date="postKapal.tglMasuk"  required></div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-group" id="jamMasuk">
+								<input id="jamMasukValMv" type="text" class="form-control" size="8" ng-model="postKapal.jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" disabled="disabled">
+								<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger"></span>Waktu Selesai</label>
+						<div class="col-sm-3"> <!-- VALPMH041 -->
+							<div pf-datepicker id="tambatTglSelesai" options="options" class="dateReadonly" data-date-format="dd-mm-yyyy" date="postKapal.tglSelesai"  required></div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-group" id="jamKeluar">
+								<input id="jamKeluarValMv" type="text" class="form-control" size="8" ng-model="postKapal.jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" disabled="disabled">
+								<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Pilih Dermaga</label>
+						<div class="col-sm-3">
+							<input type="text"  class="form-control" ng-model="postKapal.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" required>
+						</div>
+					</div>
+				</form>
+				<form ng-show="showGeserKapal" class="form-horizontal" name="">
+					<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+							<span class="pficon pficon-close"></span>
+						</button>
+						<span class="pficon pficon-error-circle-o"></span>
+						<strong>{{showMessage}}</strong>
+					</div>
+					<input type="hidden" ng-model="postKapal.id">
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Nama Kapal</label>
+						<div class="col-md-6">
+							<input type="text"  class="form-control" name="" ng-model="postKapal.namaKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kode Kapal</label>
+						<div class="col-md-6">
+							<input type="text"  class="form-control" name="" ng-model="postKapal.kodeKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Panjang Kapal</label>
+						<div class="col-md-6">
+							<input type="number"  class="form-control" name="" ng-model="postKapal.panjangKapal" disabled="disabled">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kade Awal</label>
+						<div class="col-md-6">
+							<input type="number"  class="form-control" name="" ng-model="postKapal.kadeAwal">
+							<label class="radio-inline">
+								<input name="optradio2" type="radio" ng-model="postKapal.direct" value="0" ng-checked="true">Atas
+							</label>
+							<label class="radio-inline">
+								<input name="optradio2" type="radio" ng-model="postKapal.direct" value="1" >Bawah
+							</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" ><span class="text-danger">*</span>Kapal yang Menggantikan</label>
+						<div class="col-md-6">
+							<input type="text"  class="form-control" name="" ng-model="postKapal.kapalGanti ">
+						</div>
+					</div>
+				</form>
+		  </div>
+		  <div class="modal-footer">
+			<!-- <button type="button" class="btn btn-default" ng-if="showEditKapal" ng-click="cancelEdit(postKapal)">Batal</button> -->
+			<button type="button" class="btn btn-primary" ng-if="showEditKapal" ng-click="updateKapalRek(postKapal)" ng-disabled="!formEditKapal.$valid || selectedVessel.panjangKapal < postKapal.panjangKapal || (postKapal.kadeAwal < selectedVessel.kadeAwal || postKapal.kadeAwal > selectedVessel.kadeAkhir)">Simpan</button>
+			<button type="button" class="btn btn-primary" ng-if="showGeserKapal" ng-click="pushUpdateKapalSandar()" >Geser</button>
+			<button type="button" class="btn btn-default" ng-if="showMoveKapal" ng-click="cancel()">Batal</button>
+			<button type="button" class="btn btn-primary" ng-if="showMoveKapal" ng-click="doMove()" >Pindahkan Kapal</button>
+		  </div>
+	  </div>
+   </div>
+  </div>
+  <div class="modal" id="updateKapalCluster" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" ng-click="cancel()" data-dismiss="modal" aria-hidden="true">
+				  <span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Update Cluster Kapal</h4>
+			</div>
+			<div class="modal-body kapal-cluster">
+				<div class="alert alert-danger alert-dismissable" ng-show="showAlert">
+					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+						<span class="pficon pficon-close"></span>
+					</button>
+					<span class="pficon pficon-error-circle-o"></span>
+					<strong>{{showMessage}}</strong>
+				</div>
+				<table class="datatable table table-striped table-bordered" style="margin-top:30px;">
+					<thead>
+						<tr>
+							<th>Kapal</th>
+							<th>Kode Kapal</th>
+							<th>Cluster</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in dataKapalnoCluster">
+							<td>{{item.kodeKapal}}</td>
+							<td>{{item.namaKapal}}</td>
+							<td>
+								<select pf-select ng-model="item.cluster" name="itemCluster" ng-options='option.clusteringId as option.pembagiAnakan for option in clusterKademeter' id="jns-1" required></select>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" class="close" data-dismiss="modal" ng-click="cancel()">Batal</button>
+				<button type="button" class="btn btn-primary"  ng-click="updateKapal()" >Simpan</button>
+			</div>
+	  </div>
+	</div>
+</div>
+<!-- informasi kapal rekomendasi -->
+<div class="modal" id="infoKapalRekomendasi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+  <div class="modal-dialog">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			<span class="pficon pficon-close"></span>
+		</button>
+		<h4 class="modal-title">Informasi Kapal</h4>
+	  </div>
+	  <div class="modal-body">
+		<div class="panel panel-default">
+				<div class="panel-heading" ng-if="infoKapalSandarStatus == false && statusEdit == undefined">
+					<h3 class="panel-title">Pembatalan</h3>
+				</div>
+				<div class="panel-body" ng-if="infoKapalSandarStatus == false && statusEdit == undefined">
+					<p>Pembatalan sandar akan mengembalikan data kapal ke antrian dan akan membatalkan penetapan meeting.</p>
+					<p class="pull-right"><button class="btn btn-danger" ng-click="pembatalanPtp(dataInformasiKapal)">Batal Sandar</button></p>
+				</div>
+				<div class="panel-heading">
+					<h3 class="panel-title" ng-if="infoKapalSandarStatus == true">Kapal</h3>
+					<h3 class="panel-title" ng-if="infoKapalSandarStatus == false && statusEdit == false">Edit Info Kapal</h3>
+					<h3 class="panel-title" ng-if="infoKapalSandarStatus == false && statusEdit == true">Pindah Dermaga</h3>
+					<h3 class="panel-title" ng-if="infoKapalSandarStatus == false && statusEdit == undefined">Perubahan</h3>
+				</div>
+				<div class="panel-body">
+					<div class="alert alert-warning alert-dismissable" ng-show="showLoadingData">	
+						<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+						<span style="font-size: 10px"><strong>Mengambil Data...</strong></span>
+					</div>
+					<p class="text-warning" ng-show="historyptp.length > 0">*Kapal ini mengajukan perubahan jasa </p>
+					<form class="form-horizontal" ng-if="infoKapalSandarStatus == true">
+						  	<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.namaKapal}}</span>
+								</div>
+							</div>
+						  	<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Agen</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.namaAgen}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.panjangKapal}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.draftKapal}} M</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">No PPK1</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.noPpk1}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">No PPK Jasa</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.noPpkJasa}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Kademeter</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.kadeAwal}}-{{dataInformasiKapal.kadeAkhir}}</span>
+								</div>
+							</div>							
+							<div class="form-group" ng-show="dataInformasiKapal.statusLineKapal == 'Penetapan'">
+								<div class="col-sm-offset-2 col-sm-11 navbar-right">
+									<button class="btn btn-md btn-info" ng-click="revisiKapalPtp(dataInformasiKapal)">Revisi Kapal</button>
+									<button class="btn btn-md btn-primary" ng-click="editKapalPtp(dataInformasiKapal, true)" ng-disabled="historyptp.length > 0">Pindah Dermaga</button>
+									<button ng-click="editKapalPtp(dataInformasiKapal, false)" class="btn btn-md btn-warning" ng-disabled="historyptp.length > 0">Edit Kapal</button>
+									<button ng-click="hideVesel(dataInformasiKapal.noPpkJasa,dataInformasiKapal.id, dataInformasiKapal)" class="btn btn-md btn-danger">Hilangkan Kapal dari Antrian</button>
+								</div>							
+							</div>
+						</form>
+						<!-- pindah dermaga & edit kapal-->
+						<form class="form-horizontal" name="PenetapanTambatForm" ng-if="infoKapalSandarStatus == false && statusEdit != undefined">
+							<div class="alert alert-danger alert-dismissable" ng-show="showAlertEdit">
+								<button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+									<span class="pficon pficon-close"></span>
+								</button>
+									<span class="pficon pficon-error-circle-o"></span>
+								<strong>{{messageAlert}}</strong>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label" style="margin-top:none;"><span class="text-danger">*</span>Nama Kapal</h5>
+								<div class="col-md-9">
+									<input type="text" class="form-control" ng-model="dataInformasiKapal.namaKapal" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label" style="margin-top:none;"><span class="text-danger">*</span>No.PPK 1</h5>
+								<div class="col-md-9">
+									<input type="text" id="nama-12" class="form-control" ng-model="dataPtp.noPpk1" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label" style="margin-top:none;"><span class="text-danger">*</span>No.PPK Jasa</h5>
+								<div class="col-md-9">
+									<input type="text" id="nama-12" class="form-control" ng-model="dataPtp.noPpkJasa" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label" style="margin-top:none;"><span class="text-danger">*</span>Lokasi Tambat</h5>
+								<div class="col-md-9">
+									<input type="text" id="nama-12" class="form-control" ng-model="dataPtp.namaLokasi" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" ng-disabled="statusEdit == false" required>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label"><span class="text-danger">*</span>Mulai Tambat</h5>
+								<div class="col-md-6">
+									<div pf-datepicker id="penetapanTambatTglMulai" data-date-format="dd-mm-yyyy" options="options" date="dataPtp.tglMulai" ng-class="{dateReadonly:statusEdit==true}" required></div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-group" id="jamMulaiTambatEdit">
+										<input id="penetapanTambatJamMulaiVal" type="text" class="form-control" size="8" ng-model="dataPtp.jamMulai" data-time-format="HH:mm" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1" ng-readonly="statusEdit==true"  required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>									
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label"><span class="text-danger">*</span>Selesai Tambat</h5>
+								<div class="col-md-6">
+									<div pf-datepicker id="penetapanTambatTglSelesai" data-date-format="dd-mm-yyyy" options="options" date="dataPtp.tglSelesai" ng-class="{dateReadonly:statusEdit==true}" required></div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-group" id="jamSelesaiTambatEdit">
+										<input id="penetapanTambatJamSelesaiVal" type="text" class="form-control" size="8" ng-model="dataPtp.jamSelesai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" ng-readonly="statusEdit==true" required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<h5 class="col-label">Kade Awal</h5> 
+								<div class="col-md-5 display-box">
+									<div class="btn-group" style="margin-right: 6px;"> 
+										<label class="btn btn-default danger" ng-model="dataPtp.kodeKade" btn-radio="'-'" style="margin-right: 3px;" ng-disabled="statusEdit == true"><span class="fa fa-arrow-down"></span></label>
+										<label class="btn btn-default success" ng-model="dataPtp.kodeKade" btn-radio="'+'" ng-disabled="statusEdit == true"><span class="fa fa-arrow-up"></label>
+									</div>	
+									<input id="penetapanTambatKadeAwal" type="number" min="0" only-num class="form-control" ng-model="dataPtp.kadeAwal" ng-disabled="statusEdit == true">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-6 col-sm-5 navbar-right">
+									<button class="btn btn-default btn-lg btn-margin" ng-click="batalEditPtp()">Batal</button>
+									<button type="submit" class="btn btn-primary btn-lg" ng-click="updateKapalPtp(statusEdit)">Simpan</button>
+								</div>
+							</div>
+						</form>
+				  </div>
+				  <!-- perubahan -->
+				  <div ng-show="historyptp.length == 0" ng-if="infoKapalSandarStatus == false && statusEdit == undefined" style="margin: 0px 15px;">
+					<p>TIdak ada pengajuan perubahan,</p>
+					<p><strong>Untuk mengubah data penetapan, silakan menggunakan menu <button ng-click="editKapalPtp(dataInformasiKapal, false)" class="btn btn-md btn-warning" ng-disabled="historyptp.length > 0">Edit Kapal</button></strong></p>
+				  </div>
+				  <form class="form-horizontal" name="PerubahanForm" ng-if="infoKapalSandarStatus == false && statusEdit == undefined" ng-show="historyptp.length > 0">
+				    <div class="form-group">
+				    	<label class="col-sm-4 control-label" for="aktif">Jenis Revisi</label>
+				      	<div class="col-sm-5">
+				        	: <b>Perubahan - Tambat</b>
+				      	</div>
+				    </div><br>
+				    <div class="form-group">
+				    	<label class="col-sm-4 control-label" for="aktif">Tgl. Pengajuan</label>
+				      	<div class="col-sm-5">
+				        	: {{historyTambat.created | date : 'dd-MM-yyyy HH:mm'}}
+				      	</div>
+				    </div><br>
+				    <div class="form-group">
+				    	<label class="col-sm-4 control-label" for="aktif">No. PPK Jasa</label>
+				      	<div class="col-sm-5">
+				        	: <b>{{dataPtp.noPpkJasa}}</b>
+				      	</div>
+				    </div><br>
+				    <div class="form-group">
+				    	<label class="col-sm-4 control-label" for="aktif">No. Perubahan<span class="revisi-jenisRevisiText"></span></label>
+				      	<div class="col-sm-5">
+				        	: {{historyTambat.noPpkJasa}}
+				      	</div>
+				    </div><br>			  	
+					<table class="datatable table table-striped table-bordered">
+						<thead>
+							<tr>
+								<th style="width:120px"></th>
+								<th class="text-center">Sebelum</th>
+								<th class="text-center">Sesudah</th>
+							</tr>
+						</thead>
+					  	<tbody>
+					  		<tr>
+					  			<th>Lokasi</th>
+					  			<td>{{dataPtp.namaLokasi}}</td>
+					  			<td>
+					  				<input type="text" id="nama-12" class="form-control" ng-model="historyTambat.namaLokasi" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" ng-disabled="statusEdit == false" required>
+					  			</td>
+					  		</tr>
+					  		<tr>
+					  			<th>Tgl Mulai</th>
+					  			<td>{{dataPtp.tglMulai}} {{dataPtp.jamMulai}}</td>
+					  			<td style="text-align: center;vertical-align: middle;">
+									<div pf-datepicker id="penetapanTambatTglMulai" data-date-format="dd-mm-yyyy" options="options" date="historyTambat.tglMulai" ng-class="{dateReadonly:statusEdit==true}" required></div>
+									/<br>
+									<div class="input-group" id="jamMulaiTambatEditRev">
+										<input id="penetapanTambatJamMulaiValRev" type="text" class="form-control" size="8" ng-model="historyTambat.jamMulai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" ng-readonly="statusEdit==true"  required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>									
+									</div>
+					  			</td>
+					  		</tr>
+					  		<tr>
+					  			<th>Tgl Selesai</th>
+					  			<td>{{dataPtp.tglSelesai}} {{dataPtp.jamSelesai}}</td>
+					  			<td style="text-align: center;vertical-align: middle;">
+									<div pf-datepicker id="penetapanTambatTglSelesai" data-date-format="dd-mm-yyyy" options="options" date="historyTambat.tglSelesai" ng-class="{dateReadonly:statusEdit==true}" required></div>
+									/<br>
+									<div class="input-group" id="jamSelesaiTambatEditRev">
+										<input id="penetapanTambatJamSelesaiValRev" type="text" class="form-control" size="8" ng-model="historyTambat.jamSelesai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" ng-readonly="statusEdit==true" required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+					  			</td>
+					  		</tr>
+					  		<tr>	
+					  			<th>Kade Meter</th>
+					  			<td>{{dataPtp.kadeAwal}} - {{dataPtp.kadeAkhir}}</td>
+					  			<td>
+									<div class="col-md-6 display-box">
+										<div class="btn-group" style="margin-right: 6px;"> 
+											<label class="btn btn-default danger" ng-model="historyTambat.kodeKade" btn-radio="'-'" style="margin-right: 3px;" ng-disabled="statusEdit == true"><span class="fa fa-arrow-down"></span></label>
+											<label class="btn btn-default success" ng-model="historyTambat.kodeKade" btn-radio="'+'" ng-disabled="statusEdit == true"><span class="fa fa-arrow-up"></label>
+										</div>	
+										<input id="penetapanTambatKadeAwal" type="number" min="0" only-num class="form-control" ng-model="historyTambat.kadeAwal" ng-disabled="statusEdit == true" style="width: 80px">&nbsp;&nbsp; - &nbsp;&nbsp;
+										<input id="penetapanTambatKadeAkhir" type="number" min="0" only-num class="form-control" ng-model="historyTambat.kadeAkhir" ng-disabled="statusEdit == true" style="width: 80px">
+									</div>
+					  			</td>
+					  		</tr>
+						</tbody>
+					</table>
+					<br>
+					<div class="form-group">
+						<div class="col-sm-offset-6 col-sm-5 navbar-right">
+							<button class="btn btn-default btn-lg btn-margin" ng-click="batalEditPtp()">Batal</button>
+							<button type="submit" class="btn btn-primary btn-lg" ng-click="updateRevisiPtp()">Simpan</button>
+						</div>
+					</div>				
+				  </form>				  	
+				  <div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+					<h3 class="panel-title">Info TOS</h3>
+				  </div>
+				  <div class="panel-body" ng-if="infoKapalSandarStatus == true">
+					<div class="alert alert-warning alert-dismissable" ng-show="showLoadingTos">	
+						<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+						<span style="font-size: 10px"><strong>Mengambil Data dari Server TOS...</strong></span>
+					</div>
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar')">Bongkar</a></li>
+						<li role="presentation" class="menu-jasa tab-muat" kode-menu="muat" id="muatTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat')">Muat</a></li>
+						</ul> 
+						<div class="tab-content"> 
+							<div id="bongkar" role="tabpanel" class="tab-pane active">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Mulai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.startWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Selesai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.endWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Persentase</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.realAvgTsd}}%</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.targetTsd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlPlan}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlProd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.namaAgent+' / '+dataInformasiKapal.infoTosBongkar.kodeAgent}} </span>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="muat" role="tabpanel" class="tab-pane">
+								<form class="form-horizontal">
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Mulai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.startWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Selesai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.endWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Persentase</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.realAvgTsd}}%</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.targetTsd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlPlan}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlProd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+									<div class="col-sm-8">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.namaAgent+' / '+dataInformasiKapal.infoTosMuat.kodeAgent}} </span>
+									</div>
+									</div>
+								</form>
+							</div>
+						</div>
+				  	</div>
+				  	<div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+						<h3 class="panel-title">Tgl Permohonan</h3>
+				  	</div>
+				  	<div class="panel-body" ng-if="infoKapalSandarStatus == true">
+						<form class="form-horizontal">
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Mulai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.pmhMulai == null ? '-' : dataInformasiKapal.pmhMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						 		</div>
+							</div>
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Selesai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+								  	<span class="view-detail infotip-kapal">{{dataInformasiKapal.pmhSelesai == null ? '-' : dataInformasiKapal.pmhSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+						</form>
+				  	</div>
+				  	<div class="panel-heading" ng-if="infoKapalSandarStatus == true">
+						<h3 class="panel-title">Tgl Penetapan</h3>
+				  	</div>
+				  	<div class="panel-body" ng-if="infoKapalSandarStatus == true">
+						<form class="form-horizontal">
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Mulai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{dataInformasiKapal.ptpMulai == null ? '-' : dataInformasiKapal.ptpMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+							<div class="form-group">
+						  		<label class="col-sm-4 infotip-kapal">Selesai</label>
+						  		<div class="col-sm-6">
+									<span>:</span>
+							  		<span class="view-detail infotip-kapal">{{dataInformasiKapal.ptpSelesai == null ? '-' : dataInformasiKapal.ptpSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+						  		</div>
+							</div>
+						</form>
+				  	</div>
+				</div>
+		  	</div>
+		  	<div class="modal-footer"></div>
+		</div>
+  	</div>
+</div>
+<!-- informasi kapal sandar -->
+<div class="modal" id="infoKapalSandar" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Informasi Kapal Sandar</h4>
+			</div>
+			<div class="modal-body">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title" ng-if="statusInfo == true">Kapal</h3>
+						<h3 class="panel-title" ng-if="statusInfo == false && statusRevisiRea == false">Geser Kapal</h3>
+						<h3 class="panel-title" ng-if="statusInfo == false && statusRevisiRea == true">{{revRea.jenisRevisi == '6' ? 'Perpanjangan' : revRea.jenisRevisi == '7'?'Perpendekan' : ''}}</h3>
+					</div>
+					<div class="panel-body">
+						<form class="form-horizontal" ng-show="statusInfo">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Nama Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.namaKapal}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Agen</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.namaAgen}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Panjang Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.panjangKapal}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Drought Kapal</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.draftKapal}} M</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">No PPK1</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.noPpk1}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">No PPK Jasa</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.noPpkJasa}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Kademeter</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.kadeAwal}}-{{informasiKapalSandar.kadeAkhir}}</span>
+								</div>
+							</div>
+							<!-- tombol geser -->
+							<div class="form-group">
+								<div class="col-sm-offset-7 col-sm-5 navbar-right">	
+									<button class="btn btn-md btn-primary" ng-if="informasiKapalSandar.statusPelaksanaan != 5" ng-click="geserKapal(informasiKapalSandar)">Geser Kapal</button>
+									<button class="btn btn-md btn-warning" ng-if="informasiKapalSandar.statusPelaksanaan == 5" ng-click="previewGeserKapal(informasiKapalSandar)">Preview Geser</button>
+									<button class="btn btn-md btn-warning" ng-disabled="historyrea.length == 0" ng-click="revisiRea(informasiKapalSandar)">Revisi</button>
+								</div>
+							</div>
+							<!--  -->
+						</form>
+<!-- form Kapal geser -->  
+						<form class="form-horizontal" name="PermohonanGeserForm" ng-hide="(statusInfo == true && statusRevisiRea == false) || (statusInfo == false && statusRevisiRea == true)">
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Kapal</label>
+							   	<div class="col-sm-6">
+							   		<strong>{{jasatambat.namaKapal}}</strong>
+							   	</div>
+							</div>
+						  	<div class="form-group">
+								<label class="col-sm-3 control-label">No. PPK Jasa</label>
+							   	<div class="col-sm-6">
+							   		<strong>{{jasatambat.noPpkJasa}}</strong>
+							   	</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label">Lokasi Tambat</label>
+							   	<div class="col-sm-6">
+							   		<strong>{{jasatambat.namaDermaga}}</strong>
+							   	</div>
+							</div>
+							<div class="form-group" ng-hide="statusPreview">
+								<label class="col-sm-3 control-label">Mulai Tambat</label>
+							   	<div class="col-sm-6">
+							   		<strong>{{jasatambat.mulai | date : 'dd-MM-yyyy HH:mm'}}</strong>
+							   	</div>
+							</div>
+							<div class="form-group" ng-hide="statusPreview">
+								<label class="col-sm-3 control-label">Kade Meter</label>
+								<div class="col-sm-8">
+									<div class="col-sm-6">
+										<i ng-show="jasatambat.kadeAwal<jasatambat.kadeAkhir" class="fa fa-arrow-up fa-2x color-green"></i>
+										<i ng-show="jasatambat.kadeAwal>jasatambat.kadeAkhir" class="fa fa-arrow-down color-red"></i> <strong>{{jasatambat.kadeAwal}} - {{jasatambat.kadeAkhir}}</strong>
+									</div>
+								</div>
+							</div>
+							<hr>
+							<h4>Update Info Kapal</h4>
+							<hr>
+							<div class="form-group">
+								<div class="col-sm-12"> 
+									<div class="alert alert-warning alert-dismissable" ng-show="showAlertTime">
+										<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{showMessageTime}} </strong>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label"><span class="text-danger" ng-hide="statusPreview">*</span>Mulai Tambat Baru</label>
+							   	<div class="col-sm-4" ng-hide="statusPreview">
+									<div pf-datepicker id="tglMulaiTambatBaru" options="options" data-date-format="dd-mm-yyyy" date="jasatambatbaru.tglMulaiTambatBaru" required></div>
+							   	</div>
+							   	<div class="col-sm-4" ng-hide="statusPreview">
+									<div class="input-group" id="jamMulaiTambat">
+										<input id="jamMulaiTambatValBaru" type="text" class="form-control" size="8" ng-model="jasatambatbaru.jamMulaibaru" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+							   	</div>
+							   	<div class="col-sm-6" ng-show="statusPreview">
+							   		<strong>{{jasatambat.mulai | date : 'dd-MM-yyyy HH:mm'}}</strong>
+							   	</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label"><span class="text-danger" ng-hide="statusPreview">*</span>Selesai Tambat Baru</label>
+							   	<div class="col-sm-4" ng-hide="statusPreview">
+							   		<div pf-datepicker id="tglSelesaiBaru" options="options" data-date-format="dd-mm-yyyy" date="jasatambatbaru.tglSelesaiTambatBaru" required></div>
+							   	</div>
+							   	<div class="col-sm-4" ng-hide="statusPreview">
+									<div class="input-group" id="jamSelesaiTambat">
+										<input id="jamSelesaiTambatValBaru" type="text" class="form-control" size="8" ng-model="jasatambatbaru.jamSelesaiBaru" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" required>
+										<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+									</div>
+							   	</div>
+							   	<div class="col-sm-6" ng-show="statusPreview">
+							   		<strong>{{jasatambat.selesai | date : 'dd-MM-yyyy HH:mm'}}</strong>
+							   	</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-3 control-label" for="nama-12"><span class="text-danger" ng-hide="statusPreview">*</span>Kade Meter Baru</label>
+								<div class="col-sm-2" ng-hide="statusPreview">
+									<div class="btn-group">
+										<label class="btn btn-default danger" ng-model="jasatambatbaru.kodeKade" btn-radio="'-'" style="margin-right: 3px;"><span class="fa fa-arrow-down"></span></label>
+										<label class="btn btn-default success" ng-model="jasatambatbaru.kodeKade" btn-radio="'+'"><span class="fa fa-arrow-up"></label>
+									</div>					
+								</div>
+								<div class="col-sm-7" ng-hide="statusPreview">			
+									<div class="col-sm-5">
+										<input type="number" class="form-control" ng-model="jasatambatbaru.kadeAwal" min="0" only-num ng-change="loaValue()" required>
+									</div>
+									<label class="col-sm-1" ng-hide="statusPreview">s/d</label>
+									<div class="col-sm-5" ng-hide="statusPreview">
+										<input type="number" class="form-control" ng-model="jasatambatbaru.kadeAkhir" readonly>
+									</div>
+								</div>
+							   	<div class="col-sm-6" ng-show="statusPreview">
+									<i ng-show="jasatambat.kadeAwal<jasatambat.kadeAkhir" class="fa fa-arrow-up fa-2x color-green"></i>
+									<i ng-show="jasatambat.kadeAwal>jasatambat.kadeAkhir" class="fa fa-arrow-down color-red"></i> 
+									<strong>{{jasatambat.kadeAwal}} - {{jasatambat.kadeAkhir}}</strong>
+							   	</div>
+							</div>
+						<hr>
+						<h4>Update Info Geser</h4>
+						<hr>
+							<div class="form-group">
+								<div class="col-sm-12"> 
+									<div class="alert alert-warning alert-dismissable" ng-show="showDuplicate">
+										<strong><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{messageDuplicate}} </strong>
+									</div>
+								</div>
+							</div>
+							<div class="form-group" ng-hide="statusPreview">
+								<label class="col-sm-3 control-label" for="nama-12"><span class="text-danger">*</span>Alasan Geser</label>
+								<div class="col-sm-6">
+									<label class="radio-inline">
+										<input type="radio" name="geserRadio" ng-model="alasanGeser" value="1"> Kapal
+									</label>
+									<label class="radio-inline">
+										<input type="radio" name="geserRadio" ng-model="alasanGeser" value="0"> Lain-lain
+									</label>
+								</div>
+							</div>
+							<div class="form-group" ng-hide="statusPreview" ng-if="alasanGeser==1">
+								<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger" ng-hide="statusPreview">*</span> Nama Kapal</label> 
+								<div class="col-sm-6">
+									<input type="text" class="form-control" ng-model="selectedVesselGeser" typeahead="vessel as vessel.namaKapal + ' ('+vessel.noPpkJasa+')' for vessel in dataKapalPtp | filter:{namaKapal:$viewValue}" >
+									<small class="text-warning" ng-hide="statusPreview">*Hanya Kapal Penetapan yang dapat dipilih</small>	
+								</div>
+								<div class="col-sm-1">
+									<input type="button" name="" class="btn btn-md btn-info" ng-click="pilihKapal(selectedVesselGeser)" value="Pilih" ng-disabled="statusPreview">
+								</div>
+							</div>
+							<div class="form-group" ng-hide="statusPreview" ng-if="alasanGeser==0">
+								<label class="col-sm-3 control-label" for="tetap-7"><span class="text-danger" ng-hide="statusPreview">*</span> Keterangan</label> 
+								<div class="col-sm-7"> 
+									<textarea class="form-control" ng-model="jasatambatbaru.keteranganGeser" rows="4"></textarea>
+								</div>
+							</div>
+							<div class="form-group">
+							   	<div class="col-sm-12">
+							   		<table class="table table-striped table-bordered" >
+									    <thead>
+									    	<tr>
+									    		<th>No PPK Jasa</th>
+									    		<th>Kode Kapal</th>
+									    		<th>Nama Kapal</th>
+									    		<th>Posisi</th>
+									    		<th>Waktu Tambat</th>
+									    		<th></th>
+									    	</tr>
+									    </thead>
+									    <tbody>
+									    	<tr ng-repeat="itemKapal in kapalPengganti track by $index" ng-hide="statusPreview">
+									    		<td>{{itemKapal.noPpkJasa}}</td>
+									    		<td>{{itemKapal.kodeKapal}}</td>
+									    		<td>{{itemKapal.namaKapal}}</td>
+							    				<td>{{itemKapal.kadeAwal}} - {{itemKapal.kadeAkhir}}</td>
+							    				<td>{{itemKapal.mulai | date : 'dd/HH'}}</td>
+							    				<td>
+							    					<a ng-click="deleteKapalPenggantiView($index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times" ng-hide="statusPreview"></span></a>
+							    				</td>
+									    	</tr>
+									    	<tr ng-repeat="itemKapal in kapalPenggantiView track by $index" ng-show="statusPreview" ng-if="statusLain == false">
+									    		<td>{{itemKapal.noPpkJasaPengganti}}</td>
+									    		<td>{{itemKapal.kodeKapalPengganti}}</td>
+									    		<td>{{itemKapal.namaKapalPengganti}}</td>
+							    				<td>{{itemKapal.ptpTambat.kadeAwal}} - {{itemKapal.ptpTambat.kadeAkhir}}</td>
+							    				<td>{{itemKapal.ptpTambat.tglMulai | date : 'dd/HH'}}</td>
+							    				<td></td>
+									    	</tr>
+									    	<tr ng-if="statusLain == true" >
+									    		<td colspan="6">
+									    			Kapal Pengganti Tidak Tersedia. <br>
+									    			<strong>Alasan : {{kapalPenggantiView.keterangan}}</strong>
+									    		</td>
+									    	</tr>
+									    </tbody>
+									</table>
+								</div>
+							</div>
+						<hr>
+							<div class="form-group" ng-hide="statusPreview">
+							    <div class="col-sm-offset-2 col-sm-7">
+							    	<button type="button" class="btn btn-default" ng-click="resetGeser()">Batal</button>
+								   	<button type="button" class="btn btn-primary"  ng-hide="showLoad" ng-disabled="!PermohonanGeserForm.$valid" ng-click="submitKapalGeser()">Simpan</button>
+								   	<button type="button" class="btn btn-primary" ng-show="showLoad" disabled><span ><span class="spinner spinner-xs spinner-inline"></span> Silahkan tunggu...</button>
+								   	
+								</div>
+							</div>
+							<div class="form-group" ng-show="statusPreview">
+							    <div class="col-sm-offset-2 col-sm-7">
+							    	<button type="button" class="btn btn-default" ng-click="resetGeser()">Batal</button>
+								   	<button type="button" class="btn btn-primary" ng-click="cetakSpg(jasatambat)">Download</button>
+								</div>
+							</div>
+						</form>
+<!--  -->
+<!-- perpanjangan / perpendekan -->
+<form class="form-horizontal" name="revisirealisasiform" ng-show="statusRevisiRea"> 
+	<div class="form-group">
+		<label class="col-sm-4 control-label">Nama Kapal</label> 
+		<div class="col-sm-6"> <strong>{{revRea.namaKapal}}</strong></div>
+	</div> 
+	<div class="form-group"> 
+		<label class="col-sm-4 control-label">No. PPK Jasa Revisi</label>
+		<div class="col-sm-6"><strong>{{revRea.noPpkJasa}}</strong> </div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-4 control-label">Lokasi Tambat</label> 
+		<div class="col-sm-6"> <strong>{{revRea.namaLokasi}}</strong> </div> 
+	</div> 
+	<div class="form-group"> 
+		<label class="col-sm-4 control-label">Mulai Tambat pada</label>
+		<div class="col-sm-6"> <strong>{{revRea.tglMulai | date : "dd-MM-yyyy HH:mm"}}</strong> </div>
+	</div> 
+	<div class="form-group">
+		<label class="col-sm-4 control-label"><span class="text-danger">*</span>Selesai pada</label>
+		<div class="col-sm-3"> 
+			<div pf-datepicker id="tglSelesaiRev" options="options" data-date-format="dd-mm-yyyy" date="revTglSelesai" ng-class="{dateReadonly: ubahTgl == true}"></div> 
+		</div>
+		<div class="col-sm-3"> 
+			<div class="input-group" id="jamSelesaiTambat"> 
+				<input id="jamSelesaiRev" type="text" class="form-control" size="8" ng-model="revJamSelesai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1" ng-disabled="ubahTgl"> 
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+	</div> 
+	<div class="form-group"> 
+		<label class="col-sm-4 control-label">Posisi</label>
+		<div class="col-sm-6"> <strong>{{revRea.kadeAwal}} - {{revRea.kadeAkhir}}</strong> </div>
+	</div> 
+	<div class="form-group">
+		<div class="col-sm-offset-3 col-sm-6 navbar-right"> 
+			<button type="button" class="btn btn-default" ng-click="resetGeser()">Batal</button>
+			<button type="button" class="btn btn-primary" ng-if="ubahTgl == true" ng-click="ubahTglBtn(false)">Edit</button>
+			<button type="button" class="btn btn-primary" ng-click="submitRevisiRea()" ng-if="ubahTgl == false">Simpan</button>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-12"> 
+			<div class="alert {{alertClass}}" ng-show="statusPerpanjangan">
+				<span class="pficon {{iconClass}}"></span> <strong> {{txtPerpanjangan}}</strong>
+			</div> 
+		</div>
+	</div>
+</form>
+<!--  -->
+					</div>
+<!-- kirim ulang rpkro --> 
+<div class="panel-heading" ng-show="statusRevisiRea">
+	<h3 class="panel-title">RPKRO</h3>
+</div> 
+<div class="panel-body" ng-show="statusRevisiRea"> 
+	<p>Kirim ulang RPKRO untuk memperbaharui data yang sudah terkirim ke Otoritas Pelabuhan</p>
+	<p class="pull-right">
+		<button class="btn {{btnClassRpkro}}" ng-click="resendRpkro()"><i class="fa fa-reply" aria-hidden="true"></i> Kirim RPKRO</button>
+	</p> 
+</div>
+ <!--  -->
+					<div class="panel-heading" ng-show="statusInfo">
+						<h3 class="panel-title">Info TOS</h3>
+					</div>
+					<div class="panel-body" ng-show="statusInfo">
+						<div class="alert alert-warning alert-dismissable" ng-show="showLoadingTos">	
+							<i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+							<span style="font-size: 10px"><strong>Mengambil Data dari Server TOS...</strong></span>
+						</div>
+						<ul class="nav nav-tabs" role="tablist">
+							<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'bongkar2')">Bongkar</a></li>
+							<li role="presentation" class="menu-jasa tab-muat2" kode-menu="muat" id="muatTab2"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'muat2')">Muat</a></li>
+						</ul>
+						<div class="tab-content">
+							<div id="bongkar2" role="tabpanel" class="tab-pane active">
+								<form class="form-horizontal">
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Mulai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.startWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Selesai</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.endWork | date : 'dd-MM-yyyy'}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Persentase</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.realAvgTsd}}%</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar  == null ? '-' : dataInformasiKapal.infoTosBongkar.targetTsd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlPlan}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.jmlProd}}</span>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+										<div class="col-sm-6">
+											<span>:</span>
+											<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosBongkar == null ? '-' : dataInformasiKapal.infoTosBongkar.namaAgent+' / '+dataInformasiKapal.infoTosBongkar.kodeAgent}} </span>
+										</div>
+									</div>
+								</form>
+							</div>
+							<div id="muat2" role="tabpanel" class="tab-pane">
+								<form class="form-horizontal">
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Mulai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.startWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Selesai</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.endWork | date : 'dd-MM-yyyy'}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Persentase</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.realAvgTsd}}%</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Target BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat  == null ? '-' : dataInformasiKapal.infoTosMuat.targetTsd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Rencana BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlPlan}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Realisasi BSH/TSD</label>
+									<div class="col-sm-6">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.jmlProd}}</span>
+									</div>
+									</div>
+									<div class="form-group">
+									<label class="col-sm-4 infotip-kapal">Agen PBM</label>
+									<div class="col-sm-8">
+										<span>:</span>
+										<span class="view-detail infotip-kapal">{{dataInformasiKapal.infoTosMuat == null ? '-' : dataInformasiKapal.infoTosMuat.namaAgent+' / '+dataInformasiKapal.infoTosMuat.kodeAgent}} </span>
+									</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="panel-heading" ng-show="statusInfo">
+						<h3 class="panel-title">Tgl Permohonan</h3>
+					</div>
+					<div class="panel-body" ng-show="statusInfo">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Mulai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.pmhMulai == null ? '-' : informasiKapalSandar.pmhMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Selesai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.pmhSelesai == null ? '-' : informasiKapalSandar.pmhSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="panel-heading" ng-show="statusInfo">
+						<h3 class="panel-title">Tgl Penetapan</h3>
+					</div>
+					<div class="panel-body" ng-show="statusInfo">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Mulai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.ptpMulai == null ? '-' : informasiKapalSandar.ptpMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Selesai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal">{{informasiKapalSandar.ptpSelesai == null ? '-' : informasiKapalSandar.ptpSelesai | date: "dd-MM-yyyy HH:mm"}}</span>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div class="panel-heading" ng-show="statusInfo">
+						<h3 class="panel-title">Tgl Realisasi</h3>
+					</div>
+					<div class="panel-body" ng-show="statusInfo">
+						<form class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-4 infotip-kapal">Mulai</label>
+								<div class="col-sm-6">
+									<span>:</span>
+									<span class="view-detail infotip-kapal"><span class="view-detail infotip-kapal">{{informasiKapalSandar.reaMulai == null ? '-' : informasiKapalSandar.reaMulai | date: "dd-MM-yyyy HH:mm"}}</span>
+								</div>
+							</div>
+						</form>
+					</div>			  
+				</div>
+			</div>
+			<div class="modal-footer"></div>
+		</div>
+	</div>
+</div>
+</div>
+<br>
+<div id="canvas2" style="display: none">
+	<canvas id="canvas-print" style="height:500px;"> </canvas>
+	<div class="information-kapal" ng-if="isKanan == true" id="printKapal" style="page-break-before: always;">
+		<ul ng-repeat="kapal in dataKapalRek" style="position:absolute;top:{{kapal.Top + 50}}px;left:{{kapal.labelFromRight}}px; list-style:none;">
+			<li>
+				<i class="fa fa-info-circle text-info" aria-hidden="true"></i> #{{$index}}
+			</li>
+
+		</ul>
+		<ul ng-repeat="kapalSandar in kapalSandar" style="position:absolute;top:{{kapalSandar.Top + 50}}px;left:{{kapalSandar.labelFromRight}}px; list-style:none;">
+			<li>
+				<i class="fa fa-info-circle text-info" aria-hidden="true"></i> #{{$index}}
+			</li>
+		</ul>
+	</div>
+	<div class="container table-keterangan" id="keterangan">       
+		<h4>Kapal-kapal Meeting</h4> 
+	  	<table style=" border: 1px solid black;width: 80%;">
+		    <thead style=" border: 1px solid black;">
+		      	<tr style=" border: 1px solid black;">
+		        	<th style=" border: 1px solid black;">#</th>
+		        	<th style=" border: 1px solid black;"></th>
+		      	</tr>
+		    </thead>
+		    <tbody style=" border: 1px solid black;">
+		    	<tr ng-repeat="kapal in dataKapalRek" style=" border: 1px solid black;">
+		    		<td style="text-align: center;border: 1px solid black;">{{$index}}</td>
+		    		<td style="text-align: center;border: 1px solid black;">{{kapal.kodeKapal}} - {{kapal.namaKapal}} <br> Closing : {{kapal.permohonanMulai| date : 'dd/MM/yyyy HH:mm'}} -  {{kapal.permohonanSelesai| date : 'dd/MM/yyyy HH:mm'}}<br> LOA : {{kapal.panjangKapal}} <br> Posisi : {{kapal.kadeAwal}} - {{kapal.kadeAkhir}}</td>
+		    	</tr>
+		    </tbody>
+	  	</table>
+		<h4>Kapal-kapal Sandar</h4> 
+	  	<table style=" border: 1px solid black;width: 80%;">
+		    <thead style=" border: 1px solid black;">
+		      	<tr style=" border: 1px solid black;">
+		        	<th style=" border: 1px solid black;">#</th>
+		        	<th style=" border: 1px solid black;"></th>
+		      	</tr>
+		    </thead>
+		    <tbody style=" border: 1px solid black;">
+				<tr ng-repeat="kapal in kapalSandar" style=" border: 1px solid black;">
+		    		<td style="text-align: center;border: 1px solid black;">{{$index}}</td>
+		    		<td style="text-align: center;border: 1px solid black;">{{kapal.kodeKapal}} - {{kapal.namaKapal}} <br> Closing : {{kapal.permohonanMulai| date : 'dd/MM/yyyy HH:mm'}} -  {{(kapal.permohonanSelesai == null ?'Kapal Sedang tambat': kapal.permohonanSelesai| date : 'dd/MM/yyyy HH:mm')}}<br> LOA : {{kapal.panjangKapal}} <br> Posisi : {{kapal.kadeAwal}} - {{kapal.kadeAkhir}}</td>
+		    	</tr>
+		    </tbody>
+	  	</table>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#jamKeluarVal').mask('99:99');
+	$('#jamMasukVal').mask('99:99');
+	$('#').mask('99-99-9999');
+	$('#tambatTglSelesai').mask('99-99-9999');
+});
+
+	function openTab(evt, jenisJasa) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tab-pane");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		menuJasa = document.getElementsByClassName("menu-jasa");
+		for (i = 0; i < menuJasa.length; i++) {
+			menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+		}
+		document.getElementById(jenisJasa).style.display = "block";
+		evt.currentTarget.className += " active";
+		$('.tab-'+jenisJasa).addClass("active");
+	}
+
+</script>

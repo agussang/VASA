@@ -1,0 +1,230 @@
+<h2>Laporan Silapor</h2>
+
+<div class="row top-buffer">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label class="col-sm-4 control-label">
+                <span class="text-danger">*</span>Tgl. Approval</label>
+            <div class="col-sm-4" style="display:inline-flex;">
+                <span id="tanggalApprovalAwal" class="input-group date" style="width:120px;">
+                    <input type="text" ng-model="tanggalApprovalAwal" date="tanggalApprovalAwal" ng-change="change()" class="form-control bootstrap-datepicker"
+                        options="options" readonly>
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </span>
+            </div>
+            <div class="col-sm-4" style="display:inline-flex;">
+                <label class="control-label" style="margin-left:-15px;margin-right:5px;">s.d.</label>
+                <span id="tanggalApprovalAkhir" class="input-group date" style="width:120px;">
+                    <input type="text" ng-model="tanggalApprovalAkhir" date="tanggalApprovalAkhir" ng-change="change()" class="form-control bootstrap-datepicker"
+                        options="options" readonly>
+                    <span class="input-group-addon">
+                        <span class="fa fa-calendar"></span>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-primary" ng-click="loadSilapor();buttonDisabled=true"> Filter </button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-primary" ng-click="generateExcel()">Ekspor Excel
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-primary" ng-show="isRegional()" ng-click="generateExcelRegional()">Ekspor Excel Regional
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        </button>
+    </div>
+</div>
+
+<br>
+
+<div id="tabel-silapor" class="col-sm-12" style="margin-left:0px" style="display:inline-flex; width:100%">
+<table class="datatable table table-striped table-bordered">
+    <thead>
+        <tr ng-hide="true">
+            <th class="valign" colspan="74">
+                <label>LAPORAN SILAPOR {{tanggalApprovalAkhir}} - {{tanggalApprovalAkhir}}</label>
+            </th>
+        </tr>
+        <tr ng-hide="true">
+        </tr>
+        <tr>
+            <th>No</th>
+            <th>Aktivitas</th>
+            <th>Nama Kapal</th>
+            <th>Kode Kapal</th>
+            <th>Nama Agen</th>
+            <th>Kode Agen</th>
+            <th>Jasa</th>
+            <th>Asal</th>
+            <th>Tujuan</th>
+            <th>Nama Terminal</th>
+            <th>Kode Terminal</th>
+            <th>Nama Dermaga</th>
+            <th>Kode Dermaga</th>
+            <th>Nama Lokasi Awal</th>
+            <th>Kode Lokasi Awal</th>
+            <th>Nama Lokasi Akhir</th>
+            <th>Kode Lokasi Akhir</th>
+            <th>Coa Arus</th>
+            <th>Coa Produksi</th>
+            <th>Dwt</th>
+            <th>Grt</th>
+            <th>Loa</th>
+            <th>Header Id</th>
+            <th>Jenis Bendera</th>
+            <th>Jenis Dermaga</th>
+            <th>Jenis Kapal</th>
+            <th>Jenis Kemasan Bongkar</th>
+            <th>Jenis Kemasan Muat</th>
+            <th>Jenis Jenis Kunjungan</th>
+            <th>Jenis Lokasi Awal</th>
+            <th>Jenis Lokasi Akhir</th>
+            <th>Jenis Pelabuhan</th>
+            <th>Jenis Pelayaran</th>
+            <th>Jenis Tambat Lokasi Awal</th>
+            <th>Jenis Tambat Lokasi Akhir</th>
+            <th>Jenis Tambatan</th>
+            <th>Jenis Trayek</th>
+            <th>Jumlah Arus</th>
+            <th>Jumlah Durasi</th>
+            <th>Jumlah Produksi</th>
+            <th>Kelas Trans</th>
+            <th>Kelas Trans Dtl</th>
+            <th>No Approval</th>
+            <th>No Form</th>
+            <th>No PPKB1</th>
+            <th>No Pranota</th>
+            <th>No Ppk1</th>
+            <th>Profit CTR</th>
+            <th>Program</th>
+            <th>Prosentase</th>
+            <th>Rec Stat</th>
+            <th>Rec Status</th>
+            <th>Record Id</th>
+            <th>SAP Doc</th>
+            <th>Satuan Arus</th>
+            <th>Satuan Durasi</th>
+            <th>Satuan Produksi</th>
+            <th>Service</th>
+            <th>Tagihan</th>
+            <th>Mata Uang</th>
+            <th>Tarif Jasa</th>
+            <th>Nama Tertagih</th>
+            <th>Kode Tertagih</th>
+            <th>Tdbl Agen</th>
+            <th>Tdbl No PPKB1</th>
+            <th>Tdbl No Pranota</th>
+            <th>Tdbl Tagihan Kapal</th>
+            <th>Tgl. Approval</th>
+            <th>Tgl. Batal</th>
+            <th>Tgl. Kirim</th>
+            <th>Tipe Trans</th>
+            <th>User Akses</th>
+            <th>Voyage No Vasa</th>
+            <th>Date Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in items">
+            <td>{{$index+1}}</td>
+            <td>{{item.activity}}</td>
+            <td>{{item.namaKapal}}</td>
+            <td>{{item.kdKapal}}</td>
+            <td>{{item.agentName}}</td>
+            <td>{{item.agentCode}}</td>
+            <td>{{item.namaJasa}}</td>
+            <td>{{item.mplbAsalKode}}</td>
+            <td>{{item.mplbTujuanKode}}</td>
+            <td>{{item.namaTerminal}}</td>
+            <td>{{item.kdTerminal}}</td>
+            <td>{{item.namaDermaga}}</td>
+            <td>{{item.kdLokasi}}</td>
+            <td>{{item.namaLokasiAwal}}</td>
+            <td>{{item.kdLokasiAwal}}</td>
+            <td>{{item.namaLokasiAkhir}}</td>
+            <td>{{item.kdLokasiAkhir}}</td>
+            <td>{{item.coaArus}}</td>
+            <td>{{item.coaProd}}</td>
+            <td>{{item.dwt}}</td>
+            <td>{{item.grt}}</td>
+            <td>{{item.loa}}</td>
+            <td>{{item.headerId}}</td>
+            <td>{{item.jnsBendera}}</td>
+            <td>{{item.jnsDermaga}}</td>
+            <td>{{item.jnsKapal}}</td>
+            <td>{{item.jnsKemasanBkr}}</td>
+            <td>{{item.jnsKemasanMuat}}</td>
+            <td>{{item.jnsKunjungan}}</td>
+            <td>{{item.jnsLokasiAwal}}</td>
+            <td>{{item.jnsLokasiAkhir}}</td>
+            <td>{{item.jnsPelabuhan}}</td>
+            <td>{{item.jnsPelayaran}}</td>
+            <td>{{item.jnsTambatLokAkhir}}</td>
+            <td>{{item.jnsTambatLokAwal}}</td>
+            <td>{{item.jnsTambatan}}</td>
+            <td>{{item.jnsTrayek}}</td>
+            <td>{{item.jumlahArus}} </td>
+            <td>{{item.jumlahDurasi}}</td>
+            <td>{{item.jumlahProduksi}}</td>
+            <td>{{item.klsTrans}}</td>
+            <td>{{item.klsTransDtl}}</td>
+            <td>{{item.noApproval}}</td>
+            <td>{{item.noFormPpkb1}}</td>
+            <td>{{item.noPpkb1}}</td>
+            <td>{{item.noPranota}}</td>
+            <td>{{item.ppk1No}}</td>
+            <td>{{item.profitCtr}}</td>
+            <td>{{item.programName}}</td>
+            <td>{{item.prosentase}}</td>
+            <td>{{item.recStat}}</td>
+            <td>{{item.recStatus}}</td>
+            <td>{{item.recordId}}</td>
+            <td>{{item.sapDocInteger}}</td>
+            <td>{{item.satuanArus}}</td>
+            <td>{{item.satuanDurasi}}</td>
+            <td>{{item.satuanProduksi}}</td>
+            <td>{{item.service}}</td>
+            <td>{{item.tagihan}}</td>
+            <td>{{item.mataUang}}</td>
+            <td>{{item.tarifJasa}}</td>
+            <td>{{item.namaTertagih}}</td>
+            <td>{{item.kdTertagih}}</td>
+            <td>{{item.tdblAgenPlyrn}}</td>
+            <td>{{item.tdblNoPpkb1}}</td>
+            <td>{{item.tdblNoPranota}}</td>
+            <td>{{item.tdblTghKpl}}</td>
+            <td>{{item.tglApproval}} a</td>
+            <td>{{item.tglBatal}}</td>
+            <td>{{item.tglKirim}}</td>
+            <td>{{item.tipeTrans}}</td>
+            <td>{{item.userAkses}}</td>
+            <td>{{item.voyageNoVasa}}</td>
+            <td>{{item.dateCreated | date:'dd-MM-yyyy HH:mm'}}</td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+<div>
+    <paging class="small" page="currentPage" page-size="pageSize" total="totalItems" adjacent="2" dots="..." scroll-top="true"
+        hide-if-empty="false" ul-class="pagination" active-class="active" disabled-class="disabled" show-prev-next="true" style="cursor: pointer;"
+        paging-action="pageChanged(page)">
+    </paging>
+</div>
+<script>
+    $('#tanggalApprovalAwal').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+    $('#tanggalApprovalAkhir').datepicker({
+        autoclose: true,
+        format: "dd-mm-yyyy",
+        language: 'id'
+    });
+</script>

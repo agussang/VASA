@@ -1,0 +1,1146 @@
+<h2>Monitoring Pelayanan Kapal</h2>
+<div class="row">
+	<div class="col-md-4" ng-hide="parameterUrl">
+		<form name="formSearch" ng-submit="pageChanged(0)">
+			<div class="input-group">
+				<select pf-select ng-init="selectionSearch = filterConfig[0]"  ng-model="selectionSearch" ng-options='fields.title for fields in filterConfig'></select>
+				<input type="text" class="form-control" name="search" ng-model="searchText" ng-minlength="filterMinLength" maxlength="30" placeholder="{{filterPlaceholder}}" capitalize>
+				<span class="input-group-addon btn btn-default" ng-click="resetSearch()" ng-show="btnResetSearch" title="Reset Search"><span class="fa fa-close"></span></span>
+				<span class="input-group-addon btn btn-default" ng-click="pageChanged(0)" title="Search">
+					<i class="fa fa-{{isLoadingCircle?'circle-o-notch fa-spin':'search'}}"></i> 
+					<!-- <i ng-show="isLoadingCircle" class="fa fa-circle-o-notch fa-spin" style="color: #00659c;"></i> -->
+				</span>
+			</div>
+			<label class="control-label" ng-show="formSearch.search.$error.minlength">Minimal Karakter : {{filterMinLength}}</label>
+		</form>
+	</div>
+
+	<div class="col-md-4" ng-show="parameterUrl">
+		<button class="btn btn-default" ng-click="close()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+	</div>
+	<div class="col-md-3" ng-hide="parameterUrl || informasiDataItem">	
+		<div>
+			<div pf-sort id="transaksiSort" config="sortConfig"></div>
+		</div>
+	</div>
+	<div class="col-md-3" ng-show="parameterIdVisit">	
+		<div>
+			<h4>ID Visit : {{idVisitVal}}</h4>
+		</div>
+	</div>
+	<div class="col-md-4 pull-right">
+		<div class="pull-right icon-legenda">
+			<span class="pficon pficon-warning-triangle-o"></span> EPB belum dibayar<br>
+			<span class="pficon pficon-ok"></span> EPB sudah dibayar
+		</div>
+	</div>	
+</div>
+<br>
+<!-- <button class="btn btn-default" ng-click="sendEsclationHistory()">Send Escalation History</button> -->
+<!-- ===============================List Content================================== -->
+<span ng-show="informasiLengthItem===0 && contentSearch"><b>Hasil Pencarian : </b>{{searchSelectedResponse}} <b>{{searchTextItem}}</b> tidak ditemukan.<br></span>
+<span ng-show="contentSearch"><b>Total Hasil Pencarian : </b>{{informasiLengthItem}}</b> data</span>
+	<div class="row">
+		<div class="col-md-12 list-view-container ">		
+			<div pf-list-view config="config" items="items"
+			enable-button-for-item-fn="enableButtonForItemFn"
+			update-menu-action-for-item-fn="updateMenuActionForItemFn">
+			<div class="list-view-pf-additional-info col-sm-12" id="list">
+				<div class="list-view-pf-left">
+        			<span class="fa fa-ship list-view-pf-icon-sm {{item.classIconKapal}}" title="{{item.infoTooltipKapal}}"></span>
+      			</div>
+				<div class="list-view-pf-body">
+					<div class="list-view-pf-description">
+						<div class="list-group-item-heading">
+							<span title="{{item.namaKapal}} ({{item.kodeKapal}})">{{item.namaKapal}} ({{item.kodeKapal}})</span>
+							<small class="{{item.lengthStringAsalTujuan>30?'marquee':''}}" title="{{item.namaPelabuhanAsal}} → {{item.namaPelabuhanTujuan}}">
+							<!-- {{item.namaPelabuhanAsal}} <span class="fa fa-long-arrow-right"></span> {{item.namaPelabuhanTujuan}} -->
+								{{item.namaPelabuhanAsal}} → {{item.namaPelabuhanTujuan}}
+							</small>
+							<br>
+							<small>IMO : <b>{{item.imoNo?item.imoNo:'-'}}</b>, MMSI : <b>{{item.mmsi?item.mmsi:'-'}}</b></small> 
+							<small>Jenis Kapal : {{item.jenisKapal}}</small> 
+							<small>Kemasan B/M : {{item.kemasanBongkarText?item.kemasanBongkarText:'-'}}/{{item.kemasanMuatText?item.kemasanMuatText:'-'}}</small> 
+							<small>Bendera : {{item.negaraKapal}}, CallSign : <b>{{item.callSign?item.callSign:'-'}}</b></small>
+							<!-- <small>CallSign : <b>{{item.callSign}}</b></small> -->
+							<small>Kunjungan : {{item.sifatKunjunganText?item.sifatKunjunganText:'-'}}</small>
+							<small>Pelayaran : {{item.jenisPelayaran?item.jenisPelayaran:'-'}}</small>
+							<small>GT : {{item.gtKapal | currency:"":0}} LOA : {{item.loa | currency:"":0}}</small>
+						</div>						
+					</div>
+					<div class="list-view-pf-additional-info">
+	            		<div class="list-group-item-heading">
+							<span title="{{item.namaAgen}}">{{item.namaAgen}}</span>
+							<small>Kode Agen : {{item.kodeAgen}}</small>
+							<br>
+							<small title="{{item.idVisit}}">ID Visit : <a href="#/transaksi/listmonitoring/idvisit/{{item.idVisit}}" class="cursor-pointer" ng-class="{'datareadonly': item.idVisit == null}"><b>{{item.idVisit?item.idVisit:'-'}}</b></a></small>
+							<small>No. PPK1 : <b>{{item.noPpk1}}</b></small>
+							<!-- <small>No. PKK : <b>{{item.noPkk?item.noPkk:'-'}}</b></small> -->
+							<small>Tgl. Verifikasi : {{item.tglVerifikasi?item.tglVerifikasi:'-' | date: "dd-MM-yyyy HH:mm"}}</small>
+							<small>Status : <b>{{item.statusNotaText}}</b></small>
+							<i class="fa fa-ellipsis-h cursor-pointer" ng-click="$emit('showModalInfoOtherPMH', item)" title="Info Lain-lain"></i>
+						</div>
+						<button ng-show="item.showButtonDisabledPranota" type="submit" class="btn btn-default" disabled="disabled">
+							<i class="fa fa-calculator fa-lg" aria-hidden="true"></i> Cek Pranota
+						</button>
+						<a href="#/transaksi/pranota/{{item.noPpk1}}/add">
+							<button ng-hide="item.showButtonDisabledPranota" ng-if="item.statusNota===0" type="submit" class="btn btn-default" ng-disabled="item.isExistDetailPermohonan">
+								<i class="fa fa-calculator fa-lg" aria-hidden="true"></i> Cek Pranota
+							</button>
+						</a>
+						<a href="#/transaksi/pranota/{{item.noPpk1}}/add">
+							<button ng-hide="item.showButtonDisabledPranota" ng-if="item.statusNota===9" type="submit" class="btn btn-default" ng-disabled="item.isExistDetailPermohonan">
+								<i class="fa fa-calculator fa-lg" aria-hidden="true"></i> Cek Pranota
+							</button>
+						</a>
+						<a href="#/transaksi/pranota/{{item.noPpk1}}">
+							<button ng-show="item.userRole.rflag" ng-if="item.statusNota===1" type="submit" class="btn btn-default" ng-disabled="item.isExistDetailPermohonan">
+								<i class="fa fa-money fa-lg" aria-hidden="true"></i> Pranota
+							</button>
+						</a>
+	      			</div>
+				</div>
+				
+				<ul class="list-group col-xs-5">
+					<li class="list-group-item cursor-pointer" ng-repeat="x in item.details | orderBy:'urutanPermohonan'" ng-hide="x.jasa.length===0" ng-click="$emit('changeClassChevron', x)">
+						<span data-toggle="collapse" data-target="#{{x.noPpk1}}{{x.urutanPermohonan}}" aria-expanded="false" class="list-group-item-heading chevron" data-chevron="{{x.noPpk1}}{{x.urutanPermohonan}}" ng-click="$emit('clickDetailPermohonan', x.noPpk1,x.urutanPermohonan,x)" ng-mouseover="$emit('getDataJasa', x)">
+							<span class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{x.dataToolTipJasa}}" data-placement="left" data-animation="am-fade-and-scale" bs-tooltip="tooltip">
+								<span class="col-sm-9">
+	  								<i id="chevronList{{x.noPpk1}}{{x.urutanPermohonan}}" class="fa fa-chevron-right" aria-hidden="true"></i>&nbsp;
+									<span class="fa-stack fa">
+	  									<i class="fa fa-circle-o fa-stack-2x"></i>
+	  									<strong class="fa-stack-1x">&nbsp;{{x.urutanPermohonan}}</strong>
+									</span> {{x.noPpkText}} ({{x.created | date:'dd-MM-yyyy'}})
+									<br>
+									<span class="span-detail-jasa">
+										<span ng-repeat="(key, value) in x.jasa | groupBy: 'namaText'">{{key}}{{$last ? '' : ' - '}}</span>
+									</span>
+								</span>
+							</span>
+							|&nbsp;
+							<a href="{{x.linkAction}}" target="_blank" title="{{x.linkInfo}}">
+								<span class="fa fa-external-link"></span>
+							</a>
+							<span ng-if="x.status !== 'N'" class="pficon pficon-ok col-sm-1" style="line-height: inherit;" title="Sudah Bayar"></span>
+							<span ng-if="x.status === 'N'" class="pficon pficon-warning-triangle-o col-sm-1" style="line-height: inherit;" title="Belum Bayar"></span> 
+						</span>
+					</li>
+				</ul>				
+				<div class="col-md-12" ng-repeat="z in item.details">
+					<div id="{{z.noPpk1}}{{z.urutanPermohonan}}" class="collapse">
+						<hr class="hr-monitoring">
+						<div class="row">
+							<div ng-show="z.jasa===''" ng-hide="z.jasa" class="spinner spinner-lg"></div>
+						<table class="header-dtl-table-monitoring table-col-accordion">
+						<thead>
+							<tr ng-show="z.dataEPB.length===0">
+								<td>
+									<span class="header-monitoring-left-table">
+									<span class="fa-stack fa">
+		  								<i class="fa fa-circle-o fa-stack-2x"></i>
+		  								<strong class="fa-stack-1x">&nbsp;{{z.urutanPermohonan}}</strong>
+									</span>
+									Kode Bayar :
+									<b> - </b></span>
+									<span class="header-monitoring-right-table">
+										Total EPB :
+										<span style="text-decoration: none;" href=""><b> - </b></span>
+									</span>						
+								</td>
+							</tr>
+							<tr ng-repeat="detailEPB in z.dataEPB | filter:{flagEpb:0}">
+								<td>
+									<span class="header-monitoring-left-table">
+									<span class="fa-stack fa">
+		  								<i class="fa fa-circle-o fa-stack-2x"></i>
+		  								<strong class="fa-stack-1x">&nbsp;{{z.urutanPermohonan}}</strong>
+									</span>
+									Kode Bayar :
+									<b>{{detailEPB.kodeBayar?detailEPB.kodeBayar:' - '}}</b></span>
+									<span class="header-monitoring-right-table">
+										<a class="reload" ng-show="z.status==='dicomentdahulu'"><i class="fa fa-refresh classDataRekalkulasi icon-refresh" style="cursor:pointer;" aria-hidden="true" title="Rekalkulasi" data-rekalkulasi="{{z}}" data-rekkodebayar="{{detailEPB}}" data-toggle="modal" data-target="#showModalRekalkulasi"></i></a>&nbsp; Total EPB :
+										<a ng-show="z.permohonan.asalData==='V' && detailEPB.jumlah>0" style="text-decoration: none;" href="/#/transaksi/epb_invoice/{{z.noPpk1}}/{{detailEPB.kodeBayar}}">
+										<b>{{z.currency}}{{detailEPB.jumlah?detailEPB.jumlah:0 | formatCurr}}</b></a>
+										<a ng-show="z.permohonan.asalData==='A' || (z.permohonan.asalData==='V' && detailEPB.jumlah===0)" style="text-decoration: none;" href="/#/transaksi/epb_invoice/{{z.noPpk1}}/{{detailEPB.kodeBayar}}"><b>{{z.currency}}{{detailEPB.jumlah?detailEPB.jumlah:0 | formatCurr}}</b></a>
+									</span>						
+								</td>
+							</tr>
+							<tr ng-show="z.dataEPB.length>1">
+								<td >
+									<!-- {{$index}} -->
+									<span class="monitoring-perpanjangan-epb-text pull-left" ng-show="{{$index===1 || $index===0}}">Perpanjangan :</span>
+								</td>
+							</tr>
+							<!-- khusus untuk menampilkan data EPB hasil perpanjangan -->
+							<tr ng-repeat="detailEPB in z.dataEPB | filter:{flagEpb:1}"> 
+								<td>
+									<div ng-show="z.dataEPB.length===1">
+										<span class="header-monitoring-left-table">
+										<span class="fa-stack fa">
+			  								<i class="fa fa-circle-o fa-stack-2x"></i>
+			  								<strong class="fa-stack-1x">&nbsp;{{z.urutanPermohonan}}</strong>
+										</span>
+										Kode Bayar :
+										<b> - </b></span>
+										<span class="header-monitoring-right-table">
+											Total EPB :
+											<span style="text-decoration: none;" href=""><b> - </b></span>
+										</span>
+										<br>
+										<span class="monitoring-perpanjangan-epb-text" style="margin-left: -75px;">Perpanjangan :</span>
+										<br><br>
+									</div>
+									<ul class="epb-perpanjangan-text">
+									<li><b >{{detailEPB.kodeBayar?detailEPB.kodeBayar:' - '}}</b>
+										<span class="{{detailEPB.status==='P'?'pficon pficon-ok':'pficon pficon-warning-triangle-o'}} pull-right" title="{{detailEPB.status==='P'?'Sudah Bayar':'Belum Bayar'}}">
+										&nbsp;<a ng-show="z.permohonan.asalData==='V' && detailEPB.jumlah>0" style="text-decoration: none;" href="/#/transaksi/epb_invoice/{{z.noPpk1}}/{{detailEPB.kodeBayar}}">
+										<b>{{z.currency}}{{detailEPB.jumlah?detailEPB.jumlah:0 | formatCurr}}</b></a>
+										<span ng-show="z.permohonan.asalData==='A' || (z.permohonan.asalData==='V' && detailEPB.jumlah===0)" style="text-decoration: none;" href=""><b>{{z.currency}}{{detailEPB.jumlah?detailEPB.jumlah:0 | formatCurr}}</b></span>
+										</span> 
+									<!-- </span> -->
+									</li>
+									</ul>						
+								</td>
+							</tr>
+						</thead>
+						</table>
+							<table class="datatable table table-striped table-bordered table-col-accordion">
+								<thead>
+									<tr>
+										<th style="width:100px" class="text-center">JASA</th>
+										<th style="width:140px" class="text-center">NOMOR</th>
+										<th class="text-center">PERMOHONAN</th>
+										<th class="text-center">PENETAPAN</th>
+										<th class="text-center">REALISASI</th>
+										<th style="width:200px" class="text-center">REVISI</th>
+									</tr>
+								</thead>
+							  	<tbody>
+									<tr ng-repeat="(key, value) in z.jasa | groupBy: 'nama'">
+										<td>
+											<div class="td-list-monitoring">
+												<span class="text-center" ng-repeat="(namaText, valueNamaText) in value | groupBy: 'namaText'">
+													<b>{{namaText | uppercase}}</b>
+												</span>
+												<!-- {{value[0].detailReaJasa[0].statusPelaksanaan}} -->
+												<div style="font-size:8px">
+													<span ng-show="value[0].detailReaJasa[0].statusPelaksanaan===2">
+														Tanpa Permohonan
+													</span>
+													<span ng-show="value[0].detailReaJasa[0].statusPelaksanaan===3">
+														Putus Valuta
+													</span>
+													<span ng-show="value[0].detailReaJasa[0].statusPelaksanaan===4">
+														Kapal Kegiatan Tetap
+													</span>
+													<span ng-show="value[0].detailPtpJasa[0].statusPelaksanaan===5" style="cursor:pointer" data-pmhgeser="{{value[0].detailPtpJasa[0]}}" data-toggle="modal" data-target="#showModalPermohonanGeser" class="classDataPmhGeser">
+														<a>Gerakan Geser</a>
+													</span>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div ng-repeat="jasa in value | orderBy:'noPpkJasa':false" class="td-list-monitoring">
+												<span class="jasa-{{jasa.noPpkJasa}}"><b>{{jasa.noPpkJasa}}</b></span>
+												<div ng-show="key==='epb_tambat'" class="td-list-monitoring">
+													<a class="cursor-pointer" ng-click="$emit('getInfoKegiatanKapal', jasa, z)"><span>Kegiatan Kapal</span></a>
+													<span ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['noPpkJasa']:jasa.noPpkJasa">
+														<span title="Kapal Tender" ng-show="key==='epb_tambat' && itemReaJasa.posisiKapal ==='3'">
+															<br><i class="fa fa-random"></i> Tender<br>
+															<a href="#/transaksi/listmonitoring/namaKapal/{{itemReaJasa.kodeKapalTenderText}}" target="_blank">
+																{{itemReaJasa.kodeKapalTenderText}}
+															</a>
+														</span>
+													</span>
+												</div>
+												<div ng-show="key==='epb_pandu'" class="td-list-monitoring">
+													<div style="font-size:8px" ng-repeat="itemPmhJasa in jasa.detailPmhJasa | filter:{nama:'epb_pandu',noPpkJasa: jasa.noPpkJasa}">
+														<span ng-show="itemPmhJasa.jenisPandu==='2'">Luar Biasa</span>
+													</div>
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filter:{nama:'epb_pandu',noPpkJasa: jasa.noPpkJasa}">
+														<br>
+														<span ng-show="itemReaJasa.namaPandu" title="Petugas Pandu"><i class="fa fa-user"></i> {{itemReaJasa.namaPandu}}</span>
+													</div>
+													<div ng-repeat="itemPmhJasa in jasa.detailPmhJasa | filter:{nama:'epb_pandu',noPpkJasa: jasa.noPpkJasa}">
+														<br>
+														<div ng-repeat="listKapal in itemPmhJasa.listKapalGandeng | filterBy:['noPpkJasa']:jasa.noPpkJasa" title="Info Kapal Gandeng">
+															<i class="fa fa-link"></i> 
+															<a href="#/transaksi/listmonitoring/namaKapal/{{listKapal.namaKapal}}" target="_blank">
+																{{listKapal.namaKapal}}
+															</a>
+														</div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tunda'" class="td-list-monitoring">
+													<br>
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:'epb_tunda'">
+														<!-- <span ng-repeat="listKapal in itemReaJasa.listKapalTunda | filterBy:['noPpkJasa']:jasa.noPpkJasa" title="Kapal Tunda" ng-show="{{listKapal.namaKapalTunda}}">
+															<i class="fa fa-anchor"></i> {{listKapal.namaKapalTunda}}<br>
+														</span> -->
+														<span class="cursor-pointer" ng-repeat="listKapal in itemReaJasa.listKapalTunda | filterBy:['noPpkJasa']:jasa.noPpkJasa" title="Kapal Tunda">
+															<i class="fa fa-anchor"></i>
+															<span ng-click="$emit('showModalPemakaianBbmTunda', listKapal)">
+																	<i class="fa fa-info-circle"></i>
+																</span>
+															{{listKapal.namaKapalTunda}}<br>
+															
+														</span>
+													</div>
+												</div>
+											</div>
+										</td>
+										<td> <!-- // Baris PERMOHONAN -->
+											<div ng-repeat="jasa in value | orderBy:'noPpkJasa':false">
+												<div ng-show="key==='epb_labuh'" class="td-list-monitoring col-jasapmh-batal-{{jasa.noPpkJasa}}">
+													<div class="location_map col-jasapmh-batal-{{jasa.noPpkJasa}}">
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-tujuan"></i> {{jasa.namaLokasi}} ({{jasa.kodeLokasi}})
+													</div>											
+													<small>Tgl Mulai : <b>{{jasa.tglMasuk | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Tgl Keluar : <b>{{jasa.tglKeluar | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Penyerahan : <b>{{jasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+												</div>
+												<div ng-show="key==='epb_tambat'" class="td-list-monitoring col-jasapmh-batal-{{jasa.noPpkJasa}}">
+													<div class="location_map col-jasapmh-batal-{{jasa.noPpkJasa}}">
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-tujuan"></i> {{jasa.namaLokasi}} ({{jasa.kodeLokasi}})
+													</div>											
+													<small>Tgl Mulai : <b>{{jasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Tgl Selesai : <b>{{jasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Penyerahan : <b>{{jasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+												</div>
+												<div ng-show="key==='epb_pandu'" class="td-list-monitoring col-jasapmh-batal-{{jasa.noPpkJasa}}">
+													<div class="location_map col-jasapmh-batal-{{jasa.noPpkJasa}}">
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-asal"></i> {{jasa.namaLokasiAsal}} ({{jasa.kodeLokasiAsal}})<br>
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-tujuan"></i> {{jasa.namaLokasiTujuan}} ({{jasa.kodeLokasiTujuan}})
+													</div>											
+													<small>Tgl Pandu : <b>{{jasa.tglPandu | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Penyerahan : <b>{{jasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Gerakan : <b>{{jasa.jenisGerakanText}}</b></small><br>
+													<br>
+												</div>
+												<div ng-show="key==='epb_tunda'" class="td-list-monitoring col-jasapmh-batal-{{jasa.noPpkJasa}}">
+													<div class="location_map col-jasapmh-batal-{{jasa.noPpkJasa}}">
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-asal"></i> {{jasa.namaLokasiAsal}} ({{jasa.kodeLokasiAsal}})<br>
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-tujuan"></i> {{jasa.namaLokasiTujuan}} ({{jasa.kodeLokasiTujuan}})
+													</div>											
+													<small>Tgl Mulai : <b>{{jasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Penyerahan : <b>{{jasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+												</div>
+												<div ng-show="key==='epb_air_kapal'" class="td-list-monitoring col-jasapmh-batal-{{jasa.noPpkJasa}}">
+													<div class="location_map col-jasapmh-batal-{{jasa.noPpkJasa}}">
+														<i class="fa fa-map-marker col-jasapmh-batal-{{jasa.noPpkJasa}} map-tujuan"></i> {{jasa.namaDermaga}} ({{jasa.kodeDermaga}})
+													</div>											
+													<small>Tgl Isi : <b>{{jasa.tglIsi | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<small>Penyerahan : <b>{{jasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+													<br>
+												</div>
+											</div>
+										</td>
+										<td> <!-- // Baris PENETAPAN -->
+											<div ng-repeat="jasa in value | orderBy:'noPpkJasa':false" ng-show="$index == 0">
+												<div ng-show="key==='epb_labuh' && jasa.detailPtpJasa" class="td-list-monitoring {{itemPtpJasa.classBtlJasa}}">
+													<div ng-repeat="itemPtpJasa in jasa.detailPtpJasa | filterBy:['nama']:key | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="{{itemPtpJasa.classBtlJasa}}">
+														<div ng-show="itemPtpJasa.statusDummyPtp!=9">
+															<div class="location_map {{itemPtpJasa.classBtlJasa}}">
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-tujuan"></i> {{itemPtpJasa.namaLokasi}} ({{itemPtpJasa.kodeLokasi}})
+															</div>										
+															<small>Tgl Masuk : <b>{{itemPtpJasa.tglMasuk | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Tgl Keluar : <b>{{itemPtpJasa.tglKeluar | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Penetapan : <b>{{itemPtpJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<div class="monitoring-konfirm-ptp" ng-show="itemPtpJasa.statusPenetapan==='D'">
+																<i class="fa fa-check-square-o clr-confirm"></i> Belum Konfirmasi
+															</div>
+														</div>
+														<div ng-show="itemPtpJasa.statusDummyPtp==9"></div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tambat' && jasa.detailPtpJasa"  class="{{itemPtpJasa.classBtlJasa}} td-list-monitoring">
+													<div ng-repeat="itemPtpJasa in jasa.detailPtpJasa | filterBy:['nama']:key | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="{{itemPtpJasa.classBtlJasa}} td-list-monitoring" >
+														<div ng-show="itemPtpJasa.statusDummyPtp!=9">
+															<div class="location_map {{itemPtpJasa.classBtlJasa}}">
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-tujuan"></i> {{itemPtpJasa.namaLokasi}} ({{itemPtpJasa.kodeLokasi}})
+															</div>
+															<small>Tgl Mulai : <b>{{itemPtpJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small ng-show="itemPtpJasa.jenisRevisi===6 || itemPtpJasa.jenisRevisi===7">
+																Tgl Selesai :
+																<blink><b>{{itemPtpJasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b></blink>
+															</small>
+															<small ng-hide="itemPtpJasa.jenisRevisi==6 || itemPtpJasa.jenisRevisi==7">
+																Tgl Selesai :
+																<b>{{itemPtpJasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b>
+															</small><br>
+															<small>Penetapan : <b>{{itemPtpJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small ng-show="itemPtpJasa.prevKadeAwal">
+																Kade Meter :
+																<i ng-show="itemPtpJasa.kadeAwal<itemPtpJasa.kadeAkhir" class="fa fa-arrow-up fa-2x color-green {{itemPtpJasa.classBtlJasa}}"></i>
+																<i ng-show="itemPtpJasa.kadeAwal>itemPtpJasa.kadeAkhir" class="fa fa-arrow-down color-red {{itemPtpJasa.classBtlJasa}}"></i> 
+																<blink><b>{{itemPtpJasa.kadeAwal?itemPtpJasa.kadeAwal:'0'}} - {{itemPtpJasa.kadeAkhir}}</b></blink>
+															</small>
+															<small ng-hide="itemPtpJasa.prevKadeAwal">
+																Kade Meter :
+																<i ng-show="itemPtpJasa.kadeAwal<itemPtpJasa.kadeAkhir" class="fa fa-arrow-up fa-2x color-green {{itemPtpJasa.classBtlJasa}}"></i>
+																<i ng-show="itemPtpJasa.kadeAwal>itemPtpJasa.kadeAkhir" class="fa fa-arrow-down color-red {{itemPtpJasa.classBtlJasa}}"></i>
+																<b>{{itemPtpJasa.kadeAwal?itemPtpJasa.kadeAwal:'0'}} - {{itemPtpJasa.kadeAkhir?itemPtpJasa.kadeAkhir:'0'}}</b>
+															</small>
+															<div class="monitoring-konfirm-ptp" ng-show="itemPtpJasa.statusPenetapan==='D'">
+																<i class="fa fa-check-square-o clr-confirm"></i> Belum Konfirmasi
+															</div>
+														</div>
+														<div ng-show="itemPtpJasa.statusDummyPtp==9"></div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_pandu' && jasa.detailPtpJasa" class="td-list-monitoring">
+													<div ng-repeat="itemPtpJasa in jasa.detailPtpJasa | filterBy:['nama']:key | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring {{itemPtpJasa.classBtlJasa}}">
+														<div ng-show="itemPtpJasa.statusDummyPtp!=9">
+															<div class="location_map {{itemPtpJasa.classBtlJasa}}">
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-asal"></i> 
+																{{itemPtpJasa.namaLokasiAsal}} ({{itemPtpJasa.kodeLokasiAsal}})<br>
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-tujuan"></i> {{itemPtpJasa.namaLokasiTujuan}} ({{itemPtpJasa.kodeLokasiTujuan}})
+															</div>
+															<small ng-show="itemPtpJasa.jenisRevisi===6 || itemPtpJasa.jenisRevisi===7">Tgl Mulai : <blink><b>{{itemPtpJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></blink></small>
+															<small ng-hide="itemPtpJasa.jenisRevisi==6 || itemPtpJasa.jenisRevisi==7">Tgl Mulai : <b>{{itemPtpJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Penetapan : <b>{{itemPtpJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+															<br>
+															<small>Gerakan : <b>{{itemPtpJasa.jenisGerakanText}}</b></small><br>
+															<div class="monitoring-konfirm-ptp" ng-show="itemPtpJasa.statusPenetapan==='D'">
+																<i class="fa fa-check-square-o clr-confirm"></i> Belum Konfirmasi
+															</div>
+														</div>
+														<div ng-show="itemPtpJasa.statusDummyPtp==9"></div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tunda' && jasa.detailPtpJasa" class="td-list-monitoring">
+													<div ng-repeat="itemPtpJasa in jasa.detailPtpJasa | filterBy:['nama']:'epb_tunda' | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring {{itemPtpJasa.classBtlJasa}}">
+														<div ng-show="itemPtpJasa.statusDummyPtp!=9">
+															<div class="location_map {{itemPtpJasa.classBtlJasa}}">
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-asal"></i> {{itemPtpJasa.namaLokasiAsal}} ({{itemPtpJasa.kodeLokasiAsal}})<br>
+																<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-tujuan"></i> {{itemPtpJasa.namaLokasiTujuan}} ({{itemPtpJasa.kodeLokasiTujuan}})
+															</div>
+															<small ng-show="itemPtpJasa.jenisRevisi===6 || itemPtpJasa.jenisRevisi===7">Tgl Mulai : <blink><b>{{itemPtpJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></blink></small>
+															<small ng-hide="itemPtpJasa.jenisRevisi==6 || itemPtpJasa.jenisRevisi==7">Tgl Mulai : <b>{{itemPtpJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Penetapan : <b>{{itemPtpJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+															<div class="monitoring-konfirm-ptp" ng-show="itemPtpJasa.statusPenetapan==='D'">
+																<i class="fa fa-check-square-o clr-confirm"></i> Belum Konfirmasi
+															</div>
+														</div>
+														<div ng-show="itemPtpJasa.statusDummyPtp==9"></div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_air_kapal' && jasa.detailPtpJasa" class="td-list-monitoring">
+													<div ng-repeat="itemPtpJasa in jasa.detailPtpJasa | filterBy:['nama']:key | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring {{itemPtpJasa.classBtlJasa}}">
+														<div class="location_map {{itemPtpJasa.classBtlJasa}}">
+															<i class="fa fa-map-marker {{itemPtpJasa.classBtlJasa}} map-tujuan"></i> {{itemPtpJasa.namaDermaga}} ({{itemPtpJasa.kodeDermaga}})
+														</div>
+														<small ng-show="itemPtpJasa.jenisRevisi===6 || itemPtpJasa.jenisRevisi===7">Tgl Isi : <blink><b>{{itemPtpJasa.tglIsi | date: "dd-MM-yyyy HH:mm"}}</b></blink></small>
+														<small ng-hide="itemPtpJasa.jenisRevisi==6 || itemPtpJasa.jenisRevisi==7">Tgl Isi : <b>{{itemPtpJasa.tglIsi | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+														<small>Penetapan : <b>{{itemPtpJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+														<div class="monitoring-konfirm-ptp" ng-show="itemPtpJasa.statusPenetapan==='D'">
+															<i class="fa fa-check-square-o clr-confirm"></i> Belum Konfirmasi
+														</div>
+														<br><br>
+													</div>
+												</div>
+											</div>
+										</td>
+										<td> <!-- // Baris REALISASI -->
+											<div ng-repeat="jasa in value | orderBy:'noPpkJasa':false" ng-show="$index == 0" class="td-list-monitoring">
+												<div ng-show="key==='epb_labuh' && jasa.detailReaJasa" class="td-list-monitoring">
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:'epb_labuh' | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'">
+														<div class="location_map">
+															<i class="fa fa-map-marker map-tujuan"></i> {{itemReaJasa.namaLokasi}} ({{itemReaJasa.kodeLokasi}})
+														</div>
+														<small>Tgl Masuk : <b>{{itemReaJasa.tglMasuk | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+														<small>Tgl Keluar : 
+															<span ng-show="itemReaJasa.tglKeluar">
+																<b>{{itemReaJasa.tglKeluar | date: "dd-MM-yyyy HH:mm"}}</b>
+															</span>
+															<span ng-hide="itemReaJasa.tglKeluar">
+																<b> - </b>
+															</span>
+														</small><br>
+														<small>Realisasi : <b>{{itemReaJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tambat' && jasa.detailReaJasa" class="td-list-monitoring">
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:'epb_tambat' | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring">
+														<div ng-show="itemReaJasa.statusDummyRea!==9">
+															<div class="location_map">
+																<i class="fa fa-map-marker map-tujuan"></i> {{itemReaJasa.namaLokasi}} ({{itemReaJasa.kodeLokasi}})
+															</div>
+															<small>Tgl Mulai : <b>{{itemReaJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small >
+																Tgl Selesai :
+																<span ng-show="itemReaJasa.tglSelesai">
+																	<b>{{itemReaJasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b>
+																</span>
+																<span ng-hide="itemReaJasa.tglSelesai">
+																	<blink>
+																		[kapal sdg tambat]
+																	</blink>
+																</span>
+															</small>
+															<br>
+															<small>Realisasi : <b>{{itemReaJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Kade Meter : 
+															<i ng-show="itemReaJasa.kadeAwal<itemReaJasa.kadeAkhir" class="fa fa-arrow-up fa-2x color-green"></i>
+															<i ng-show="itemReaJasa.kadeAwal>itemReaJasa.kadeAkhir" class="fa fa-arrow-down color-red"></i>
+															<b>{{itemReaJasa.kadeAwal?itemReaJasa.kadeAwal:'0'}} - {{itemReaJasa.kadeAkhir}}</b></small>
+														</div>
+														<div ng-show="itemReaJasa.statusDummyRea==9">&nbsp;</div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_pandu' && jasa.detailReaJasa" class="td-list-monitoring">
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:'epb_pandu' | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring" ng-show="itemReaJasa.statusDummyRea!==99">
+														<div ng-show="itemReaJasa.statusDummyRea!==9">
+															<div class="location_map">
+																<i class="fa fa-map-marker map-asal"></i> {{itemReaJasa.namaLokasiAsal}} ({{itemReaJasa.kodeLokasiAsal}})<br>
+																<i class="fa fa-map-marker map-tujuan"></i> {{itemReaJasa.namaLokasiTujuan}} ({{itemReaJasa.kodeLokasiTujuan}})
+															</div>
+															<small>Tgl Mulai : <b>{{itemReaJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Tgl Selesai : <b>{{itemReaJasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Realisasi : <b>{{itemReaJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Gerakan : <b>{{itemReaJasa.jenisGerakanText}}</b></small><br>
+														</div>
+														<div ng-show="itemReaJasa.statusDummyRea==9">&nbsp;</div>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tunda' && jasa.detailReaJasa" class="td-list-monitoring">
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:'epb_tunda' | orderBy:'noPpkJasa':false | unique: 'noPpkJasa'" class="td-list-monitoring">
+														<div ng-show="itemReaJasa.statusDummyRea!==9">
+															<div class="location_map">
+																<i class="fa fa-map-marker map-asal"></i> {{itemReaJasa.namaLokasiAsal}} ({{itemReaJasa.kodeLokasiAsal}})<br>
+																<i class="fa fa-map-marker map-tujuan"></i> {{itemReaJasa.namaLokasiTujuan}} ({{itemReaJasa.kodeLokasiTujuan}})
+															</div>
+															<small>Tgl Mulai : <b>{{itemReaJasa.tglMulai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Tgl Selesai : <b>{{itemReaJasa.tglSelesai | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+															<small>Realisasi : <b>{{itemReaJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+														</div>
+														<div ng-show="itemReaJasa.statusDummyRea==9">&nbsp;</div>
+														<!-- {{itemReaJasa.statusDummyRea}} -->
+													</div>
+												</div>
+												<div ng-show="key==='epb_air_kapal' && jasa.detailReaJasa" class="td-list-monitoring">
+													<div ng-repeat="itemReaJasa in jasa.detailReaJasa | filterBy:['nama']:key | orderBy:'noPpkJasa':false" class="td-list-monitoring">
+														<div class="location_map">
+															<i class="fa fa-map-marker map-tujuan"></i> {{itemReaJasa.namaDermaga}} ({{itemReaJasa.kodeDermaga}})
+														</div>
+														<small>Tgl Mulai Isi : <b>{{itemReaJasa.tglMulaiIsi | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+														<small>Tgl Selesai Isi : <b>{{itemReaJasa.tglSelesaiIsi | date: "dd-MM-yyyy HH:mm"}}</b></small><br>
+														<small>Realisasi : <b>{{itemReaJasa.created | date: "dd-MM-yyyy HH:mm"}}</b></small>
+													</div>
+												</div>
+											</div>
+										</td>
+										<td> <!-- // Baris REVISI -->
+											<div ng-repeat="jasa in value | orderBy:'noPpkJasa':false" ng-show="$index == 0" class="td-list-monitoring">
+												<div ng-show="key==='epb_labuh' && jasa.detailRevJasa" class="td-list-monitoring monitoring-scrool-revisi">
+													<div ng-repeat="jasaRevisi in jasa.detailRevJasa | filterBy: ['nama']: 'epb_labuh' | orderBy:'created':true | unique: 'created'" ng-show="jasaRevisi.showRevisi">
+														<ul class="ul-revisi" style="font-size:8px">
+															<li class="{{jasaRevisi.jenisRevisi===10?'color-blue-vasa':''}}">
+																<span ng-hide="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" style="cursor:pointer" data-revisi="{{jasaRevisi}}" data-toggle="modal" data-target="#showModalRevisi" class="classDataRevisi color-black">
+																	<a>{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})</a>
+																</span>
+																<span ng-show="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" class="color-black">
+																	{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})
+																</span>
+																<br>
+																<span class="color-black">
+																	Tgl Pengajuan : {{jasaRevisi.created | date: "dd-MM-yyyy HH:mm"}}
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tambat' && jasa.detailRevJasa" class="td-list-monitoring monitoring-scrool-revisi">
+													<div ng-repeat="jasaRevisi in jasa.detailRevJasa | filterBy: ['nama']: 'epb_tambat' | orderBy:'created':true | unique: 'created'" ng-show="jasaRevisi.showRevisi">
+														<ul class="ul-revisi" style="font-size:8px">
+															<li class="{{jasaRevisi.jenisRevisi===10?'color-blue-vasa':''}}">
+																<span ng-hide="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" style="cursor:pointer" data-revisi="{{jasaRevisi}}" data-toggle="modal" data-target="#showModalRevisi" class="classDataRevisi color-black">
+																	<a>{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})</a>
+																</span>
+																<span ng-show="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" class="color-black">
+																	{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})
+																</span>
+																<br>
+																<span class="color-black">
+																	Tgl Pengajuan : {{jasaRevisi.created | date: "dd-MM-yyyy HH:mm"}}
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div ng-show="key==='epb_pandu' && jasa.detailRevJasa" class="td-list-monitoring monitoring-scrool-revisi">
+													<div ng-repeat="jasaRevisi in jasa.detailRevJasa | filterBy: ['nama']: 'epb_pandu' | orderBy:'created':true | unique: 'created'" ng-show="jasaRevisi.showRevisi">
+														<ul class="ul-revisi" style="font-size:8px">
+															<li class="{{jasaRevisi.jenisRevisi===10?'color-blue-vasa':''}}">
+																<span ng-hide="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" style="cursor:pointer" data-revisi="{{jasaRevisi}}" data-toggle="modal" data-target="#showModalRevisi" class="classDataRevisi color-black">
+																	<a>{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})</a>
+																</span>
+																<span ng-show="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" class="color-black">
+																	{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})
+																</span>
+																<br>
+																<span class="color-black">
+																	Tgl Pengajuan : {{jasaRevisi.created | date: "dd-MM-yyyy HH:mm"}}
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div ng-show="key==='epb_tunda' && jasa.detailRevJasa" class="td-list-monitoring monitoring-scrool-revisi">
+													<div ng-repeat="jasaRevisi in jasa.detailRevJasa | filterBy: ['nama']: 'epb_tunda' | orderBy:'created':true | unique: 'created'" ng-show="jasaRevisi.showRevisi">
+														<ul class="ul-revisi" style="font-size:8px">
+															<li class="{{jasaRevisi.jenisRevisi===10?'color-blue-vasa':''}}">
+																<span ng-hide="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" style="cursor:pointer" data-revisi="{{jasaRevisi}}" data-toggle="modal" data-target="#showModalRevisi" class="classDataRevisi color-black">
+																	<a>{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})</a>
+																</span>
+																<span ng-show="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" class="color-black">
+																	{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})
+																</span>
+																<br>
+																<span class="color-black">
+																	Tgl Pengajuan : {{jasaRevisi.created | date: "dd-MM-yyyy HH:mm"}}
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<div ng-show="key==='epb_air_kapal' && jasa.detailRevJasa" class="td-list-monitoring monitoring-scrool-revisi">
+													<div ng-repeat="jasaRevisi in jasa.detailRevJasa | filterBy: ['nama']: 'epb_air_kapal' | orderBy:'created':true | unique: 'created'" ng-show="jasaRevisi.showRevisi">
+														<ul class="ul-revisi" style="font-size:8px">
+															<li class="{{jasaRevisi.jenisRevisi===10?'color-blue-vasa':''}}">
+																<span ng-hide="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" style="cursor:pointer" data-revisi="{{jasaRevisi}}" data-toggle="modal" data-target="#showModalRevisi" class="classDataRevisi color-black">
+																	<a>{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})</a>
+																</span>
+																<span ng-show="jasaRevisi.jenisRevisi===9 || jasaRevisi.jenisRevisi===10" class="color-black">
+																	{{jasaRevisi.jenisRevisiText}} ({{jasaRevisi.noPpkJasa}})
+																</span>
+																<br>
+																<span class="color-black">
+																	Tgl Pengajuan : {{jasaRevisi.created | date: "dd-MM-yyyy HH:mm"}}
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<br>
+						</div>
+					</div>
+				</div>
+			</div>		  
+		</div>
+	</div>
+<!-- Modal Revisi -->
+<div class="modal" id="showModalRevisi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Riwayat Revisi</h4>
+			</div>
+			<div class="modal-body">  
+				<!-- <div class="border-content-modal showRevisiBelumLunas">
+                    <i class="pficon pficon-info"></i> <span>Revisi akan terefleksi, jika EPB Perpanjangan sudah dibayar.</span>
+                </div> -->
+                <div class="showRevisiBelumLunas"><br></div>
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">Jenis Revisi</label>
+			      	<!-- <div class="col-sm-5">
+			        	: <b><span class="revisi-jenisRevisiText"></span> - <span class="revisi-namaJasa"></span> &nbsp;<i class="cursor-pointer pficon pficon-warning-triangle-o showRevisiBelumLunas" title="Belum Bayar"></i><i class="cursor-pointer pficon pficon-ok showRevisiLunas" title="Sudah Bayar"></i></b>
+			      	</div> -->
+			      	<div class="col-sm-5">
+			        	: <b><span class="revisi-jenisRevisiText"></span> - <span class="revisi-namaJasa"></b>
+			      	</div>
+
+			    </div><br>
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">Tgl. Pengajuan</label>
+			      	<div class="col-sm-5">
+			        	: <span class="revisi-tglPengajuan"></span>
+			      	</div>
+			    </div><br>
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">No. PPK Jasa</label>
+			      	<div class="col-sm-5">
+			        	: <b><span class="revisi-prevNoPpkJasa"></span></b>
+			      	</div>
+			    </div><br>
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">No. <span class="revisi-jenisRevisiText"></span></label>
+			      	<div class="col-sm-5">
+			        	: <span class="revisi-noPpkJasa"></span>
+			      	</div>
+			    </div><br>			  	
+				<table class="datatable table table-striped table-bordered table-col-accordion">
+					<thead>
+						<tr>
+							<th style="width:120px"></th>
+							<th class="text-center">Sebelum</th>
+							<th class="text-center">Sesudah</th>
+						</tr>
+					</thead>
+				  	<tbody>
+						<tr class="showRevisiDermaga1">
+							<th><span class="revisi-labelDermaga1"></span></th>
+							<th>
+								<i class="fa fa-map-marker map-marker-start"></i>
+								<span class="revisi-dermaga1Before"></span>
+							</th>
+							<th>
+								<i class="fa fa-map-marker map-marker-start"></i>
+								<span class="revisi-dermaga1"></span>
+							</th>
+						</tr>
+						<tr class="showRevisiDermaga2">
+							<th><span class="revisi-labelDermaga2"></span></th>
+							<th>
+								<i class="fa fa-map-marker map-marker-end"></i>
+								<span class="revisi-dermaga2Before"></span>
+							</th>
+							<th>
+								<i class="fa fa-map-marker map-marker-end"></i>
+								<span class="revisi-dermaga2"></span>
+							</th>
+						</tr>
+				  		<tr class="showRevisiTgl1">
+							<th><span class="revisi-labelTgl1"></span></th>
+							<th><span class="revisi-tgl1Before"></span></th>
+							<th><span class="revisi-tgl1"></span></th>
+						</tr>
+						<tr class="showRevisiTgl2">
+							<th><span class="revisi-labelTgl2"></span></th>
+							<th><span class="revisi-tgl2Before"></span></th>
+							<th><span class="revisi-tgl2"></span></th>
+						</tr>
+						<tr class="showRevisiKadeMeter">
+							<th><span class="revisi-labelKadeMeter"></span></th>
+							<th><span class="revisi-KadeMeterBefore"></span></th>
+							<th><span class="revisi-KadeMeter"></span></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Permohonan Geser -->
+<div class="modal" id="showModalPermohonanGeser" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Permohonan Geser</h4>
+			</div>
+			<div class="modal-body">
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">Surat Perintah Geser</label>
+			      	<div class="col-sm-4">
+			        	: <b><span class="pmhgeser-flagSuratPerintah"></span></b>
+			      	</div>
+			    </div><br>
+			    <!-- <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">Tgl. Pengajuan</label>
+			      	<div class="col-sm-4">
+			        	: <span class="pmhgeser-created"></span>
+			      	</div>
+			    </div><br> -->	  	
+				<table class="datatable table table-striped table-bordered table-col-accordion">
+					<thead>
+						<tr>
+							<th style="width:120px"></th>
+							<th class="text-center">Sebelum</th>
+							<th class="text-center">Sesudah</th>
+						</tr>
+					</thead>
+				  	<tbody>
+						<tr>
+							<th>No. PPK Jasa</th>
+							<th><span class="pmhgeser-prevNoPpkJasa"></span></th>
+							<th><span class="pmhgeser-noPpkJasa"></span></th>
+						</tr>
+						<tr>
+							<th>Penetapan</th>
+							<th><span class="pmhgeser-createdBefore"></span></th>
+							<th><span class="pmhgeser-created"></span></th>
+						</tr>
+						<tr>
+							<th>Tgl Mulai</th>
+							<th><span class="pmhgeser-tglMulaiBefore"></span></th>
+							<th><span class="pmhgeser-tglMulai"></span></th>
+						</tr>
+						<tr>
+							<th>Tgl Selesai</th>
+							<th><span class="pmhgeser-tglSelesaiBefore"></span></th>
+							<th><span class="pmhgeser-tglSelesai"></span></th>
+						</tr>
+						<tr>
+							<th>Kade Meter</th>
+							<th><span class="pmhgeser-kadeMeterBefore"></span></th>
+							<th><span class="pmhgeser-kadeMeter"></span></th>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Rekalkulasi -->
+<div class="modal" id="showModalRekalkulasi" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Konfirmasi Rekalkulasi</h4>
+			</div>
+			<div class="modal-body">
+			  	Apakah anda ingin rekalkulasi EPB untuk Kode Bayar : <b><span class="epb-kodeBayar"></span></b> ?
+			   	<input type="hidden" ng-model="modalFormRekalkulasi.noPpk1" class="epb-input-noPpk1">
+			   	<input type="hidden" ng-model="modalFormRekalkulasi.urutanPermohonan" class="epb-input-urutanPermohonan">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="reCalculateEPB()">Ya</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Info Kegiatan Kapal -->
+<div class="modal" id="infoKegiatanKapal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true" width="800px;">
+	<div class="modal-dialog modal-info-kegiatan-kapal">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title"><span class="spinner spinner-xs spinner-inline" ng-show="infoKegiatanKapal.showLoader"></span> </i> Info Kegiatan Kapal - {{infoKegiatanKapal.namaKapalText}}
+					<!-- <i class='fa fa-circle-o-notch fa-spin fa-2x' style="color:#0088ce"> -->
+					<!-- <i class="fa fa-spinner fa-pulse fa-2x fa-fw" style="color:#0088ce"></i> -->
+				</h4>
+			</div>
+			<div class="modal-body">
+			  	<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">Jenis Kegiatan</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.jenisKegiatan?infoKegiatanKapal.jenisKegiatan:' - '}}
+					</span>
+					<label class="col-sm-3 control-label">Target Produksi</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.targetTsd?infoKegiatanKapal.targetTsd:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">Tgl. Mulai Kegiatan</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.startWork?infoKegiatanKapal.startWork:' - '}}
+					</span>
+
+					<label class="col-sm-3 control-label">Rencana B/M</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.jmlPlan?infoKegiatanKapal.jmlPlan:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">Tgl. Selesai Kegiatan</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.endWorkText?infoKegiatanKapal.endWorkText:' - '}}
+					</span>
+
+					<label class="col-sm-3 control-label">Rill B/M</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.jmlProd?infoKegiatanKapal.jmlProd:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">EWT</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.ewtHari?infoKegiatanKapal.ewtHari:' - '}}
+					</span>
+
+					<label class="col-sm-3 control-label">Sisa B/M</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.balance?infoKegiatanKapal.balance:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">Jenis Kemasan</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.noPpkJasa?infoKegiatanKapal.noPpkJasa:' - '}}
+					</span>
+
+					<label class="col-sm-3 control-label">T/S/D</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.realHari?infoKegiatanKapal.realHari:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<label class="col-sm-3 control-label">Komoditi</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.noPpkJasa?infoKegiatanKapal.noPpkJasa:' - '}}
+					</span>
+
+					<label class="col-sm-3 control-label">T/G/H</label>
+					<span class="col-sm-3">
+						: {{infoKegiatanKapal.realJam?infoKegiatanKapal.realJam:' - '}}
+					</span>
+				</div>
+
+				<div class="form-group col-sm-12">
+					<textarea class="form-control textarea-notresize monitoring-scrool-revisi" style="width: 300px;margin-left:20px" ng-model="infoKegiatanKapal.keterangan" rows="7" disabled></textarea>
+				</div>								
+			</div>
+			<div class="modal-footer">
+				<br>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Info Permohonan lainnya -->
+<div class="modal" id="modalInfoPemakaianBbmTunda" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Info Pemakaian BBM Tunda</h4>
+			</div>
+			<div class="modal-body"> 
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">Pemakaian BBM Tunda</label>
+			      	<div class="col-sm-5">
+			      		: <span class="revisi-tglPengajuan">{{infoPemakaianBbmTunda}}</span>
+			      	</div>
+			    </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal Info Permohonan s -->
+<div class="modal" id="modalInfoOtherPMH" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Info Lain-lain</h4>
+			</div>
+			<div class="modal-body"> 
+			    <div class="form-group">
+			    	<label class="col-sm-4 control-label" for="aktif">No. PKK Inaportnet</label>
+			      	<div class="col-sm-5">
+			        	: <span class="revisi-tglPengajuan">{{infoOthersPMH.noPkk?infoOthersPMH.noPkk:' - '}}</span>
+			      	</div>
+			    </div><br>
+			    <div class="form-group" ng-show="infoOthersPMH.jenisKapal=='KPLTONKANG'">
+			    	<label class="col-sm-4 control-label" for="aktif">Nama Kapal TB</label>
+			      	<div class="col-sm-5">
+			        	: <span class="revisi-tglPengajuan"><a href="#/transaksi/listmonitoring/{{infoOthersPMH.itemGandeng.noPpk1}}" target="_blank">{{infoOthersPMH.itemPMHKapalTB.namaKapal?infoOthersPMH.itemPMHKapalTB.namaKapal:' - '}}</a></span>
+			      	</div>
+					</div><br>
+					<div class="form-group">
+						<label class="col-sm-4 control-label" for="aktif">No. SPB Inaportnet</label>
+						<div class="col-sm-5">
+							:
+							<span class="revisi-tglPengajuan">{{noSpbInaportnet ? noSpbInaportnet:' - '}}</span>
+						</div>
+					</div><br>
+					<div class="form-group">
+						<label class="col-sm-4 control-label" for="aktif">Tanggal Batal</label>
+						<div class="col-sm-5">
+							:
+							<span class="revisi-tglPengajuan">{{newResponse ? newResponse:' - '}}</span>
+						</div>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+	<div>
+		<paging ng-hide="parameterUrl" class="small" page="currentPage" page-size="pageSize"
+			total="totalItems" adjacent="2" dots="..." scroll-top="true"
+			hide-if-empty="false" ul-class="pagination" active-class="active"
+			disabled-class="disabled" show-prev-next="true"
+			style="cursor: pointer;" paging-action="pageChanged(page)">
+		</paging>
+	</div>
+	</div>
+</div>
+
+<script>
+  // Row Checkbox Selection
+  $(document).ready(function () {
+	$("input[type='checkbox']").change(function (e) {
+		if ($(this).is(":checked")) {
+			$(this).closest('.list-group-item').addClass("active");
+		} else {
+			$(this).closest('.list-group-item').removeClass("active");
+		}
+	});
+
+	//icon rotate
+	$( ".reload" ).on( "click", function( e ) {
+        var $icon = $( this ).find( ".icon-refresh" ),
+            animateClass = "icon-refresh-animate";
+
+        $icon.addClass( animateClass );
+        // setTimeout is to indicate some async operation
+        window.setTimeout( function() {
+        	$icon.removeClass( animateClass );
+        }, 500);
+    });
+  });
+
+	/*$(document).on("click", ".chevron", function () {
+		var chevron = $(this).data('chevron');
+		var chevronRight = $('#chevronList'+chevron).hasClass("fa-chevron-right");
+		var chevronDown = $('#chevronList'+chevron).hasClass("fa-chevron-down");
+		if (chevronRight==true && chevronDown==false) {
+	        $('#chevronList'+chevron).removeClass('fa-chevron-right');
+	        $('#chevronList'+chevron).removeClass('fa-chevron-down');
+	        $('#chevronList'+chevron).addClass('fa-chevron-down');
+	    } else if (chevronRight==false && chevronDown==true) {
+	        $('#chevronList'+chevron).removeClass('fa-chevron-right');
+	        $('#chevronList'+chevron).removeClass('fa-chevron-down');
+	        $('#chevronList'+chevron).addClass('fa-chevron-right');
+	    }
+	});*/
+
+setInterval(function(){
+$('blink').each(function(){
+	$(this).css('visibility' , $(this).css('visibility') === 'hidden' ? '' : 'hidden')
+	});
+}, 1000);
+
+//set Data Revisi untuk menampilkan informasi pada data modal
+$(document).on("click", ".classDataRevisi", function () {
+	$(".showRevisiLunas").hide();
+	$(".showRevisiBelumLunas").hide();
+	if($(this).data('revisi').namaJasa==='Pandu'){
+		$(".revisi-labelTgl1").text("Tgl Mulai");
+		$(".revisi-labelDermaga1").text("Lokasi Asal");
+		$(".revisi-labelDermaga2").text("Lokasi Tujuan");
+		$(".showRevisiDermaga1").show();
+		$(".showRevisiDermaga2").show();
+		$(".showRevisiTgl1").show();
+		$(".showRevisiTgl2").hide();
+		$(".showRevisiKadeMeter").hide();
+	}else if($(this).data('revisi').namaJasa==='Tambat'){
+		$(".revisi-labelTgl1").text("Tgl Mulai");
+		$(".revisi-labelTgl2").text("Tgl Selesai");
+		$(".revisi-labelDermaga2").text("Lokasi Asal");
+		$(".revisi-labelKadeMeter").text("Kade Meter");
+		$(".showRevisiDermaga1").hide();
+		$(".showRevisiDermaga2").show();
+		$(".showRevisiTgl1").show();
+		$(".showRevisiTgl2").show();
+		$(".showRevisiKadeMeter").show();
+		if($(this).data('revisi').jenisRevisi===6 || $(this).data('revisi').jenisRevisi===7){
+			$(".showRevisiDermaga1").hide();
+			$(".showRevisiDermaga2").hide();
+			$(".showRevisiTgl1").hide();
+			$(".showRevisiKadeMeter").hide();
+			$(".showRevisiTgl2").show();
+			if($(this).data('revisi').jenisRevisi===6 && $(this).data('revisi').status===2){
+				$(".showRevisiLunas").show();
+				$(".showRevisiBelumLunas").hide();
+			}else{
+				$(".showRevisiLunas").hide();
+				$(".showRevisiBelumLunas").show();
+			}
+		}
+	}else if($(this).data('revisi').namaJasa==='Tunda'){
+		$(".revisi-labelTgl1").text("Tgl Mulai");
+		$(".revisi-labelDermaga1").text("Lokasi Asal");
+		$(".revisi-labelDermaga2").text("Lokasi Tujuan");
+		$(".showRevisiDermaga1").show();
+		$(".showRevisiDermaga2").show();
+		$(".showRevisiTgl1").show();
+		$(".showRevisiTgl2").hide();
+		$(".showRevisiKadeMeter").hide();
+	}else if($(this).data('revisi').namaJasa==='Air Kapal'){
+		$(".revisi-labelTgl1").text("Tgl Isi");
+		$(".revisi-labelDermaga2").text("Dermaga");
+		$(".showRevisiDermaga1").hide();
+		$(".showRevisiDermaga2").show();
+		$(".showRevisiTgl1").show();
+		$(".showRevisiTgl2").hide();
+		$(".showRevisiKadeMeter").hide();
+	}
+	$(".revisi-jenisRevisiText").text($(this).data('revisi').jenisRevisiText);
+	$(".revisi-tglPengajuan").text($(this).data('revisi').tglPengajuan);
+	$(".revisi-noPpkJasa").text($(this).data('revisi').noPpkJasa);
+	$(".revisi-prevNoPpkJasa").text($(this).data('revisi').parentNoPpkJasa);
+	$(".revisi-tgl1").text($(this).data('revisi').tgl1);
+	$(".revisi-tgl1Before").text($(this).data('revisi').tgl1Before);
+	$(".revisi-tgl2").text($(this).data('revisi').tgl2);
+	$(".revisi-tgl2Before").text($(this).data('revisi').tgl2Before);
+	$(".revisi-namaJasa").text($(this).data('revisi').namaJasa);
+	$(".revisi-dermaga1").text($(this).data('revisi').dermaga1);
+	$(".revisi-dermaga1Before").text($(this).data('revisi').dermaga1Before);
+	$(".revisi-dermaga2").text($(this).data('revisi').dermaga2);
+	$(".revisi-dermaga2Before").text($(this).data('revisi').dermaga2Before);
+	$(".revisi-KadeMeter").text($(this).data('revisi').kadeMeter);
+	$(".revisi-KadeMeterBefore").text($(this).data('revisi').kadeMeterBefore);
+});
+
+//set Data Permohonan Geser untuk menampilkan informasi pada data modal
+$(document).on("click", ".classDataPmhGeser", function () {
+	$(".pmhgeser-created").text($(this).data('pmhgeser').created);
+	$(".pmhgeser-createdBefore").text($(this).data('pmhgeser').createdBefore);
+	$(".pmhgeser-flagSuratPerintah").text($(this).data('pmhgeser').flagSuratPerintah);
+	$(".pmhgeser-noPpkJasa").text($(this).data('pmhgeser').noPpkJasa);
+	$(".pmhgeser-prevNoPpkJasa").text($(this).data('pmhgeser').prevNoPpkJasa);
+	$(".pmhgeser-tglMulai").text($(this).data('pmhgeser').tglMulai);
+	$(".pmhgeser-tglMulaiBefore").text($(this).data('pmhgeser').tglMulaiBefore);
+	$(".pmhgeser-tglSelesai").text($(this).data('pmhgeser').tglSelesai);
+	$(".pmhgeser-tglSelesaiBefore").text($(this).data('pmhgeser').tglSelesaiBefore);
+	$(".pmhgeser-kadeMeter").text($(this).data('pmhgeser').kadeMeter);
+	$(".pmhgeser-kadeMeterBefore").text($(this).data('pmhgeser').kadeMeterBefore);
+});
+
+//set Data Rekalkulasi EPB untuk menampilkan informasi pada data modal
+$(document).on("click", ".classDataRekalkulasi", function () {
+	$(".epb-kodeBayar").text($(this).data("rekkodebayar").kodeBayar);
+	$(".epb-noPpk1").text($(this).data('rekalkulasi').noPpk1);
+	$(".epb-urutanPermohonan").text($(this).data('rekalkulasi').urutanPermohonan);
+	$(".epb-input-noPpk1").val($(this).data('rekalkulasi').noPpk1);
+	$(".epb-input-urutanPermohonan").val($(this).data('rekalkulasi').urutanPermohonan);
+});
+</script>
+

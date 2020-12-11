@@ -1,0 +1,45 @@
+<h2>Edit Tipe Eskalasi</h2>
+<form name="tipeeskalasiForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Kode Tipe Eskalasi</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="string" id="escTypeCode" name="escTypeCode" class="form-control" ng-model="tipeeskalasi.escTypeCode" required>
+          <span class="has-error" ng-show="tipeeskalasiForm.escTypeCode.$touched && tipeeskalasiForm.escTypeCode.$invalid">
+            Isi Kode Tipe Eskalasi.
+          </span>
+      </div>
+    </div>
+
+   <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Kode Validasi</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="string" id="valCode" name="valCode" class="form-control" ng-model="tipeeskalasi.valCode" required>
+          <span class="has-error" ng-show="tipeeskalasiForm.valCode.$touched && tipeeskalasiForm.valCode.$invalid">
+            Isi Kode Validasi.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Keterangan Validasi</label>
+      <div class="col-sm-4 col-xs-12">
+
+          <input type="string" id="valDesc" name="valDesc" class="form-control" ng-model="tipeeskalasi.valDesc" required>
+          <span class="has-error" ng-show="tipeeskalasiForm.valDesc.$touched && tipeeskalasiForm.valDesc.$invalid">
+            Isi Jumlah Kapal Tunda.
+          </span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg"  ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Simpan </button>
+      </div>
+
+      </div>
+
+    </div>
+</form>

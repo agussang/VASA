@@ -1,0 +1,35 @@
+<h2>Master Dermaga Kepil Baru</h2>
+<form class="form-horizontal" name="masterKepilForm">
+    <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Dermaga</label>
+      <div class="col-sm-7" style="display:inline-flex;">
+          <input type="text" name="dermaga" class="form-control" ng-model="masterKepil.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" ng-blur="validationLookupDermaga()" data-limit="10" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Aktif</label>
+      <div class="col-sm-7">
+        <input  bs-switch type="checkbox" name="flagAktif" switch-on-text="YA" switch-off-text="TIDAK" ng-model="masterKepil.flagAktif" ng-true-value ="1" ng-false-value="0" checked >
+        <span class="has-error" ng-show="masterKepilForm.flagAktif.$touched && masterKepilForm.flagAktif.$invalid">
+          Isi aktif dibutuhkan.
+        </span>
+      </div>
+    </div>
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+        <button type="button" class="btn btn-default btn-lg" ng-click="cancel()">Batal</button>
+        <button type="button" class="btn btn-primary btn-lg" ng-disabled="masterKepilForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+	    </div>
+  	</div>
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+  $('#tgl-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+    $("[name='status-checkbox']").bootstrapSwitch();
+</script>

@@ -1,0 +1,75 @@
+<div class="container">
+<h2>Tarif Air Kapal Detail</h2>
+<form class="form-horizontal">
+  	<div class="form-group">
+    	<label class="col-sm-2">Nomor SK</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.nomorSk}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tgl. Berlaku</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.tglBerlaku}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Pelayaran</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.jenisPelayaranText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Alat Isi Air</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.alatIsiAirText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Satuan</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.satuanText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Tarif Dasar</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.nilaiTarif | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.valuta}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Jenis Negara</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{contentAirKapalDetails.jenisNegaraText}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Dok. Pendukung</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+
+	      	<span class='view-detail' ng-hide="noDocument"><a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o"></i> {{contentAirKapalDetails.dokumen}}</a></span>
+	      	<span class='view-detail' ng-show="noDocument">Tidak ada dokumen</span>
+	    </div>
+  	</div>
+	<div class="form-group">
+ 	<div class="col-sm-9">
+    <input type="button" onclick="location.href='#/airkapal/list';" value="Tutup" class="btn btn-primary btn-lg pull-left" />
+     </div>
+    </div>
+</form>
+</div>

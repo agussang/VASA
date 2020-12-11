@@ -1,0 +1,261 @@
+<div>
+	<h2>Laporan Lineup Kapal</h2>
+	<div>
+
+	<form class="form-horizontal" name="prameetingForm">
+		<div class="form-group">
+      		<label class="col-sm-2 control-label" class=""><span class="text-danger"></span>Dermaga :</label>
+		    <div class="col-sm-2">
+            	<input type="text" id="" class="form-control" ng-model="dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(dermaga)" ng-blur="validationSelectDermaga()" required>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	    	<label class="col-sm-2 control-label" class=""><span class="text-danger"></span>Tanggal Tambat :</label>
+		    <div class="col-sm-2">
+     			<span id="date-6" class="input-group date" style="width:150px;">
+            	<input type="text" ng-model="tanggalPrameeting" date="tanggalPrameeting" class="form-control bootstrap-datepicker" options="options"  readonly><span class="input-group-addon" ><span class="fa fa-calendar"></span></span>
+            	</span>
+		    </div>
+	    </div>
+	    <div class="form-group">
+	      <div class="col-sm-offset-2 col-sm-7">
+	          <button type="button" class="btn btn-primary btn-lg" ng-disabled="prameetingForm.$invalid;" ng-click="changeData();showLoader=true;"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Lihat Data</button>
+	          <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="generate()">Ekspor  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+	           <button class="btn btn-primary btn-lg btn-exportPDF" ng-click="exportExcel(event)">Ekspor  Excel <i class="fa fa-file-excel-o" aria-hidden="true"></i></button>
+	      </div>
+	    </div>
+	</form>
+	</div>
+	<table class="datatable table table-striped table-bordered" border="1" cellspacing="0" style="margin-top:30px; width:100%;">
+  		<thead>
+			<tr>
+				<th style="width:20px;" rowspan="2">No</th>
+				<th style="text-align: center" rowspan="2">Nama Kapal</th>
+				<th style="text-align: center" rowspan="2">Agen</th>
+				<th style="text-align: center" rowspan="2">PBM</th>
+				<th style="text-align: center" rowspan="2">LOA</th>
+				<th style="text-align: center;width: 90px;" rowspan="2">Posisi</th>
+				<th style="text-align: center;width: 90px;" colspan="1">Closing</th>
+				<th style="text-align: center" colspan="3" style="text-align:center;">Muatan</th>
+				<th style="text-align: center" rowspan="2">Keterangan</th>
+				<th style="text-align: center" rowspan="2">Status PMH Pandu</th>
+				<th style="text-align: center" rowspan="2">Status PPK</th>
+				<th style="text-align: center" rowspan="2">Status RKBM</th>
+				<th style="text-align: center" rowspan="2">Action</th>
+			</tr>
+			<tr>
+				<th style="text-align: center">Time</th>
+				<th style="text-align: center">B</th>
+				<th style="text-align: center">M</th>
+				<th style="text-align: center">Jenis Muatan</th>				
+			</tr>
+  		</thead>
+		<tbody ng-repeat="item in hasilPrameetingList">
+			<tr ng-repeat="kapal in item.dataKapal">	
+				<td>{{($index != 0 ? '':$parent.$index +1)}}</td>
+				<td style="font-size: 10.5px;">
+					<small><a href="#/transaksi/listmonitoring/{{kapal.noPpk1}}">{{kapal.noPpk1}}</a></small> <br>
+					<small class="text-danger">{{kapal.noPpkJasa}}</small> <br> {{kapal.namaKapal}}
+					<h6 ng-if="kapal.isMeetingSusulan == true">meeting susulan</h6>	<br>
+					<h6 ng-if="kapal.statusPelaksanaan == 5" class="text-warning">Geser</h6>	<br>
+					<small class="text-info" ng-if="kapal.kodeKapalTender != ''">
+						(Tender {{kapal.kodeKapalTenderText}})
+					</small>	
+					<small class="text-info" ng-if="kapal.pmhKapalGandengs != null">
+						<span ng-repeat="gandeng in kapal.pmhKapalGandengs">
+							(Gandeng {{gandeng.namaKapal}})
+						</span>						
+					</small>				
+				</td>
+				<td style="font-size: 10.5px;">{{kapal.namaAgen}}</td>
+				<td style="font-size: 10.5px;">{{kapal.pbm}}</td>
+				<td style="font-size: 10.5px;">{{kapal.panjangKapal}}</td>
+				<td style="font-size: 10.5px;">{{kapal.kadeAwal}} - {{kapal.kadeAkhir}}</td>	
+				<td style="font-size: 10.5px;">{{kapal.closing}}</td>
+				<td style="font-size: 10.5px;">{{kapal.b}}</td>
+				<td style="font-size: 10.5px;">{{kapal.m}}</td>
+				<td style="font-size: 10.5px;">{{kapal.jenisMuatan}}</td>
+				<td style="font-size: 10.5px;">{{kapal.keteranganExKapal}}</td>
+				<td style="text-align:center;font-size: 10.5px;">
+					<i class="fa fa-check-circle-o fa-2x icon-report-meeting" style="color:#11c514;" aria-hidden="true"  ng-if="kapal.isPmhPandu == true" title="Ada Permohonan Pandu"></i>
+					<i class="fa fa-times-circle fa-2x"  style="color:#cc0000;" aria-hidden="true" ng-if="kapal.isPmhPandu == false" title="Tidak Ada Permohonan Pandu"></i>
+				</td>
+				<td style="text-align:center;font-size: 10.5px;">
+					<i class="fa fa-check-circle-o fa-2x" style="color:#11c514;" aria-hidden="true" ng-if="kapal.noPpkInaportnet != '' && kapal.isPpkRpkro == true"><h6 style="color:#363636;" ng-if="kapal.noPpkInaportnet != ''">{{kapal.noPpkInaportnet}}</h6>
+					</i>	
+					<i class="fa fa-check-circle-o fa-2x" style="color:#ec7a08;" aria-hidden="true" ng-if="kapal.noPpkInaportnet == '' && kapal.isPpkRpkro == true">
+					<h6 style="color:#363636;" ng-if="kapal.noPpkInaportnet == ''">Menunggu Persetujuan OP</h6></i>
+					<i class="fa fa-times-circle fa-2x" style="color:#cc0000; float:center;" aria-hidden="true" ng-if="kapal.isPpkRpkro == false" title="RPKRO Belum Dikirim"></i>
+				</td>
+				<td style="font-size: 10.5px;">{{kapal.statusRkbm}}</td>
+				<td style="display:inline-flex;font-size: 10.5px;">
+					<button class="btn btn-primary btn-xs" type="button" ng-click="sendRPKRO(kapal)" ng-hide="kapal.isKapalSandar && kapal.isPpkRpkro == true" ng-disabled="kapal.isPpkRpkro || kapal.isPkkInaportnet == false || kapal.statusRkbm == null" style="margin-right:2px;">RPKRO</button>
+					<button class="btn btn-danger btn-xs" ng-click="deleteHasilMeeting(kapal)" ng-hide="kapal.isKapalSandar && kapal.isPpkRpkro == true" ng-disabled="kapal.isPpkRpkro == false" type="button" style="margin-right:2px;">Batal</button>
+					<button class="btn btn-xs btn-warning" ng-click="resetRpkro(kapal)" style="margin-right: 2px;" ng-hide="kapal.isKapalSandar == true">Reset</button>
+					<button class="btn btn-primary btn-xs" ng-click="tetapkanMeeting(kapal)" ng-hide="kapal.isKapalSandar" ng-disabled="kapal.isDitetapkan" type="button">Penetapan Manual</button>
+				</td>
+		  	</tr>
+		</tbody>
+  	</table>
+	<div><paging class="small" page="currentPage" page-size="pageSize"
+	      total="totalItems" adjacent="2" dots="..." scroll-top="true"
+	      hide-if-empty="false" ul-class="pagination" active-class="active"
+	      disabled-class="disabled" show-prev-next="true"
+	      style="cursor: pointer;" paging-action="pageChanged(page)">
+	</paging></div>
+</div>
+<table cellspacing="0" id="table_wrapper" style="display: none;">
+	<colgroup width="50"></colgroup>
+	<colgroup width="175"></colgroup>
+	<colgroup width="167"></colgroup>
+	<colgroup width="93"></colgroup>
+	<colgroup span="6" width="85"></colgroup>
+	<colgroup width="128"></colgroup>
+	<tr>
+		<td height="17" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td colspan=11 height="20" align="center" valign=middle><b><font size=3>{{namaDermaga}}</font></b></td>
+	</tr>
+	<tr>
+		<td colspan=11 height="21" align="center" valign=middle><b><font size=3>{{tanggalPrameeting}}</font></b></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 height="58" align="center" valign=middle><b>NO</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>NAMA KAPAL</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>AGEN</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>PBM</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>LOA</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>POSISI</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>CLOSING</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" colspan=3 align="center" valign=middle><b>MUATAN</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" rowspan=2 align="center" valign=middle><b>KETERANGAN</b></td>
+	</tr>
+	<tr>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle><b>B</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle><b>M</b></td>
+		<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle><b>JENIS MUATAN</b></td>
+	</tr>
+	<tbody ng-repeat="item in hasilPrameetingList">
+		<tr ng-repeat="kapal in item.dataKapal">
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="center" valign=middle>{{($index != 0 ? '':$parent.$index +1)}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>
+				{{kapal.namaKapal}}
+				<h6 ng-if="kapal.isMeetingSusulan == true">meeting susulan</h6><br>				
+				<small class="text-info" ng-if="kapal.pmhKapalGandengs != null">
+					<span ng-repeat="gandeng in kapal.pmhKapalGandengs">
+						(Gandeng {{gandeng.namaKapal}})
+					</span>						
+				</small>
+			</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.namaAgen}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.pbm}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.panjangKapal}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.kadeAwal}} - {{kapal.kadeAkhir}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.closing}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.b}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.m}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.jenisMuatan}}</td>
+			<td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000" align="left" valign=middle>{{kapal.keteranganExKapal}} <br>
+				<small class="text-info" ng-if="kapal.kodeKapalTender != ''">
+				(Tender {{kapal.kodeKapalTenderText}})
+				</small>	
+			</td>
+		</tr>
+	</tbody>
+	<tr>
+		<td height="17" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+		<td align="left"><br></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left" colspan=3 >{{kota_meeting}}, {{now}}</td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+	</tr>
+	<tr>
+		<td height="17" align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left">PETUGAS PERENCANAAN TAMBATAN</td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+		<td align="left"><font face="Liberation Serif"><br></font></td>
+	</tr>
+</table>
+<script type="text/javascript">
+	$('#date-6').datepicker({
+      autoclose: true,
+      format: "dd-mm-yyyy",
+      language: 'id'
+    });
+</script>

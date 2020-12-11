@@ -1,0 +1,979 @@
+<div class="row">
+	<div class="col-md-6">
+		<h2 ng-if="inputTambahJasa == false && isAirKapal == false">Permohonan Jasa Kapal</h2>
+		<h2 ng-if="inputTambahJasa == true && isAirKapal == false">Permohonan Tambah Jasa</h2>
+		<h2 ng-if="isAirKapal == true">Permohonan Air Kapal</h2>
+		<button  class="btn" ng-show="escTypeCode" style="background-color:#990000;color:#ffffff"> Mode Eskalasi : {{escTypeCode}}</button>
+	</div>
+	<div class="col-md-6">
+		<div class="stepwizard">
+			<div class="stepwizard-row setup-panel">
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle">1</a>
+					<p>Permohonan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">2</a>
+					<p>Perencanaan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">3</a>
+					<p>Penetapan</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">4</a>
+					<p>Realisasi</p>
+				</div>
+				<div class="stepwizard-step">
+					<a type="button" class="btn btn-sm btn-primary btn-circle" disabled="disabled">5</a>
+					<p>Verifikasi</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="col-sm-4 navbar-right" ng-if="inputTambahJasa == false">
+	<button class="btn btn-default" ng-click="backToList()"><span class="fa fa-angle-double-left"></span> Kembali ke List</button>
+	<button ng-if="editForm == false" class="btn btn-success" ng-show="btnMainSimpan" ng-click="greenBtn()">Simpan Permohonan</button>
+	<span ng-show="showLoader"><span class="spinner spinner-xs spinner-inline"></span> Silahkan tunggu...</span>
+</div>
+<div class="col-sm-3 navbar-right" ng-if="inputTambahJasa == true">
+	<!-- <button class="btn btn-primary btn-lg" ng-if="newJasaSaved == false" ng-click="submitJasaBaru()">Mulai Tambah Jasa</button> -->
+	<button class="btn btn-primary btn-lg" ng-if="newJasaSaved == false" ng-click="submit()">Mulai Tambah Jasa</button>
+	<button class="btn btn-success btn-lg" ng-if="newJasaSaved == true" ng-click="greenBtn()" ng-show="btnMainSimpan" >Simpan Tambah Jasa</button>
+	<span ng-show="showLoader"><span class="spinner spinner-xs spinner-inline"></span> Silahkan tunggu...</span>
+</div>
+<!-- <br> -->
+<div class="alert {{textAlert.class}}" ng-show="alertShow">
+	<span class="pficon {{textAlert.icon}}"></span>
+	<strong>{{textAlert.title}}</strong> {{textAlert.desc}}</a>.
+</div>
+	<ul class="nav nav-tabs" role="tablist">
+	  	<li role="presentation" class="menu-jasa aktif active"><a role="tab" data-toggle="tab" class="tablinks"  onclick="openTab(event, 'permohonan')">DATA UMUM PERMOHONAN</a></li>
+	  	<li role="presentation" class="menu-jasa tab-labuh" kode-menu="labuh" id="labuhTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'labuh')">LABUH</a></li>
+	  	<li role="presentation" class="menu-jasa tab-tambat" kode-menu="tambat" id="tambatTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tambat')">TAMBAT</a></li>
+	  	<li role="presentation" class="menu-jasa tab-pandu" kode-menu="pandu" id="panduTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'pandu')">PANDU</a></li>
+	  	<li role="presentation" class="menu-jasa tab-tunda" kode-menu="tunda" id="tundaTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'tunda')">TUNDA</a></li>
+	  	<li role="presentation" class="menu-jasa tab-airkapal" kode-menu="airkapal" id="airkapalTab"><a role="tab" data-toggle="tab" class="tablinks" onclick="openTab(event, 'airkapal')">AIR KAPAL</a></li>
+	</ul>
+
+	<div class="tab-content">
+		<!-- tab 2 -->
+		<div id="labuh" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="permohonanLabuhForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>No. PPK Jasa</label>
+		<div class="col-sm-3">
+			<input type="hidden" ng-model="indexLabuh">
+			<input type="text"  class="form-control" placeholder="No. PPK Jasa..." ng-model="jasalabuh.noPpkJasa" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Labuh</label>
+		<div class="col-sm-6">
+			<input type="text" id="jasalabuh_lokasi" class="form-control" ng-model="jasalabuh.lokasi" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaLabuh($viewValue)" data-limit="10" ng-focus="checkValue(jasalabuh.lokasi)" ng-blur="validationLookupLokasiLabuh()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Waktu Kedatangan</label>
+		<div class="col-sm-3"> <!-- VALPMH041 -->
+			<div pf-datepicker id="labuhTglMasuk" options="options" data-date-format="dd-mm-yyyy" data-date-start-date="tglMasuk" date="tglMasuk" ng-click="checkValidasiBackDate()" required></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group" id="jamMasuk">
+				<input id="jamMasukVal" type="text" class="form-control" size="8" ng-model="jamMasuk" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+		<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-click="showModalValidationVAL041()" ng-plunkr data-html="true" data-title="{{tooltipInfoVal41}}" data-placement="right" bs-tooltip>
+			<i class="fa fa-question-circle fa-lg color-icon-question" ></i>
+		</a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Waktu Keberangkatan</label>
+		<div class="col-sm-3">
+			<div pf-datepicker id="labuhTglKeluar" options="options" data-date-format="dd-mm-yyyy" date="tglKeluar"  required></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group" id="jamKeluar">
+				<input id="jamKeluarVal" type="text" class="form-control" size="8" ng-model="jamKeluar" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+	</div>
+	<div class="form-group" ng-hide="gandengBtnOnLabuh">
+		<label class="col-sm-2 control-label" for="nama-11">Kapal Gandeng</label>
+		<div class="col-sm-1">
+			<a style="cursor:pointer" data-toggle="modal" data-target="#kplGadengModal" ng-disabled="gandengBtnOnLabuh">Tambah</a>
+		</div>
+	</div>
+	<div class="form-group" ng-hide="gandengBtnOnLabuh">
+	   	<div class="col-sm-offset-2 col-sm-7">
+	   		<table class="table table-striped table-bordered">
+			    <thead>
+			    	<tr>
+			    		<th>No. PPK1</th>
+			    		<th>Kode Kapal</th>
+			    		<th>Nama Kapal</th>
+			    		<th>LOA</th>
+			    		<th>GT</th>
+			    		<th>Negara</th>
+			    		<th></th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+			    	<tr ng-repeat="itemKapal in kapalGandengArray">
+			    		<td>{{itemKapal.noPpk1Tongkang}}</td>
+			    		<td>{{itemKapal.kodeKapal}}</td>
+			    		<td>{{itemKapal.namaKapal}}</td>
+	    				<td>{{itemKapal.loa | currency:"":0}}</td>
+	    				<td>{{itemKapal.gtKapal | currency:"":0}}</td>
+	    				<td>{{itemKapal.negaraKapal}}</td>
+	    				<td>
+	    					<a ng-click="deleteKapalGandengView($index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="itemKapal.id == null"><span class="fa fa-times"></span></a>
+			    			<a ng-click="deleteKapalGandeng(itemKapal.id,$index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="itemKapal.id != null"><span class="fa fa-times"></span></a>
+			    		</td>
+			    	</tr>
+			    </tbody>
+			</table>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button type="button" class="btn btn-default" ng-click="resetLabuh()">Reset</button>
+			<button type="button" class="btn btn-primary" ng-show="btnLabuhSave" ng-disabled="!permohonanLabuhForm.$valid" ng-if="editForm == false" ng-click="submitLabuhtoGrid()">Simpan</button>
+			<button type="button" class="btn btn-primary" ng-show="btnLabuhSave" ng-if="editForm == true" ng-disabled="!permohonanLabuhForm.$valid" ng-click="submitLabuh()">Simpan</button>
+		</div>
+	</div>
+</form>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+	  		<th>No. PPK Jasa</th>
+	  		<th>Lokasi Labuh</th>
+	  		<th>Waktu Kedatangan</th>
+	  		<th>Waktu Keberangkatan</th>
+	  		<th></th>
+		</tr>
+  	</thead>
+  	<tbody>
+  	<tr ng-repeat="itemlabuhPast in jasalabuhgridpast" ng-show="gridPast">
+  		<td>{{itemlabuhPast.noPpkJasa}}</td>
+		<td>{{itemlabuhPast.namaLokasi}}</td>
+      	<td>{{itemlabuhPast.tglMasuk|date: "dd-MM-yyyy HH:mm"}}</td>
+      	<td>{{itemlabuhPast.tglKeluar|date: "dd-MM-yyyy HH:mm"}}</td>
+      	<td class="col-sm-1 text-center"></td>
+  	</tr>
+	<tr ng-repeat="itemlabuh in jasalabuhgrid">
+		<td ng-if="itemlabuh.fake == true"><i>No. PPK Jasa</i></td>
+		<td ng-if="itemlabuh.fake == false"><span ng-class="{'line-through' : itemlabuh.statusRevisi == '10'}">{{itemlabuh.noPpkJasa}}</span></td>
+		<td><span ng-class="{'col-jasa-batal' : itemlabuh.statusRevisi == '10'}">{{itemlabuh.namaLokasi}}</span></td>
+      	<td><span ng-class="{'col-jasa-batal' : itemlabuh.statusRevisi == '10'}">{{itemlabuh.tglMasuk|date: "dd-MM-yyyy HH:mm"}}</span></td>
+      	<td><span ng-class="{'col-jasa-batal' : itemlabuh.statusRevisi == '10'}">{{itemlabuh.tglKeluar|date: "dd-MM-yyyy HH:mm"}}</span></td>
+      	<td class="col-sm-1 text-center">
+      		<a aria-hidden="true" style="cursor:pointer" ng-click="editLabuh(itemlabuh.noPpkJasa, $index)" type="button" class="btn btn-default btn-xs" title="Edit" ng-hide="itemlabuh.fake || itemlabuh.statusRevisi == '10'"><span class="fa fa-pencil-square-o"></span></a>
+  			<a ng-if="itemlabuh.fake == true" style="cursor:pointer" ng-click="deleteLabuh(null,$index)" aria-hidden="true" type="button" class="btn btn-danger btn-xs" title="Delete" ng-hide="itemlabuh.statusRevisi == '10'"><span class="fa fa-times"></span></a>
+  		</td>
+    </tr>
+  	</tbody>
+</table>
+		</div>
+		<!-- /tab 2 -->
+		<!-- tab 3 -->
+		<div id="tambat" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="permohonanTambatForm">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>No. PPK Jasa</label>
+	   	<div class="col-sm-3">
+	   		<input type="hidden" ng-model="indexTambat">
+	   		<input type="text"  class="form-control" placeholder="No. PPK Jasa..." ng-model="jasatambat.noPpkJasa" readonly>
+	   	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Tambat</label>
+	   	<div class="col-sm-6">
+			<input type="text" id="jasatambat_lokasi" class="form-control" ng-model="jasatambat.lokasi" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTambat($viewValue)" data-limit="10" ng-focus="checkValue(jasatambat.lokasi)" ng-blur="validationLookupLokasiTambat()" required>
+	   	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Mulai Tambat pada</label>
+	   	<div class="col-sm-3"> <!-- VALPMH041 -->
+			<div pf-datepicker id="tglMulaiTambat" options="options" data-date-format="dd-mm-yyyy" data-date-start-date="tglMulaiTambat" date="tglMulaiTambat" ng-click="checkValidasiBackDate()" required></div>
+	   	</div>
+	   	<div class="col-sm-3">
+			<div class="input-group" id="jamMulaiTambat">
+				<input id="jamMulaiTambatVal" type="text" class="form-control" size="8" ng-model="jamMulai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+	   	</div>
+	   	<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-click="showModalValidationVAL041()" ng-plunkr data-html="true" data-title="{{tooltipInfoVal41}}" data-placement="right" bs-tooltip>
+			<i class="fa fa-question-circle fa-lg color-icon-question" ></i>
+		</a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Selesai pada</label>
+	   	<div class="col-sm-3">
+	   		<div pf-datepicker id="tglSelesaiTambat" options="options" data-date-format="dd-mm-yyyy" date="tglSelesaiTambat"  required></div>
+	   	</div>
+	   	<div class="col-sm-3">
+			<div class="input-group" id="jamSelesaiTambat">
+				<input id="jamSelesaiTambatVal" type="text" class="form-control" size="8" ng-model="jamSelesai" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+	   	</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12">Menggunakan Rampdoor</label>
+		<div class="col-sm-7" ng-init="jasatambat.flagRampdoor='0'">
+			<label class="radio-inline">
+				<input type="radio" name="optRamdoor" ng-model="jasatambat.flagRampdoor" value="1">Ya
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="optRamdoor" ng-model="jasatambat.flagRampdoor" value="0">Tidak
+			</label>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12">Kapal Tender</label>
+		<div class="col-sm-7" ng-init="jasatambat.flagTender='0'">
+			<label class="radio-inline">
+				<input name="optradio" type="radio" ng-model="jasatambat.flagTender" value="1">Ya
+			</label>
+			<label class="radio-inline">
+				<input name="optradio" type="radio" ng-model="jasatambat.flagTender" value="0">Tidak
+			</label>
+		</div>
+	</div>
+	<div class="form-group" ng-show="isKapalTender">
+ 		<label class="col-sm-2 control-label" for="dokumenUpload"><span class="text-danger">*</span>Surat Izin Tender</label>
+		<div class="col-sm-6">
+			<input type="file" id="file" name="file" class="form-control" file-input="uploadFile" accept="
+			.pdf,.jpg" ng-model="jasatambat.dokumenTender" valid-file ng-required="isKapalTender" />
+			<a href="" ng-click="createPDF(jasatambat.dokumenTender)"><i class="fa fa-file-pdf-o" ng-show="jasatambat.dokumenTender"></i> {{jasatambat.dokumenTender}}</a>
+		</div>
+		<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+ 	</div>
+ 	<div class="form-group" ng-show="showEntryKemasan && flagBongkarMuat">
+		<label class="col-sm-2 control-label" for="nama-12">Tanpa Bongkar Muat</label>
+		<div class="col-sm-7">
+			<input type="checkbox" class="cursor-pointer" ng-model="flagBongkarMuat">
+		</div>
+	</div>
+ 	<div class="form-group" ng-show="showEntryKemasan && !flagBongkarMuat">
+		<label class="col-sm-2 control-label">Rencana Bongkar</label>
+    	<div class="col-sm-6">
+		    <div class="form-group">
+				<label class="col-sm-2">Kemasan:</label>
+		    	<div class="col-sm-3">
+		      		<select pf-select ng-model="permohonan.kemasanBongkarTambat" ng-options='option.value as option.caption for option in kemasan' ng-required="requiredEntryKemasan">
+            		</select>
+		    	</div>
+
+		    	<label class="col-sm-3"></label>
+		    	<div class="col-sm-4">
+		    		<label class="control-label cursor-pointer"><input type="checkbox" ng-model="flagBongkarMuat" class="cursor-pointer">&nbsp;&nbsp;Tanpa Bongkar Muat</label>
+		    	</div>
+		    </div>
+        </div>
+    </div>
+    <div class="form-group" ng-show="showEntryKemasan && !flagBongkarMuat">
+		<label class="col-sm-2 control-label" for="tjn-11">Rencana Muat</label>
+    	<div class="col-sm-4">
+		    <div class="form-group">
+				<label class="col-sm-3">Kemasan:</label>
+		    	<div class="col-sm-3">
+		      		<select pf-select ng-model="permohonan.kemasanMuatTambat" ng-options='option.value as option.caption for option in kemasan' ng-required="requiredEntryKemasan">
+            		</select>
+		    	</div>
+		    </div>
+        </div>
+    </div>
+	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+		   	<button type="button" class="btn btn-default" ng-click="resetTambat()">Reset</button>
+		   	<button type="button" class="btn btn-primary" ng-if="editForm == false" ng-disabled="!permohonanTambatForm.$valid" ng-click="submitTambattoGrid()">Simpan</button>
+		   	<button type="button" class="btn btn-primary" ng-if="editForm == true" ng-disabled="!permohonanTambatForm.$valid" ng-click="submitTambat()">Simpan</button>
+		</div>
+	</div>
+</form>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+	  		<th>No. PPK Jasa</th>
+	  		<th>Lokasi Tambat</th>
+	  		<th>Mulai Tambat</th>
+	  		<th>Selesai pada</th>
+				<th>Surat Izin Tender</th>
+	  		<th></th>
+		</tr>
+  	</thead>
+  	<tbody>
+	  	<tr ng-repeat="itemtambatPast in jasatambatgridpast | orderBy: 'noPpkJasa'" ng-show="gridPast">
+	  		<td>{{itemtambatPast.noPpkJasa}}</td>
+			<td>{{itemtambatPast.namaLokasi}}</td>
+	      	<td>{{itemtambatPast.tglMulai|date: "dd-MM-yyyy HH:mm"}}</td>
+	      	<td>{{itemtambatPast.tglSelesai|date: "dd-MM-yyyy HH:mm"}}</td>
+					<td><a href="" ng-click="buildPDF(itemtambatPast.noPpkJasa)"><i class="fa fa-file-pdf-o" ng-show="itemtambatPast.dokumenTender"></i>{{itemtambatPast.dokumenTender}}</a></span></td>
+	      	<td class="col-sm-1 text-center"></td>
+	  	</tr>
+		<tr ng-if="jasatambatgrid" ng-repeat="itemtambat in jasatambatgrid | orderBy: 'noPpkJasa'">
+			<td ng-if="itemtambat.fake == true"><i>No. PPK Jasa</i></td>
+			<td ng-if="itemtambat.fake == false"><span ng-class="{'line-through' : itemtambat.statusRevisi == '10'}">{{itemtambat.noPpkJasa}}</span></td>
+			<td><span ng-class="{'col-jasa-batal' : itemtambat.statusRevisi == '10'}">{{itemtambat.namaLokasi}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemtambat.statusRevisi == '10'}">{{itemtambat.tglMulai|date: "dd-MM-yyyy HH:mm"}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemtambat.statusRevisi == '10'}">{{itemtambat.tglSelesai|date: "dd-MM-yyyy HH:mm"}}</span></td>
+			<td ng-if="itemtambat.fake == false"><span ng-class="{'col-jasa-batal' : itemtambat.statusRevisi == '10'}"><a href="" ng-click="buildPDF(itemtambat.noPpkJasa)"><i class="fa fa-file-pdf-o" ng-show="itemtambat.dokumenTender"></i>{{itemtambat.dokumenTender}}</a></span></td>
+			<td ng-if="itemtambat.fake == true">{{itemtambat.dokumenTender}}</td>
+	      	<td class="col-sm-1 text-center">
+	      		<a aria-hidden="true" ng-click="editTambat(itemtambat.noPpkJasa, $index)" style="cursor:pointer" type="button" class="btn btn-default btn-xs" title="Edit" ng-hide="itemtambat.fake || itemtambat.statusRevisi == '10'"><span class="fa fa-pencil-square-o"></span></a>
+	  			<a ng-if="itemtambat.fake == false " ng-click="deleteTambat(itemtambat.noPpkJasa, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-hide="itemtambat.statusRevisi == '10'"><span class="fa fa-times"></span></a>
+	  			<a ng-if="itemtambat.fake == true" ng-click="deleteTambat(null, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+	  		</td>
+	    </tr>
+  	</tbody>
+</table>
+		</div>
+		<!-- /tab 3 -->
+		<!-- tab 4-->
+		<div id="pandu" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="permohonanPanduForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>No. PPK Jasa</label>
+	   	<div class="col-sm-3">
+	   		<input type="hidden" ng-model="indexPandu">
+	   		<input type="text" class="form-control" placeholder="No. PPK Jasa..." ng-model="jasapandu.noPpkJasa" readonly>
+	   	</div>
+	</div>
+	<div class="form-group" ng-hide="gandengBtn">
+		<label class="col-sm-2 control-label" for="nama-11">Kapal Gandeng</label>
+		<div class="col-sm-1">
+			<a style="cursor:pointer" data-toggle="modal" data-target="#kplGadengModal" ng-disabled="gandengBtn">Tambah</a>
+		</div>
+	</div>
+	<div class="form-group" ng-hide="gandengBtn">
+	   	<div class="col-sm-offset-2 col-sm-7">
+	   		<table class="table table-striped table-bordered">
+			    <thead>
+			    	<tr>
+			    		<th>No. PPK1</th>
+			    		<th>Kode Kapal</th>
+			    		<th>Nama Kapal</th>
+			    		<th>LOA</th>
+			    		<th>GT</th>
+			    		<th>Negara</th>
+			    		<th></th>
+			    	</tr>
+			    </thead>
+			    <tbody>
+			    	<tr ng-repeat="itemKapal in kapalGandengArray">
+			    		<td>{{itemKapal.noPpk1Tongkang}}</td>
+			    		<td>{{itemKapal.kodeKapal}}</td>
+			    		<td>{{itemKapal.namaKapal}}</td>
+	    				<td>{{itemKapal.loa | currency:"":0}}</td>
+	    				<td>{{itemKapal.gtKapal | currency:"":0}}</td>
+	    				<td>{{itemKapal.negaraKapal}}</td>
+	    				<td>
+	    					<a ng-click="deleteKapalGandengView($index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="itemKapal.id == null"><span class="fa fa-times"></span></a>
+			    			<a ng-click="deleteKapalGandeng(itemKapal.id,$index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-if="itemKapal.id != null"><span class="fa fa-times"></span></a>
+			    		</td>
+			    	</tr>
+			    </tbody>
+			</table>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Waktu Pandu</label>
+	   	<div class="col-sm-3"> <!-- VALPMH041 -->
+			<div pf-datepicker id="tglPandu" options="options" data-date-format="dd-mm-yyyy" data-date-start-date="tglPandu" date="tglPandu" required ng-click="checkValidasiBackDate()"></div>
+	   	</div>
+	   	<div class="col-sm-3">
+			<div class="input-group" id="jamPandu">
+				<input id="jamPanduVal" type="text" class="form-control" size="8" ng-model="jamPandu" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+	   	</div>
+	   	<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-click="showModalValidationVAL041()" ng-plunkr data-html="true" data-title="{{tooltipInfoVal41}}" data-placement="right" bs-tooltip>
+			<i class="fa fa-question-circle fa-lg color-icon-question" ></i>
+		</a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Asal Pandu</label>
+		<div class="col-sm-6">
+			<input type="text" id="jasapanduLokasiAsal" class="form-control" ng-model="jasapandu.lokasiAsal" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaPandu($viewValue)" data-limit="10" ng-focus="checkValue(jasapandu.lokasiAsal)" ng-blur="validationLookupAsalPandu()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Tujuan Pandu</label>
+		<div class="col-sm-6">
+			<input type="text" id="jasapanduLokasiTujuan" class="form-control" ng-model="jasapandu.lokasiTujuan" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaPanduTujuan($viewValue)" data-limit="10" ng-focus="checkValue(jasapandu.lokasiTujuan)" ng-blur="validationLookupTujuanPandu()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Jenis Pandu</label>
+		<div class="col-sm-6">
+			<select pf-select ng-model="jasapandu.jenisPandu" ng-options='option.value as option.caption for option in jenisPanduOption' required>
+	        </select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Jenis Gerakan</label>
+		<div class="col-sm-6">
+		    <select pf-select ng-model="jasapandu.jenisGerakan" ng-options='option.value as option.caption for option in jenisGerakanOption' id="jenisGerakan" required>
+	        </select>
+		</div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+	    	<button type="button" class="btn btn-default" ng-click="resetPandu()">Reset</button>
+	     	<button type="button" class="btn btn-primary" ng-if="editForm == false" ng-disabled="!permohonanPanduForm.$valid" ng-click="submitPandutoGrid()">Simpan</button>
+	     	<button type="button" class="btn btn-primary" ng-if="editForm == true" ng-disabled="!permohonanPanduForm.$valid" ng-click="submitPandu()">Simpan</button>
+	    </div>
+	</div>
+</form>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+	  		<th>No. PPK Jasa</th>
+	  		<th>Waktu Pandu</th>
+	  		<th>Jenis Pandu</th>
+	  		<th>Jenis Gerakan</th>
+	  		<th></th>
+		</tr>
+  	</thead>
+  	<tbody>
+	  	<tr ng-repeat="itempanduPast in jasapandugridpast | orderBy: 'noPpkJasa'" ng-show="gridPast">
+	  		<td>{{itempanduPast.noPpkJasa}}<p class="small">{{itempanduPast.namaLokasiAsal}} <span class="fa fa-long-arrow-right"></span> {{itempanduPast.namaLokasiTujuan}}</p></td>
+	      	<td>{{itempanduPast.tglPandu|date: "dd-MM-yyyy HH:mm"}}</td>
+	      	<td>{{itempanduPast.jenisPanduText}}</td>
+	      	<td>{{itempanduPast.jenisGerakanText}}</td>
+	      	<td class="col-sm-1 text-center"></td>
+	  	</tr>
+		<tr ng-repeat="itempandu in jasapandugrid | orderBy: 'noPpkJasa'">
+			<td ng-if="itempandu.fake == true"><i>No. PPK Jasa</i><p class="small">{{itempandu.namaLokasiAsal}} <span class="fa fa-long-arrow-right"></span> {{itempandu.namaLokasiTujuan}}</p></td>
+			<td ng-if="itempandu.fake == false"><span ng-class="{'line-through' : itempandu.statusRevisi == '10'}">{{itempandu.noPpkJasa}}<p class="small">{{itempandu.namaLokasiAsal}} <span class="fa fa-long-arrow-right"></span> {{itempandu.namaLokasiTujuan}}</p></span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itempandu.statusRevisi == '10'}">{{itempandu.tglPandu|date: "dd-MM-yyyy HH:mm"}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itempandu.statusRevisi == '10'}">{{itempandu.jenisPanduText}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itempandu.statusRevisi == '10'}">{{itempandu.jenisGerakanText}}</span></td>
+	      	<td class="col-sm-1 text-center">
+	      		<a aria-hidden="true" ng-click="editPandu(itempandu.noPpkJasa, $index)" style="cursor:pointer" type="button" class="btn btn-default btn-xs" title="Edit" ng-hide="itempandu.fake || itempandu.statusRevisi == '10'"><span class="fa fa-pencil-square-o"></span></a>
+	  			<a ng-if="itempandu.fake == false" ng-click="deletePandu(itempandu.noPpkJasa, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-hide="itempandu.statusRevisi == '10'"><span class="fa fa-times"></span></a>
+	  			<a ng-if="itempandu.fake == true" ng-click="deletePandu(null, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+	  		</td>
+	    </tr>
+  	</tbody>
+</table>
+		</div>
+		<!-- /tab 4 -->
+		<!-- tab 5 -->
+		<div id="tunda" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="permohonanTundaForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>No. PPK Jasa</label>
+		<div class="col-sm-3">
+			<input type="hidden" ng-model="indexTunda">
+			<input type="text"  class="form-control" placeholder="No. PPK Jasa..." ng-model="jasatunda.noPpkJasa" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Waktu Mulai Tunda</label>
+		<div class="col-sm-3"> <!-- VALPMH041 -->
+			<div pf-datepicker id="tglMulaiTunda" options="options" data-date-format="dd-mm-yyyy" data-date-start-date="tglMulaiTunda" date="tglMulaiTunda" ng-click="checkValidasiBackDate()" required></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group" id="jamMulaiTunda">
+				<input id="jamMulaiTundaVal" type="text" class="form-control" size="8" ng-model="jamMulaiTunda" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+		<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-click="showModalValidationVAL041()" ng-plunkr data-html="true" data-title="{{tooltipInfoVal41}}" data-placement="right" bs-tooltip>
+			<i class="fa fa-question-circle fa-lg color-icon-question" ></i>
+		</a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Asal Tunda</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="jasatunda.lokasiAsal" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTunda($viewValue)" data-limit="10" ng-focus="checkValue(jasatunda.lokasiAsal)" ng-blur="validationLookupAsalTunda()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Lokasi Tujuan Tunda</label>
+		<div class="col-sm-6">
+			<input type="text" class="form-control" ng-model="jasatunda.lokasiTujuan" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaTundaTujuan($viewValue)" data-limit="10" ng-focus="checkValue(jasatunda.lokasiTujuan)" ng-blur="validationLookupTujuanTunda()" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12">Tunda Extra</label>
+		<div class="col-sm-3">
+			<input type="number" decimal-number maxlength="9" name="tundaExtra" class="form-control" min="0"  ng-model="jasatunda.tundaExtra">
+			<span class="has-error" ng-show="permohonanTundaForm.tundaExtra.$touched && permohonanTundaForm.tundaExtra.$invalid">
+				Minimum 0.
+			</span>
+		</div>
+		<label class="col-sm-2 control-label" for="nama-12" style="transform: translateX(-120px) !important">tunda</label>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button type="button" class="btn btn-default" ng-click="resetTunda()">Reset</button>
+			<button type="button" class="btn btn-primary" ng-if="editForm == false" ng-disabled="!permohonanTundaForm.$valid"  ng-click="submitTundatoGrid()">Simpan</button>
+			<button type="button" class="btn btn-primary" ng-if="editForm == true" ng-disabled="!permohonanTundaForm.$valid" ng-click="submitTunda()">Simpan</button>
+		</div>
+	</div>
+</form> <!-- {{temptunda}} -->
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th>No. PPK Jasa</th>
+			<th>Waktu Tunda</th>
+			<th>Lokasi Asal</th>
+			<th>Lokasi Tujuan</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	  	<tr ng-repeat="itemtundapast in jasatundagridpast | orderBy: 'noPpkJasa'" ng-show="gridPast">
+	  		<td>{{itemtundapast.noPpkJasa}}</td>
+	      	<td>{{itemtundapast.tglMulai|date: "dd-MM-yyyy HH:mm"}}</td>
+	      	<td>{{itemtundapast.namaLokasiAsal}}</td>
+	      	<td>{{itemtundapast.namaLokasiTujuan}}</td>
+	      	<td class="col-sm-1 text-center"></td>
+	  	</tr>
+		<tr ng-repeat="itemtunda in jasatundagrid | orderBy: 'noPpkJasa'">
+			<td ng-if="itemtunda.fake == true"><i>No. PPK Jasa</i></td>
+			<td ng-if="itemtunda.fake == false"><span ng-class="{'line-through' : itemtunda.statusRevisi == '10'}">{{itemtunda.noPpkJasa}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemtunda.statusRevisi == '10'}">{{itemtunda.tglMulai|date: "dd-MM-yyyy HH:mm"}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemtunda.statusRevisi == '10'}">{{itemtunda.namaLokasiAsal}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemtunda.statusRevisi == '10'}">{{itemtunda.namaLokasiTujuan}}</span></td>
+	      	<td class="col-sm-1 text-center">
+	      		<a aria-hidden="true" ng-click="editTunda(itemtunda.noPpkJasa, $index)" style="cursor:pointer" type="button" class="btn btn-default btn-xs" title="Edit" ng-hide="itemtunda.fake || itemtunda.statusRevisi == '10'"><span class="fa fa-pencil-square-o"></span></a>
+	  			<a ng-if="itemtunda.fake == false" ng-click="deleteTunda(itemtunda.noPpkJasa, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-hide="itemtunda.statusRevisi == '10'"><span class="fa fa-times"></span></a>
+	  			<a ng-if="itemtunda.fake == true" ng-click="deleteTunda(null, $index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+	  		</td>
+	    </tr>
+	</tbody>
+</table>
+		</div>
+		<!-- /tab 5 -->
+		<!-- tab 6 -->
+		<div id="airkapal" role="tabpanel" class="tab-pane">
+<form class="form-horizontal" name="permohonanAirKapalForm">
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-12"><span class="text-danger">*</span>No. PPK Jasa</label>
+		<div class="col-sm-3">
+			<input type="hidden" ng-model="indexAirKapal">
+			<input type="text"  class="form-control" placeholder="No. PPK Jasa..." ng-model="jasaair.noPpkJasa" readonly>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Alat Isi</label>
+		<div class="col-sm-6">
+			<input type="hidden" ng-model="jasaair.alatIsiText">
+			<select pf-select id="alatair" ng-model="jasaair.alatIsi" ng-options='option.value as option.caption for option in alatIsiAir' ng-change="alatIsiText()" required>
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-13"><span class="text-danger" ng-show="dermagaAirRequired">*</span>Dermaga</label>
+		<div class="col-sm-6">
+			<input type="text" id="dermaga" class="form-control" ng-model="jasaair.dermaga" bs-typeahead bs-options="pelabuhan.mdmgNamaKode for pelabuhan in getListOfDermagaAir($viewValue)" data-limit="10" ng-focus="checkValue(jasaair.dermaga)" ng-blur="validationLookupDermagaAir()" ng-required="dermagaAirRequired">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Tgl/Jam Mulai</label>
+		<div class="col-sm-3"> <!-- VALPMH041 -->
+			<div pf-datepicker id="tglIsiAirKapal" options="options" data-date-format="dd-mm-yyyy" data-date-start-date="tglIsi" date="tglIsi" ng-click="checkValidasiBackDate()" required></div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group" id="jamIsi">
+				<input id="jamIsiVal" type="text" class="form-control" size="8" ng-model="jamIsi" data-time-format="HH:mm" data-time-type="string" data-autoclose="1" name="time2" bs-timepicker data-length="1">
+				<span class="input-group-addon btn btn-default"><span class="fa fa-clock-o"></span></span>
+			</div>
+		</div>
+		<a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-click="showModalValidationVAL041()" ng-plunkr data-html="true" data-title="{{tooltipInfoVal41}}" data-placement="right" bs-tooltip>
+			<i class="fa fa-question-circle fa-lg color-icon-question" ></i>
+		</a>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label" for="nama-12"><span class="text-danger">*</span>Volume</label>
+		<div class="col-sm-3">
+			<input type="number" min="1" autocomplete="off" class="form-control" ng-model="jasaair.volume" required>
+		</div>
+		<div class="col-sm-4">
+			<select pf-select class="col-sm-8" ng-model="jasaair.satuan" ng-options='option.value as option.caption for option in satuanAirKapal' required></select>
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-offset-2 col-sm-7">
+			<button type="button" class="btn btn-default" ng-click="resetAirKapal()">Reset</button>
+			<button type="button" class="btn btn-primary" ng-show="btnAirSave"  ng-if="editForm == false" ng-disabled="!permohonanAirKapalForm.$valid" ng-click="submitAirKapaltoGrid()">Simpan</button>
+			<button type="button" class="btn btn-primary" ng-show="btnAirSave"  ng-if="editForm == true" ng-disabled="!permohonanAirKapalForm.$valid" ng-click="submitAirKapal()">Simpan</button>
+		</div>
+	</div>
+</form>
+<table class="table table-striped table-bordered">
+	<thead>
+		<tr>
+			<th>No. PPK Jasa</th>
+			<th>Alat Isi</th>
+			<th>Dermaga</th>
+			<th>Tgl/Jam Mulai</th>
+			<th>Volume</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+	  	<tr ng-repeat="itemairpast in jasaairgridpast | orderBy: 'noPpkJasa'" ng-show="gridPast">
+	  		<td>{{itemairpast.noPpkJasa}}</td>
+			<td>{{itemairpast.alatIsiText}}</td>
+			<td>{{itemairpast.namaDermaga}}</td>
+	      	<td ng-if="itemairpast.tglMulaiIsi">{{itemairpast.tglMulaiIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+	      	<td ng-if="itemairpast.tglIsi">{{itemairpast.tglIsi|date: "dd-MM-yyyy HH:mm"}}</td>
+	      	<td>{{itemairpast.volume}}</td>
+	      	<td class="col-sm-1 text-center"></td>
+	  	</tr>
+		<tr ng-repeat="itemair in jasaairgrid | orderBy: 'noPpkJasa'">
+			<td ng-if="itemair.fake == true"><i>No. PPK Jasa</i></td>
+			<td ng-if="itemair.fake == false"><span ng-class="{'line-through' : itemair.statusRevisi == '10'}">{{itemair.noPpkJasa}}</span></td>
+			<td><span ng-class="{'col-jasa-batal' : itemair.statusRevisi == '10'}">{{itemair.alatIsiText}}</span></td>
+			<td><span ng-class="{'col-jasa-batal' : itemair.statusRevisi == '10'}">{{itemair.namaDermaga}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemair.statusRevisi == '10'}">{{itemair.tglIsi|date: "dd-MM-yyyy HH:mm"}}</span></td>
+	      	<td><span ng-class="{'col-jasa-batal' : itemair.statusRevisi == '10'}">{{itemair.volume}}</span></td>
+	      	<td class="col-sm-1 text-center">
+	      		<a aria-hidden="true" ng-click="editAirKapal(itemair.noPpkJasa, $index)" style="cursor:pointer" type="button" class="btn btn-default btn-xs" title="Edit" ng-hide="itemair.fake || itemair.statusRevisi == '10'"><span class="fa fa-pencil-square-o"></span></a>
+	  			<a ng-if="itemair.fake == false" ng-click="deleteAirKapal(itemair.noPpkJasa,$index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete" ng-hide="itemair.statusRevisi == '10'"><span class="fa fa-times"></span></a>
+	  			<a ng-if="itemair.fake == true" ng-click="deleteAirKapal(null,$index)" aria-hidden="true" style="cursor:pointer" type="button" class="btn btn-danger btn-xs" title="Delete"><span class="fa fa-times"></span></a>
+	  		</td>
+	    </tr>
+	</tbody>
+</table>
+		</div>
+		<!-- /tab 6 -->
+		<!-- tab 1 -->
+	    <div role="tabpanel" class="tab-pane active" id="permohonan">
+			<form class="form-horizontal" name="permohonanForm">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="no-11">ID Visit</label>
+			    	<div class="col-sm-3">
+			      		<input type="text" class="form-control" placeholder="No. ID Visit..." ng-model="permohonan.idVisit" readonly>
+			    	</div>
+			  	</div>
+			  	<div class="form-group">
+					<label class="col-sm-2 control-label" for="no-11"><span class="text-danger">*</span>No. PPK1</label>
+			    	<div class="col-sm-3">
+			      		<input type="text" id="no-11" class="form-control" placeholder="No. PPK1..." ng-model="permohonan.noPpk1" readonly>
+			    	</div>
+			  	</div>
+			  	<div class="form-group">
+					<label class="col-sm-2 control-label" for="nama-11"><span class="text-danger">*</span>Nama Kapal</label>
+			    	<div class="col-sm-6">
+			    		<div class="input-group">
+				      		<input type="text" id="namaKapalDataUmum" class="form-control" ng-model="permohonan.namaKapal" bs-typeahead bs-options="kapal.mkplNamaLoa for kapal in getListKapal($viewValue)" ng-blur="validationLookupKapal()" ng-focus="checkValue(permohonan.namaKapal)" data-limit="10" ng-disabled="disabledColoumnKapal" required>
+				      		<span class="input-group-addon btn btn-default" ng-click="checkDisabledEditKapal()" title="Edit Kapal"><span class="fa fa-pencil-square-o"></span></span>
+			      		</div>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+			    	<label class="col-sm-2 control-label">Info Kapal</label>
+			    	<div class="col-sm-6">
+				    	<div class="row">
+				    		<div class="col-sm-3">Kode Kapal </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.kodeKapal?permohonan.kodeKapal:'-'}}</div>
+				    		<div class="col-sm-3">Jenis Kapal </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.jenisKapal?permohonan.jenisKapal:'-'}}</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-sm-3">Bendera </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.negaraKapal?permohonan.negaraKapal:'-'}}</div>
+				    		<div class="col-sm-3">LOA </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.loa?(permohonan.loa | number):'-'}}</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-sm-3">Call Sign </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.callSign?permohonan.callSign:'-'}}</div>
+				    		<div class="col-sm-3">GT </div>
+				    		<div class="col-sm-3 font-bold">: {{permohonan.gtKapal?(permohonan.gtKapal| number):'-' }}</div>
+				    	</div>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label" for="agen-11"><span class="text-danger">*</span>Agen Pelayaran</label>
+			    	<div class="col-sm-6">
+			      		<input type="text" id="agen-11" class="form-control" ng-model="permohonan.namaAgen" bs-typeahead bs-options="agenKapal.mplgNamaKode for agenKapal in getListOfAgenKapal($viewValue)" data-limit="10" ng-disabled="inputTambahJasa || afterSubmit" ng-focus="checkValue(permohonan.namaAgen)" ng-blur="validationLookupAgen()" ng-disabled="afterSubmit" required>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label" for="brngk-11"><span class="text-danger">*</span>Berangkat dari</label>
+			    	<div class="col-sm-6">
+			    		<input type="text" class="form-control" ng-model="permohonan.namaPelabuhanAsal" bs-typeahead bs-options="pelabuhan.mkplNamaPlb for pelabuhan in getListOfPelabuhan($viewValue)" data-limit="50" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" ng-focus="checkValue(permohonan.namaPelabuhanAsal)" ng-change="validationNegaraAsal(permohonan.namaPelabuhanAsal)" ng-blur="validationLookupAsal()" required>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Tujuan</label>
+			    	<div class="col-sm-6">
+			    		<input type="text" class="form-control" ng-model="permohonan.namaPelabuhanTujuan" bs-typeahead bs-options="pelabuhan.mkplNamaPlbTjn for pelabuhan in getListOfPelabuhanTujuan($viewValue)" data-limit="50" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" ng-focus="checkValue(permohonan.namaPelabuhanTujuan)" ng-change="validationNegaraTujuan(permohonan.namaPelabuhanTujuan)" ng-blur="validationLookupTujuan()" required>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label" for="tjn-11"><span class="text-danger">*</span>Sifat Kunjungan</label>
+			    	<div class="col-sm-6">
+			      		 <select pf-select ng-model="permohonan.sifatKunjungan" ng-options='option.value as option.caption for option in sifatKunjungan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged" required>
+	                    </select>
+			    	</div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label">Rencana Bongkar</label>
+			    	<div class="col-sm-4">
+					    <div class="form-group">
+							<label class="col-sm-3 control-label">Kemasan:</label>
+					    	<div class="col-sm-3">
+					      		<select pf-select ng-model="permohonan.kemasanBongkar" ng-options='option.value as option.caption for option in kemasan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged">
+	                    		</select>
+					    	</div>
+					    </div>
+			        </div>
+			        <div class="col-sm-4">
+						<div class="form-group">
+							<label class="col-sm-2 control-label"> Jumlah:</label>
+						    <div class="col-sm-10">
+						    	<input type="number" class="col-sm-4" ng-model="permohonan.jumlahBongkar" ng-disabled="inputTambahJasa || afterSubmit || agentChanged" min="1" autocomplete="off">
+						    	<div>
+						    		<select pf-select class="col-sm-8" ng-model="permohonan.satuanBongkar" ng-options='option.value as option.caption for option in satuan' ng-disabled="inputTambahJasa || permohonan.jumlahBongkar == undefined || afterSubmit || agentChanged" ng-required="permohonan.jumlahBongkar">
+	                    			</select>
+						    	</div>
+						    </div>
+						</div>
+			        </div>
+			    </div>
+			    <div class="form-group">
+					<label class="col-sm-2 control-label" for="tjn-11">Rencana Muat</label>
+			    	<div class="col-sm-4">
+					    <div class="form-group">
+							<label class="col-sm-3 control-label">Kemasan:</label>
+					    	<div class="col-sm-3">
+					      		<select pf-select ng-model="permohonan.kemasanMuat" ng-options='option.value as option.caption for option in kemasan' ng-disabled="inputTambahJasa || afterSubmit || agentChanged">
+	                    		</select>
+					    	</div>
+					    </div>
+			        </div>
+			        <div class="col-sm-4">
+						<div class="form-group">
+							<label class="col-sm-2 control-label"> Jumlah:</label>
+						    <div class="col-sm-10">
+						    	<input type="number" class="col-sm-4" ng-model="permohonan.jumlahMuat" ng-disabled="inputTambahJasa|| afterSubmit || agentChanged" min="1" autocomplete="off">
+						    	<div>
+						    		<select pf-select class="col-sm-8" ng-model="permohonan.satuanMuat" ng-options='option.value as option.caption for option in satuan' ng-disabled="inputTambahJasa || permohonan.jumlahMuat == undefined || afterSubmit || agentChanged" ng-required="permohonan.jumlahMuat">
+	                    			</select>
+						    	</div>
+						    </div>
+						</div>
+			        </div>
+			    </div>
+			    <hr>
+			  	<div class="form-group" ng-if="inputTambahJasa == false">
+				    <div class="col-sm-offset-5 col-sm-6 navbar-right">
+				      	<button type="button" class="btn btn-primary btn-lg" ng-click="submit()" ng-disabled="!permohonanForm.$valid" ng-if="btnSubmit==true" ng-hide="afterSubmit">Simpan</button>
+				      	<button type="button" class="btn btn-primary btn-lg" ng-disabled="!permohonanForm.$valid" ng-click="update()" ng-if="btnSubmit==false">Update</button>
+				    </div>
+			  	</div>
+			</form>
+	    </div>
+<!-- /tab 1 -->
+	</div>
+
+</div>
+<div class="modal" id="kplGadengModal" tabindex="-1" role="dialog" aria-labelledby="epbLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Tambah Kapal Gandeng</h4>
+			</div>
+			<div class="modal-body">
+	        <div pf-toast-notification notification-type="{{alert.type}}" message="{{alert.message}}" ng-show="alert.show"></div>
+				<form class="form-horizontal" name="kapalGandengForm">
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="no-3"><span class="text-danger">*</span>No. PPK1</label>
+				    	<div class="col-md-7">
+				      		<input type="text" class="form-control" ng-model="kapalGandeng.kapal" ng-changed="validationLookupPpk1()" bs-typeahead bs-options="listPpk1.itemPpk1TK for listPpk1 in getListPpk1Gandeng($viewValue)" data-limit="10" required>
+				    	</div>
+				  	</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+				<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="submitKapalGandeng()" ng-disabled="!kapalGandengForm.$valid">Simpan</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- start modal konfirmasi loa pandu -->
+<div class="modal" id="ConfirmLoaJasaPandu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   	<div class="modal-dialog">
+      	<div class="modal-content">
+         	<div class="modal-header">
+            	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               	<span class="pficon pficon-close"></span>
+            	</button>
+            	<h4 class="modal-title" id="myModalLabel">Informasi Loa Kapal</h4>
+         	</div>
+
+         	<div class="modal-body">
+            	<p ng-if="loaMax == false">Kapal <b>{{permohonan.namaKapal}}</b> memiliki panjang <b>{{permohonan.loa}}</b> meter, silahkan masukkan info <b>Jasa Tunda</b>.<br><br>Kode validasi: <b>VALPMH-011</b></p>
+             	<p ng-if="loaMax == true">Kapal <b>{{permohonan.namaKapal}}</b> memiliki Kapal Gandeng dengan LOA lebih dari 70 yaitu <b>{{loaMaxvalue}}</b> meter, silahkan masukkan info <b>Jasa Tunda</b>.<br><br>Kode validasi: <b>VALPMH-017</b></p>
+         	</div>
+         	<div class="modal-footer">
+         		<div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+         			<i class="fa fa-level-up "></i> 
+					<a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+				</div>
+            	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="openTab(event, 'tunda')">OK</button>
+         	</div>
+      	</div>
+   	</div>
+</div>
+<!-- end modal konfirmasi loa pandu -->
+
+<!-- start modal Check Lock Agen -->
+<div class="modal" id="modalCheckLockAgen" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      	<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				   <span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Informasi Agen Pelayaran</h4>
+			</div>
+			<div class="modal-body">
+				<p><span  class="text-center">{{edescription}}</span>
+				<br><br>Kode validasi: <b>VALPMH-021</b></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+      	</div>
+   </div>
+</div>
+<!-- end modal Check Lock Agen -->
+
+<!-- start modal Wajib Pandu -->
+<div class="modal" id="ConfirmWajibPandu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+               <span class="pficon pficon-close"></span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Informasi GT Kapal</h4>
+         </div>
+         <div class="modal-body">
+            <p>Kapal <b>{{permohonan.namaKapal}}</b> memiliki <b>GT lebih dari 500</b>, silahkan masukkan info <b>Jasa Pandu</b>.
+            <br><br>Kode validasi: <b>VALPMH-031</b></p>
+         </div>
+         <div class="modal-footer">
+            <div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+            	<i class="fa fa-level-up "></i> 
+				<a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">Eskalasi?</a>
+			</div>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="openTab(event, 'pandu')">Ya</button>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- end modal konfirmasi Wajib Pandu -->
+
+<!-- start modal Val-041 -->
+<div class="modal" id="modalValidationVAL041" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      	<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				   <span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Informasi Validasi</h4>
+			</div>
+			<div class="modal-body">
+				<p><span  class="text-center">Karena default tanggal pada VASA hari ini, maka inputan tidak boleh kurang dari hari ini.</span>
+				<br><br>Kode validasi: <b>VALPMH-041</b></p>
+			</div>
+			<div class="modal-footer">
+				<div ng-show="statusEskalasiModal && userEskalasiApprover!==''" class="pull-left cursor-pointer">
+					<i class="fa fa-level-up "></i> 
+					<a class="cursor-pointer" ng-controller="EskalasiCtrl" ng-click="showModalEsc()">
+					Eskalasi?</a>
+				</div>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+      	</div>
+   </div>
+</div>
+<!-- end modal Val-041 -->
+
+<!-- start modal Validasi Tanpa Bongkar Muat -->
+<div class="modal" id="modalValidationTanpaBM" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      	<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+				   <span class="pficon pficon-close"></span>
+				</button>
+				<h4 class="modal-title">Informasi Bongkar Muat</h4>
+			</div>
+			<div class="modal-body">
+				<p><span  class="text-center">Kapal <b>{{permohonan.namaKapal}}</b> (GT: {{permohonan.gtKapal | formatCurr}}) tidak dapat memilih jasa tambat <b>Tanpa Bongkar Muat</b> dikarenakan aturan <b>Masa Tambat</b> tidak ditemukan.
+				<br><br>
+				Silahkan hubungi Administrator VASA Pelindo III.</span></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+			</div>
+      	</div>
+   </div>
+</div>
+<!-- end modal Validasi Tanpa Bongkar Muat -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+    document.getElementById('permohonan').style.display = "block";
+});
+
+function openTab(evt, jenisJasa) {
+		var i, tabcontent, tablinks;
+		tabcontent = document.getElementsByClassName("tab-pane");
+		for (i = 0; i < tabcontent.length; i++) {
+			tabcontent[i].style.display = "none";
+		}
+		tablinks = document.getElementsByClassName("tablinks");
+		for (i = 0; i < tablinks.length; i++) {
+			tablinks[i].className = tablinks[i].className.replace(" active", "");
+		}
+		menuJasa = document.getElementsByClassName("menu-jasa");
+		for (i = 0; i < menuJasa.length; i++) {
+			menuJasa[i].className = menuJasa[i].className.replace(" active", "");
+		}
+		document.getElementById(jenisJasa).style.display = "block";
+		evt.currentTarget.className += " active";
+		$('.tab-'+jenisJasa).addClass("active");
+	}
+
+    $('#jamMasukVal').mask('99:99');
+    $('#jamKeluarVal').mask('99:99');
+    $('#jamMulaiTambatVal').mask('99:99');
+    $('#jamSelesaiTambatVal').mask('99:99');
+    $('#jamPanduVal').mask('99:99');
+    $('#jamMulaiTundaVal').mask('99:99');
+    $('#jamIsiVal').mask('99:99');
+
+	$("#jenisGerakan").attr("disabled", true);
+
+	$('#labuhTglMasuk').mask('99-99-9999');
+	$('#labuhTglKeluar').mask('99-99-9999');
+	$('#tglPandu').mask('99-99-9999');
+	$('#tglMulaiTunda').mask('99-99-9999');
+	$('#tglIsiAirKapal').mask('99-99-9999');
+	$('#tglMulaiTambat').mask('99-99-9999');
+	$('#tglSelesaiTambat').mask('99-99-9999');
+</script>

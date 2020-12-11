@@ -1,0 +1,117 @@
+<h2>Kapal Kegiatan Tetap Edit</h2>
+<form name="dokkapalForm" class="form-horizontal">
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Kapal</label>
+      <div class="col-sm-7 col-xs-12" style="display: inline-flex;">
+          <div class="form-control">{{dataDokkapal.nama}}</div>
+          <input ng-hide="true" name="namaKapal" class="form-control" ng-model="dataDokkapal.nama" bs-typeahead bs-options="kapal.mkplNama for kapal in getListOfKapal($viewValue)" ng-change="changeKapal(dataDokkapal.nama)" data-limit="10" >
+          <a ng-if="!dataDokkapal.nama == ''" href="#/profilkapal/{{dataDokkapal.kode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+          <span class="has-error" ng-show="dokkapalForm.nama.$touched && dokkapalForm.nama.$invalid">
+            Isi nama kapal dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Agen</label>
+      <div class="col-sm-7 col-xs-12" style="display: inline-flex;">
+          <input name="kodeAgen" class="form-control" ng-model="dataDokkapal.namaAgen" bs-typeahead bs-options="pelanggan.mplgNamaKode for pelanggan in getListOfPelanggan($viewValue)" ng-change="changePelanggan(dataDokkapal.namaAgen)" data-limit="10" >
+          <a ng-if="!dataDokkapal.namaAgen == ''" href="#/profilperusahaan/{{dataDokkapal.kodeAgen}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+          <span class="has-error" ng-show="dokkapalForm.namaAgen.$touched && dokkapalForm.namaAgen.$invalid">
+            Isi nama agen dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>No. Surat Keputusan</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="50" class="form-control" name="noSuratKeputusan" ng-model="dataDokkapal.noSuratKeputusan" required>
+          <span class="has-error" ng-show="dokkapalForm.noSuratKeputusan.$touched && dokkapalForm.noSuratKeputusan.$invalid">
+            Isi no surat keputusan dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!dataDokkapal.noSuratKeputusan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+      <div class="col-sm-5">
+            <div pf-datepicker id="tglMulaiBerlaku" options="options" data-date-format="dd-mm-yyyy" date="dataDokkapal.tglMulaiBerlaku"  required></div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+      <div class="col-sm-5">
+            <div pf-datepicker id="tglSelesaiBerlaku" options="options" data-date-format="dd-mm-yyyy" date="dataDokkapal.tglSelesaiBerlaku" required></div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" ><span class="text-danger">*</span>Tgl. Ditetapkan</label>
+      <div class="col-sm-5">
+            <div pf-datepicker id="tglDitetapkan" options="options" data-date-format="dd-mm-yyyy" date="dataDokkapal.tglDitetapkan"  required></div>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Pejabat</label>
+      <div class="col-sm-7">
+          <input type="text"  name="pejabat" class="form-control" ng-model="dataDokkapal.pejabat" bs-typeahead bs-options="sdmPejabat.nama for sdmPejabat in getListOfPejabat($viewValue)" data-limit="10"
+          ng-focus="checkValue(dataDokkapal.pejabat)" ng-blur="validationLookupPejabat()" required>
+          <span class="has-error" ng-show="dokkapalForm.pejabat.$touched && dokkapalForm.pejabat.$invalid">
+            Isi pejabat dibutuhkan.
+          </span>
+      </div>
+            <a ng-if="!dataDokkapal.pejabat == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group" ng-hide="true">
+    <label class="col-sm-3 control-label"><span class="text-danger">*</span>Nama Pelanggan</label>
+      <div class="col-sm-7">
+          <input type="text" name="pelanggan" class="form-control" ng-model="dataDokkapal.pelanggan" bs-typeahead bs-options="mdmPelanggan.mplgNamaKode for mdmPelanggan in getListOfPelanggan($viewValue)" data-limit="10" ng-focus="checkValue(dataDokkapal.pelanggan)" ng-blur="validationLookupPelanggan()">
+          <span class="has-error" ng-show="dokkapalForm.pelanggan.$touched && dokkapalForm.pelanggan.$invalid">
+            Isi pelanggan dibutuhkan.
+          </span>
+      </div>
+      <a ng-if="!dataDokkapal.pelanggan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+          <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-true-value ="1" ng-false-value="2"  ng-model="dataDokkapal.status" checked/>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-3 control-label" for="file-8"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" name="file" class="form-control" file-input="uploadFile" accept="
+          .pdf,.jpg" onchange="angular.element(this).scope().validationUploadFile(this.files)" required>
+          <span class="has-error" ng-show="dataDokkapal.file.$touched && dokkapalForm.file.$invalid">
+            Isi Dokumen Pendukung dibutuhkan.
+          </span>
+          <span class="has-error" ng-show="errorMessageUploadFile">
+            {{errorMessageUploadFile}}
+          </span>
+          <p ng-hide="errorMessageUploadFile" ><a href="" ng-click="buildPDF()"><i class="fa fa-file-pdf-o" ng-show="dataDokkapal.dokumen"></i> {{dataDokkapal.dokumen}}</a></p>
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7">
+          <button type="button" class="btn btn-default btn-lg" ng-disabled="dokkapalForm.$invalid;buttonDisabled" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-disabled="dokkapalForm.$invalid;" ng-click="submit();buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Simpan</button>
+      </div>
+    </div>
+</form>
+<script>
+  $('#date-2').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+  $('#date-3').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+  $('#date-4').datepicker({
+    autoclose: true,
+    todayBtn: "linked",
+    todayHighlight: true
+  });
+</script>

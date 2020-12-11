@@ -1,0 +1,96 @@
+<h2>Surcharge Pandu Baru</h2>
+<br>
+<form class="form-horizontal" name="mspanduForm" novalidate>
+  <div class="form-group">
+  <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Berlaku</label>
+    <div class="col-sm-7">
+         <div pf-datepicker id="tglBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options" date="tglBerlaku" required></div>
+    </div>
+  </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="nomor"><span class="text-danger">*</span>Nomor</label>
+      <div class="col-sm-7">
+          <input type="text"  only-num maxlength="30" class="form-control" name="nomor" ng-model="mspandu.nomor" required>
+          <span class="has-error" ng-show="mspanduForm.nomor.$touched && mspanduForm.nomor.$invalid">
+            Isi Nomor dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="hargaMin" ><span class="text-danger">*</span>Harga Min.</label>
+      <div class="col-sm-7">
+          <input type="number" maxlength="14" only-num min="1" class="form-control" max="{{mspandu.hargaMax}}" name="hargaMin" ng-model="mspandu.hargaMin" required>
+          <span class="has-error" ng-show="mspanduForm.hargaMin.$touched && mspanduForm.hargaMin.$invalid">
+            Isi Harga Min. dibutuhkan.
+          </span>
+      </div>
+
+      <div class="col-sm-2" ng-hide="mspanduForm.hargaMin.$valid" >
+        <small class="error" ng-show="mspanduForm.hargaMin.$error.max">
+        <a class="fa fa-ban fa-lg" aria-hidden="true"></a> <span>Harga Max. harus lebih besar dari Harga Min.</span></small>
+      </div>
+
+
+    </div>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="hargaMax"><span class="text-danger">*</span>Harga Max.</label>
+      <div class="col-sm-7">
+         <input type="number" maxlength="14" only-num min="1"  class="form-control" name="hargaMax" ng-model="mspandu.hargaMax" required>
+         <span class="has-error" ng-show="mspanduForm.hargaMax.$touched && mspanduForm.hargaMax.$invalid">
+            Isi Harga Max. dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Area Pelayanan</label>
+      <div class="col-sm-7">
+          <!-- <input type="text" id="no-3" class="form-control" ng-model="langganan.jasa"> -->
+          <select pf-select ng-model="mspandu.areaPelayanan" name="areaPelayanan" ng-options='option.value as option.caption for option in areaPelayanan' required></select>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="surcharge"><span class="text-danger">*</span>Fuel Surcharge</label>
+      <div class="col-sm-7">
+          <input type="number" maxlength="14" only-num min="1"  class="form-control" name="surcharge" ng-model="mspandu.surcharge" required>
+          <span class="has-error" ng-show="mspanduForm.surcharge.$touched && mspanduForm.surcharge.$invalid">
+            Isi Fuel Surcharge dibutuhkan.
+          </span>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="keterangan"><span class="text-danger">*</span>Keterangan</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="14" class="form-control" name="keterangan" ng-model="mspandu.keterangan" required>
+          <span class="has-error" ng-show="mspanduForm.keterangan.$touched && mspanduForm.keterangan.$invalid">
+            Isi Keterangan dibutuhkan.
+          </span>
+      </div>
+    </div>
+     <div class="form-group">
+       <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+        <div class="col-sm-7">
+          <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="mspandu.status" ng-true-value ="true" ng-false-value="false" checked />
+        </div>
+    </div>
+
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-7">
+          <button type="button" class="btn btn-lg btn-default" ng-click="cancel()">Batal</button>
+          <button type="button" class="btn btn-lg btn-primary" ng-disabled="mspanduForm.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span> Buat Baru</button>
+      </div>
+    </div>
+</form>
+
+<script>
+$('#tgl-7').datepicker({
+  autoclose: true,
+  todayBtn: "linked",
+  todayHighlight: true
+});
+</script>
+<script>
+  jQuery(".bootstrap-switch").bootstrapSwitch();
+</script>

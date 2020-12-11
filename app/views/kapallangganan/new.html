@@ -1,0 +1,186 @@
+<h2>Pelanggan Kapal Langganan Baru</h2>
+<form class="form-horizontal" name="kapalLanggananNew">
+  	<div class="form-group">
+		<label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama Kapal</label>
+    	<div class="col-sm-7" style="display: inline-flex;">
+          <input type="text" name="namaKapal" class="form-control" ng-model="langganan.namaKapal" bs-typeahead bs-options="kapal.mkplNama for kapal in getListOfKapal($viewValue)" data-limit="10"
+          ng-focus="checkValue(mdmPelanggan)" ng-blur="validationLookupKapal()"
+          required>
+          <a ng-if="!langganan.namaKapal == ''" href="#/profilkapal/{{langganan.namaKapal.mkplKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+
+    	</div>
+      <span class="has-error" ng-show="kapalLanggananNew.namaKapal.$touched && kapalLanggananNew.namaKapal.$invalid">
+        Nama Kapal harus diisi.
+      </span>
+  	</div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3">Nama Pelanggan</label>
+      <div class="col-sm-7" style="display: inline-flex;">
+          <input type="text" name="namaPelanggan" class="form-control" ng-model="langganan.namaPelanggan" bs-typeahead bs-options="pelanggan.mplgNamaKode for pelanggan in getListOfPelanggan($viewValue)" data-limit="10"  ng-focus="checkValue(langganan.namaPelanggan)" ng-blur="validationLookupNama()" >
+          <input type="hidden" ng-model="langganan.namaPelanggan.mplgKode">
+          <a ng-if="!langganan.namaPelanggan == ''" href="#/profilperusahaan/{{langganan.namaPelanggan.mplgKode}}" class="fa fa-info-circle fa-lg information-tip" aria-hidden="true"></a>
+      </div>
+      <span class="has-error" ng-show="kapalLanggananNew.namaPelanggan.$touched && kapalLanggananNew.namaPelanggan.$invalid">
+        Nama Pelanggan harus diisi.
+      </span>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Jasa</label>
+      <div class="col-sm-7">
+          <select pf-select ng-model="langganan.jasa" name="jasa" ng-options='option.value as option.caption for option in jasa' required></select>
+      </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label">Dermaga</label>
+      <div class="col-sm-7" style="display:inline-flex;">
+          <input type="hidden"  class="form-control" style="width:100px; margin-right:5px;" ng-model="langganan.dermaga.mdmgKode" disabled>
+          <input type="text" name="dermaga" class="form-control" ng-model="langganan.dermaga" bs-typeahead bs-options="dermaga.mdmgNamaKode for dermaga in getListOfDermaga($viewValue)" data-limit="10" ng-focus="checkValue(langganan.dermaga)" ng-blur="validationLookupDermaga()">
+      </div>
+      <span class="has-error" ng-show="kapalLanggananNew.dermaga.$touched && kapalLanggananNew.dermaga.$invalid">
+        Dermaga harus diisi.
+      </span>
+      <a ng-if="!langganan.dermaga == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+    </div>
+
+    <span><hr></span>
+
+      <div class="form-group">
+      <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Tagihan</label>
+        <div class="col-sm-7" >
+          <label class="radio-inline">
+          <input name="optradio2" type="radio" ng-model="langganan.tagihan" value="0" ng-checked="required" ng-required="!langganan.tagihan" ng-change="Resetval()">Penuh
+        </label>
+        <label class="radio-inline">
+          <input name="optradio2" type="radio" ng-model="langganan.tagihan" value="1" ng-required="!langganan.tagihan"  ng-change="Resetvalue()">Kesepakatan
+        </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div ng-hide="langganan.tagihan==1">
+          <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Nilai</label>
+            <div class="col-sm-2">
+                <input type="number" only-num min="1" ng-disabled="langganan.tagihan==1" class="form-control" ng-model="langganan.nilai" name="nilai" ng-required="langganan.tagihan==0">
+                <span class="has-error" ng-show="kapalLanggananNew.nilai.$touched && kapalLanggananNew.nilai.$invalid">
+                  Isi nilai dibutuhkan.
+                </span>
+            </div>
+        </div>
+
+        <div ng-hide="langganan.tagihan==1">
+            <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Valuta</label>
+            <div class="col-sm-2">
+              <select pf-select ng-model="langganan.valuta" name="valuta" ng-disabled="langganan.nilaiTagihan==1" ng-options='option.value as option.caption for option in valuta' id="jns-1" ng-required="langganan.nilaiTagihan==0"></select>
+                <span class="has-error" ng-show="kapalLanggananNew.valuta.$dirty && kapalLanggananNew.valuta.$invalid">
+                  Isi valuta dibutuhkan.
+                </span>
+            </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div ng-hide="langganan.tagihan==0">
+          <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Pelabuhan</label>
+            <div class="col-sm-2">
+                <input type="number" min="1" only-num class="form-control" ng-disabled="langganan.tagihan==0" ng-model="langganan.pelabuhan" placeholder="%" name="pelabuhan" ng-required="langganan.tagihan==1">
+                <span class="has-error" ng-show="kapalLanggananNew.pelabuhan.$touched && kapalLanggananNew.pelabuhan.$invalid">
+                  Isi nilai pelabuhan dibutuhkan.
+                </span>
+            </div>
+        </div>
+        <div ng-hide="langganan.tagihan==0">
+          <label class="col-sm-2 control-label" ><span class="text-danger">*</span>Pelanggan</label>
+            <div class="col-sm-2">
+
+                 <input type="number" min="1" only-num max="langganan.pelanggan" class="form-control" ng-disabled="langganan.tagihan==0" ng-model="langganan.pelanggan" placeholder="%" name="pelanggan" ng-required="langganan.tagihan==1">
+
+                <span class="has-error" ng-show="kapalLanggananNew.pelanggan.$touched && kapalLanggananNew.pelanggan.$invalid">
+                  Isi nilai pelanggan dibutuhkan.
+                </span>
+            </div>
+        </div>
+      </div>
+
+     <span><hr></span>
+
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>No. SK</label>
+      <div class="col-sm-7">
+          <input type="text" maxlength="30" name="nomorSk" class="form-control" ng-model="langganan.nomorSk" required>
+      </div>
+      <a ng-if="!langganan.nomorSk == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+      <span class="has-error" ng-show="kapalLanggananNew.nomorSk.$touched && kapalLanggananNew.nomorSk.$invalid">
+        Nomor Sk harus diisi.
+      </span>
+    </div>
+  	<div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Mulai Berlaku</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglMulaiBerlaku" name="tglBerlaku" data-date-format="dd-mm-yyyy" options="options" date="tglMulaiBerlaku" required></div>
+        </div>
+  	</div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Selesai Berlaku</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglSelesaiBerlaku" data-date-format="dd-mm-yyyy" options="options" date="tglSelesaiBerlaku" required></div>
+        </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="tgl-7"><span class="text-danger">*</span>Tgl. Ditetapkan</label>
+        <div class="col-sm-3">
+             <div pf-datepicker id="tglSepakat" data-date-format="dd-mm-yyyy" options="options" date="tglSepakat" required></div>
+        </div>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="file-3"><span class="text-danger">*</span>Dok. Pendukung</label>
+      <div class="col-sm-7">
+          <input type="file" id="" class="form-control" file-input="uploadFile" accept=".pdf,.jpg">
+      </div>
+      <a class="large info-tooltip" data-module-name="mgcrea.ngStrapDocs" ng-plunkr data-html="true" data-title="{{tooltipInfo}}" data-placement="right" bs-tooltip><i class="fa fa-question-circle fa-lg color-icon-question"></i></a>
+    </div>
+
+
+    <span><hr></span>
+
+
+     <div class="form-group">
+      <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama Pejabat Pelindo</label>
+      <div class="col-sm-7">
+          <input type="text"  name="pejabatPelabuhan" class="form-control" ng-model="langganan.pejabatPelabuhan" bs-typeahead bs-options="mdmPejabat.nama for mdmPejabat in getListOfPejabat($viewValue)" data-limit="10" ng-focus="checkValue(langganan.pejabatPelabuhan)" ng-blur="validationLookupPejabat()" required>
+      </div>
+      <a ng-if="!langganan.pejabatPelabuhan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+      <span class="has-error" ng-show="kapalLanggananNew.pejabatPelabuhan.$touched && kapalLanggananNew.pejabatPelabuhan.$invalid">
+        Pejabat harus diisi.
+      </span>
+    </div>
+    <div class="form-group">
+    <label class="col-sm-2 control-label" for="no-3"><span class="text-danger">*</span>Nama PIC Pelanggan</label>
+      <div class="col-sm-7">
+        <input type="text"  name="pelangganPelabuhan" class="form-control" ng-model="langganan.pelangganPelabuhan" required>
+      </div>
+      <a ng-if="!langganan.pelangganPelabuhan == ''"  class="fa fa-check fa-lg" aria-hidden="true"></a>
+      <span class="has-error" ng-show="kapalLanggananNew.pelangganPelabuhan.$touched && kapalLanggananNew.pelangganPelabuhan.$invalid" required>
+        Pelanggan harus diisi.
+      </span>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label" for="aktif"><span class="text-danger">*</span>Status</label>
+      <div class="col-sm-7">
+        <input bs-switch type="checkbox" switch-on-text="AKTIF" switch-off-text="TIDAK AKTIF" ng-model="langganan.status" ng-true-value ="1" ng-false-value="0" checked>
+      </div>
+    </div>
+
+  	<div class="form-group">
+	    <div class="col-sm-offset-2 col-sm-7">
+	      	<button type="button" class="btn  btn-lg btn-default" ng-click="cancel()">Batal</button>
+	      	<button type="button" class="btn  btn-lg btn-primary" ng-disabled="kapalLanggananNew.$invalid;" ng-click="submit();showLoader=true;buttonDisabled=true"><span class="spinner spinner-xs spinner-inline" ng-show="showLoader"></span>Buat Baru</button>
+	    </div>
+  	</div>
+
+</form>
+
+<script>
+  // Initialize Boostrap-datepicker
+
+   $("[name='status-checkbox']").bootstrapSwitch();
+</script>

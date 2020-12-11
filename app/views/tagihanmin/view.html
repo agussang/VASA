@@ -1,0 +1,29 @@
+<h2>Tagihan Minimum Detail</h2>
+<form class="form-horizontal">
+	<div class="form-group">
+    	<label class="col-sm-2">Tagihan Min.</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{tagihanMinDetails.tagihanMin | currency:"":4}}</span>
+	    </div>
+  	</div>
+  	<div class="form-group">
+    	<label class="col-sm-2">Valuta</label>
+	    <div class="col-sm-9">
+	      	<span>:</span>
+	      	<span class='view-detail'>{{tagihanMinDetails.valuta}}</span>
+	    </div>
+  	</div>
+    <div class="form-group">
+      	<label class="col-sm-2">Status Aktif</label>
+      	<div class="col-sm-9">
+          	<span>:</span>
+          	<span class="view-detail">{{tagihanMinDetails.kodeAktif}}</span>  
+      	</div>
+    </div>
+  	<div class="form-group pull-right">
+	    <div class="" style="margin-top:20px; margin-right:315px;">
+	        <button type="button" class="btn btn-primary btn-lg" ng-click="close()">Tutup</button>        
+	    </div>
+  	</div>
+</form>

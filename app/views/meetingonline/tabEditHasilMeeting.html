@@ -1,0 +1,76 @@
+	<div class="tab-content">
+		<div id="summary" role="tabpanel" class="tab-pane">
+      <div class="form-group">
+      <div class="col-sm-12">
+        <button type="button" class="btn btn-primary btn-lg" ng-click="generateHasilMeeting()">Generate Hasil Meeting</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+      <table class="datatable table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th ng-click="sortBy='nomorSk'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Ruang</div>
+            </th>
+            <th ng-click="sortBy='nomorSk'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Nama Kapal</div>
+            </th>
+            <th ng-click="sortBy='tglBerlaku'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Agen</div>
+            </th>
+            <th ng-click="sortBy='jenisPelayaran'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">PBM</div>
+            </th>
+            <th ng-click="sortBy='kelasPelabuhan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">LOA</div>
+            </th>
+            <th ng-click="sortBy='kunjungan'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Posisi</div>
+            </th>
+            <th ng-click="sortBy='nilaiTarif'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">Closing Time</div>
+            </th>
+            <th ng-click="sortBy='valuta'; sortDesc = !sortDesc; pageChanged(0);">
+              <div class="pull-left">B</div>
+              </th>
+              <th>
+              <div class="pull-left">M</div>
+            </th>
+            <th>
+              <div class="pull-left">Komoditi</div>
+            </th>
+            <th>
+              <div class="pull-left">Keterangan</div>
+            </th>
+          </tr>
+            </thead>
+        <tbody>
+          <tr ng-repeat="item in hasilMeeting">
+            <td>{{noIndex+$index +1}}</td>
+            <td>{{item.idMeeting?item.idMeeting:' - '}}</td>
+            <td>{{item.namaKapal}}</td>
+            <td>{{item.kodeAgen}}</td>
+            <td>{{item.pbm}}</td>
+            <td>{{item.panjangKapal}}</td>
+            <td>{{item.kadeAwalKeseluruhan}} - {{item.kadeAkhirKeseluruhan}}</td>
+            <td>{{item.tglSelesai | date: "dd-MM-yyyy"}}</td>
+            <td>{{item.b}}</td>
+            <td>{{item.m}}</td>
+            <td>{{item.komoditi}}</td>
+            <td>{{item.deskripsi}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <paging class="small" page="currentPage" page-size="pageSize"
+            total="totalItems" adjacent="2" dots="..." scroll-top="true"
+            hide-if-empty="false" ul-class="pagination" active-class="active"
+            disabled-class="disabled" show-prev-next="true"
+            style="cursor: pointer;" paging-action="pageChanged(page)">
+        </paging>
+      </div>
+    </div>
+  </div>

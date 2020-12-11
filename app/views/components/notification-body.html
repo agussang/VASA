@@ -1,0 +1,30 @@
+<div ng-if="!drawerExpanded" autoscroll>
+    <span ng-if="notification.status" class="{{notification.cursor}} {{'pull-left ' + customScope.getNotficationStatusIconClass(notification)}}" ng-click="customScope.markRead(notification)" style="margin-top:4px;"></span>
+    <span class="drawer-pf-notification-message js-load" id="js-load" ng-click="customScope.markRead(notification,berita)" >
+      <a ng-show="notification.urlMsg!=='0'" class="cursor-pointer link-messages" ng-click="customScope.linkFromMessage(notification.urlMsg);">{{notification.message}}</a>
+      <span ng-show="notification.urlMsg==='0'" class="link-messages">{{notification.message}}</span>
+    </span>
+    <div class="drawer-pf-notification-info">
+        <span class="labeltextdate" ng-show="notification.textdate==='1'">{{notification.created | timeago}}</span>
+        <span class="labeltextdate" ng-show="notification.textdate!=='1'">{{notification.textdate}} </span>
+    </div>
+</div>
+
+<div ng-if="drawerExpanded" class="container-fluid" autoscroll>
+    <div class="row">
+    <div class="col-sm-10">
+      <span class="pull-left {{notification.cursor}} {{customScope.getNotficationStatusIconClass(notification)}}" ng-click="customScope.markRead(notification)" style="margin-top:4px;"></span>
+      <span class="drawer-pf-notification-message notification-message {{notification.cursor}}" style="margin-left:-15px;" tooltip-append-to-body="true" tooltip-popup-delay="500" tooltip-placement="bottom" tooltip="{{notification.message}}" ng-click="customScope.markRead(notification)">
+        <a ng-show="notification.urlMsg!=='0'" class="cursor-pointer link-messages" ng-click="customScope.linkFromMessage(notification.urlMsg);">{{notification.message}}</a>
+        <span ng-show="notification.urlMsg==='0'" class="link-messages">{{notification.message}}</span>
+      </span>
+    </div>
+    <div class="col-sm-10">
+      <div class="drawer-pf-notification-info">
+        <span ng-show="notification.textdate==='1'">{{notification.created | timeago}}</span>
+        <span ng-show="notification.textdate!=='1'">{{notification.textdate}}</span>
+      </div>
+      <div class="dropdown pull-right dropdown-kebab-pf" ng-if="notification.actions && notification.actions.length > 0">
+      </div>
+    </div>
+</div>

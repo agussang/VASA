@@ -1,0 +1,166 @@
+.col-pmh{
+  margin-left:50px;
+  width: 300px;
+}
+.col-label{
+  margin-left: 20px;
+  margin-top: -10px;
+}
+.form-horizontal.labuh{
+  margin-left: 50px;
+}
+.col-list{
+  display: inline-flex;
+  width: 100%;
+}
+
+.col-form{
+  display: inline-flex;
+  width: 100%;
+}
+.col-form-1{
+  width: 50%;
+}
+.col-form-2{
+}
+.vertical-line{
+   border-left:solid #bbb;
+   margin-left: -180px;
+   margin-right: 40px;
+   margin-top: 0px;
+}
+.vertical-pandu{
+   border-left:solid #bbb;
+   margin-left: -180px;
+   margin-right: 40px;
+   margin-top: 0px;
+   height: 280px;
+}
+.dtpicker1{
+   margin-top: -26px;
+   margin-left: 120px;
+   width:120px;
+}
+.dtpicker2{
+   margin-top: -26px;
+   margin-left: 120px;
+   width:120px;
+}
+.dtpicker3{
+   margin-top: -26px;
+   margin-left: 120px;
+   width:120px;
+}
+.dtpicker4{
+   margin-top: -26px;
+   margin-left: 120px;
+   width:120px;
+}
+#dt1 {
+  width :110px;
+  margin-left : 0px;
+}
+#dt2 {
+  width :110px;
+  margin-left : 0px;
+}
+#dt3 {
+  width :110px;
+  margin-left : 0px;
+}
+#dt4 {
+  width :110px;
+  margin-left : 0px;
+}
+#nama-13 {
+  width :110px;
+  margin-left : 0px;
+}
+#nama-14 {
+  width :110px;
+  margin-top: -30px;
+  margin-left : 130px;
+}
+.colsd{
+ margin-left : 0px;
+}
+#colsd{
+ margin-top: -20px;
+ margin-left : 111px;
+}
+.dtpickerpandunaik{
+  width:110px;
+}
+.dtpickerpandutrn{
+  width:110px;
+}
+#mulai{
+ width:100px;
+}
+#fruit-mulai{
+ margin-top:-26px;
+margin-left : 110px;
+ width:10px;
+}
+#dropdown-1{
+  width :120px;
+  margin-left: -30px;
+}
+.dropdown-1{
+  width :120px;
+  margin-left: -20px;
+}
+#mulai {
+  width :90px;
+}
+#fruit-1{
+ width :90px;
+}
+.table-alatisi {
+  width :800px;
+  margin-left: 40px;
+}
+.table-kapal {
+  width :800px;
+  margin-left: 20px;
+}
+#labelalatisi{
+  margin-left: -55px;
+}
+#labelalattambah{
+  margin-left: 500px;
+}
+#labelalatpnj{
+  margin-left: 0px;
+  width:160px;
+}
+#labelalattambapnj{
+  margin-left: 440px;
+ }
+#jmlkem2 {
+  width:60px;
+}
+#jmlkem2lbl {
+  margin-left:-135px;
+}
+#jmlkem2box {
+  margin-left:170px;
+  width:60px;
+  margin-top:-29px;
+}
+#jmlkem2boxlbl1{
+ margin-left:230px;
+ margin-top:-29px;
+
+}
+.ukuranfile{
+  margin-left :510px;
+}
+
+.dt-pmh .realisasi-list-view {
+  min-width: 250px;
+}
+.dt-pmh .realisasi-list-view .list-view-pf-main-info{
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
